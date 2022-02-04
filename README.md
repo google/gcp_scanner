@@ -1,0 +1,76 @@
+### Disclaimer
+
+This project is not an official Google project. It is not supported by
+Google and Google specifically disclaims all warranties as to its quality,
+merchantability, or fitness for a particular purpose.
+
+### GCP Scanner
+
+This is a GCP resource scanner that can help determine what level of access certain credentials posses on GCP. The scanner is designed to help security engineers with
+evaluating impact of a certain VM/container compromise, GCP service account or OAuth2 token key leak.
+
+Currently, the scanner supports the following GCP resources: GCE, GCS, GKE, AppEngine, CloudSQL, BigQuery, Spanner, PubSub, CloudFunctions, BigTable, CloudStore, KMS, Cloud Services. The scanner supports SA [impersonation](https://cloud.google.com/iam/docs/impersonating-service-accounts).
+
+The scanner supports extracting and using the following types of credentials:
+* GCP VM instance metadata;
+* User credentials stored in gcloud profiles;
+* OAuth2 Refresh Token with cloud-platform scope granted; 
+* GCP service account key in JSON format. 
+
+The scanner does not rely on any third-party tool (e.g. gcloud). Thus, it can be compiled as a standalone tool and be used on a machine with no GCP SDK installed (e.g. kubernetes pod). However, please keep in mind that the only OS that is currently supported is Linux.
+
+### Dependencies
+
+To be able to use the scanner we need to install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+There is a docker file if you want to run the scanner from a container:
+`docker build -f Dockerfile -t sa_scanner .`
+
+### Command-line options
+
+```
+usage: python3 gcp_scanner -o /folder_to_save_results/ -g -
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -k KEY_PATH, --sa_key_path KEY_PATH
+                        Path to directory with SA keys in json format
+  -g GCLOUD_PROFILE_PATH, --gcloud_profile_path GCLOUD_PROFILE_PATH
+                        Path to directory with gcloud profile. Specify - to search in default gcloud config path
+  -m                    Extract credentials from GCE instance metadata
+  -at ACCESS_TOKEN      Use access token directly to scan GCP resources. Limited by TTL
+  -rt REFRESH_TOKEN_FILES
+                        A list of comma separated files with refresh_token, client_id, token_uri and client_secret
+  -s KEY_NAME           Name of individual SA to scan
+  -p TARGET_PROJECT     Name of individual project to scan
+  -f FORCE_PROJECTS     Comma separated list of project names to include in the scan
+  -l LOG_LEVEL, -logging LOG_LEVEL
+                        Set logging level (INFO, WARNING, ERROR)
+
+Required parameters:
+  -o OUTPUT             Path to output directory
+```
+
+Option `-f` needs an additional explanation. In some cases, service account does not have permissions to explicitly list project names. However, it still might have access to underlying resources if we provide correct project name. This option specifically designed to handle such cases.
+
+NOTE: You can use `python3 __main__.py` as well to launch the scanner.
+
+
+### Building standalone binary with pyinstaller
+
+Please replace `google-api-python-client==2.9.0` with `google-api-python-client==1.8.0` in `requirements.txt`. After that, navigate to the scanner source code directory and use pyinstaller to compile a standalone binary:
+
+`pyinstaller -F --add-data 'roots.pem:grpc/_cython/_credentials/" scanner.py`
+
+
+### Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
+
+### License
+
+Apache 2.0; see [`LICENSE`](LICENSE) for details.

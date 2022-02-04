@@ -1,0 +1,6 @@
+pyu2f==0.1.5
+google-api-python-client==2.9.0
+google-cloud-container==2.4.1
+google-cloud-iam==2.2.0
+httplib2==0.19.1
+requests==2.25.1

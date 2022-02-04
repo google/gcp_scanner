@@ -1,0 +1,996 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+"""The module to query GCP resources via RestAPI.
+
+"""
+
+import collections
+import logging
+import sys
+from typing import List, Dict, Any, Tuple
+
+from google.cloud import container_v1
+import googleapiclient
+from googleapiclient import discovery
+from httplib2 import Credentials
+import requests
+from requests.auth import HTTPBasicAuth
+
+
+def infinite_defaultdict():
+  return collections.defaultdict(infinite_defaultdict)
+
+
+def fetch_project_info(project_name: str,
+                       credentials: Credentials) -> Dict[str, Any]:
+  """Retrieve information about specific project.
+
+  Args:
+    project_name: Name of project to request info about
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    Project info object or None.
+  """
+  project_info = None
+  logging.info("Retrieving info about", project_name)
+
+  try:
+    service = googleapiclient.discovery.build(
+        "cloudresourcemanager",
+        "v1",
+        credentials=credentials,
+        cache_discovery=False)
+    request = service.projects().get(projectId=project_name)
+    response = request.execute()
+    if "projectNumber" in response:
+      project_info = response
+
+  except Exception:
+    logging.info("Failed to enumerate projects")
+    logging.info(sys.exc_info())
+
+  return project_info
+
+
+def get_project_list(credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve a list of projects accessible by credentials provided.
+
+  Args:
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of Project objects from cloudresourcemanager RestAPI.
+  """
+
+  logging.info("Retrieving projects list")
+  project_list = list()
+  try:
+    service = googleapiclient.discovery.build(
+        "cloudresourcemanager",
+        "v1",
+        credentials=credentials,
+        cache_discovery=False)
+    request = service.projects().list()
+    while request is not None:
+      response = request.execute()
+
+      for project in response.get("projects", []):
+        project_list.append(project)
+
+      request = service.projects().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to enumerate projects")
+    logging.info(sys.exc_info())
+  return project_list
+
+
+def get_compute_instances_names(
+    project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  """Retrieve a list of Compute VMs available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    service: A resource object for interacting with the Compute API.
+
+  Returns:
+    A list of instance objects.
+  """
+
+  logging.info("Retrieving list of Compute Instances")
+  images_result = list()
+  try:
+    request = service.instances().aggregatedList(project=project_name)
+    while request is not None:
+      response = request.execute()
+      if response.get("items", None) is not None:
+        for _, instances_scoped_list in response["items"].items():
+          for instance in instances_scoped_list.get("instances", []):
+            images_result.append(instance)
+
+      request = service.instances().aggregatedList_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to enumerate compute instances in the %s",
+                 project_name)
+    logging.info(sys.exc_info())
+  return images_result
+
+
+def get_compute_images_names(
+    project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  """Retrieve a list of Compute images available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    service: A resource object for interacting with the Compute API.
+
+  Returns:
+    A list of image objects.
+  """
+
+  logging.info("Retrieving list of Compute Image names")
+  images_result = list()
+  try:
+    request = service.images().list(project=project_name)
+    while request is not None:
+      response = request.execute()
+      for image in response.get("items", []):
+        images_result.append(image)
+
+      request = service.images().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to enumerate compute images in the %s", project_name)
+    logging.info(sys.exc_info())
+  return images_result
+
+
+def get_compute_disks_names(
+    project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  """Retrieve a list of Compute disks available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    service: A resource object for interacting with the Compute API.
+
+  Returns:
+    A list of disk objects.
+  """
+
+  logging.info("Retrieving list of Compute Disk names")
+  disk_names_list = list()
+  try:
+    request = service.disks().aggregatedList(project=project_name)
+    while request is not None:
+      response = request.execute()
+      if response.get("items", None) is not None:
+        for _, disks_scoped_list in response["items"].items():
+          for disk in disks_scoped_list.get("disks", []):
+            disk_names_list.append(disk)
+
+      request = service.disks().aggregatedList_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to enumerate compute disks in the %s", project_name)
+    logging.info(sys.exc_info())
+
+  return disk_names_list
+
+
+def get_static_ips(project_name: str,
+                   service: discovery.Resource) -> List[Dict[str, Any]]:
+  """Retrieve a list of static IPs available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    service: A resource object for interacting with the Compute API.
+
+  Returns:
+    A list of static IPs in the project.
+  """
+
+  logging.info("Retrieving Static IPs")
+  ips_list = list()
+  try:
+    request = service.globalAddresses().list(project=project_name)
+    while request is not None:
+      response = request.execute()
+      for address in response.get("items", []):
+        ips_list.append(address)
+
+      request = service.globalAddresses().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to get static IPs in the %s", project_name)
+    logging.info(sys.exc_info())
+
+  return ips_list
+
+
+def get_compute_snapshots(project_name: str,
+                          service: discovery.Resource) -> List[Dict[str, Any]]:
+  """Retrieve a list of Compute snapshots available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    service: A resource object for interacting with the Compute API.
+
+  Returns:
+    A list of snapshot objects.
+  """
+
+  logging.info("Retrieving Compute Snapshots")
+  snapshots_list = list()
+  try:
+    request = service.snapshots().list(project=project_name)
+    while request is not None:
+      response = request.execute()
+      for snapshot in response.get("items", []):
+        snapshots_list.append(snapshot)
+
+      request = service.snapshots().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to get compute snapshots in the %s", project_name)
+    logging.info(sys.exc_info())
+
+  return snapshots_list
+
+
+def get_subnets(project_name: str,
+                compute_client: discovery.Resource) -> List[Dict[str, Any]]:
+  """Retrieve a list of subnets available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    compute_client: A resource object for interacting with the Compute API.
+
+  Returns:
+    A list of subnets in the project.
+  """
+
+  logging.info("Retrieving Subnets")
+  subnets_list = list()
+  try:
+    request = compute_client.subnetworks().aggregatedList(project=project_name)
+    while request is not None:
+      response = request.execute()
+      if response.get("items", None) is not None:
+        for name, subnetworks_scoped_list in response["items"].items():
+          subnets_list.append((name, subnetworks_scoped_list))
+
+      request = compute_client.subnetworks().aggregatedList_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to get subnets in the %s", project_name)
+    logging.info(sys.exc_info())
+
+  return subnets_list
+
+
+def get_firewall_rules(
+    project_name: str,
+    compute_client: discovery.Resource) -> List[Dict[str, Any]]:
+  """Retrieve a list of firewall rules in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    compute_client: A resource object for interacting with the Compute API.
+
+  Returns:
+    A list of firewall rules in the project.
+  """
+
+  logging.info("Retrieving Firewall Rules")
+  firewall_rules_list = list()
+  try:
+    request = compute_client.firewalls().list(project=project_name)
+    while request is not None:
+      response = request.execute()
+      for firewall in response.get("items", []):
+        firewall_rules_list.append((
+            firewall["name"],
+            # firewall['description'],
+        ))
+
+      request = compute_client.firewalls().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to get firewall rules in the %s", project_name)
+    logging.info(sys.exc_info())
+  return firewall_rules_list
+
+
+def get_bucket_names(project_name: str, credentials: Credentials,
+                     enum_files: bool) -> Dict[str, Tuple[Any, List[Any]]]:
+  """Retrieve a list of buckets available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+    enum_files: If true, the function will enumerate files stored in buckets.
+      This is a very slow, noisy operation and should be used with caution.
+
+  Returns:
+    A dictionary where key is bucket name and value is a tuple of
+    a bucket Object and list of file objects associated with bucket.
+  """
+
+  logging.info("Retrieving GCS Buckets")
+  buckets_dict = dict()
+  service = discovery.build(
+      "storage", "v1", credentials=credentials, cache_discovery=False)
+  # Make an authenticated API request
+  request = service.buckets().list(project=project_name)
+  while request is not None:
+    try:
+      response = request.execute()
+    except googleapiclient.errors.HttpError as e:
+      logging.info("Failed to list buckets in the %s", project_name)
+      logging.info(sys.exc_info())
+      break
+    for bucket in response.get("items", []):
+      buckets_dict[bucket["name"]] = (bucket, None)
+      if enum_files is True:
+        ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
+
+        req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
+
+        all_objects = []
+        while req:
+          try:
+            resp = req.execute()
+            all_objects.extend(resp.get("items", []))
+          except googleapiclient.errors.HttpError as e:
+            logging.info("Failed to read the bucket %s", bucket["name"])
+            logging.info(sys.exc_info())
+            continue
+          req = service.objects().list_next(req, resp)
+
+        buckets_dict[bucket["name"]] = (bucket, all_objects)
+
+      request = service.buckets().list_next(
+          previous_request=request, previous_response=response)
+
+  return buckets_dict
+
+
+def get_managed_zones(project_name: str,
+                      credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve a list of DNS zones available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of DNS zones in the project.
+  """
+
+  logging.info("Retrieving DNS Managed Zones")
+  zones_list = list()
+
+  try:
+    service = discovery.build(
+        "dns", "v1", credentials=credentials, cache_discovery=False)
+
+    request = service.managedZones().list(project=project_name)
+    while request is not None:
+      response = request.execute()
+
+      for managed_zone in response["managedZones"]:
+        zones_list.append(managed_zone)
+
+      request = service.managedZones().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to enumerate DNS zones for project %s", project_name)
+    logging.info(sys.exc_info())
+
+  return zones_list
+
+
+def get_gke_clusters(
+    project_name: str, gke_client: container_v1.services.cluster_manager.client
+    .ClusterManagerClient
+) -> List[Tuple[str, str]]:
+  """Retrieve a list of DNS zones available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    gke_client: I do not know TBD.
+
+  Returns:
+    A list of GKE clusters in the project.
+  """
+
+  logging.info("Retrieving list of GKE clusters")
+  parent = "projects/{}/locations/-".format(project_name)
+  try:
+    clusters = gke_client.list_clusters(parent=parent)
+    return [(cluster.name, cluster.description) for cluster in clusters.clusters
+           ]
+  except Exception:
+    logging.info("Failed to retrieve cluster list for project %s", project_name)
+    logging.info(sys.exc_info())
+    return []
+
+
+def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
+  """Retrieve a list of GKE images available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    access_token: An Oauth2 token with permissions to query list of gke images.
+
+  Returns:
+    A gke images JSON object for each accessible zone.
+  """
+
+  images = dict()
+  logging.info("Retrieving list of GKE images")
+  project_name = project_name.replace(":", "/")
+  regions = ["", "us.", "eu.", "asia."]
+  for region in regions:
+    gcr_url = "https://%sgcr.io/v2/%s/tags/list" % (region, project_name)
+    try:
+      res = requests.get(
+          gcr_url, auth=HTTPBasicAuth("oauth2accesstoken", access_token))
+      if not res.ok:
+        logging.info("Failed to retrieve gcr images list. Status code: %d",
+                     res.status_code)
+        continue
+      images[region.replace(".", "")] = res.json()
+    except Exception:
+      logging.info("Failed to retrieve gke images for project %s", project_name)
+      logging.info(sys.exc_info())
+
+  return images
+
+
+def get_sql_instances(project_name: str,
+                      credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve a list of SQL instances available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of sql instances in the project.
+  """
+
+  logging.info("Retrieving CloudSQL Instances")
+  sql_instances_list = list()
+  try:
+    service = discovery.build(
+        "sqladmin", "v1beta4", credentials=credentials, cache_discovery=False)
+
+    request = service.instances().list(project=project_name)
+    while request is not None:
+      response = request.execute()
+      for database_instance in response.get("items", []):
+        sql_instances_list.append(database_instance)
+
+      request = service.instances().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to get SQL instances for project %s", project_name)
+    logging.info(sys.exc_info())
+
+  return sql_instances_list
+
+
+def get_bq_tables(project_id: str, dataset_id: str,
+                  bq_service: discovery.Resource) -> List[Dict[str, Any]]:
+  """Retrieve a list of BigQuery tables available in the dataset.
+
+  Args:
+    project_id: A name of a project to query info about.
+    dataset_id: A name of dataset to query data from.
+    bq_service: I do not know.
+
+  Returns:
+    A list of BigQuety tables in the dataset.
+  """
+
+  logging.info("Retrieving BigQuery Tables for dataset %s", dataset_id)
+  list_of_tables = list()
+  try:
+    request = bq_service.tables().list(
+        projectId=project_id, datasetId=dataset_id)
+    while request is not None:
+      response = request.execute()
+
+      for table in response.get("tables", []):
+        list_of_tables.append(table)
+
+      request = bq_service.tables().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to retrieve BQ tables for dataset %s", dataset_id)
+    logging.info(sys.exc_info())
+  return list_of_tables
+
+
+def get_bq(project_id: str,
+           credentials: Credentials) -> Dict[str, List[Dict[str, Any]]]:
+  """Retrieve a list of SQL instances available in the project.
+
+  Args:
+    project_id: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A dictionary of BigQuery dataset and corresponding tables.
+  """
+
+  logging.info("Retrieving BigQuery Datasets")
+  bq_datasets = dict()
+  try:
+    service = discovery.build(
+        "bigquery", "v2", credentials=credentials, cache_discovery=False)
+
+    request = service.datasets().list(projectId=project_id)
+    while request is not None:
+      response = request.execute()
+
+      for dataset in response.get("datasets", []):
+        dataset_id = dataset["datasetReference"]["datasetId"]
+        bq_datasets[dataset_id] = get_bq_tables(project_id, dataset_id, service)
+
+      request = service.datasets().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to retrieve BQ datesets for project %s", project_id)
+    logging.info(sys.exc_info())
+  return bq_datasets
+
+
+def get_pubsub_subscriptions(project_id: str,
+                             credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve a list of PubSub subscriptions available in the project.
+
+  Args:
+    project_id: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of PubSub subscriptions in the project.
+  """
+
+  logging.info("Retrieving PubSub Subscriptions")
+  pubsubs_list = list()
+  try:
+    service = discovery.build(
+        "pubsub", "v1", credentials=credentials, cache_discovery=False)
+
+    request = service.projects().subscriptions().list(
+        project="projects/{}".format(project_id))
+    while request is not None:
+      response = request.execute()
+      for subscription in response.get("subscriptions", []):
+        pubsubs_list.append(subscription)
+
+      request = service.projects().subscriptions().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to get PubSubs for project %s", project_id)
+    logging.info(sys.exc_info())
+  return pubsubs_list
+
+
+def get_cloudfunctions(project_id: str,
+                       credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve a list of CloudFunctions available in the project.
+
+  Args:
+    project_id: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of CloudFunctions in the project.
+  """
+
+  logging.info("Retrieving CloudFunctions")
+  functions_list = list()
+  service = discovery.build(
+      "cloudfunctions", "v1", credentials=credentials, cache_discovery=False)
+  try:
+    request = service.projects().locations().functions().list(
+        parent=f"projects/{project_id}/locations/-")
+    while request is not None:
+      response = request.execute()
+      for function in response.get("functions", []):
+        functions_list.append(function)
+
+      request = service.projects().locations().functions().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to retrieve CloudFunctions for project %s", project_id)
+    logging.info(sys.exc_info())
+
+  return functions_list
+
+
+def get_bigtable_instances(project_id: str,
+                           credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve a list of BigTable instances available in the project.
+
+  Args:
+    project_id: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of BigTable instances in the project.
+  """
+
+  logging.info("Retrieving bigtable instances")
+  bigtable_instances_list = list()
+  try:
+    service = discovery.build(
+        "bigtableadmin", "v2", credentials=credentials, cache_discovery=False)
+
+    request = service.projects().instances().list(
+        parent=f"projects/{project_id}")
+    while request is not None:
+      response = request.execute()
+      for instance in response.get("instances", []):
+        bigtable_instances_list.append(instance)
+
+      request = service.projects().instances().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to retrieve BigTable instances for project %s",
+                 project_id)
+    logging.info(sys.exc_info())
+  return bigtable_instances_list
+
+
+def get_spanner_instances(project_id: str,
+                          credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve a list of Spanner instances available in the project.
+
+  Args:
+    project_id: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of Spanner instances in the project.
+  """
+
+  logging.info("Retrieving spanner instances")
+  spanner_instances_list = list()
+  try:
+    service = discovery.build(
+        "spanner", "v1", credentials=credentials, cache_discovery=False)
+
+    request = service.projects().instances().list(
+        parent=f"projects/{project_id}")
+    while request is not None:
+      response = request.execute()
+      for instance in response.get("instances", []):
+        spanner_instances_list.append(instance)
+
+      request = service.projects().instances().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to retrieve Spanner instances for project %s",
+                 project_id)
+    logging.info(sys.exc_info())
+  return spanner_instances_list
+
+
+def get_filestore_instances(project_id: str,
+                            credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve a list of Filestore instances available in the project.
+
+  Args:
+    project_id: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of Filestore instances in the project.
+  """
+
+  logging.info("Retrieving filestore instances")
+  filestore_instances_list = list()
+  service = discovery.build(
+      "file", "v1", credentials=credentials, cache_discovery=False)
+  try:
+    request = service.projects().locations().instances().list(
+        parent=f"projects/{project_id}/locations/-")
+    while request is not None:
+      response = request.execute()
+      for instance in response.get("instances", []):
+        filestore_instances_list.append(instance)
+
+      request = service.projects().locations().instances().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to get filestore instances for project %s", project_id)
+    logging.info(sys.exc_info())
+  return filestore_instances_list
+
+
+def get_kms_keys(project_id: str,
+                 credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve a list of KMS keys available in the project.
+
+  Args:
+    project_id: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of KMS keys in the project.
+  """
+
+  logging.info("Retrieving KMS keys")
+  kms_keys_list = list()
+  try:
+    service = discovery.build(
+        "cloudkms", "v1", credentials=credentials, cache_discovery=False)
+
+    # list all possible locations
+    locations_list = list()
+    request = service.projects().locations().list(name=f"projects/{project_id}")
+    while request is not None:
+      response = request.execute()
+      for location in response.get("locations", []):
+        locations_list.append(location["locationId"])
+      request = service.projects().locations().list_next(
+          previous_request=request, previous_response=response)
+
+    for location_id in locations_list:
+      request_loc = service.projects().locations().keyRings().list(
+          parent=f"projects/{project_id}/locations/{location_id}")
+      while request_loc is not None:
+        response_loc = request_loc.execute()
+        for keyring in response_loc.get("keyRings", []):
+          request = service.projects().locations().keyRings().cryptoKeys().list(
+              parent=keyring["name"])
+          while request is not None:
+            response = request.execute()
+            for key in response.get("cryptoKeys", []):
+              kms_keys_list.append(key)
+
+            request = service.projects().locations().keyRings().cryptoKeys(
+            ).list_next(
+                previous_request=request, previous_response=response)
+
+        request_loc = service.projects().locations().keyRings().list_next(
+            previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to retrieve KMS keys for project %s", project_id)
+    logging.info(sys.exc_info())
+  return kms_keys_list
+
+
+def get_app_services(project_name: str,
+                     credentials: Credentials) -> Dict[str, Any]:
+  """Retrieve a list of AppEngine instances available in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A dict representing default apps and services available in the project.
+  """
+
+  app_client = discovery.build(
+      "appengine", "v1", credentials=credentials, cache_discovery=False)
+
+  logging.info("Retrieving app services")
+  app_services = dict()
+  try:
+    request = app_client.apps().get(appsId=project_name)
+    response = request.execute()
+    if response.get("name", None) is not None:
+      app_services["default_app"] = (response["name"],
+                                     response["defaultHostname"],
+                                     response["servingStatus"])
+
+    request = app_client.apps().services().list(appsId=project_name)
+
+    app_services["services"] = list()
+    while request is not None:
+      response = request.execute()
+      for service_entry in response.get("services", []):
+        app_services["services"].append(service_entry)
+
+      request = app_client.apps().services().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to retrieve App services for project %s", project_name)
+    logging.info(sys.exc_info())
+  return app_services
+
+
+def get_endpoints(project_id: str,
+                  credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve a list of Endpoints available in the project.
+
+  Args:
+    project_id: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of Endpoints in the project.
+  """
+
+  logging.info("Retrieving info about endpoints")
+  endpoints_list = list()
+  try:
+    service = discovery.build(
+        "servicemanagement",
+        "v1",
+        credentials=credentials,
+        cache_discovery=False)
+
+    request = service.services().list(producerProjectId=project_id)
+    while request is not None:
+      response = request.execute()
+      for service_entry in response.get("services", []):
+        endpoints_list.append(service_entry)
+
+      request = service.services().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to retrieve endpoints list for project %s", project_id)
+    logging.info(sys.exc_info())
+  return endpoints_list
+
+
+def get_iam_policy(project_name: str,
+                   credentials: Credentials) -> List[Dict[str, Any]]:
+  """Retrieve an IAM Policy in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    An IAM policy enforced for the project.
+  """
+
+  logging.info("Retrieving IAM policy for %s", project_name)
+  service = discovery.build(
+      "cloudresourcemanager",
+      "v1",
+      credentials=credentials,
+      cache_discovery=False)
+
+  resource = project_name
+
+  get_policy_options = {
+      "requestedPolicyVersion": 3,
+  }
+  get_policy_options = {"options": {"requestedPolicyVersion": 3}}
+  try:
+    request = service.projects().getIamPolicy(
+        resource=resource, body=get_policy_options)
+    response = request.execute()
+  except Exception:
+    logging.info("Failed to get endpoints list for project %s", project_name)
+    logging.info(sys.exc_info())
+    return None
+
+  if response.get("bindings", None) is not None:
+    return response["bindings"]
+  else:
+    return None
+
+
+def get_associated_service_accounts(
+    iam_policy: List[Dict[str, Any]]) -> List[str]:
+  """Extract a list of unique SAs from IAM policy associated with project.
+
+  Args:
+    iam_policy: An IAM policy provided by get_iam_policy function.
+
+  Returns:
+    A list of service accounts represented as string
+  """
+
+  if not iam_policy:
+    return []
+
+  list_of_sas = list()
+  for entry in iam_policy:
+    for member in entry["members"]:
+      if "deleted:" in member:
+        continue
+      account_name = None
+      for element in member.split(":"):
+        if "@" in element:
+          account_name = element
+          break
+      if account_name and account_name not in list_of_sas:
+        list_of_sas.append(account_name)
+
+  return list_of_sas
+
+
+def get_service_accounts(project_name: str,
+                         credentials: Credentials) -> List[Tuple[str, str]]:
+  """Retrieve a list of service accounts managed in the project.
+
+  Args:
+    project_name: A name of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of service accounts managed in the project.
+  """
+
+  logging.info("Retrieving SA list %s", project_name)
+  service_accounts = []
+  service = discovery.build(
+      "iam", "v1", credentials=credentials, cache_discovery=False)
+
+  name = "projects/%s" % project_name
+
+  try:
+    request = service.projects().serviceAccounts().list(name=name)
+    while request is not None:
+      response = request.execute()
+
+      for service_account in response.get("accounts", []):
+        service_accounts.append(
+            (service_account["email"], service_account["description"]
+             if "description" in service_account else ""))
+
+      request = service.projects().serviceAccounts().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to retrieve SA list for project %s", project_name)
+    logging.info(sys.exc_info())
+
+  return service_accounts
+
+
+def list_services(project_id: str, credentials: Credentials) -> List[Any]:
+  """Retrieve a list of services enabled in the project.
+
+  Args:
+    project_name: An id of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of service API objects enabled in the project.
+  """
+
+  logging.info("Retrieving services list %s", project_id)
+  list_of_services = list()
+  serviceusage = discovery.build("serviceusage", "v1", credentials=credentials)
+
+  request = serviceusage.services().list(
+      parent="projects/" + project_id, pageSize=200, filter="state:ENABLED")
+  try:
+    while request is not None:
+      response = request.execute()
+      list_of_services.append(response.get("services", None))
+
+      request = serviceusage.services().list_next(
+          previous_request=request, previous_response=response)
+  except Exception:
+    logging.info("Failed to retrive services for project %s", project_id)
+    logging.info(sys.exc_info())
+
+  return list_of_services
