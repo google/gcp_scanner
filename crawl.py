@@ -31,6 +31,11 @@ from requests.auth import HTTPBasicAuth
 
 
 def infinite_defaultdict():
+  """Initalize infinite default.
+
+  Returns:
+    DefaultDict
+  """
   return collections.defaultdict(infinite_defaultdict)
 
 
@@ -46,7 +51,7 @@ def fetch_project_info(project_name: str,
     Project info object or None.
   """
   project_info = None
-  logging.info("Retrieving info about", project_name)
+  logging.info("Retrieving info about: %s", project_name)
 
   try:
     service = googleapiclient.discovery.build(
@@ -340,7 +345,7 @@ def get_bucket_names(project_name: str, credentials: Credentials,
   while request is not None:
     try:
       response = request.execute()
-    except googleapiclient.errors.HttpError as e:
+    except googleapiclient.errors.HttpError:
       logging.info("Failed to list buckets in the %s", project_name)
       logging.info(sys.exc_info())
       break
@@ -356,7 +361,7 @@ def get_bucket_names(project_name: str, credentials: Credentials,
           try:
             resp = req.execute()
             all_objects.extend(resp.get("items", []))
-          except googleapiclient.errors.HttpError as e:
+          except googleapiclient.errors.HttpError:
             logging.info("Failed to read the bucket %s", bucket["name"])
             logging.info(sys.exc_info())
             continue
@@ -420,7 +425,7 @@ def get_gke_clusters(
   """
 
   logging.info("Retrieving list of GKE clusters")
-  parent = "projects/{}/locations/-".format(project_name)
+  parent = "projects/{project_name}/locations/-"
   try:
     clusters = gke_client.list_clusters(parent=parent)
     return [(cluster.name, cluster.description) for cluster in clusters.clusters
@@ -447,7 +452,7 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
   project_name = project_name.replace(":", "/")
   regions = ["", "us.", "eu.", "asia."]
   for region in regions:
-    gcr_url = "https://%sgcr.io/v2/%s/tags/list" % (region, project_name)
+    gcr_url = "https://{region}gcr.io/v2/{project_name}/tags/list"
     try:
       res = requests.get(
           gcr_url, auth=HTTPBasicAuth("oauth2accesstoken", access_token))
@@ -581,7 +586,7 @@ def get_pubsub_subscriptions(project_id: str,
         "pubsub", "v1", credentials=credentials, cache_discovery=False)
 
     request = service.projects().subscriptions().list(
-        project="projects/{}".format(project_id))
+        project="projects/{project_id}")
     while request is not None:
       response = request.execute()
       for subscription in response.get("subscriptions", []):
@@ -944,7 +949,7 @@ def get_service_accounts(project_name: str,
   service = discovery.build(
       "iam", "v1", credentials=credentials, cache_discovery=False)
 
-  name = "projects/%s" % project_name
+  name = "projects/{project_name}"
 
   try:
     request = service.projects().serviceAccounts().list(name=name)

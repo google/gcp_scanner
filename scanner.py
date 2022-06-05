@@ -203,7 +203,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
     sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
-    with open(out_dir + '/%s.json' % sa_name, 'w') as outfile:
+    with open(out_dir + '/%s.json' % sa_name, 'w', encoding='utf-8') as outfile:
       outfile.write(sa_results_data)
 
 
@@ -252,7 +252,8 @@ def main():
       '--gcloud_profile_path',
       default=None,
       dest='gcloud_profile_path',
-      help='Path to directory with gcloud profile. Specify - to search for credentials in default gcloud config path'
+      help='Path to directory with gcloud profile. Specify -\
+ to search for credentials in default gcloud config path'
   )
   parser.add_argument(
       '-m',
@@ -269,7 +270,8 @@ def main():
       '-rt',
       default=None,
       dest='refresh_token_files',
-      help='A list of comma separated files with refresh_token, client_id, token_uri and client_secret'
+      help='A list of comma separated files with refresh_token, client_id,\
+token_uri and client_secret'
   )
   parser.add_argument(
       '-s', default=None, dest='key_name', help='Name of individual SA to scan')
@@ -293,10 +295,12 @@ def main():
       help='Set logging level (INFO, WARNING, ERROR)')
 
   args = parser.parse_args()
-  if not args.key_path and not args.gcloud_profile_path and not args.use_metadata \
-    and not args.access_token and not args.refresh_token_files:
+  if not args.key_path and not args.gcloud_profile_path \
+    and not args.use_metadata and not args.access_token\
+    and not args.refresh_token_files:
     print(
-        'Please select at least one option to begin scan -k/--sa_key_path,-g/--gcloud_profile_path, -m, -rt, -at'
+        'Please select at least one option to begin scan\
+ -k/--sa_key_path,-g/--gcloud_profile_path, -m, -rt, -at'
     )
 
   force_projects_list = list()

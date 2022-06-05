@@ -19,18 +19,18 @@
 
 import collections
 import datetime
+import json
 import logging
 import os
+import sqlite3
 import sys
 from typing import List, Dict, Tuple, Optional, Mapping
-import json
 
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from google.oauth2 import credentials
 from google.oauth2 import service_account
 from httplib2 import Credentials
 import requests
-import sqlite3
 
 # Permissions to request for Access Token
 scopes = "https://www.googleapis.com/auth/cloud-platform"
@@ -92,9 +92,12 @@ def get_creds_from_metadata() -> Tuple[Optional[str], Optional[Credentials]]:
 
   print("Retrieving access token from instance metadata")
 
-  token_url = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token"
-  scope_url = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/scopes"
-  email_url = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email"
+  token_url = "http://metadata.google.internal/computeMetadata/v1/instance/\
+service-accounts/default/token"
+  scope_url = "http://metadata.google.internal/computeMetadata/v1/instance/\
+service-accounts/default/scopes"
+  email_url = "http://metadata.google.internal/computeMetadata/v1/instance/\
+service-accounts/default/email"
   headers = {"Metadata-Flavor": "Google"}
   try:
     res = requests.get(token_url, headers=headers)
@@ -320,7 +323,7 @@ def creds_from_refresh_token(refresh_token_file):
     google.auth.service_account.Credentials: The constructed credentials.
   """
 
-  with open(refresh_token_file) as f:
+  with open(refresh_token_file, encoding="utf-8") as f:
     creds_dict = json.load(f)
 
   return credentials.Credentials(
