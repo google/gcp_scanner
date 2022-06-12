@@ -1,3 +1,5 @@
+![pytests](https://github.com/google/gcp_scanner/actions/workflows/python-app.yml/badge.svg)
+
 ### Disclaimer
 
 This project is not an official Google project. It is not supported by
@@ -6,8 +8,7 @@ merchantability, or fitness for a particular purpose.
 
 ### GCP Scanner
 
-This is a GCP resource scanner that can help determine what level of access certain credentials posses on GCP. The scanner is designed to help security engineers with
-evaluating impact of a certain VM/container compromise, GCP service account or OAuth2 token key leak.
+This is a GCP resource scanner that can help determine what level of access certain credentials posses on GCP. The scanner is designed to help security engineers with evaluating impact of a certain VM/container compromise, GCP service account or OAuth2 token key leak.
 
 Currently, the scanner supports the following GCP resources: GCE, GCS, GKE, AppEngine, CloudSQL, BigQuery, Spanner, PubSub, CloudFunctions, BigTable, CloudStore, KMS, Cloud Services. The scanner supports SA [impersonation](https://cloud.google.com/iam/docs/impersonating-service-accounts).
 
