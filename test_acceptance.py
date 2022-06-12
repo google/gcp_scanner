@@ -54,7 +54,8 @@ def check_obj_entry(res_dict, subojects_count, entry_name):
   assert obj is not None and len(obj) == subojects_count
 
 def validate_result():
-  with open("res/mshudrak@google.com.json", "r", encoding="utf-8") as f:
+  file_name = os.listdir('res/')[0]
+  with open(file_name, "r", encoding="utf-8") as f:
     res_data = json.load(f)
 
   # project
