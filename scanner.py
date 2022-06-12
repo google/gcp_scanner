@@ -374,3 +374,4 @@ token_uri and client_secret'
         sa_tuples.append((token_file_name, credentials, []))
 
   crawl_loop(sa_tuples, args.output, args.target_project, force_projects_list)
+  return 0

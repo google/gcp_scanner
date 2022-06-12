@@ -210,15 +210,18 @@ def get_static_ips(project_name: str,
   """
 
   logging.info("Retrieving Static IPs")
+
   ips_list = list()
   try:
-    request = service.globalAddresses().list(project=project_name)
+    request = service.addresses().aggregatedList(project=project_name)
     while request is not None:
       response = request.execute()
-      for address in response.get("items", []):
-        ips_list.append(address)
+      for name, addresses_scoped_list in response["items"].items():
+        if addresses_scoped_list.get("addresses", None) is None:
+          continue
+        ips_list.append({name: addresses_scoped_list})
 
-      request = service.globalAddresses().list_next(
+      request = service.addresses().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
     logging.info("Failed to get static IPs in the %s", project_name)
@@ -425,7 +428,7 @@ def get_gke_clusters(
   """
 
   logging.info("Retrieving list of GKE clusters")
-  parent = "projects/{project_name}/locations/-"
+  parent = f"projects/{project_name}/locations/-"
   try:
     clusters = gke_client.list_clusters(parent=parent)
     return [(cluster.name, cluster.description) for cluster in clusters.clusters
@@ -452,7 +455,7 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
   project_name = project_name.replace(":", "/")
   regions = ["", "us.", "eu.", "asia."]
   for region in regions:
-    gcr_url = "https://{region}gcr.io/v2/{project_name}/tags/list"
+    gcr_url = f"https://{region}gcr.io/v2/{project_name}/tags/list"
     try:
       res = requests.get(
           gcr_url, auth=HTTPBasicAuth("oauth2accesstoken", access_token))
@@ -535,7 +538,7 @@ def get_bq_tables(project_id: str, dataset_id: str,
 
 def get_bq(project_id: str,
            credentials: Credentials) -> Dict[str, List[Dict[str, Any]]]:
-  """Retrieve a list of SQL instances available in the project.
+  """Retrieve a list of BigQuery datasets available in the project.
 
   Args:
     project_id: A name of a project to query info about.
@@ -586,7 +589,7 @@ def get_pubsub_subscriptions(project_id: str,
         "pubsub", "v1", credentials=credentials, cache_discovery=False)
 
     request = service.projects().subscriptions().list(
-        project="projects/{project_id}")
+        project=f"projects/{project_id}")
     while request is not None:
       response = request.execute()
       for subscription in response.get("subscriptions", []):
@@ -949,7 +952,7 @@ def get_service_accounts(project_name: str,
   service = discovery.build(
       "iam", "v1", credentials=credentials, cache_discovery=False)
 
-  name = "projects/{project_name}"
+  name = f"projects/{project_name}"
 
   try:
     request = service.projects().serviceAccounts().list(name=name)
