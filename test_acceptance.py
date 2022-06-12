@@ -54,8 +54,8 @@ def check_obj_entry(res_dict, subojects_count, entry_name):
   assert obj is not None and len(obj) == subojects_count
 
 def validate_result():
-  file_name = os.listdir('res/')[0]
-  with open(file_name, "r", encoding="utf-8") as f:
+  file_name = os.listdir("res/")[0]
+  with open("res/" + file_name, "r", encoding="utf-8") as f:
     res_data = json.load(f)
 
   # project
@@ -102,7 +102,7 @@ def validate_result():
 
 def test_acceptance():
   os.mkdir("res")
-  testargs = ["__main__.py", "-m", "-p", "test-gcp-scanner", "-o", "res"]
+  testargs = ["__main__.py", "-m", "-f", "test-gcp-scanner", "-o", "res"]
   with unittest.mock.patch("sys.argv", testargs):
     assert scanner.main() == 0
     assert len(os.listdir("res/")) == RESULTS_JSON_COUNT # TODO: Fix it
