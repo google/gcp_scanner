@@ -1,0 +1,15 @@
+{
+  "test_bq_dataset1": [
+    {
+      "kind": "bigquery#table",
+      "id": "test-gcp-scanner:test_bq_dataset1.test-bq-table",
+      "tableReference": {
+        "projectId": "test-gcp-scanner",
+        "datasetId": "test_bq_dataset1",
+        "tableId": "test-bq-table"
+      },
+      "type": "TABLE",
+      "creationTime": "1654571278700"
+    }
+  ]
+}

@@ -1,0 +1,2135 @@
+[
+  [
+    {
+      "name": "projects/413204024550/services/appengine.googleapis.com",
+      "config": {
+        "name": "appengine.googleapis.com",
+        "title": "App Engine Admin API",
+        "documentation": {
+          "summary": "Provisions and manages developers' App Engine applications."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "serviceruntime.googleapis.com/api",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_version"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_method"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/consumer_project"
+              },
+              {
+                "key": "cloud.googleapis.com/project"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/consumer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/producer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/consumer_resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/api",
+              "metrics": [
+                "serviceruntime.googleapis.com/api/consumer/request_count",
+                "serviceruntime.googleapis.com/api/consumer/error_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_used_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_refund_count",
+                "serviceruntime.googleapis.com/api/consumer/total_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_overhead_latencies",
+                "serviceruntime.googleapis.com/api/consumer/backend_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_sizes",
+                "serviceruntime.googleapis.com/api/consumer/response_sizes",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user_country",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_referer",
+                "serviceruntime.googleapis.com/quota/used",
+                "serviceruntime.googleapis.com/quota/limit",
+                "serviceruntime.googleapis.com/quota/exceeded",
+                "serviceruntime.googleapis.com/allocation/consumer/quota_used_count"
+              ]
+            },
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/consumer_quota",
+              "metrics": [
+                "serviceruntime.googleapis.com/quota/rate/consumer/used_count",
+                "serviceruntime.googleapis.com/quota/rate/consumer/refund_count",
+                "serviceruntime.googleapis.com/quota/allocation/consumer/usage",
+                "serviceruntime.googleapis.com/quota/consumer/limit",
+                "serviceruntime.googleapis.com/quota/consumer/exceeded"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/autoscaling.googleapis.com",
+      "config": {
+        "name": "autoscaling.googleapis.com",
+        "title": "Cloud Autoscaling API",
+        "documentation": {
+          "summary": "An API for the Cloud Autoscaling for consuming autoscaling signals.\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/bigquery.googleapis.com",
+      "config": {
+        "name": "bigquery.googleapis.com",
+        "title": "BigQuery API",
+        "documentation": {
+          "summary": "A data platform for customers to create, manage, share and query data."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/bigquerymigration.googleapis.com",
+      "config": {
+        "name": "bigquerymigration.googleapis.com",
+        "title": "BigQuery Migration API",
+        "documentation": {
+          "summary": "The migration service, exposing apis for migration jobs operations, and agent management."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/bigquerystorage.googleapis.com",
+      "config": {
+        "name": "bigquerystorage.googleapis.com",
+        "title": "BigQuery Storage API",
+        "documentation": {},
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/bigtable.googleapis.com",
+      "config": {
+        "name": "bigtable.googleapis.com",
+        "title": "Cloud Bigtable API",
+        "documentation": {
+          "summary": "API for reading and writing the contents of Bigtables associated with a cloud project."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/bigtableadmin.googleapis.com",
+      "config": {
+        "name": "bigtableadmin.googleapis.com",
+        "title": "Cloud Bigtable Admin API",
+        "documentation": {
+          "summary": "Administer your Cloud Bigtable tables and instances."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/cloudapis.googleapis.com",
+      "config": {
+        "name": "cloudapis.googleapis.com",
+        "title": "Google Cloud APIs",
+        "documentation": {
+          "summary": "This is a meta service for Google Cloud APIs for convenience. Enabling this service enables all commonly used Google Cloud APIs for the project. By default, it is enabled for all projects created through Google Cloud Console and Google Cloud SDK, and should be manually enabled for all other projects that intend to use Google Cloud APIs. Note: disabling this service has no effect on other services.\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/cloudbuild.googleapis.com",
+      "config": {
+        "name": "cloudbuild.googleapis.com",
+        "title": "Cloud Build API",
+        "documentation": {
+          "summary": "Creates and manages builds on Google Cloud Platform."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud",
+            "serviceusage.googleapis.com/billing-enabled"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/clouddebugger.googleapis.com",
+      "config": {
+        "name": "clouddebugger.googleapis.com",
+        "title": "Cloud Debugger API",
+        "documentation": {
+          "summary": "Examines the call stack and variables of a running application without stopping or slowing it down.\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/cloudfunctions.googleapis.com",
+      "config": {
+        "name": "cloudfunctions.googleapis.com",
+        "title": "Cloud Functions API",
+        "documentation": {
+          "summary": "Manages lightweight user-provided functions executed in response to events."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "cloudfunctions.googleapis.com/function",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/project"
+              },
+              {
+                "key": "cloudfunctions.googleapis.com/function_name"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/api",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_version"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_method"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/consumer_project"
+              },
+              {
+                "key": "cloud.googleapis.com/project"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/consumer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/producer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/consumer_resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "cloudfunctions.googleapis.com/function",
+              "metrics": [
+                "cloudfunctions.googleapis.com/function/execution_times",
+                "cloudfunctions.googleapis.com/function/execution_count",
+                "cloudfunctions.googleapis.com/function/user_memory_bytes",
+                "cloudfunctions.googleapis.com/function/network_egress",
+                "cloudfunctions.googleapis.com/function/active_instances",
+                "cloudfunctions.googleapis.com/function/execution_delays",
+                "cloudfunctions.googleapis.com/function/execution_count_internal",
+                "cloudfunctions.googleapis.com/function/supervisor_gcu_times",
+                "cloudfunctions.googleapis.com/function/supervisor_memory_bytes",
+                "cloudfunctions.googleapis.com/function/user_gcu_times",
+                "cloudfunctions.googleapis.com/function/supervisor_chemist_rpc_error_count",
+                "cloudfunctions.googleapis.com/function/supervisor_controlled_death_count",
+                "cloudfunctions.googleapis.com/function/supervisor_report_count",
+                "cloudfunctions.googleapis.com/function/supervisor_report_latencies",
+                "cloudfunctions.googleapis.com/function/supervisor_phase_latencies"
+              ]
+            },
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/api",
+              "metrics": [
+                "serviceruntime.googleapis.com/api/consumer/request_count",
+                "serviceruntime.googleapis.com/api/consumer/error_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_used_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_refund_count",
+                "serviceruntime.googleapis.com/api/consumer/total_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_overhead_latencies",
+                "serviceruntime.googleapis.com/api/consumer/backend_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_sizes",
+                "serviceruntime.googleapis.com/api/consumer/response_sizes",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user_country",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_referer",
+                "serviceruntime.googleapis.com/quota/used",
+                "serviceruntime.googleapis.com/quota/limit",
+                "serviceruntime.googleapis.com/quota/exceeded",
+                "serviceruntime.googleapis.com/allocation/consumer/quota_used_count"
+              ]
+            },
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/consumer_quota",
+              "metrics": [
+                "serviceruntime.googleapis.com/quota/rate/consumer/used_count",
+                "serviceruntime.googleapis.com/quota/rate/consumer/refund_count",
+                "serviceruntime.googleapis.com/quota/allocation/consumer/usage",
+                "serviceruntime.googleapis.com/quota/consumer/limit",
+                "serviceruntime.googleapis.com/quota/consumer/exceeded"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/cloudkms.googleapis.com",
+      "config": {
+        "name": "cloudkms.googleapis.com",
+        "title": "Cloud Key Management Service (KMS) API",
+        "documentation": {
+          "summary": "Manages keys and performs cryptographic operations in a central cloud service, for direct use by other cloud resources and applications.\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "cloudkms.googleapis.com/Project",
+            "displayName": "KMS project",
+            "description": "KMS project.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP project associated with this resource."
+              },
+              {
+                "key": "location",
+                "description": "The location of the resource."
+              }
+            ],
+            "launchStage": "GA"
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "cloudkms.googleapis.com/Project",
+              "metrics": [
+                "cloudkms.googleapis.com/ekm/external/request_count",
+                "cloudkms.googleapis.com/ekm/external/request_latencies",
+                "cloudkms.googleapis.com/external_kms_multiregion_requests",
+                "cloudkms.googleapis.com/hsm_multiregion_asymmetric_requests",
+                "cloudkms.googleapis.com/hsm_multiregion_symmetric_requests",
+                "cloudkms.googleapis.com/peak_qps",
+                "cloudkms.googleapis.com/quota/external_kms_multiregion_requests/exceeded",
+                "cloudkms.googleapis.com/quota/external_kms_multiregion_requests/usage",
+                "cloudkms.googleapis.com/quota/hsm_multiregion_asymmetric_requests/exceeded",
+                "cloudkms.googleapis.com/quota/hsm_multiregion_asymmetric_requests/usage",
+                "cloudkms.googleapis.com/quota/hsm_multiregion_symmetric_requests/exceeded",
+                "cloudkms.googleapis.com/quota/hsm_multiregion_symmetric_requests/usage",
+                "cloudkms.googleapis.com/quota/software_multiregion_asymmetric_requests/exceeded",
+                "cloudkms.googleapis.com/quota/software_multiregion_asymmetric_requests/usage",
+                "cloudkms.googleapis.com/quota/software_multiregion_symmetric_requests/exceeded",
+                "cloudkms.googleapis.com/quota/software_multiregion_symmetric_requests/usage"
+              ]
+            },
+            {
+              "monitoredResource": "cloudkms.googleapis.com/Project",
+              "metrics": [
+                "cloudkms.googleapis.com/quota/external_kms_multiregion_requests/limit",
+                "cloudkms.googleapis.com/quota/hsm_multiregion_asymmetric_requests/limit",
+                "cloudkms.googleapis.com/quota/hsm_multiregion_symmetric_requests/limit",
+                "cloudkms.googleapis.com/quota/software_multiregion_asymmetric_requests/limit",
+                "cloudkms.googleapis.com/quota/software_multiregion_symmetric_requests/limit"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/cloudresourcemanager.googleapis.com",
+      "config": {
+        "name": "cloudresourcemanager.googleapis.com",
+        "title": "Cloud Resource Manager API",
+        "documentation": {
+          "summary": "Creates, reads, and updates metadata for Google Cloud Platform resource containers."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "serviceruntime.googleapis.com/api",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_version"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_method"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/consumer_project"
+              },
+              {
+                "key": "cloud.googleapis.com/project"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/consumer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/producer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/consumer_resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/api",
+              "metrics": [
+                "serviceruntime.googleapis.com/api/consumer/quota_used_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_refund_count",
+                "serviceruntime.googleapis.com/quota/used",
+                "serviceruntime.googleapis.com/quota/limit",
+                "serviceruntime.googleapis.com/quota/exceeded",
+                "serviceruntime.googleapis.com/allocation/consumer/quota_used_count",
+                "serviceruntime.googleapis.com/api/consumer/request_count",
+                "serviceruntime.googleapis.com/api/consumer/error_count",
+                "serviceruntime.googleapis.com/api/consumer/total_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_overhead_latencies",
+                "serviceruntime.googleapis.com/api/consumer/backend_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_sizes",
+                "serviceruntime.googleapis.com/api/consumer/response_sizes",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user_country",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_referer"
+              ]
+            },
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/consumer_quota",
+              "metrics": [
+                "serviceruntime.googleapis.com/quota/rate/consumer/used_count",
+                "serviceruntime.googleapis.com/quota/rate/consumer/refund_count",
+                "serviceruntime.googleapis.com/quota/allocation/consumer/usage",
+                "serviceruntime.googleapis.com/quota/consumer/limit",
+                "serviceruntime.googleapis.com/quota/consumer/exceeded"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/cloudtrace.googleapis.com",
+      "config": {
+        "name": "cloudtrace.googleapis.com",
+        "title": "Cloud Trace API",
+        "documentation": {
+          "summary": "Sends application trace data to Cloud Trace for viewing. Trace data is collected for all App Engine applications by default. Trace data from other applications can be provided using this API. This library is used to interact with the Cloud Trace API directly. If you are looking to instrument your application for Cloud Trace, we recommend using OpenTelemetry.\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "cloudtrace.googleapis.com/charged_project",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/project"
+              },
+              {
+                "key": "monitoring.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              }
+            ]
+          },
+          {
+            "type": "cloudtrace.googleapis.com/ChargedProject",
+            "displayName": "Cloud trace target",
+            "description": "A cloud trace specialization target schema of cloud.ChargedProject.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The monitored resource container. Could be project, workspace, etc."
+              },
+              {
+                "key": "location",
+                "description": "The service-specific notion of location."
+              },
+              {
+                "key": "api_service",
+                "description": "The name of the API service with which the data is associated (e.g.,'cloudtrace.googleapis.com')."
+              }
+            ],
+            "launchStage": "ALPHA"
+          },
+          {
+            "type": "cloudtrace.googleapis.com/CloudtraceProject",
+            "displayName": "Cloud Trace",
+            "description": "Cloud trace resource, e.g. project.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP container associated with the resource."
+              },
+              {
+                "key": "location",
+                "description": "The location that the Cloud Trace service recording the metrics is running."
+              }
+            ],
+            "launchStage": "EARLY_ACCESS"
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "cloudtrace.googleapis.com/ChargedProject",
+              "metrics": [
+                "cloudtrace.googleapis.com/billing/ingested_spans"
+              ]
+            },
+            {
+              "monitoredResource": "cloudtrace.googleapis.com/charged_project",
+              "metrics": [
+                "cloudtrace.googleapis.com/billing/retrieved_spans"
+              ]
+            },
+            {
+              "monitoredResource": "cloudtrace.googleapis.com/CloudtraceProject",
+              "metrics": [
+                "cloudtrace.googleapis.com/internal/plugin_server_span_count",
+                "cloudtrace.googleapis.com/internal/reader_root_query_count",
+                "cloudtrace.googleapis.com/internal/reader_root_query_latencies",
+                "cloudtrace.googleapis.com/bigquery_export/exported_span_count"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/compute.googleapis.com",
+      "config": {
+        "name": "compute.googleapis.com",
+        "title": "Compute Engine API",
+        "documentation": {
+          "summary": "Creates and runs virtual machines on Google Cloud Platform.\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud",
+            "serviceusage.googleapis.com/billing-enabled"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "compute.googleapis.com/VpcNetwork",
+            "displayName": "VPC Network",
+            "description": "VPC Network.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP container (i.e. project) associated with the VPC Network."
+              },
+              {
+                "key": "location",
+                "description": "Location of the VPC Network, global always."
+              },
+              {
+                "key": "network_id",
+                "description": "VPC Network resource ID."
+              }
+            ],
+            "launchStage": "GA"
+          },
+          {
+            "type": "compute.googleapis.com/Location",
+            "displayName": "Compute Location",
+            "description": "A location in the Compute API.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP container (i.e. project) associated with the Compute Location."
+              },
+              {
+                "key": "location",
+                "description": "Location of resource."
+              }
+            ],
+            "launchStage": "ALPHA"
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "compute.googleapis.com/VpcNetwork",
+              "metrics": [
+                "compute.googleapis.com/instances_per_vpc_network",
+                "compute.googleapis.com/internal_lb_forwarding_rules_per_vpc_network",
+                "compute.googleapis.com/internal_managed_forwarding_rules_per_vpc_network",
+                "compute.googleapis.com/internal_protocol_forwarding_rules_per_vpc_network",
+                "compute.googleapis.com/ip_aliases_per_vpc_network",
+                "compute.googleapis.com/psc_google_apis_forwarding_rules_per_vpc_network",
+                "compute.googleapis.com/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network",
+                "compute.googleapis.com/quota/instances_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/ip_aliases_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/psc_google_apis_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/exceeded",
+                "compute.googleapis.com/quota/quota/instances_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/quota/internal_load_balancer_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/quota/internal_protocol_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/quota/ip_aliases_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/quota/psc_google_apis_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/quota/subnet_ranges_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/exceeded",
+                "compute.googleapis.com/subnet_ranges_per_vpc_network"
+              ]
+            },
+            {
+              "monitoredResource": "compute.googleapis.com/VpcNetwork",
+              "metrics": [
+                "compute.googleapis.com/quota/instances_per_vpc_network/limit",
+                "compute.googleapis.com/quota/instances_per_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/ip_aliases_per_vpc_network/limit",
+                "compute.googleapis.com/quota/ip_aliases_per_vpc_network/usage",
+                "compute.googleapis.com/quota/psc_google_apis_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/psc_google_apis_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/limit",
+                "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/usage",
+                "compute.googleapis.com/quota/quota/instances_per_vpc_network/limit",
+                "compute.googleapis.com/quota/quota/instances_per_vpc_network/usage",
+                "compute.googleapis.com/quota/quota/internal_load_balancer_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/quota/internal_load_balancer_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/quota/internal_protocol_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/quota/internal_protocol_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/quota/ip_aliases_per_vpc_network/limit",
+                "compute.googleapis.com/quota/quota/ip_aliases_per_vpc_network/usage",
+                "compute.googleapis.com/quota/quota/psc_google_apis_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/quota/psc_google_apis_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/quota/subnet_ranges_per_vpc_network/limit",
+                "compute.googleapis.com/quota/quota/subnet_ranges_per_vpc_network/usage",
+                "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/limit",
+                "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/usage"
+              ]
+            },
+            {
+              "monitoredResource": "compute.googleapis.com/Location",
+              "metrics": [
+                "compute.googleapis.com/quota/local_ssd_total_storage_per_vm_family/exceeded"
+              ]
+            },
+            {
+              "monitoredResource": "compute.googleapis.com/Location",
+              "metrics": [
+                "compute.googleapis.com/quota/local_ssd_total_storage_per_vm_family/limit",
+                "compute.googleapis.com/quota/local_ssd_total_storage_per_vm_family/usage"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/container.googleapis.com",
+      "config": {
+        "name": "container.googleapis.com",
+        "title": "Kubernetes Engine API",
+        "documentation": {
+          "summary": "Builds and manages container-based applications, powered by the open source Kubernetes technology."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud",
+            "serviceusage.googleapis.com/billing-enabled"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/containerfilesystem.googleapis.com",
+      "config": {
+        "name": "containerfilesystem.googleapis.com",
+        "title": "Container File System API",
+        "documentation": {},
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/containerregistry.googleapis.com",
+      "config": {
+        "name": "containerregistry.googleapis.com",
+        "title": "Container Registry API",
+        "documentation": {
+          "summary": "Google Container Registry provides secure, private Docker image storage on Google Cloud Platform.  Our API follows the Docker Registry API specification, so we are fully compatible with the Docker CLI client, as well as standard tooling using the Docker Registry API."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud",
+            "serviceusage.googleapis.com/billing-enabled"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/datastore.googleapis.com",
+      "config": {
+        "name": "datastore.googleapis.com",
+        "title": "Cloud Datastore API",
+        "documentation": {
+          "summary": "Accesses the schemaless NoSQL database to provide fully managed, robust, scalable storage for your application.\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/dns.googleapis.com",
+      "config": {
+        "name": "dns.googleapis.com",
+        "title": "Cloud DNS API",
+        "documentation": {},
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud",
+            "serviceusage.googleapis.com/billing-enabled"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/file.googleapis.com",
+      "config": {
+        "name": "file.googleapis.com",
+        "title": "Cloud Filestore API",
+        "documentation": {
+          "summary": "The Cloud Filestore API is used for creating and managing cloud file servers."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "filestore_instance",
+            "displayName": "Filestore Instance",
+            "description": "A Filestore instance.",
+            "labels": [
+              {
+                "key": "project_id",
+                "description": "The identifier of the GCP project associated with this resource, such as \"my-project\"."
+              },
+              {
+                "key": "location",
+                "description": "The physical location of the instance."
+              },
+              {
+                "key": "instance_name",
+                "description": "The name for the Filestore instance."
+              }
+            ],
+            "launchStage": "GA"
+          },
+          {
+            "type": "saas_instance",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/project"
+              },
+              {
+                "key": "saasaccelerator.googleapis.com/service_name"
+              },
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "saasaccelerator.googleapis.com/consumer_project"
+              },
+              {
+                "key": "saasaccelerator.googleapis.com/instance_id"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              }
+            ]
+          },
+          {
+            "type": "saas_instance_node",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/project"
+              },
+              {
+                "key": "saasaccelerator.googleapis.com/service_name"
+              },
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "saasaccelerator.googleapis.com/consumer_project"
+              },
+              {
+                "key": "saasaccelerator.googleapis.com/instance_id"
+              },
+              {
+                "key": "saasaccelerator.googleapis.com/node_id"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              }
+            ]
+          },
+          {
+            "type": "file.googleapis.com/InstanceNode",
+            "displayName": "InstanceNode",
+            "description": "InstanceNode resource represents a VM running as part of a Filestore instance.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP container associated with the resource."
+              },
+              {
+                "key": "service_name",
+                "description": "The name of the SaaS Lifecycle Management service. Format is projects/{project}/services/{service}."
+              },
+              {
+                "key": "location",
+                "description": "GCP location: zone, region, multi-region or other service-specific container."
+              },
+              {
+                "key": "consumer_project_number",
+                "description": "The consumer project number."
+              },
+              {
+                "key": "instance_id",
+                "description": "The name (short) of the instance set by the consumer."
+              },
+              {
+                "key": "instance_uid",
+                "description": "Globally unique identifier of the instance."
+              },
+              {
+                "key": "node_id",
+                "description": "A string used to uniquely distinguish a node within a service instance."
+              }
+            ],
+            "launchStage": "ALPHA"
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "filestore_instance",
+              "metrics": [
+                "file.googleapis.com/nfs/server/procedure_call_count",
+                "file.googleapis.com/nfs/server/free_bytes",
+                "file.googleapis.com/nfs/server/used_bytes",
+                "file.googleapis.com/nfs/server/free_bytes_percent",
+                "file.googleapis.com/nfs/server/used_bytes_percent",
+                "file.googleapis.com/nfs/server/read_bytes_count",
+                "file.googleapis.com/nfs/server/write_bytes_count",
+                "file.googleapis.com/nfs/server/read_ops_count",
+                "file.googleapis.com/nfs/server/write_ops_count",
+                "file.googleapis.com/nfs/server/read_milliseconds_count",
+                "file.googleapis.com/nfs/server/write_milliseconds_count",
+                "file.googleapis.com/nfs/server/file_handles",
+                "file.googleapis.com/nfs/server/io",
+                "file.googleapis.com/nfs/server/network",
+                "file.googleapis.com/nfs/server/read_ahead_cache",
+                "file.googleapis.com/nfs/server/reply_cache",
+                "file.googleapis.com/nfs/server/rpc",
+                "file.googleapis.com/nfs/server/threads",
+                "file.googleapis.com/nfs/server/locks",
+                "file.googleapis.com/nfs/server/read_latency",
+                "file.googleapis.com/nfs/server/average_read_latency",
+                "file.googleapis.com/nfs/server/write_latency",
+                "file.googleapis.com/nfs/server/average_write_latency",
+                "file.googleapis.com/nfs/server/metadata_ops_count",
+                "file.googleapis.com/highscale/active_connections",
+                "file.googleapis.com/highscale/hosts_up",
+                "file.googleapis.com/highscale/hosts_total",
+                "file.googleapis.com/nfs/server/metadata_latency",
+                "file.googleapis.com/highscale/devices_total",
+                "file.googleapis.com/highscale/devices_up",
+                "file.googleapis.com/nfs/server/connections"
+              ]
+            },
+            {
+              "monitoredResource": "saas_instance",
+              "metrics": [
+                "file.googleapis.com/highscale/snapshot/last_valid_backup_creation_timestamp"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/iam.googleapis.com",
+      "config": {
+        "name": "iam.googleapis.com",
+        "title": "Identity and Access Management (IAM) API",
+        "documentation": {
+          "summary": "Manages identity and access control for Google Cloud Platform resources, including the creation of service accounts, which you can use to authenticate to Google and make API calls.\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "iam_service_account",
+            "displayName": "IAM Service Account",
+            "description": "An IAM Service Account.",
+            "labels": [
+              {
+                "key": "project_id",
+                "description": "The identifier of the GCP project associated with this resource, such as 'my-project'."
+              },
+              {
+                "key": "unique_id",
+                "description": "The unique_id of the service account."
+              }
+            ],
+            "launchStage": "GA"
+          },
+          {
+            "type": "iam.googleapis.com/WorkloadIdentityPoolProvider",
+            "displayName": "Workload Identity Pool Provider",
+            "description": "A workload identity pool provider.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP project associated with this resource, such as 'my-project'."
+              },
+              {
+                "key": "location",
+                "description": "The location of the resource."
+              },
+              {
+                "key": "pool_id",
+                "description": "The ID of the provider's workload identity pool parent resource."
+              },
+              {
+                "key": "provider_id",
+                "description": "The ID of the workload identity pool provider resource."
+              }
+            ],
+            "launchStage": "BETA"
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "iam.googleapis.com/WorkloadIdentityPoolProvider",
+              "metrics": [
+                "iam.googleapis.com/workload_identity_federation/count",
+                "iam.googleapis.com/workload_identity_federation/key_usage_count"
+              ]
+            },
+            {
+              "monitoredResource": "iam_service_account",
+              "metrics": [
+                "iam.googleapis.com/service_account/authn_events_count",
+                "iam.googleapis.com/service_account/key/authn_events_count",
+                "iam.googleapis.com/service_account/authn_events_count_preprod",
+                "iam.googleapis.com/service_account/key/authn_events_count_preprod"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/iamcredentials.googleapis.com",
+      "config": {
+        "name": "iamcredentials.googleapis.com",
+        "title": "IAM Service Account Credentials API",
+        "documentation": {
+          "summary": "Creates short-lived credentials for impersonating IAM service accounts. To enable this API, you must enable the IAM API (iam.googleapis.com).\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/logging.googleapis.com",
+      "config": {
+        "name": "logging.googleapis.com",
+        "title": "Cloud Logging API",
+        "documentation": {
+          "summary": "Writes log entries and manages your Cloud Logging configuration."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "logging.googleapis.com/ChargedProject",
+            "displayName": "Cloud logging target",
+            "description": "A cloud logging specialization target schema of cloud.ChargedProject.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The monitored resource container. Could be project, workspace, etc."
+              },
+              {
+                "key": "location",
+                "description": "The service-specific notion of location."
+              },
+              {
+                "key": "service",
+                "description": "The name of the API service with which the data is associated (e.g.,'logging.googleapis.com')."
+              }
+            ],
+            "launchStage": "ALPHA"
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "logging.googleapis.com/ChargedProject",
+              "metrics": [
+                "logging.googleapis.com/billing/ingested_bytes"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/monitoring.googleapis.com",
+      "config": {
+        "name": "monitoring.googleapis.com",
+        "title": "Cloud Monitoring API",
+        "documentation": {
+          "summary": "Manages your Cloud Monitoring data and configurations.\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "monitoring.googleapis.com/ChargedProject",
+            "displayName": "Cloud monitoring target",
+            "description": "A cloud monitoring specialization target schema of cloud.ChargedProject.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The monitored resource container. Could be project, workspace, etc."
+              },
+              {
+                "key": "location",
+                "description": "The service-specific notion of location."
+              },
+              {
+                "key": "service",
+                "description": "The name of the API service with which the data is associated (e.g.,'monitoring.googleapis.com')."
+              }
+            ],
+            "launchStage": "ALPHA"
+          },
+          {
+            "type": "monitoring.googleapis.com/MetricStatistics",
+            "displayName": "Metric Statistics",
+            "description": "Information about a user-written metric in Cloud Monitoring.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP project to which the metric is written, such as 'my-project'."
+              },
+              {
+                "key": "location",
+                "description": "The cloud region where the metric was received."
+              },
+              {
+                "key": "metric_type",
+                "description": "The metric type."
+              }
+            ],
+            "launchStage": "BETA"
+          },
+          {
+            "type": "monitoring.googleapis.com/MetricIngestionAttribution",
+            "displayName": "Metric Ingestion Attribution",
+            "description": "Attribution for metric ingestion.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP project to which the metric is written, such as 'my-project'."
+              },
+              {
+                "key": "location",
+                "description": "The cloud region where the metric was received."
+              },
+              {
+                "key": "attribution_dimension",
+                "description": "The dimension used for attribution reporting. It is not recommended that aggregations are performed across dimensions because a single metric point can be recorded with multiple dimensions which could cause double counting. Currently only \"namespace\" and \"cluster\" are supported."
+              },
+              {
+                "key": "attribution_id",
+                "description": "The attribution id of the source of the metric write."
+              }
+            ],
+            "launchStage": "BETA"
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "monitoring.googleapis.com/ChargedProject",
+              "metrics": [
+                "monitoring.googleapis.com/billing/bytes_ingested",
+                "monitoring.googleapis.com/billing/samples_ingested"
+              ]
+            },
+            {
+              "monitoredResource": "monitoring.googleapis.com/MetricStatistics",
+              "metrics": [
+                "monitoring.googleapis.com/collection/write_request_count",
+                "monitoring.googleapis.com/collection/write_request_point_count"
+              ]
+            },
+            {
+              "monitoredResource": "monitoring.googleapis.com/MetricIngestionAttribution",
+              "metrics": [
+                "monitoring.googleapis.com/collection/attribution/sample_count",
+                "monitoring.googleapis.com/collection/attribution/write_sample_count"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/oslogin.googleapis.com",
+      "config": {
+        "name": "oslogin.googleapis.com",
+        "title": "Cloud OS Login API",
+        "documentation": {
+          "summary": "You can use OS Login to manage access to your VM instances using IAM roles."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/pubsub.googleapis.com",
+      "config": {
+        "name": "pubsub.googleapis.com",
+        "title": "Cloud Pub/Sub API",
+        "documentation": {
+          "summary": "Provides reliable, many-to-many, asynchronous messaging between applications.\n"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/servicemanagement.googleapis.com",
+      "config": {
+        "name": "servicemanagement.googleapis.com",
+        "title": "Service Management API",
+        "documentation": {
+          "summary": "Google Service Management allows service producers to publish their services on Google Cloud Platform so that they can be discovered and used by service consumers."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/serviceusage.googleapis.com",
+      "config": {
+        "name": "serviceusage.googleapis.com",
+        "title": "Service Usage API",
+        "documentation": {
+          "summary": "Enables services that service consumers want to use on Google Cloud Platform, lists the available or enabled services, or disables services that service consumers no longer use."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/source.googleapis.com",
+      "config": {
+        "name": "source.googleapis.com",
+        "title": "Legacy Cloud Source Repositories API",
+        "documentation": {
+          "summary": "Access source code repositories hosted by Google."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "serviceruntime.googleapis.com/api",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_version"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_method"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/consumer_project"
+              },
+              {
+                "key": "cloud.googleapis.com/project"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/consumer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/producer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/consumer_resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/api",
+              "metrics": [
+                "serviceruntime.googleapis.com/api/consumer/request_count",
+                "serviceruntime.googleapis.com/api/consumer/error_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_used_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_refund_count",
+                "serviceruntime.googleapis.com/api/consumer/total_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_overhead_latencies",
+                "serviceruntime.googleapis.com/api/consumer/backend_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_sizes",
+                "serviceruntime.googleapis.com/api/consumer/response_sizes",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user_country",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_referer",
+                "serviceruntime.googleapis.com/quota/used",
+                "serviceruntime.googleapis.com/quota/limit",
+                "serviceruntime.googleapis.com/quota/exceeded",
+                "serviceruntime.googleapis.com/allocation/consumer/quota_used_count"
+              ]
+            },
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/consumer_quota",
+              "metrics": [
+                "serviceruntime.googleapis.com/quota/rate/consumer/used_count",
+                "serviceruntime.googleapis.com/quota/rate/consumer/refund_count",
+                "serviceruntime.googleapis.com/quota/allocation/consumer/usage",
+                "serviceruntime.googleapis.com/quota/consumer/limit",
+                "serviceruntime.googleapis.com/quota/consumer/exceeded"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/spanner.googleapis.com",
+      "config": {
+        "name": "spanner.googleapis.com",
+        "title": "Cloud Spanner API",
+        "documentation": {
+          "summary": "Cloud Spanner is a managed, mission-critical, globally consistent and scalable relational database service."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud",
+            "serviceusage.googleapis.com/billing-enabled"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/sql-component.googleapis.com",
+      "config": {
+        "name": "sql-component.googleapis.com",
+        "title": "Cloud SQL",
+        "documentation": {
+          "summary": "Google Cloud SQL is a hosted and fully managed relational database service\n    on Google's infrastructure."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "serviceruntime.googleapis.com/api",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_version"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_method"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/consumer_project"
+              },
+              {
+                "key": "cloud.googleapis.com/project"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/consumer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/producer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/consumer_resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/api",
+              "metrics": [
+                "serviceruntime.googleapis.com/api/consumer/request_count",
+                "serviceruntime.googleapis.com/api/consumer/error_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_used_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_refund_count",
+                "serviceruntime.googleapis.com/api/consumer/total_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_overhead_latencies",
+                "serviceruntime.googleapis.com/api/consumer/backend_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_sizes",
+                "serviceruntime.googleapis.com/api/consumer/response_sizes",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user_country",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_referer",
+                "serviceruntime.googleapis.com/quota/used",
+                "serviceruntime.googleapis.com/quota/limit",
+                "serviceruntime.googleapis.com/quota/exceeded",
+                "serviceruntime.googleapis.com/allocation/consumer/quota_used_count"
+              ]
+            },
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/consumer_quota",
+              "metrics": [
+                "serviceruntime.googleapis.com/quota/rate/consumer/used_count",
+                "serviceruntime.googleapis.com/quota/rate/consumer/refund_count",
+                "serviceruntime.googleapis.com/quota/allocation/consumer/usage",
+                "serviceruntime.googleapis.com/quota/consumer/limit",
+                "serviceruntime.googleapis.com/quota/consumer/exceeded"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/sqladmin.googleapis.com",
+      "config": {
+        "name": "sqladmin.googleapis.com",
+        "title": "Cloud SQL Admin API",
+        "documentation": {
+          "summary": "API for Cloud SQL database instance management"
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/storage-api.googleapis.com",
+      "config": {
+        "name": "storage-api.googleapis.com",
+        "title": "Google Cloud Storage JSON API",
+        "documentation": {
+          "summary": "Lets you store and retrieve potentially-large, immutable data objects."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/storage-component.googleapis.com",
+      "config": {
+        "name": "storage-component.googleapis.com",
+        "title": "Cloud Storage",
+        "documentation": {
+          "summary": "Google Cloud Storage is a RESTful service for storing and accessing your data on Google's\n    infrastructure."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "serviceruntime.googleapis.com/api",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_version"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/api_method"
+              },
+              {
+                "key": "serviceruntime.googleapis.com/consumer_project"
+              },
+              {
+                "key": "cloud.googleapis.com/project"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/consumer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          },
+          {
+            "type": "serviceruntime.googleapis.com/producer_quota",
+            "labels": [
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/service"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_id"
+              },
+              {
+                "key": "cloud.googleapis.com/resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/consumer_resource_node"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_metric"
+              },
+              {
+                "key": "cloud.googleapis.com/quota_location"
+              }
+            ]
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/api",
+              "metrics": [
+                "serviceruntime.googleapis.com/api/consumer/request_count",
+                "serviceruntime.googleapis.com/api/consumer/error_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_used_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_refund_count",
+                "serviceruntime.googleapis.com/api/consumer/total_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_overhead_latencies",
+                "serviceruntime.googleapis.com/api/consumer/backend_latencies",
+                "serviceruntime.googleapis.com/api/consumer/request_sizes",
+                "serviceruntime.googleapis.com/api/consumer/response_sizes",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user_country",
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_referer",
+                "serviceruntime.googleapis.com/quota/used",
+                "serviceruntime.googleapis.com/quota/limit",
+                "serviceruntime.googleapis.com/quota/exceeded",
+                "serviceruntime.googleapis.com/allocation/consumer/quota_used_count"
+              ]
+            },
+            {
+              "monitoredResource": "serviceruntime.googleapis.com/consumer_quota",
+              "metrics": [
+                "serviceruntime.googleapis.com/quota/rate/consumer/used_count",
+                "serviceruntime.googleapis.com/quota/rate/consumer/refund_count",
+                "serviceruntime.googleapis.com/quota/allocation/consumer/usage",
+                "serviceruntime.googleapis.com/quota/consumer/limit",
+                "serviceruntime.googleapis.com/quota/consumer/exceeded"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
+      "name": "projects/413204024550/services/storage.googleapis.com",
+      "config": {
+        "name": "storage.googleapis.com",
+        "title": "Cloud Storage API",
+        "documentation": {
+          "summary": "Lets you store and retrieve potentially-large, immutable data objects."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoredResources": [
+          {
+            "type": "storage.googleapis.com/StorageLocation",
+            "displayName": "Storage Location of GCS Buckets",
+            "description": "Storage Location of GCS Buckets.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The project number of the bucket."
+              },
+              {
+                "key": "location",
+                "description": "The storage location of the bucket."
+              }
+            ],
+            "launchStage": "EARLY_ACCESS"
+          },
+          {
+            "type": "storage.googleapis.com/Location",
+            "displayName": "GCS Location",
+            "description": "GCS Location.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The project number of the bucket."
+              },
+              {
+                "key": "location",
+                "description": "The location of the bucket."
+              }
+            ],
+            "launchStage": "ALPHA"
+          },
+          {
+            "type": "storage.googleapis.com/storage",
+            "labels": [
+              {
+                "key": "storage.googleapis.com/bucket_name"
+              },
+              {
+                "key": "storage.googleapis.com/bucket_storage_class"
+              },
+              {
+                "key": "cloud.googleapis.com/location"
+              },
+              {
+                "key": "cloud.googleapis.com/uid"
+              },
+              {
+                "key": "cloud.googleapis.com/project"
+              }
+            ]
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "storage.googleapis.com/storage",
+              "metrics": [
+                "storage.googleapis.com/storage/total_bytes",
+                "storage.googleapis.com/storage/object_count"
+              ]
+            },
+            {
+              "monitoredResource": "storage.googleapis.com/StorageLocation",
+              "metrics": [
+                "storage.googleapis.com/quota/in_multi_region_read_bandwidth/exceeded",
+                "storage.googleapis.com/quota/in_multi_region_read_bandwidth/usage",
+                "storage.googleapis.com/quota/in_multi_region_read_bandwidth_preview/exceeded",
+                "storage.googleapis.com/quota/in_multi_region_read_bandwidth_preview/usage"
+              ]
+            },
+            {
+              "monitoredResource": "storage.googleapis.com/Location",
+              "metrics": [
+                "storage.googleapis.com/quota/turbo_replication_ingress_bandwidth/exceeded",
+                "storage.googleapis.com/quota/turbo_replication_ingress_bandwidth/usage"
+              ]
+            },
+            {
+              "monitoredResource": "storage.googleapis.com/StorageLocation",
+              "metrics": [
+                "storage.googleapis.com/quota/in_multi_region_read_bandwidth/limit",
+                "storage.googleapis.com/quota/in_multi_region_read_bandwidth_preview/limit"
+              ]
+            },
+            {
+              "monitoredResource": "storage.googleapis.com/Location",
+              "metrics": [
+                "storage.googleapis.com/quota/turbo_replication_ingress_bandwidth/limit"
+              ]
+            }
+          ]
+        }
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    }
+  ]
+]

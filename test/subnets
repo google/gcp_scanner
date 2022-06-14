@@ -1,0 +1,839 @@
+[
+  [
+    "regions/us-central1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "1203117821344810822",
+          "creationTimestamp": "2022-06-06T19:36:25.623-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.128.0.0/20",
+          "gatewayAddress": "10.128.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "kTK0Tv-SXxE=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        },
+        {
+          "kind": "compute#subnetwork",
+          "id": "7639856677884462037",
+          "creationTimestamp": "2022-06-06T19:51:38.759-07:00",
+          "name": "test-subnet",
+          "description": "Test Subnet Description",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
+          "ipCidrRange": "192.168.0.0/24",
+          "gatewayAddress": "192.168.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/test-subnet",
+          "privateIpGoogleAccess": true,
+          "secondaryIpRanges": [
+            {
+              "rangeName": "gke-test-cluster1-services-555b5b65",
+              "ipCidrRange": "10.84.0.0/20"
+            },
+            {
+              "rangeName": "gke-test-cluster1-pods-555b5b65",
+              "ipCidrRange": "10.80.0.0/14"
+            }
+          ],
+          "fingerprint": "-O2gpn9FoTQ=",
+          "enableFlowLogs": false,
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "logConfig": {
+            "enable": false,
+            "aggregationInterval": "INTERVAL_5_SEC",
+            "flowSampling": 0.5,
+            "metadata": "INCLUDE_ALL_METADATA"
+          },
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/europe-west1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "5715764887518644038",
+          "creationTimestamp": "2022-06-06T19:36:25.716-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.132.0.0/20",
+          "gatewayAddress": "10.132.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "fHCRbBxicsQ=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/us-west1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "2117181827955492678",
+          "creationTimestamp": "2022-06-06T19:36:25.847-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.138.0.0/20",
+          "gatewayAddress": "10.138.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-west1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "FkZbMoe69Zk=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/asia-east1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "8394663803965605702",
+          "creationTimestamp": "2022-06-06T19:36:25.820-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.140.0.0/20",
+          "gatewayAddress": "10.140.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-east1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-east1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "lfwUh9OtwNo=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/us-east1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "4343955571581585222",
+          "creationTimestamp": "2022-06-06T19:36:25.635-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.142.0.0/20",
+          "gatewayAddress": "10.142.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "CGmk9BYIoys=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/asia-northeast1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "3938119090965776198",
+          "creationTimestamp": "2022-06-06T19:36:25.851-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.146.0.0/20",
+          "gatewayAddress": "10.146.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-northeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-northeast1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "qKmqp3Wcwec=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/asia-southeast1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "7831262105884100422",
+          "creationTimestamp": "2022-06-06T19:36:25.802-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.148.0.0/20",
+          "gatewayAddress": "10.148.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-southeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-southeast1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "tPU27V_8t6s=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/us-east4",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "8782667137986791238",
+          "creationTimestamp": "2022-06-06T19:36:25.647-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.150.0.0/20",
+          "gatewayAddress": "10.150.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east4",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east4/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "P76Nmbdv96U=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/australia-southeast1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "7301321192335673158",
+          "creationTimestamp": "2022-06-06T19:36:25.762-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.152.0.0/20",
+          "gatewayAddress": "10.152.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/australia-southeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/australia-southeast1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "fnaZLkTFrKY=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/europe-west2",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "8283440729572968262",
+          "creationTimestamp": "2022-06-06T19:36:25.651-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.154.0.0/20",
+          "gatewayAddress": "10.154.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west2/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "2Nyrtza2uTg=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/europe-west3",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "7539997455596848966",
+          "creationTimestamp": "2022-06-06T19:36:25.692-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.156.0.0/20",
+          "gatewayAddress": "10.156.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west3/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "rY4VdGJq-FU=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/southamerica-east1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "503540525831489350",
+          "creationTimestamp": "2022-06-06T19:36:25.817-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.158.0.0/20",
+          "gatewayAddress": "10.158.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/southamerica-east1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/southamerica-east1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "UFxk6UxEoCg=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/asia-south1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "3140150550036940614",
+          "creationTimestamp": "2022-06-06T19:36:25.823-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.160.0.0/20",
+          "gatewayAddress": "10.160.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-south1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-south1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "GWkWCcnm9B0=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/northamerica-northeast1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "2600793899944576838",
+          "creationTimestamp": "2022-06-06T19:36:25.641-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.162.0.0/20",
+          "gatewayAddress": "10.162.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/northamerica-northeast1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/northamerica-northeast1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "8gRrbspMAf0=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/europe-west4",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "9171366269594830662",
+          "creationTimestamp": "2022-06-06T19:36:25.758-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.164.0.0/20",
+          "gatewayAddress": "10.164.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west4",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west4/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "AfPyGxkymiw=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/europe-north1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "4499767665001432902",
+          "creationTimestamp": "2022-06-06T19:36:25.706-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.166.0.0/20",
+          "gatewayAddress": "10.166.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-north1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-north1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "n_YysXAHQdQ=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/us-west2",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "4932358407437092678",
+          "creationTimestamp": "2022-06-06T19:36:25.701-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.168.0.0/20",
+          "gatewayAddress": "10.168.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-west2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-west2/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "3LNr-Mkag00=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/asia-east2",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "7567467344867559238",
+          "creationTimestamp": "2022-06-06T19:36:25.810-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.170.0.0/20",
+          "gatewayAddress": "10.170.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-east2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-east2/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "N1eCj0yj_EU=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/europe-west6",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "7924637147325466438",
+          "creationTimestamp": "2022-06-06T19:36:25.723-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.172.0.0/20",
+          "gatewayAddress": "10.172.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west6",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west6/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "9QXlVfWb-fk=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/asia-northeast2",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "1895772832167823174",
+          "creationTimestamp": "2022-06-06T19:36:25.750-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.174.0.0/20",
+          "gatewayAddress": "10.174.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-northeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-northeast2/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "cdiGyg8bZnA=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/asia-northeast3",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "6055623244469438278",
+          "creationTimestamp": "2022-06-06T19:36:25.895-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.178.0.0/20",
+          "gatewayAddress": "10.178.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-northeast3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-northeast3/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "KliAlVFrrd4=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/us-west3",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "1436467436100716358",
+          "creationTimestamp": "2022-06-06T19:36:25.762-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.180.0.0/20",
+          "gatewayAddress": "10.180.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-west3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-west3/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "8sN6ypUto2I=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/us-west4",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "7152361341279471430",
+          "creationTimestamp": "2022-06-06T19:36:25.726-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.182.0.0/20",
+          "gatewayAddress": "10.182.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-west4",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-west4/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "YLhrV-lLYzc=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/asia-southeast2",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "4107070124999247686",
+          "creationTimestamp": "2022-06-06T19:36:25.801-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.184.0.0/20",
+          "gatewayAddress": "10.184.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-southeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-southeast2/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "FBdJNJ3Z4a4=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/europe-central2",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "7501247655061948230",
+          "creationTimestamp": "2022-06-06T19:36:25.830-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.186.0.0/20",
+          "gatewayAddress": "10.186.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-central2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-central2/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "6QRpx-7lGnw=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/northamerica-northeast2",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "1833287431742490438",
+          "creationTimestamp": "2022-06-06T19:36:25.674-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.188.0.0/20",
+          "gatewayAddress": "10.188.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/northamerica-northeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/northamerica-northeast2/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "rGXflqoT0es=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/asia-south2",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "1220178561020921670",
+          "creationTimestamp": "2022-06-06T19:36:25.857-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.190.0.0/20",
+          "gatewayAddress": "10.190.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-south2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/asia-south2/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "DC9kgrdHFZw=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/australia-southeast2",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "3999097164028643142",
+          "creationTimestamp": "2022-06-06T19:36:25.910-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.192.0.0/20",
+          "gatewayAddress": "10.192.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/australia-southeast2",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/australia-southeast2/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "_pQThUhy-eU=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/southamerica-west1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "1179744557780371270",
+          "creationTimestamp": "2022-06-06T19:36:25.775-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.194.0.0/20",
+          "gatewayAddress": "10.194.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/southamerica-west1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/southamerica-west1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "f5_USmTxHZk=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/us-east7",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "7396259477318666870",
+          "creationTimestamp": "2022-06-07T13:27:05.489-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.196.0.0/20",
+          "gatewayAddress": "10.196.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east7",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east7/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "AQwQsWlsVxc=",
+          "purpose": "PRIVATE"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/europe-west8",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "8812666599786088262",
+          "creationTimestamp": "2022-06-06T19:36:25.724-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.198.0.0/20",
+          "gatewayAddress": "10.198.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west8",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west8/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "85JGdeyJ9UE=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/europe-west9",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "4654146480589965126",
+          "creationTimestamp": "2022-06-06T19:36:25.852-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.200.0.0/20",
+          "gatewayAddress": "10.200.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west9",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-west9/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "TG9TyRP0q-Y=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/us-east5",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "6620519273342371654",
+          "creationTimestamp": "2022-06-06T19:36:25.626-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.202.0.0/20",
+          "gatewayAddress": "10.202.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east5",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east5/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "6J4fZxkd9fk=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/europe-southwest1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "8297239918329136966",
+          "creationTimestamp": "2022-06-06T19:36:25.795-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.204.0.0/20",
+          "gatewayAddress": "10.204.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-southwest1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/europe-southwest1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "tpFxtZiW8rY=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ],
+  [
+    "regions/us-south1",
+    {
+      "subnetworks": [
+        {
+          "kind": "compute#subnetwork",
+          "id": "1766243542007744326",
+          "creationTimestamp": "2022-06-06T19:36:25.609-07:00",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "ipCidrRange": "10.206.0.0/20",
+          "gatewayAddress": "10.206.0.1",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-south1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-south1/subnetworks/default",
+          "privateIpGoogleAccess": false,
+          "fingerprint": "C50HqyBnXkI=",
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
+        }
+      ]
+    }
+  ]
+]

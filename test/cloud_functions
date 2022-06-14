@@ -1,0 +1,29 @@
+[
+  {
+    "name": "projects/test-gcp-scanner/locations/us-central1/functions/test-function-1",
+    "eventTrigger": {
+      "eventType": "google.pubsub.topic.publish",
+      "resource": "projects/test-gcp-scanner/topics/test-topic",
+      "service": "pubsub.googleapis.com",
+      "failurePolicy": {}
+    },
+    "status": "OFFLINE",
+    "entryPoint": "test_pubsub_scanner",
+    "timeout": "60s",
+    "availableMemoryMb": 128,
+    "serviceAccountEmail": "test-gcp-scanner@appspot.gserviceaccount.com",
+    "updateTime": "2022-06-07T03:13:28.174Z",
+    "versionId": "1",
+    "labels": {
+      "goog-managed-by": "pubsub",
+      "deployment-tool": "console-cloud"
+    },
+    "sourceUploadUrl": "https://storage.googleapis.com/uploads-550929248917.us-central1.cloudfunctions.appspot.com/3bb45243-5d26-468e-b718-12ee233d818f.zip",
+    "runtime": "python310",
+    "maxInstances": 3000,
+    "ingressSettings": "ALLOW_ALL",
+    "buildId": "b204ac5d-e1df-49b7-9fd0-d59d14e7e298",
+    "buildName": "projects/413204024550/locations/us-central1/builds/b204ac5d-e1df-49b7-9fd0-d59d14e7e298",
+    "dockerRegistry": "CONTAINER_REGISTRY"
+  }
+]

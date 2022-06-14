@@ -1,0 +1,18 @@
+{
+  "default_app": [
+    "apps/test-gcp-scanner",
+    "test-gcp-scanner.uc.r.appspot.com",
+    "SERVING"
+  ],
+  "services": [
+    {
+      "name": "apps/test-gcp-scanner/services/default",
+      "id": "default",
+      "split": {
+        "allocations": {
+          "20220607t032841": 1
+        }
+      }
+    }
+  ]
+}

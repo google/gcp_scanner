@@ -1,0 +1,20 @@
+{
+  "": {
+    "child": [],
+    "manifest": {},
+    "name": "test-gcp-scanner",
+    "tags": []
+  },
+  "eu": {
+    "child": [],
+    "manifest": {},
+    "name": "test-gcp-scanner",
+    "tags": []
+  },
+  "asia": {
+    "child": [],
+    "manifest": {},
+    "name": "test-gcp-scanner",
+    "tags": []
+  }
+}

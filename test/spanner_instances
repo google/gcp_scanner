@@ -1,0 +1,11 @@
+[
+  {
+    "name": "projects/test-gcp-scanner/instances/test-spanner-1",
+    "config": "projects/test-gcp-scanner/instanceConfigs/regional-us-central1",
+    "displayName": "test-spanner-1",
+    "state": "READY",
+    "processingUnits": 100,
+    "createTime": "2022-06-07T03:18:03.966061Z",
+    "updateTime": "2022-06-07T03:18:03.966061Z"
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "projects/test-gcp-scanner/locations/us-central1-a/instances/test-filestore1",
+    "state": "READY",
+    "createTime": "2022-06-07T03:22:39.819050721Z",
+    "tier": "BASIC_HDD",
+    "fileShares": [
+      {
+        "name": "test_filestore1",
+        "capacityGb": "1024"
+      }
+    ],
+    "networks": [
+      {
+        "network": "test-vpc",
+        "modes": [
+          "MODE_IPV4"
+        ],
+        "reservedIpRange": "192.168.125.48/29",
+        "ipAddresses": [
+          "192.168.125.50"
+        ],
+        "connectMode": "DIRECT_PEERING"
+      }
+    ]
+  }
+]
