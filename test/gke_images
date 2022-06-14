@@ -5,6 +5,15 @@
     "name": "test-gcp-scanner",
     "tags": []
   },
+  "us": {
+    "child": [
+      "app-engine-tmp",
+      "gcf"
+    ],
+    "manifest": {},
+    "name": "test-gcp-scanner",
+    "tags": []
+  },
   "eu": {
     "child": [],
     "manifest": {},
