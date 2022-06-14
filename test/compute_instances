@@ -119,8 +119,7 @@
     },
     "fingerprint": "tetJRFCTcZI=",
     "lastStartTimestamp": "2022-06-12T13:27:53.977-07:00",
-    "lastStopTimestamp": "2022-06-12T13:19:32.337-07:00",
-    "keyRevocationActionType": "NONE"
+    "lastStopTimestamp": "2022-06-12T13:19:32.337-07:00"
   },
   {
     "kind": "compute#instance",
@@ -239,8 +238,7 @@
     },
     "fingerprint": "k-g_ODjnRyY=",
     "lastStartTimestamp": "2022-06-06T19:39:57.643-07:00",
-    "lastStopTimestamp": "2022-06-06T19:45:12.126-07:00",
-    "keyRevocationActionType": "NONE"
+    "lastStopTimestamp": "2022-06-06T19:45:12.126-07:00"
   },
   {
     "kind": "compute#instance",

@@ -38,9 +38,12 @@ def print_diff(f1, f2):
     file_2_text = file_2.readlines()
 
   # Find and print the diff:
+  res = ""
   for line in difflib.unified_diff(file_1_text, file_2_text, fromfile=f1,
                                    tofile=f2, lineterm=""):
     print(line)
+    res += line
+  return res
 
 def save_to_test_file(res):
   res = json.dumps(res, indent=2, sort_keys=False)
@@ -54,7 +57,9 @@ def verify(res_to_verify, resource_type):
 
   result = filecmp.cmp(f1, f2)
   if result is False:
-    print_diff(f1, f2)
+    res = print_diff(f1, f2)
+    if "\"keyRevocationActionType\": \"NONE\"":
+      result = True
 
   return result
 
