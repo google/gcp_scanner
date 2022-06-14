@@ -58,7 +58,7 @@ def verify(res_to_verify, resource_type):
   result = filecmp.cmp(f1, f2)
   if result is False:
     res = print_diff(f1, f2)
-    if "\"keyRevocationActionType\": \"NONE\"":
+    if "\"keyRevocationActionType\": \"NONE\"" in res:
       result = True
 
   return result
