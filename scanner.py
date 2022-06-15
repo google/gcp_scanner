@@ -35,6 +35,8 @@ from models import SpiderContext
 
 
 def is_set(config, config_setting):
+  if config is None:
+    return True
   obj = config.get(config_setting, {})
   return obj.get('fetch', False)
 
@@ -417,10 +419,11 @@ token_uri and client_secret'
         token_file_name = os.path.basename(refresh_token_file)
         sa_tuples.append((token_file_name, credentials, []))
 
-  scan_config = {}
+  scan_config = None
   if args.config_path is not None:
     with open(args.config_path, 'r', encoding='utf-8') as f:
       scan_config = json.load(f)
+
 
   crawl_loop(sa_tuples, args.output, scan_config, args.target_project,
              force_projects_list)
