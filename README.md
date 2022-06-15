@@ -16,15 +16,15 @@ Currently, the scanner supports the following GCP resources:
 * GKE
 * AppEngine
 * CloudSQL
-* BigQuery,
+* BigQuery
 * Spanner
 * PubSub
 * CloudFunctions
 * BigTable
 * CloudStore
 * KMS
-* Cloud Services.
-* The scanner supports SA [impersonation](https://cloud.google.com/iam/docs/impersonating-service-accounts).
+* Cloud Services
+* The scanner supports SA [impersonation](https://cloud.google.com/iam/docs/impersonating-service-accounts)
 
 The scanner supports extracting and using the following types of credentials:
 * GCP VM instance metadata;
