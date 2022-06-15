@@ -418,8 +418,9 @@ token_uri and client_secret'
         sa_tuples.append((token_file_name, credentials, []))
 
   scan_config = {}
-  with open(args.config_path, 'r', encoding='utf-8') as f:
-    scan_config = json.load(f)
+  if args.config_path is not None:
+    with open(args.config_path, 'r', encoding='utf-8') as f:
+      scan_config = json.load(f)
 
   crawl_loop(sa_tuples, args.output, scan_config, args.target_project,
              force_projects_list)
