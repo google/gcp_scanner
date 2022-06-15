@@ -144,10 +144,11 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get storage buckets
       if is_set(scan_config, 'storage_buckets'):
-        obj = scan_config.get('storage_buckets', None)
         fetch_bucket_names = False
-        if obj is not None:
-          fetch_bucket_names = obj.get('fetch_file_names', False)
+        if scan_config is not None:
+          obj = scan_config.get('storage_buckets', None)
+          if obj is not None:
+            fetch_bucket_names = obj.get('fetch_file_names', False)
         project_result['storage_buckets'] = crawl.get_bucket_names(project_id,
                                                 credentials, fetch_bucket_names)
 
@@ -214,10 +215,14 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                                                          credentials)
 
       # trying to impersonate SAs within project
-      impers = scan_config.get('service_accounts', None)
+      if scan_config is not None:
+        impers = scan_config.get('service_accounts', None)
+      else:
+        impers = {'impersonate': True}
       if impers is not None and impers.get('impersonate', False) is True:
         if is_set(scan_config, 'iam_policy') is False:
           iam_policy = crawl.get_iam_policy(project_id, credentials)
+
         project_service_accounts = crawl.get_associated_service_accounts(
             iam_policy)
 
