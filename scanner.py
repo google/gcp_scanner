@@ -22,7 +22,7 @@ import json
 import logging
 import os
 import sys
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Dict, Optional
 
 import crawl
 import credsdb
@@ -34,8 +34,14 @@ from httplib2 import Credentials
 from models import SpiderContext
 
 
+def is_set(config, config_setting):
+  obj = config.get(config_setting, {})
+  return obj.get('fetch', False)
+
+
 def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                out_dir: str,
+               scan_config: Dict,
                target_project: Optional[str] = None,
                force_projects: Optional[str] = None):
   """The main loop function to crawl GCP resources.
@@ -68,11 +74,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
     if len(project_list) <= 0:
       print('Unable to list projects accessible from service account')
 
-    # Establish the various Cloud SDK clients
-    iam_client = iam_client_for_credentials(credentials)
-    compute_client = compute_client_for_credentials(credentials)
-    gke_client = gke_client_for_credentials(credentials)
-
     if force_projects:
       for force_project_id in force_projects:
         res = crawl.fetch_project_info(force_project_id, credentials)
@@ -90,113 +91,151 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       project_result = sa_results['projects'][project_id]
 
       project_result['project_info'] = project
-      # Get IAM policy
-      iam_policy = crawl.get_iam_policy(project_id, credentials)
-      project_result['iam_policy'] = iam_policy
 
-      # Get service accounts
-      project_service_accounts = crawl.get_service_accounts(
-          project_number, credentials)
-      project_result['service_accounts'] = project_service_accounts
+      if is_set(scan_config, 'iam_policy'):
+        # Get IAM policy
+        iam_client = iam_client_for_credentials(credentials)
+        iam_policy = crawl.get_iam_policy(project_id, credentials)
+        project_result['iam_policy'] = iam_policy
+
+      if is_set(scan_config, 'service_accounts'):
+        # Get service accounts
+        project_service_accounts = crawl.get_service_accounts(
+            project_number, credentials)
+        project_result['service_accounts'] = project_service_accounts
 
       # Iterate over discovered service accounts by attempting impersonation
       project_result['service_account_edges'] = []
       updated_chain = chain_so_far + [sa_name]
 
       # Get GCP Compute Resources
-      compute_instances = crawl.get_compute_instances_names(
-          project_id, compute_client)
-      compute_images = crawl.get_compute_images_names(project_id,
+      compute_client = compute_client_for_credentials(credentials)
+      if is_set(scan_config, 'compute_instances'):
+        project_result['compute_instances'] = crawl.get_compute_instances_names(
+                                                     project_id, compute_client)
+      if is_set(scan_config, 'compute_images'):
+        project_result['compute_images'] = crawl.get_compute_images_names(
+                                                        project_id,
+                                                        compute_client)
+      if is_set(scan_config, 'compute_disks'):
+        project_result['compute_disks'] = crawl.get_compute_disks_names(
+                                                        project_id,
+                                                        compute_client)
+      if is_set(scan_config, 'static_ips'):
+        project_result['static_ips'] = crawl.get_static_ips(project_id,
+                                                            compute_client)
+      if is_set(scan_config, 'compute_snapshots'):
+        project_result['compute_snapshots'] = crawl.get_compute_snapshots(
+                                                        project_id,
+                                                        compute_client)
+      if is_set(scan_config, 'subnets'):
+        project_result['subnets'] = crawl.get_subnets(project_id,
                                                       compute_client)
-      compute_disks = crawl.get_compute_disks_names(project_id, compute_client)
-      static_ips = crawl.get_static_ips(project_id, compute_client)
-      compute_snapshots = crawl.get_compute_snapshots(project_id,
-                                                      compute_client)
-      subnets = crawl.get_subnets(project_id, compute_client)
-      firewall_rules = crawl.get_firewall_rules(project_id, compute_client)
-
-      project_result['compute_instances'] = compute_instances
-      project_result['compute_images'] = compute_images
-      project_result['compute_disks'] = compute_disks
-      project_result['static_ips'] = static_ips
-      project_result['compute_snapshots'] = compute_snapshots
-      project_result['subnets'] = subnets
-      project_result['firewall_rules'] = firewall_rules
+      if is_set(scan_config, 'firewall_rules'):
+        project_result['firewall_rules'] = crawl.get_firewall_rules(project_id,
+                                                                 compute_client)
 
       # Get GCP APP Resources
-      project_result['app_services'] = crawl.get_app_services(
-          project_id, credentials)
+      if is_set(scan_config, 'app_services'):
+        project_result['app_services'] = crawl.get_app_services(
+            project_id, credentials)
 
       # Get storage buckets
-      storage_buckets = crawl.get_bucket_names(project_id, credentials, False)
-      project_result['storage_buckets'] = storage_buckets
+      if is_set(scan_config, 'storage_buckets'):
+        obj = scan_config.get('storage_buckets', None)
+        fetch_bucket_names = False
+        if obj is not None:
+          fetch_bucket_names = obj.get('fetch_file_names', False)
+        project_result['storage_buckets'] = crawl.get_bucket_names(project_id,
+                                                credentials, fetch_bucket_names)
 
       # Get DNS managed zones
-      dns_zones = crawl.get_managed_zones(project_id, credentials)
-      project_result['managed_zones'] = dns_zones
+      if is_set(scan_config, 'storage_buckets'):
+        project_result['managed_zones'] = crawl.get_managed_zones(project_id,
+                                                                  credentials)
 
       # Get GKE resources
-      gke_clusters = crawl.get_gke_clusters(project_id, gke_client)
-      gke_images = crawl.get_gke_images(project_id, credentials.token)
-      project_result['gke_clusters'] = gke_clusters
-      project_result['gke_images'] = gke_images
+      if is_set(scan_config, 'gke_clusters'):
+        gke_client = gke_client_for_credentials(credentials)
+        project_result['gke_clusters'] = crawl.get_gke_clusters(project_id,
+                                                                gke_client)
+      if is_set(scan_config, 'gke_images'):
+        project_result['gke_images'] = crawl.get_gke_images(project_id,
+                                                            credentials.token)
 
       # Get SQL instances
-      project_result['sql_instances'] = crawl.get_sql_instances(
-          project_id, credentials)
+      if is_set(scan_config, 'sql_instances'):
+        project_result['sql_instances'] = crawl.get_sql_instances(project_id,
+                                                                  credentials)
 
       # Get BigQuery databases and table names
-      project_result['bq'] = crawl.get_bq(project_id, credentials)
+      if is_set(scan_config, 'bq'):
+        project_result['bq'] = crawl.get_bq(project_id, credentials)
 
       # Get PubSub Subscriptions
-      project_result['pubsub_subs'] = crawl.get_pubsub_subscriptions(
-          project_id, credentials)
+      if is_set(scan_config, 'pubsub_subs'):
+        project_result['pubsub_subs'] = crawl.get_pubsub_subscriptions(
+            project_id, credentials)
 
       # Get CloudFunctions list
-      project_result['cloud_functions'] = crawl.get_cloudfunctions(
-          project_id, credentials)
+      if is_set(scan_config, 'cloud_functions'):
+        project_result['cloud_functions'] = crawl.get_cloudfunctions(
+            project_id, credentials)
 
       # Get List of BigTable Instanses
-      project_result['bigtable_instances'] = crawl.get_bigtable_instances(
-          project_id, credentials)
+      if is_set(scan_config, 'bigtable_instances'):
+        project_result['bigtable_instances'] = crawl.get_bigtable_instances(
+            project_id, credentials)
 
       # Get Spanner Instances
-      project_result['spanner_instances'] = crawl.get_spanner_instances(
-          project_id, credentials)
+      if is_set(scan_config, 'spanner_instances'):
+        project_result['spanner_instances'] = crawl.get_spanner_instances(
+            project_id, credentials)
 
       # Get CloudStore Instances
-      project_result['cloudstore_instances'] = crawl.get_filestore_instances(
-          project_id, credentials)
+      if is_set(scan_config, 'cloudstore_instances'):
+        project_result['cloudstore_instances'] = crawl.get_filestore_instances(
+            project_id, credentials)
 
       # Get list of KMS keys
-      project_result['kms'] = crawl.get_kms_keys(project_id, credentials)
+      if is_set(scan_config, 'kms'):
+        project_result['kms'] = crawl.get_kms_keys(project_id, credentials)
 
       # Get information about Endpoints
-      project_result['endpoints'] = crawl.get_endpoints(project_id, credentials)
+      if is_set(scan_config, 'endpoints'):
+        project_result['endpoints'] = crawl.get_endpoints(project_id,
+                                                          credentials)
 
       # Get list of API services enabled in the project
-      project_result['services'] = crawl.list_services(project_id, credentials)
+      if is_set(scan_config, 'services'):
+        project_result['services'] = crawl.list_services(project_id,
+                                                         credentials)
 
       # trying to impersonate SAs within project
-      project_service_accounts = crawl.get_associated_service_accounts(
-          iam_policy)
+      impers = scan_config.get('service_accounts', None)
+      if impers is not None and impers.get('impersonate', False) is True:
+        if is_set(scan_config, 'iam_policy') is False:
+          iam_policy = crawl.get_iam_policy(project_id, credentials)
+        project_service_accounts = crawl.get_associated_service_accounts(
+            iam_policy)
 
-      for candidate_service_account in project_service_accounts:
-        print('Trying %s' % candidate_service_account)
-        if not candidate_service_account.startswith('serviceAccount'):
-          continue
-        try:
-          creds_impersonated = credsdb.impersonate_sa(
-              iam_client, candidate_service_account)
-          context.service_account_queue.put(
-              (candidate_service_account, creds_impersonated, updated_chain))
-          project_result['service_account_edges'].append(
-              candidate_service_account)
-          print('Successfully impersonated %s using %s ' %
-                (candidate_service_account, sa_name))
-        except Exception:
-          logging.info('Failed to get token for %s', candidate_service_account)
-          logging.info(sys.exc_info()[1])
+        for candidate_service_account in project_service_accounts:
+          print('Trying %s' % candidate_service_account)
+          if not candidate_service_account.startswith('serviceAccount'):
+            continue
+          try:
+            creds_impersonated = credsdb.impersonate_sa(
+                iam_client, candidate_service_account)
+            context.service_account_queue.put(
+                (candidate_service_account, creds_impersonated, updated_chain))
+            project_result['service_account_edges'].append(
+                candidate_service_account)
+            print('Successfully impersonated %s using %s ' %
+                  (candidate_service_account, sa_name))
+          except Exception:
+            logging.info('Failed to get token for %s',
+                                                      candidate_service_account)
+            logging.info(sys.exc_info()[1])
 
     # Write out results to json DB
     logging.info('Saving results into the file')
@@ -285,7 +324,12 @@ token_uri and client_secret'
       default=None,
       dest='force_projects',
       help='Comma separated list of project names to include in the scan')
-
+  parser.add_argument(
+      '-c',
+      '--config',
+      default=None,
+      dest='config_path',
+      help='A path to config file with a set of specific resources to scan.')
   parser.add_argument(
       '-l',
       '--logging',
@@ -373,5 +417,10 @@ token_uri and client_secret'
         token_file_name = os.path.basename(refresh_token_file)
         sa_tuples.append((token_file_name, credentials, []))
 
-  crawl_loop(sa_tuples, args.output, args.target_project, force_projects_list)
+  scan_config = {}
+  with open(args.config_path, 'r', encoding='utf-8') as f:
+    scan_config = json.load(f)
+
+  crawl_loop(sa_tuples, args.output, scan_config, args.target_project,
+             force_projects_list)
   return 0

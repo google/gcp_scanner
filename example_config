@@ -1,0 +1,80 @@
+{
+  "compute_instances": {
+    "fetch": true,
+    "comment": "Fetch metadata about GCP VMs"
+  },
+  "compute_disks": {
+    "fetch": true,
+    "comment": "Fetch metadata about GCE disks"
+  },
+  "compute_images": {
+    "fetch": true
+  },
+  "static_ips": {
+    "fetch": true
+  },
+  "compute_snapshots": {
+    "fetch": true
+  },
+  "firewall_rules": {
+    "fetch": true
+  },
+  "subnets": {
+    "fetch": false
+  },
+  "storage_buckets": {
+    "fetch": true,
+    "comment": "Fetch GCS Buckets",
+    "fetch_file_names": false
+  },
+  "managed_zones": {
+    "fetch": true
+  },
+  "gke_clusters": {
+    "fetch": true
+  },
+  "gke_images": {
+    "fetch": true
+  },
+  "app_services": {
+    "fetch": true
+  },
+  "sql_instances": {
+    "fetch": true
+  },
+  "bq": {
+    "fetch": true
+  },
+  "pubsub_subs": {
+    "fetch": true
+  },
+  "cloud_functions": {
+    "fetch": true
+  },
+  "bigtable_instances": {
+    "fetch": true
+  },
+  "spanner_instances": {
+    "fetch": true
+  },
+  "cloudstore_instances": {
+    "fetch": true
+  },
+  "kms": {
+    "fetch": true
+  },
+  "endpoints": {
+    "fetch": true
+  },
+  "services": {
+    "fetch": true
+  },
+  "iam_policy": {
+    "fetch": false
+  },
+  "service_accounts": {
+    "fetch": true,
+    "comment": "Fetch list of available service accounts",
+    "impersonate": true
+  }
+}
