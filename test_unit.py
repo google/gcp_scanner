@@ -74,7 +74,7 @@ def verify(res_to_verify, resource_type, volatile=False):
   f1 = "test_res"
   f2 = f"test/{resource_type}"
 
-  if volatile == True:
+  if volatile is True:
     result = compare_volatile(f1, f2)
   else:
     result = filecmp.cmp(f1, f2)
