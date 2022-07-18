@@ -364,7 +364,7 @@ token_uri and client_secret'
   if args.key_path:
     # extracting SA keys from folder
     for keyfile in os.listdir(args.key_path):
-      if not keyfile.endswith(".json"):
+      if not keyfile.endswith('.json'):
         continue
       full_key_path = os.path.join(args.key_path, keyfile)
       account_name, credentials = credsdb.get_creds_from_file(full_key_path)
