@@ -1,13 +1,11 @@
 [
   {
-    "name": "projects/test-gcp-scanner/subscriptions/test-topic-sub",
+    "name": "projects/test-gcp-scanner/subscriptions/test-subscription",
     "topic": "projects/test-gcp-scanner/topics/test-topic",
     "pushConfig": {},
     "ackDeadlineSeconds": 10,
     "messageRetentionDuration": "604800s",
-    "expirationPolicy": {
-      "ttl": "2678400s"
-    },
+    "expirationPolicy": {},
     "state": "ACTIVE"
   }
 ]

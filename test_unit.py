@@ -43,23 +43,43 @@ def print_diff(f1, f2):
                                    tofile=f2, lineterm=""):
     print(line)
     res += line
-  return res
 
 def save_to_test_file(res):
   res = json.dumps(res, indent=2, sort_keys=False)
   with open("test_res", "w", encoding="utf-8") as outfile:
     outfile.write(res)
 
-def verify(res_to_verify, resource_type):
+def compare_volatile(f1, f2):
+  res = True
+  with open(f1, "r", encoding="utf-8") as file_1:
+    file_1_text = file_1.readlines()
+
+  with open(f2, "r", encoding="utf-8") as file_2:
+    file_2_text = file_2.readlines()
+
+  for line in file_2_text:
+    #line = line[:-1]
+    if line.startswith("VOLATILE"):
+      continue # we do not compare volatile lines
+    if line in file_1_text:
+      continue
+    else:
+      print(f"The following line was not identified in the output:\n{line}")
+      res = False
+
+  return res
+
+def verify(res_to_verify, resource_type, volatile=False):
   save_to_test_file(res_to_verify)
   f1 = "test_res"
   f2 = f"test/{resource_type}"
 
-  result = filecmp.cmp(f1, f2)
-  if result is False:
-    res = print_diff(f1, f2)
-    if "\"keyRevocationActionType\": \"NONE\"" in res:
-      result = True
+  if volatile == True:
+    result = compare_volatile(f1, f2)
+  else:
+    result = filecmp.cmp(f1, f2)
+    if result is False:
+      print_diff(f1, f2)
 
   return result
 
@@ -125,15 +145,14 @@ def test_crawler():
   _, credentials = credsdb.get_creds_from_metadata()
   assert credentials is not None
 
-  # iam_client = scanner.iam_client_for_credentials(credentials=credentials)
-  # credsdb.impersonate_sa(iam_client, "TBD")
-
   # GCE section
   compute_client = scanner.compute_client_for_credentials(credentials)
   assert verify(crawl.get_compute_instances_names(PROJECT_NAME, compute_client),
-                                                  "compute_instances") is True
+                                                  "compute_instances",
+                                                  True) is True
   assert verify(crawl.get_compute_disks_names(PROJECT_NAME, compute_client),
-                                             "compute_disks") is True
+                                             "compute_disks",
+                                             True) is True
   assert verify(crawl.get_compute_images_names(PROJECT_NAME, compute_client),
                                              "compute_images") is True
   assert verify(crawl.get_static_ips(PROJECT_NAME, compute_client),
@@ -143,7 +162,8 @@ def test_crawler():
   assert verify(crawl.get_firewall_rules(PROJECT_NAME, compute_client),
                                          "firewall_rules") is True
   assert verify(crawl.get_subnets(PROJECT_NAME, compute_client),
-                                  "subnets") is True
+                                  "subnets",
+                                  True) is True
 
   assert verify(crawl.get_bucket_names(PROJECT_NAME, credentials=credentials,
                                        enum_files = False),
@@ -157,14 +177,16 @@ def test_crawler():
                                        "gke_clusters") is True
 
   assert verify(crawl.get_gke_images(PROJECT_NAME, credentials.token),
-                                     "gke_images") is True
+                                     "gke_images",
+                                     True) is True
 
   assert verify(crawl.get_app_services(PROJECT_NAME, credentials),
                                        "app_services") is True
 
   # Get SQL instances
   assert verify(crawl.get_sql_instances(PROJECT_NAME, credentials),
-                                        "sql_instances") is True
+                                        "sql_instances",
+                                        True) is True
 
   # Get BigQuery databases and table names
   assert verify(crawl.get_bq(PROJECT_NAME, credentials), "bq") is True
@@ -199,7 +221,8 @@ def test_crawler():
 
   # Get list of API services enabled in the project
   assert verify(crawl.list_services(PROJECT_NAME, credentials),
-                                    "services") is True
+                                    "services",
+                                    True) is True
 
   # IAM Policy
   assert verify(crawl.get_iam_policy(PROJECT_NAME, credentials),

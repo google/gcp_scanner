@@ -49,9 +49,13 @@ KMS_COUNT = 1
 SERVICES_COUNT = 1
 SERVICE_ACCOUNTS_COUNT = 3
 
-def check_obj_entry(res_dict, subojects_count, entry_name):
+def check_obj_entry(res_dict, subojects_count, entry_name, volatile = False):
   obj = res_dict.get(entry_name, None)
-  assert obj is not None and len(obj) == subojects_count
+  if volatile is True:
+    assert obj is not None and (len(obj) == subojects_count or\
+                                len(obj) == subojects_count - 1)
+  else:
+    assert obj is not None and len(obj) == subojects_count
 
 def validate_result():
   file_name = os.listdir("res/")[0]
@@ -83,7 +87,8 @@ def validate_result():
   check_obj_entry(project, STORAGE_BUCKETS_COUNT, "storage_buckets")
 
   check_obj_entry(project, GKE_CLUSTERS_COUNT, "gke_clusters")
-  check_obj_entry(project, GKE_IMAGES_COUNT, "gke_images")
+   # Volatile test. US zone sometimes appear and disappear.
+  check_obj_entry(project, GKE_IMAGES_COUNT, "gke_images", True)
 
   check_obj_entry(project, SQL_INSTANCES_COUNT, "sql_instances")
   check_obj_entry(project, BQ_COUNT, "bq")
@@ -102,10 +107,8 @@ def validate_result():
 
 def test_acceptance():
   os.mkdir("res")
-  testargs = ["__main__.py", "-m", "-f", "test-gcp-scanner", "-o", "res"]
+  testargs = ["__main__.py", "-m", "-p", "test-gcp-scanner", "-o", "res"]
   with unittest.mock.patch("sys.argv", testargs):
     assert scanner.main() == 0
-    assert len(os.listdir("res/")) == RESULTS_JSON_COUNT # TODO: Fix it
+    assert len(os.listdir("res/")) == RESULTS_JSON_COUNT
     validate_result()
-
-

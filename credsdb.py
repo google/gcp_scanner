@@ -181,11 +181,12 @@ def find_creds(explicit_path: Optional[str] = None) -> List[str]:
   if explicit_path is not None and explicit_path != "-":
     search_paths.append(explicit_path)
   else:
+    credentials_db_search_places.append(os.getenv("HOME") + "/")
     for dir_path in credentials_db_search_places:
       if not os.access(dir_path, os.R_OK):
         continue
       for subdir_name in os.listdir(dir_path):
-        full_path = dir_path + subdir_name + "/.config/gcloud/"
+        full_path = dir_path + subdir_name + "/gcloud/"
         search_paths.append(full_path)
 
   for dir_path in search_paths:

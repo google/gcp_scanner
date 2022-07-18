@@ -37,12 +37,12 @@
         "pointInTimeRecoveryEnabled": false,
         "transactionLogRetentionDays": 7
       },
-      "settingsVersion": "3",
+VOLATILE      "settingsVersion": "3",
       "storageAutoResizeLimit": "0",
       "storageAutoResize": false,
       "dataDiskSizeGb": "10"
     },
-    "etag": "251768210441984d569bdd3c68b19da17d492a8fdc4553be60271154f215fcef",
+VOLATILE    "etag": "251768210441984d569bdd3c68b19da17d492a8fdc4553be60271154f215fcef",
     "ipAddresses": [
       {
         "type": "PRIMARY",

@@ -76,13 +76,13 @@
   },
   {
     "kind": "compute#disk",
-    "id": "2668831404593447185",
-    "creationTimestamp": "2022-06-06T20:03:26.760-07:00",
-    "name": "gke-test-cluster1-default-pool-41b54cce-d2ld",
+VOLATILE    "id": "2668831404593447185",
+VOLATILE    "creationTimestamp": "2022-06-06T20:03:26.760-07:00",
+VOLATILE    "name": "gke-test-cluster1-default-pool-41b54cce-d2ld",
     "sizeGb": "10",
     "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c",
     "status": "READY",
-    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/disks/gke-test-cluster1-default-pool-41b54cce-d2ld",
+VOLATILE    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/disks/gke-test-cluster1-default-pool-41b54cce-d2ld",
     "sourceImage": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-gke-cloud/global/images/ubuntu-gke-2004-1-22-v20220315",
     "sourceImageId": "4719045562448315049",
     "type": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/diskTypes/pd-standard",
@@ -103,9 +103,9 @@
         "type": "GVNIC"
       }
     ],
-    "lastAttachTimestamp": "2022-06-06T20:03:26.760-07:00",
+VOLATILE    "lastAttachTimestamp": "2022-06-06T20:03:26.760-07:00",
     "users": [
-      "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/instances/gke-test-cluster1-default-pool-41b54cce-d2ld"
+VOLATILE      "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/instances/gke-test-cluster1-default-pool-41b54cce-d2ld"
     ],
     "labels": {
       "goog-gke-node": "",

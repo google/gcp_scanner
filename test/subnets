@@ -715,8 +715,9 @@
           "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east7",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east7/subnetworks/default",
           "privateIpGoogleAccess": false,
-          "fingerprint": "AQwQsWlsVxc=",
-          "purpose": "PRIVATE"
+VOLATILE          "fingerprint": "AQwQsWlsVxc=",
+VOLATILE          "purpose": "PRIVATE",
+VOLATILE          "stackType": "IPV4_ONLY"
         }
       ]
     }
