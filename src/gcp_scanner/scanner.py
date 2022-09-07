@@ -24,14 +24,14 @@ import os
 import sys
 from typing import List, Tuple, Dict, Optional
 
-import crawl
-import credsdb
+from . import crawl
+from . import credsdb
 from google.cloud import container_v1
 from google.cloud import iam_credentials
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from googleapiclient import discovery
 from httplib2 import Credentials
-from models import SpiderContext
+from .models import SpiderContext
 
 
 def is_set(config, config_setting):
