@@ -34,12 +34,12 @@ The scanner supports extracting and using the following types of credentials:
 
 The scanner does not rely on any third-party tool (e.g. gcloud). Thus, it can be compiled as a standalone tool and be used on a machine with no GCP SDK installed (e.g. kubernetes pod). However, please keep in mind that the only OS that is currently supported is Linux.
 
-### Dependencies
+### Installation
 
-To be able to use the scanner we need to install dependencies:
+To install the package, use `pip` (you must also have `git` installed):
 
 ```
-pip install -r requirements.txt
+pip install git+https://github.com/google/gcp_scanner/
 ```
 
 There is a docker build file if you want to run the scanner from a container:
@@ -48,7 +48,7 @@ There is a docker build file if you want to run the scanner from a container:
 ### Command-line options
 
 ```
-usage: python3 gcp_scanner -o /folder_to_save_results/ -g -
+usage: gcp-scanner -o /folder_to_save_results/ -g -
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -73,12 +73,10 @@ Required parameters:
 
 Option `-f` requires an additional explanation. In some cases, service account does not have permissions to explicitly list project names. However, it still might have access to underlying resources if we provide correct project name. This option specifically designed to handle such cases.
 
-NOTE: You can use `python3 __main__.py` as well to launch the scanner.
-
 
 ### Building standalone binary with pyinstaller
 
-Please replace `google-api-python-client==2.9.0` with `google-api-python-client==1.8.0` in `requirements.txt`. After that, navigate to the scanner source code directory and use pyinstaller to compile a standalone binary:
+Please replace `google-api-python-client==2.9.0` with `google-api-python-client==1.8.0` in `pyproject.toml`. After that, navigate to the scanner source code directory and use pyinstaller to compile a standalone binary:
 
 `pyinstaller -F --add-data 'roots.pem:grpc/_cython/_credentials/" scanner.py`
 

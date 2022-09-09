@@ -16,10 +16,10 @@
 
 """
 
-import crawl
-import credsdb
+from . import crawl
+from . import credsdb
 import json
-import scanner
+from . import scanner
 import filecmp
 import difflib
 import os
