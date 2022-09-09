@@ -16,7 +16,7 @@
 
 """
 
-import scanner
+from . import scanner
 import unittest.mock
 import os
 import json
