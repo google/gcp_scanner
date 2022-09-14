@@ -864,54 +864,22 @@
                 "compute.googleapis.com/ip_aliases_per_vpc_network",
                 "compute.googleapis.com/psc_google_apis_forwarding_rules_per_vpc_network",
                 "compute.googleapis.com/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network",
+                "compute.googleapis.com/quota/instances_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/instances_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/ip_aliases_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/ip_aliases_per_vpc_network/exceeded",
                 "compute.googleapis.com/quota/psc_google_apis_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/exceeded",
-                "compute.googleapis.com/quota/quota/instances_per_vpc_network/exceeded",
-                "compute.googleapis.com/quota/quota/internal_load_balancer_forwarding_rules_per_vpc_network/exceeded",
-                "compute.googleapis.com/quota/quota/internal_protocol_forwarding_rules_per_vpc_network/exceeded",
-                "compute.googleapis.com/quota/quota/ip_aliases_per_vpc_network/exceeded",
-                "compute.googleapis.com/quota/quota/psc_google_apis_forwarding_rules_per_vpc_network/exceeded",
-                "compute.googleapis.com/quota/quota/subnet_ranges_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/subnet_ranges_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/exceeded",
                 "compute.googleapis.com/subnet_ranges_per_vpc_network"
-              ]
-            },
-            {
-              "monitoredResource": "compute.googleapis.com/VpcNetwork",
-              "metrics": [
-                "compute.googleapis.com/quota/instances_per_vpc_network/limit",
-                "compute.googleapis.com/quota/instances_per_vpc_network/usage",
-                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/limit",
-                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/usage",
-                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/limit",
-                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/usage",
-                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/limit",
-                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/usage",
-                "compute.googleapis.com/quota/ip_aliases_per_vpc_network/limit",
-                "compute.googleapis.com/quota/ip_aliases_per_vpc_network/usage",
-                "compute.googleapis.com/quota/psc_google_apis_forwarding_rules_per_vpc_network/limit",
-                "compute.googleapis.com/quota/psc_google_apis_forwarding_rules_per_vpc_network/usage",
-                "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/limit",
-                "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/usage",
-                "compute.googleapis.com/quota/quota/instances_per_vpc_network/limit",
-                "compute.googleapis.com/quota/quota/instances_per_vpc_network/usage",
-                "compute.googleapis.com/quota/quota/internal_load_balancer_forwarding_rules_per_vpc_network/limit",
-                "compute.googleapis.com/quota/quota/internal_load_balancer_forwarding_rules_per_vpc_network/usage",
-                "compute.googleapis.com/quota/quota/internal_protocol_forwarding_rules_per_vpc_network/limit",
-                "compute.googleapis.com/quota/quota/internal_protocol_forwarding_rules_per_vpc_network/usage",
-                "compute.googleapis.com/quota/quota/ip_aliases_per_vpc_network/limit",
-                "compute.googleapis.com/quota/quota/ip_aliases_per_vpc_network/usage",
-                "compute.googleapis.com/quota/quota/psc_google_apis_forwarding_rules_per_vpc_network/limit",
-                "compute.googleapis.com/quota/quota/psc_google_apis_forwarding_rules_per_vpc_network/usage",
-                "compute.googleapis.com/quota/quota/subnet_ranges_per_vpc_network/limit",
-                "compute.googleapis.com/quota/quota/subnet_ranges_per_vpc_network/usage",
-                "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/limit",
-                "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/usage"
               ]
             },
             {
@@ -925,6 +893,41 @@
               "metrics": [
                 "compute.googleapis.com/quota/local_ssd_total_storage_per_vm_family/limit",
                 "compute.googleapis.com/quota/local_ssd_total_storage_per_vm_family/usage"
+              ]
+            },
+            {
+              "monitoredResource": "compute.googleapis.com/VpcNetwork",
+              "metrics": [
+                "compute.googleapis.com/quota/instances_per_regional_vpc_network/limit",
+                "compute.googleapis.com/quota/instances_per_regional_vpc_network/usage",
+                "compute.googleapis.com/quota/instances_per_vpc_network/limit",
+                "compute.googleapis.com/quota/instances_per_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_regional_vpc_network/limit",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_regional_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_regional_vpc_network/limit",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_regional_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_regional_vpc_network/limit",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_regional_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/ip_aliases_per_regional_vpc_network/limit",
+                "compute.googleapis.com/quota/ip_aliases_per_regional_vpc_network/usage",
+                "compute.googleapis.com/quota/ip_aliases_per_vpc_network/limit",
+                "compute.googleapis.com/quota/ip_aliases_per_vpc_network/usage",
+                "compute.googleapis.com/quota/psc_google_apis_forwarding_rules_per_vpc_network/limit",
+                "compute.googleapis.com/quota/psc_google_apis_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_regional_vpc_network/limit",
+                "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_regional_vpc_network/usage",
+                "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/limit",
+                "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/usage",
+                "compute.googleapis.com/quota/subnet_ranges_per_regional_vpc_network/limit",
+                "compute.googleapis.com/quota/subnet_ranges_per_regional_vpc_network/usage",
+                "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/limit",
+                "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/usage"
               ]
             }
           ]
@@ -1069,6 +1072,42 @@
             "launchStage": "GA"
           },
           {
+            "type": "file.googleapis.com/InstanceNode",
+            "displayName": "InstanceNode",
+            "description": "InstanceNode resource represents a VM running as part of a Filestore instance.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP container associated with the resource."
+              },
+              {
+                "key": "service_name",
+                "description": "The name of the SaaS Lifecycle Management service. Format is projects/{project}/services/{service}."
+              },
+              {
+                "key": "location",
+                "description": "GCP location: zone, region, multi-region or other service-specific container."
+              },
+              {
+                "key": "consumer_project_number",
+                "description": "The consumer project number."
+              },
+              {
+                "key": "instance_id",
+                "description": "The name (short) of the instance set by the consumer."
+              },
+              {
+                "key": "instance_uid",
+                "description": "Globally unique identifier of the instance."
+              },
+              {
+                "key": "node_id",
+                "description": "A string used to uniquely distinguish a node within a service instance."
+              }
+            ],
+            "launchStage": "ALPHA"
+          },
+          {
             "type": "saas_instance",
             "labels": [
               {
@@ -1116,42 +1155,6 @@
                 "key": "cloud.googleapis.com/uid"
               }
             ]
-          },
-          {
-            "type": "file.googleapis.com/InstanceNode",
-            "displayName": "InstanceNode",
-            "description": "InstanceNode resource represents a VM running as part of a Filestore instance.",
-            "labels": [
-              {
-                "key": "resource_container",
-                "description": "The identifier of the GCP container associated with the resource."
-              },
-              {
-                "key": "service_name",
-                "description": "The name of the SaaS Lifecycle Management service. Format is projects/{project}/services/{service}."
-              },
-              {
-                "key": "location",
-                "description": "GCP location: zone, region, multi-region or other service-specific container."
-              },
-              {
-                "key": "consumer_project_number",
-                "description": "The consumer project number."
-              },
-              {
-                "key": "instance_id",
-                "description": "The name (short) of the instance set by the consumer."
-              },
-              {
-                "key": "instance_uid",
-                "description": "Globally unique identifier of the instance."
-              },
-              {
-                "key": "node_id",
-                "description": "A string used to uniquely distinguish a node within a service instance."
-              }
-            ],
-            "launchStage": "ALPHA"
           }
         ],
         "monitoring": {
@@ -1423,7 +1426,7 @@
               },
               {
                 "key": "location",
-                "description": "The cloud region where the metric was received."
+                "description": "The location of the resource that the metric ingestion was associated with, unless it was 'global', in which case this will be the cloud region where the metric was received."
               },
               {
                 "key": "attribution_dimension",

@@ -171,7 +171,8 @@ def test_crawler():
                                       "storage_buckets") is True
 
   assert verify(crawl.get_managed_zones(PROJECT_NAME, credentials=credentials),
-                                        "managed_zones") is True
+                                        "managed_zones",
+                                        True) is True
 
   gke_client = scanner.gke_client_for_credentials(credentials=credentials)
   assert verify(crawl.get_gke_clusters(PROJECT_NAME, gke_client),
@@ -214,7 +215,8 @@ def test_crawler():
 
   # Get list of KMS keys
   assert verify(crawl.get_kms_keys(PROJECT_NAME, credentials),
-                                   "kms") is True
+                                   "kms",
+                                   True) is True
 
   # Get information about Endpoints
   assert verify(crawl.get_endpoints(PROJECT_NAME, credentials),

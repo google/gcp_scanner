@@ -72,7 +72,7 @@ VOLATILE    "etag": "251768210441984d569bdd3c68b19da17d492a8fdc4553be60271154f21
     "name": "test-postresql",
     "region": "us-central1",
     "gceZone": "us-central1-a",
-    "databaseInstalledVersion": "POSTGRES_14_2",
+    "databaseInstalledVersion": "POSTGRES_14_4",
     "createTime": "2022-06-07T03:05:38.461Z"
   }
 ]

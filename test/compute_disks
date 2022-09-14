@@ -83,8 +83,8 @@ VOLATILE    "name": "gke-test-cluster1-default-pool-41b54cce-d2ld",
     "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c",
     "status": "READY",
 VOLATILE    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/disks/gke-test-cluster1-default-pool-41b54cce-d2ld",
-    "sourceImage": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-gke-cloud/global/images/ubuntu-gke-2004-1-22-v20220315",
-    "sourceImageId": "4719045562448315049",
+VOLATILE    "sourceImage": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-gke-cloud/global/images/ubuntu-gke-2004-1-22-v20220315",
+VOLATILE    "sourceImageId": "4719045562448315049",
     "type": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/diskTypes/pd-standard",
     "licenses": [
       "https://www.googleapis.com/compute/v1/projects/ubuntu-os-gke-cloud/global/licenses/ubuntu-gke-2004-lts-1"

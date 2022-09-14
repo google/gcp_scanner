@@ -5,6 +5,7 @@
     "displayName": "test-spanner-1",
     "state": "READY",
     "processingUnits": 100,
+    "instanceType": "PROVISIONED",
     "createTime": "2022-06-07T03:18:03.966061Z",
     "updateTime": "2022-06-07T03:18:03.966061Z"
   }
