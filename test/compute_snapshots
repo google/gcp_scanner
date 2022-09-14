@@ -21,6 +21,7 @@
     "storageLocations": [
       "us"
     ],
-    "downloadBytes": "506086770"
+VOLATILE    "downloadBytes": "506086770",
+VOLATILE    "creationSizeBytes": "11006784"
   }
 ]

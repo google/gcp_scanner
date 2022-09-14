@@ -158,7 +158,8 @@ def test_crawler():
   assert verify(crawl.get_static_ips(PROJECT_NAME, compute_client),
                                      "static_ips") is True
   assert verify(crawl.get_compute_snapshots(PROJECT_NAME, compute_client),
-                                            "compute_snapshots") is True
+                                            "compute_snapshots",
+                                            True) is True
   assert verify(crawl.get_firewall_rules(PROJECT_NAME, compute_client),
                                          "firewall_rules") is True
   assert verify(crawl.get_subnets(PROJECT_NAME, compute_client),
