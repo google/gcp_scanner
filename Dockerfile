@@ -18,8 +18,10 @@ FROM python:3-slim-buster
 RUN mkdir /home/sa_scanner
 COPY src/ /home/sa_scanner/
 COPY pyproject.toml /home/sa_scanner/
+COPY README.md /home/sa_scanner
 
-RUN pip install /home/sa_scanner
+WORKDIR /home/sa_scanner
+RUN pip install .
 
 WORKDIR /home/sa_scanner/
 ENTRYPOINT ["gcp-scanner"]
