@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +14,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""The main module of GCP Scanner.
-
-"""
-
-from . import scanner
-
-if __name__ == '__main__':
-  scanner.main()
+from src.gcp_scanner import scanner
+scanner.main()
