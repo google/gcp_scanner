@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "gcp_scanner"
@@ -20,7 +20,7 @@ dependencies = [
     "httplib2==0.19.1",
     "requests==2.25.1"
 ]
-dynamic = ["version"]
+version = "1.0.0"
 
 [project.scripts]
 gcp-scanner = "gcp_scanner.scanner:main"
