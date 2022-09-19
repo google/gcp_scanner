@@ -39,7 +39,7 @@ The scanner does not rely on any third-party tool (e.g. gcloud). Thus, it can be
 To install the package, use `pip` (you must also have `git` installed):
 
 ```
-pip install git+https://github.com/google/gcp_scanner/
+pip install https://github.com/google/gcp_scanner/archive/main.zip
 ```
 
 There is a docker build file if you want to run the scanner from a container:
