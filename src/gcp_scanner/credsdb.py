@@ -224,8 +224,11 @@ def get_access_tokens_dict(path_to_creds_db: str) -> Dict[str, str]:
       token = row[1]
       expiration_date = row[2]
 
-      token_time_obj = datetime.datetime.strptime(expiration_date,
-                                                  "%Y-%m-%d %H:%M:%S.%f")
+      for fmt in ["%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%d %H:%M:%S"]:
+        try:
+          token_time_obj = datetime.datetime.strptime(expiration_date, fmt)
+        except ValueError as e:
+          print(f"Expiation date format error {e}")
       if datetime.datetime.now() > token_time_obj:
         print("Token for %s expired" % associated_account)
         continue
