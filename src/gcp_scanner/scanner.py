@@ -81,6 +81,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         res = crawl.fetch_project_info(force_project_id, credentials)
         if res:
           project_list.append(res)
+        else:
+          # force object creation
+          project_list.append({'projectId': force_project_id, 'projectNumber': 'N/A'})
 
     # Enumerate projects accessible by SA
     for project in project_list:
