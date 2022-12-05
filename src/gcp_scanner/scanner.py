@@ -82,8 +82,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         if res:
           project_list.append(res)
         else:
-          # force object creation
-          project_list.append({'projectId': force_project_id, 'projectNumber': 'N/A'})
+          # force object creation anyway
+          project_list.append({'projectId': force_project_id,
+                               'projectNumber': "N/A"})
 
     # Enumerate projects accessible by SA
     for project in project_list:
@@ -147,16 +148,17 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get storage buckets
       if is_set(scan_config, 'storage_buckets'):
-        fetch_bucket_names = False
+        dump_file_names = None
         if scan_config is not None:
           obj = scan_config.get('storage_buckets', None)
-          if obj is not None:
-            fetch_bucket_names = obj.get('fetch_file_names', False)
+          if obj is not None and obj.get('fetch_file_names', False) is True:
+            dump_file_names = open(out_dir + '/%s.gcs' % project_id, 'w',
+                                   encoding='utf-8')
         project_result['storage_buckets'] = crawl.get_bucket_names(project_id,
-                                                credentials, fetch_bucket_names)
+                                                credentials, dump_file_names)
 
       # Get DNS managed zones
-      if is_set(scan_config, 'storage_buckets'):
+      if is_set(scan_config, 'managed_zones'):
         project_result['managed_zones'] = crawl.get_managed_zones(project_id,
                                                                   credentials)
 
@@ -230,7 +232,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             iam_policy)
 
         for candidate_service_account in project_service_accounts:
-          print('Trying %s' % candidate_service_account)
+          logging.info('Trying %s' % candidate_service_account)
           if not candidate_service_account.startswith('serviceAccount'):
             continue
           try:
@@ -240,20 +242,24 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                 (candidate_service_account, creds_impersonated, updated_chain))
             project_result['service_account_edges'].append(
                 candidate_service_account)
-            print('Successfully impersonated %s using %s ' %
+            logging.info('Successfully impersonated %s using %s ' %
                   (candidate_service_account, sa_name))
           except Exception:
             logging.info('Failed to get token for %s',
                                                       candidate_service_account)
             logging.info(sys.exc_info()[1])
 
-    # Write out results to json DB
-    logging.info('Saving results into the file')
+      # Write out results to json DB
+      logging.info('Saving results for {project_id} into the file')
 
-    sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
+      sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
-    with open(out_dir + '/%s.json' % sa_name, 'w', encoding='utf-8') as outfile:
-      outfile.write(sa_results_data)
+      with open(out_dir + '/%s.json' % sa_name, 'w',
+                encoding='utf-8') as outfile:
+        outfile.write(sa_results_data)
+
+      # Clean memory to avoid leak for large amount projects.
+      sa_results.clear()
 
 
 def iam_client_for_credentials(
@@ -313,14 +319,15 @@ def main():
   parser.add_argument(
       '-at',
       default=None,
-      dest='access_token',
-      help='Use access token directly to scan GCP resources. Limited by TTL')
+      dest='access_token_files',
+      help='A list of comma separated files with access token and OAuth scopes.\
+TTL limited. A token and scopes should be stored in JSON format.')
   parser.add_argument(
       '-rt',
       default=None,
       dest='refresh_token_files',
       help='A list of comma separated files with refresh_token, client_id,\
-token_uri and client_secret'
+token_uri and client_secret stored in JSON format.'
   )
   parser.add_argument(
       '-s', default=None, dest='key_name', help='Name of individual SA to scan')
@@ -406,18 +413,16 @@ token_uri and client_secret'
           continue
 
         sa_tuples.append((account_name, credentials, []))
-  if args.access_token:
-    credentials = credsdb.credentials_from_token(
-        args.access_token,
-        None,
-        None,
-        None,
-        None,
-        scopes_user='https://www.googleapis.com/auth/cloud-platform')
-    if credentials is None:
-      logging.info('Failed to retrieve credentials using token provided')
-    else:
-      sa_tuples.append(('access_token_user_provided', credentials, []))
+
+  if args.access_token_files:
+    for access_token_file in args.access_token_files.split(','):
+      credentials = credsdb.creds_from_access_token(access_token_file)
+
+      if credentials is None:
+        logging.info('Failed to retrieve credentials using token provided')
+      else:
+        token_file_name = os.path.basename(refresh_token_file)
+        sa_tuples.append(('token_file_name', credentials, []))
 
   if args.refresh_token_files:
     for refresh_token_file in args.refresh_token_files.split(','):

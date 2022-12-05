@@ -32,10 +32,6 @@ from google.oauth2 import service_account
 from httplib2 import Credentials
 import requests
 
-# Permissions to request for Access Token
-scopes = "https://www.googleapis.com/auth/cloud-platform"
-
-expires_in = 3600  # Expires in 1 hour
 
 credentials_db_search_places = ["/home/", "/root/"]
 
@@ -125,7 +121,7 @@ service-accounts/default/email"
 
   print("Successfully retrieved instance metadata")
   print("Access token length: %d" % len(token), "Instance email: %s" % email,
-        "Instance scopes: %s" % scopes)
+        "Instance scopes: %s" % instance_scopes)
   return email, credentials_from_token(token, None, None, None, None,
                                        instance_scopes)
 
@@ -313,13 +309,64 @@ def impersonate_sa(iam_client: IAMCredentialsClient,
                                 None, None, None, scopes_sa)
 
 
+def creds_from_access_token(access_token_file):
+  """The function is used to obtain Google Auth Credentials from access token.
+
+  Args:
+    access_token_file: a path to a file with access token and scopes stored in
+    JSON format. Example:
+      {
+        "access_token": "<token>",
+        "scopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring.write",
+          "https://www.googleapis.com/auth/servicecontrol",
+          "https://www.googleapis.com/auth/service.management.readonly",
+          "https://www.googleapis.com/auth/trace.append"
+        ]
+      }
+
+  Returns:
+    google.auth.service_account.Credentials: The constructed credentials.
+  """
+
+  with open(access_token_file, encoding="utf-8") as f:
+    creds_dict = json.load(f)
+
+  user_scopes = creds_dict.get("scopes", None)
+  if user_scopes is None:
+    user_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+
+  return credentials_from_token(
+            creds_dict["access_token"],
+            None,
+            None,
+            None,
+            None,
+            user_scopes)
+
+
 def creds_from_refresh_token(refresh_token_file):
   """The function is used to obtain Google Auth Credentials from refresh token.
 
   Args:
     refresh_token_file: a path to a file with refresh_token, client_id,
       client_secret, and token_uri stored in JSON format.
-
+    Example:
+      {
+        "refresh_token": "<token>",
+        "client_id": "id",
+        "client_secret": "secret",
+        scopes: [
+          https://www.googleapis.com/auth/devstorage.read_only,
+          https://www.googleapis.com/auth/logging.write,
+          https://www.googleapis.com/auth/monitoring.write,
+          https://www.googleapis.com/auth/servicecontrol,
+          https://www.googleapis.com/auth/service.management.readonly,
+          https://www.googleapis.com/auth/trace.append
+        ]
+      }
   Returns:
     google.auth.service_account.Credentials: The constructed credentials.
   """
@@ -327,10 +374,14 @@ def creds_from_refresh_token(refresh_token_file):
   with open(refresh_token_file, encoding="utf-8") as f:
     creds_dict = json.load(f)
 
+  user_scopes = creds_dict.get("scopes", None)
+  if user_scopes is None:
+    user_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+
   return credentials.Credentials(
       None,
       refresh_token=creds_dict["refresh_token"],
       token_uri=creds_dict["token_uri"],
       client_id=creds_dict["client_id"],
       client_secret=creds_dict["client_secret"],
-      scopes=["https://www.googleapis.com/auth/cloud-platform"])
+      scopes=user_scopes)
