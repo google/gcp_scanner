@@ -167,7 +167,7 @@ def test_crawler():
                                   True) is True
 
   assert verify(crawl.get_bucket_names(PROJECT_NAME, credentials=credentials,
-                                       enum_files = False),
+                                       dump_fd = None),
                                       "storage_buckets") is True
 
   assert verify(crawl.get_managed_zones(PROJECT_NAME, credentials=credentials),

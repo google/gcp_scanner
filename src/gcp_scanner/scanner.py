@@ -84,7 +84,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         else:
           # force object creation anyway
           project_list.append({'projectId': force_project_id,
-                               'projectNumber': "N/A"})
+                               'projectNumber': 'N/A'})
 
     # Enumerate projects accessible by SA
     for project in project_list:
@@ -156,6 +156,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                                    encoding='utf-8')
         project_result['storage_buckets'] = crawl.get_bucket_names(project_id,
                                                 credentials, dump_file_names)
+        dump_file_names.close()
 
       # Get DNS managed zones
       if is_set(scan_config, 'managed_zones'):
@@ -232,7 +233,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             iam_policy)
 
         for candidate_service_account in project_service_accounts:
-          logging.info('Trying %s' % candidate_service_account)
+          logging.info('Trying {candidate_service_account}')
           if not candidate_service_account.startswith('serviceAccount'):
             continue
           try:
@@ -242,8 +243,8 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                 (candidate_service_account, creds_impersonated, updated_chain))
             project_result['service_account_edges'].append(
                 candidate_service_account)
-            logging.info('Successfully impersonated %s using %s ' %
-                  (candidate_service_account, sa_name))
+            logging.info('Successfully impersonated {candidate_service_account}'
+            'using {sa_name}')
           except Exception:
             logging.info('Failed to get token for %s',
                                                       candidate_service_account)
@@ -421,7 +422,7 @@ token_uri and client_secret stored in JSON format.'
       if credentials is None:
         logging.info('Failed to retrieve credentials using token provided')
       else:
-        token_file_name = os.path.basename(refresh_token_file)
+        token_file_name = os.path.basename(access_token_file)
         sa_tuples.append(('token_file_name', credentials, []))
 
   if args.refresh_token_files:
