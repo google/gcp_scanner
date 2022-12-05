@@ -357,7 +357,7 @@ token_uri and client_secret stored in JSON format.'
 
   args = parser.parse_args()
   if not args.key_path and not args.gcloud_profile_path \
-    and not args.use_metadata and not args.access_token\
+    and not args.use_metadata and not args.access_token_files\
     and not args.refresh_token_files:
     print(
         'Please select at least one option to begin scan\
