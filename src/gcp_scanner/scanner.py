@@ -156,7 +156,8 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                                    encoding='utf-8')
         project_result['storage_buckets'] = crawl.get_bucket_names(project_id,
                                                 credentials, dump_file_names)
-        dump_file_names.close()
+        if dump_file_names is not None:
+          dump_file_names.close()
 
       # Get DNS managed zones
       if is_set(scan_config, 'managed_zones'):
@@ -423,7 +424,7 @@ token_uri and client_secret stored in JSON format.'
         logging.info('Failed to retrieve credentials using token provided')
       else:
         token_file_name = os.path.basename(access_token_file)
-        sa_tuples.append(('token_file_name', credentials, []))
+        sa_tuples.append((token_file_name, credentials, []))
 
   if args.refresh_token_files:
     for refresh_token_file in args.refresh_token_files.split(','):
