@@ -256,7 +256,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
-      with open(out_dir + '/%s.json' % sa_name, 'w',
+      with open(out_dir + '/%s.json' % project_id, 'a',
                 encoding='utf-8') as outfile:
         outfile.write(sa_results_data)
 
