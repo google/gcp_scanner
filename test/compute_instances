@@ -237,7 +237,7 @@ VOLATILE    "lastStopTimestamp": "2022-06-12T13:19:32.337-07:00"
     "confidentialInstanceConfig": {
       "enableConfidentialCompute": false
     },
-    "fingerprint": "k-g_ODjnRyY=",
+VOLATILE    "fingerprint": "k-g_ODjnRyY=",
     "lastStartTimestamp": "2022-06-06T19:39:57.643-07:00",
 VOLATILE    "keyRevocationActionType": "NONE"
 VOLATILE    "lastStopTimestamp": "2022-06-06T19:45:12.126-07:00"
