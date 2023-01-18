@@ -98,28 +98,28 @@ service-accounts/default/email"
   try:
     res = requests.get(token_url, headers=headers)
     if not res.ok:
-      logging.info("Failed to retrieve instance token. Status code %d",
+      logging.error("Failed to retrieve instance token. Status code %d",
         res.status_code)
       return None, None
     token = res.json()["access_token"]
 
     res = requests.get(scope_url, headers=headers)
     if not res.ok:
-      logging.info("Failed to retrieve instance scopes. Status code %d",
+      logging.error("Failed to retrieve instance scopes. Status code %d",
         res.status_code)
       return None, None
     instance_scopes = res.content.decode("utf-8")
 
     res = requests.get(email_url, headers=headers)
     if not res.ok:
-      logging.info("Failed to retrieve instance email. Status code %d",
+      logging.error("Failed to retrieve instance email. Status code %d",
         res.status_code)
       return None, None
     email = res.content.decode("utf-8")
 
   except Exception:
-    logging.info("Failed to retrieve instance metadata")
-    logging.info(sys.exc_info()[1])
+    logging.error("Failed to retrieve instance metadata")
+    logging.error(sys.exc_info()[1])
     return None, None
 
   logging.info("Successfully retrieved instance metadata")
@@ -159,7 +159,7 @@ def get_creds_from_data(access_token: str,
     # this is a service account key with private key
     creds = get_creds_from_json(parsed_keyfile)
   else:
-    logging.info("unknown type of credentials")
+    logging.error("unknown type of credentials")
 
   return creds
 
@@ -195,7 +195,7 @@ def find_creds(explicit_path: Optional[str] = None) -> List[str]:
     if os.path.exists(full_path) and os.access(full_path, os.R_OK):
       logging.info("Identified accessible gcloud config profile %s", full_path)
       list_of_creds_files.append(full_path)
-  logging.info("dentified %d credential DBs", len(list_of_creds_files))
+  logging.info("Identified %d credential DBs", len(list_of_creds_files))
   return list_of_creds_files
 
 
@@ -254,7 +254,7 @@ def extract_creds(path_to_creds_db: str) -> List[Tuple[str, str, str]]:
   cursor = conn.execute("SELECT account_id, value FROM credentials")
   rows = cursor.fetchall()
   if len(rows) <= 0:
-    logging.info("Error: Empty database")
+    logging.error("Empty database")
     return None
   # we also want to check for access_tokens to avoid unnecessary refreshing
   access_tokens = get_access_tokens_dict(path_to_creds_db)
