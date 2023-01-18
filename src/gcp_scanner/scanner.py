@@ -247,9 +247,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             logging.info('Successfully impersonated {candidate_service_account}'
             'using {sa_name}')
           except Exception:
-            logging.info('Failed to get token for %s',
+            logging.error('Failed to get token for %s',
                                                       candidate_service_account)
-            logging.info(sys.exc_info()[1])
+            logging.error(sys.exc_info()[1])
 
       # Write out results to json DB
       logging.info('Saving results for {project_id} into the file')
@@ -361,7 +361,7 @@ token_uri and client_secret stored in JSON format.'
   if not args.key_path and not args.gcloud_profile_path \
     and not args.use_metadata and not args.access_token_files\
     and not args.refresh_token_files:
-    logging.info(
+    logging.error(
         'Please select at least one option to begin scan\
  -k/--sa_key_path,-g/--gcloud_profile_path, -m, -rt, -at'
     )
@@ -381,7 +381,7 @@ token_uri and client_secret stored in JSON format.'
       full_key_path = os.path.join(args.key_path, keyfile)
       account_name, credentials = credsdb.get_creds_from_file(full_key_path)
       if credentials is None:
-        logging.info('Failed to retrieve credentials for %s', account_name)
+        logging.error('Failed to retrieve credentials for %s', account_name)
         continue
       sa_tuples.append((account_name, credentials, []))
 
@@ -389,7 +389,7 @@ token_uri and client_secret stored in JSON format.'
     # extracting GCP credentials from instance metadata
     account_name, credentials = credsdb.get_creds_from_metadata()
     if credentials is None:
-      logging.info('Failed to retrieve credentials from metadata')
+      logging.error('Failed to retrieve credentials from metadata')
     else:
       sa_tuples.append((account_name, credentials, []))
 
@@ -411,7 +411,7 @@ token_uri and client_secret stored in JSON format.'
         credentials = credsdb.get_creds_from_data(access_token,
                                                   json.loads(account_creds))
         if credentials is None:
-          logging.info('Failed to retrieve access token for %s', account_name)
+          logging.error('Failed to retrieve access token for %s', account_name)
           continue
 
         sa_tuples.append((account_name, credentials, []))
@@ -421,7 +421,7 @@ token_uri and client_secret stored in JSON format.'
       credentials = credsdb.creds_from_access_token(access_token_file)
 
       if credentials is None:
-        logging.info('Failed to retrieve credentials using token provided')
+        logging.error('Failed to retrieve credentials using token provided')
       else:
         token_file_name = os.path.basename(access_token_file)
         sa_tuples.append((token_file_name, credentials, []))
@@ -431,7 +431,7 @@ token_uri and client_secret stored in JSON format.'
       credentials = credsdb.creds_from_refresh_token(refresh_token_file)
 
       if credentials is None:
-        logging.info('Failed to retrieve credentials using token provided')
+        logging.error('Failed to retrieve credentials using token provided')
       else:
         token_file_name = os.path.basename(refresh_token_file)
         sa_tuples.append((token_file_name, credentials, []))
