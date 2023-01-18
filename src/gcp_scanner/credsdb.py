@@ -219,6 +219,7 @@ def get_access_tokens_dict(path_to_creds_db: str) -> Dict[str, str]:
       associated_account = row[0]
       token = row[1]
       expiration_date = row[2]
+      expiration_date = expiration_date.split(".")[0] # omit milliseconds
 
       token_time_obj = datetime.datetime.strptime(expiration_date,
                                                   "%Y-%m-%d %H:%M:%S")
