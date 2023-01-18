@@ -66,7 +66,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
     # Don't process this service account again
     processed_sas.add(sa_name)
-    print('>> current service account: {}'.format(sa_name))
+    logging.info('>> current service account: %s', sa_name)
     sa_results = crawl.infinite_defaultdict()
     # Log the chain we used to get here (even if we have no privs)
     sa_results['service_account_chain'] = chain_so_far
@@ -74,7 +74,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
     project_list = crawl.get_project_list(credentials)
     if len(project_list) <= 0:
-      print('Unable to list projects accessible from service account')
+      logging.info('Unable to list projects accessible from service account')
 
     if force_projects:
       for force_project_id in force_projects:
@@ -93,7 +93,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       project_id = project['projectId']
       project_number = project['projectNumber']
-      print('Inspecting project {}'.format(project_id))
+      logging.info('Inspecting project %s', project_id)
       project_result = sa_results['projects'][project_id]
 
       project_result['project_info'] = project
@@ -361,7 +361,7 @@ token_uri and client_secret stored in JSON format.'
   if not args.key_path and not args.gcloud_profile_path \
     and not args.use_metadata and not args.access_token_files\
     and not args.refresh_token_files:
-    print(
+    logging.info(
         'Please select at least one option to begin scan\
  -k/--sa_key_path,-g/--gcloud_profile_path, -m, -rt, -at'
     )
@@ -407,7 +407,7 @@ token_uri and client_secret stored in JSON format.'
         if args.key_name and args.key_name not in account_name:
           continue
 
-        print('Retrieving credentials for %s' % account_name)
+        logging.info('Retrieving credentials for %s', account_name)
         credentials = credsdb.get_creds_from_data(access_token,
                                                   json.loads(account_creds))
         if credentials is None:
