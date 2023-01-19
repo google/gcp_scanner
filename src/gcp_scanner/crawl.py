@@ -67,8 +67,8 @@ def fetch_project_info(project_name: str,
       project_info = response
 
   except Exception:
-    logging.error("Failed to enumerate projects")
-    logging.error(sys.exc_info())
+    logging.info("Failed to enumerate projects")
+    logging.info(sys.exc_info())
 
   return project_info
 
