@@ -101,8 +101,8 @@ def get_project_list(credentials: Credentials) -> List[Dict[str, Any]]:
       request = service.projects().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to enumerate projects")
-    logging.error(sys.exc_info())
+    logging.info("Failed to enumerate projects")
+    logging.info(sys.exc_info())
   return project_list
 
 
@@ -132,9 +132,9 @@ def get_compute_instances_names(
       request = service.instances().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to enumerate compute instances in the %s",
+    logging.info("Failed to enumerate compute instances in the %s",
                  project_name)
-    logging.error(sys.exc_info())
+    logging.info(sys.exc_info())
   return images_result
 
 
@@ -162,8 +162,8 @@ def get_compute_images_names(
       request = service.images().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to enumerate compute images in the %s", project_name)
-    logging.error(sys.exc_info())
+    logging.info("Failed to enumerate compute images in the %s", project_name)
+    logging.info(sys.exc_info())
   return images_result
 
 
@@ -193,8 +193,8 @@ def get_compute_disks_names(
       request = service.disks().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to enumerate compute disks in the %s", project_name)
-    logging.error(sys.exc_info())
+    logging.info("Failed to enumerate compute disks in the %s", project_name)
+    logging.info(sys.exc_info())
 
   return disk_names_list
 
@@ -226,8 +226,8 @@ def get_static_ips(project_name: str,
       request = service.addresses().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to get static IPs in the %s", project_name)
-    logging.error(sys.exc_info())
+    logging.info("Failed to get static IPs in the %s", project_name)
+    logging.info(sys.exc_info())
 
   return ips_list
 
@@ -256,8 +256,8 @@ def get_compute_snapshots(project_name: str,
       request = service.snapshots().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to get compute snapshots in the %s", project_name)
-    logging.error(sys.exc_info())
+    logging.info("Failed to get compute snapshots in the %s", project_name)
+    logging.info(sys.exc_info())
 
   return snapshots_list
 
@@ -287,8 +287,8 @@ def get_subnets(project_name: str,
       request = compute_client.subnetworks().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to get subnets in the %s", project_name)
-    logging.error(sys.exc_info())
+    logging.info("Failed to get subnets in the %s", project_name)
+    logging.info(sys.exc_info())
 
   return subnets_list
 
@@ -321,8 +321,8 @@ def get_firewall_rules(
       request = compute_client.firewalls().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to get firewall rules in the %s", project_name)
-    logging.error(sys.exc_info())
+    logging.info("Failed to get firewall rules in the %s", project_name)
+    logging.info(sys.exc_info())
   return firewall_rules_list
 
 
@@ -352,8 +352,8 @@ def get_bucket_names(project_name: str, credentials: Credentials,
     try:
       response = request.execute()
     except googleapiclient.errors.HttpError:
-      logging.error("Failed to list buckets in the %s", project_name)
-      logging.error(sys.exc_info())
+      logging.info("Failed to list buckets in the %s", project_name)
+      logging.info(sys.exc_info())
       break
 
     for bucket in response.get("items", []):
@@ -371,8 +371,8 @@ def get_bucket_names(project_name: str, credentials: Credentials,
 
             req = service.objects().list_next(req, resp)
           except googleapiclient.errors.HttpError:
-            logging.error("Failed to read the bucket %s", bucket["name"])
-            logging.error(sys.exc_info())
+            logging.info("Failed to read the bucket %s", bucket["name"])
+            logging.info(sys.exc_info())
             break
 
     request = service.buckets().list_next(
@@ -410,8 +410,8 @@ def get_managed_zones(project_name: str,
       request = service.managedZones().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to enumerate DNS zones for project %s", project_name)
-    logging.error(sys.exc_info())
+    logging.info("Failed to enumerate DNS zones for project %s", project_name)
+    logging.info(sys.exc_info())
 
   return zones_list
 
@@ -437,9 +437,9 @@ def get_gke_clusters(
     return [(cluster.name, cluster.description) for cluster in clusters.clusters
            ]
   except Exception:
-    logging.error("Failed to retrieve cluster list for project %s",
+    logging.info("Failed to retrieve cluster list for project %s",
       project_name)
-    logging.error(sys.exc_info())
+    logging.info(sys.exc_info())
     return []
 
 
@@ -464,14 +464,14 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
       res = requests.get(
           gcr_url, auth=HTTPBasicAuth("oauth2accesstoken", access_token))
       if not res.ok:
-        logging.error("Failed to retrieve gcr images list. Status code: %d",
+        logging.info("Failed to retrieve gcr images list. Status code: %d",
                      res.status_code)
         continue
       images[region.replace(".", "")] = res.json()
     except Exception:
-      logging.error("Failed to retrieve gke images for project %s",
+      logging.info("Failed to retrieve gke images for project %s",
         project_name)
-      logging.error(sys.exc_info())
+      logging.info(sys.exc_info())
 
   return images
 
@@ -503,8 +503,8 @@ def get_sql_instances(project_name: str,
       request = service.instances().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to get SQL instances for project %s", project_name)
-    logging.error(sys.exc_info())
+    logging.info("Failed to get SQL instances for project %s", project_name)
+    logging.info(sys.exc_info())
 
   return sql_instances_list
 
@@ -536,8 +536,8 @@ def get_bq_tables(project_id: str, dataset_id: str,
       request = bq_service.tables().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to retrieve BQ tables for dataset %s", dataset_id)
-    logging.error(sys.exc_info())
+    logging.info("Failed to retrieve BQ tables for dataset %s", dataset_id)
+    logging.info(sys.exc_info())
   return list_of_tables
 
 
@@ -570,8 +570,8 @@ def get_bq(project_id: str,
       request = service.datasets().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to retrieve BQ datesets for project %s", project_id)
-    logging.error(sys.exc_info())
+    logging.info("Failed to retrieve BQ datesets for project %s", project_id)
+    logging.info(sys.exc_info())
   return bq_datasets
 
 
@@ -603,8 +603,8 @@ def get_pubsub_subscriptions(project_id: str,
       request = service.projects().subscriptions().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to get PubSubs for project %s", project_id)
-    logging.error(sys.exc_info())
+    logging.info("Failed to get PubSubs for project %s", project_id)
+    logging.info(sys.exc_info())
   return pubsubs_list
 
 
@@ -635,9 +635,9 @@ def get_cloudfunctions(project_id: str,
       request = service.projects().locations().functions().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to retrieve CloudFunctions for project %s",
+    logging.info("Failed to retrieve CloudFunctions for project %s",
       project_id)
-    logging.error(sys.exc_info())
+    logging.info(sys.exc_info())
 
   return functions_list
 
@@ -670,9 +670,9 @@ def get_bigtable_instances(project_id: str,
       request = service.projects().instances().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to retrieve BigTable instances for project %s",
+    logging.info("Failed to retrieve BigTable instances for project %s",
                  project_id)
-    logging.error(sys.exc_info())
+    logging.info(sys.exc_info())
   return bigtable_instances_list
 
 
@@ -704,9 +704,9 @@ def get_spanner_instances(project_id: str,
       request = service.projects().instances().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to retrieve Spanner instances for project %s",
+    logging.info("Failed to retrieve Spanner instances for project %s",
                  project_id)
-    logging.error(sys.exc_info())
+    logging.info(sys.exc_info())
   return spanner_instances_list
 
 
@@ -737,9 +737,9 @@ def get_filestore_instances(project_id: str,
       request = service.projects().locations().instances().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to get filestore instances for project %s",
+    logging.info("Failed to get filestore instances for project %s",
       project_id)
-    logging.error(sys.exc_info())
+    logging.info(sys.exc_info())
   return filestore_instances_list
 
 
@@ -791,8 +791,8 @@ def get_kms_keys(project_id: str,
         request_loc = service.projects().locations().keyRings().list_next(
             previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to retrieve KMS keys for project %s", project_id)
-    logging.error(sys.exc_info())
+    logging.info("Failed to retrieve KMS keys for project %s", project_id)
+    logging.info(sys.exc_info())
   return kms_keys_list
 
 
@@ -832,9 +832,9 @@ def get_app_services(project_name: str,
       request = app_client.apps().services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to retrieve App services for project %s",
+    logging.info("Failed to retrieve App services for project %s",
       project_name)
-    logging.error(sys.exc_info())
+    logging.info(sys.exc_info())
   return app_services
 
 
@@ -868,9 +868,9 @@ def get_endpoints(project_id: str,
       request = service.services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to retrieve endpoints list for project %s",
+    logging.info("Failed to retrieve endpoints list for project %s",
       project_id)
-    logging.error(sys.exc_info())
+    logging.info(sys.exc_info())
   return endpoints_list
 
 
@@ -904,8 +904,8 @@ def get_iam_policy(project_name: str,
         resource=resource, body=get_policy_options)
     response = request.execute()
   except Exception:
-    logging.error("Failed to get endpoints list for project %s", project_name)
-    logging.error(sys.exc_info())
+    logging.info("Failed to get endpoints list for project %s", project_name)
+    logging.info(sys.exc_info())
     return None
 
   if response.get("bindings", None) is not None:
@@ -976,8 +976,8 @@ def get_service_accounts(project_name: str,
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to retrieve SA list for project %s", project_name)
-    logging.error(sys.exc_info())
+    logging.info("Failed to retrieve SA list for project %s", project_name)
+    logging.info(sys.exc_info())
 
   return service_accounts
 
@@ -1007,7 +1007,7 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
       request = serviceusage.services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.error("Failed to retrive services for project %s", project_id)
-    logging.error(sys.exc_info())
+    logging.info("Failed to retrive services for project %s", project_id)
+    logging.info(sys.exc_info())
 
   return list_of_services
