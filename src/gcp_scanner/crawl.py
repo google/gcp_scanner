@@ -437,8 +437,7 @@ def get_gke_clusters(
     return [(cluster.name, cluster.description) for cluster in clusters.clusters
            ]
   except Exception:
-    logging.info("Failed to retrieve cluster list for project %s",
-      project_name)
+    logging.info("Failed to retrieve cluster list for project %s", project_name)
     logging.info(sys.exc_info())
     return []
 
@@ -469,8 +468,7 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
         continue
       images[region.replace(".", "")] = res.json()
     except Exception:
-      logging.info("Failed to retrieve gke images for project %s",
-        project_name)
+      logging.info("Failed to retrieve gke images for project %s", project_name)
       logging.info(sys.exc_info())
 
   return images
@@ -635,8 +633,7 @@ def get_cloudfunctions(project_id: str,
       request = service.projects().locations().functions().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.info("Failed to retrieve CloudFunctions for project %s",
-      project_id)
+    logging.info("Failed to retrieve CloudFunctions for project %s", project_id)
     logging.info(sys.exc_info())
 
   return functions_list
@@ -737,8 +734,7 @@ def get_filestore_instances(project_id: str,
       request = service.projects().locations().instances().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.info("Failed to get filestore instances for project %s",
-      project_id)
+    logging.info("Failed to get filestore instances for project %s", project_id)
     logging.info(sys.exc_info())
   return filestore_instances_list
 
@@ -832,8 +828,7 @@ def get_app_services(project_name: str,
       request = app_client.apps().services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.info("Failed to retrieve App services for project %s",
-      project_name)
+    logging.info("Failed to retrieve App services for project %s", project_name)
     logging.info(sys.exc_info())
   return app_services
 
@@ -868,8 +863,7 @@ def get_endpoints(project_id: str,
       request = service.services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.info("Failed to retrieve endpoints list for project %s",
-      project_id)
+    logging.info("Failed to retrieve endpoints list for project %s", project_id)
     logging.info(sys.exc_info())
   return endpoints_list
 
