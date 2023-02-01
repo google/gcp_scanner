@@ -23,15 +23,21 @@ import os
 import sys
 from typing import List, Tuple, Dict, Optional,Union
 
+<<<<<<< HEAD
 from . import crawl
 from . import credsdb
 from . import argparser
+=======
+import crawl
+import credsdb
+>>>>>>> f016ebc (Moved the Argument Parser code into its own module. Closes issue #15.)
 from google.cloud import container_v1
 from google.cloud import iam_credentials
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from googleapiclient import discovery
 from httplib2 import Credentials
-from .models import SpiderContext
+from models import SpiderContext
+import argparser
 
 def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
   if config is None:
@@ -297,7 +303,20 @@ def main():
   logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
   logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
 
+<<<<<<< HEAD
   args = argparser.parse_arguments()
+=======
+  # Call ArgParser module to parse arguments
+  args = argparser.parse_arguments()
+
+  if not args.key_path and not args.gcloud_profile_path \
+    and not args.use_metadata and not args.access_token_files\
+    and not args.refresh_token_files:
+    logging.error(
+        'Please select at least one option to begin scan\
+ -k/--sa_key_path,-g/--gcloud_profile_path, -m, -rt, -at'
+    )
+>>>>>>> f016ebc (Moved the Argument Parser code into its own module. Closes issue #15.)
 
   force_projects_list = list()
   if args.force_projects:
