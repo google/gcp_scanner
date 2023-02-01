@@ -42,6 +42,15 @@ To install the package, use `pip` (you must also have `git` installed):
 
 ```
 pip install https://github.com/google/gcp_scanner/archive/main.zip
+gcp-scanner --help
+```
+
+Alternatively:
+```
+git clone https://github.com/google/gcp_scanner
+cd gcp_scanner
+pip install .
+gcp-scanner --help
 ```
 
 There is a docker build file if you want to run the scanner from a container:
