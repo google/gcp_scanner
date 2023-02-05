@@ -1,12 +1,17 @@
+"""This Module can be imported to parse command line arguments."""
 import argparse
 
 def parse_arguments():
+    """
+    DESCRIPTION: A function for parsing arguments using the argparse library.
+    RETURNS: A list of parsed arguments.
+    """
 
     # Creating the argument parser
     parser = argparse.ArgumentParser(
-      prog='scanner.py',
-      description='GCP Scanner',
-      usage='python3 %(prog)s -o folder_to_save_results -g -')
+    prog='scanner.py',
+    description='GCP Scanner',
+    usage='python3 %(prog)s -o folder_to_save_results -g -')
 
     # Adding arguments
     required_named = parser.add_argument_group('Required parameters')
@@ -29,8 +34,8 @@ def parse_arguments():
       default=None,
       dest='gcloud_profile_path',
       help='Path to directory with gcloud profile. Specify -\
- to search for credentials in default gcloud config path'
-  )
+      to search for credentials in default gcloud config path'
+    )
     parser.add_argument(
       '-m',
       default=False,
@@ -42,13 +47,13 @@ def parse_arguments():
       default=None,
       dest='access_token_files',
       help='A list of comma separated files with access token and OAuth scopes.\
-TTL limited. A token and scopes should be stored in JSON format.')
+  TTL limited. A token and scopes should be stored in JSON format.')
     parser.add_argument(
       '-rt',
       default=None,
       dest='refresh_token_files',
       help='A list of comma separated files with refresh_token, client_id,\
-token_uri and client_secret stored in JSON format.'
+  token_uri and client_secret stored in JSON format.'
   )
     parser.add_argument(
       '-s', default=None, dest='key_name', help='Name of individual SA to scan')
