@@ -17,22 +17,21 @@
 
 """
 
-import argparse
 import json
 import logging
 import os
 import sys
 from typing import List, Tuple, Dict, Optional
 
-import crawl
-import credsdb
+from . import crawl
+from . import credsdb
+from . import argparser
 from google.cloud import container_v1
 from google.cloud import iam_credentials
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from googleapiclient import discovery
 from httplib2 import Credentials
-from models import SpiderContext
-import argparser
+from .models import SpiderContext
 
 
 def is_set(config, config_setting):
@@ -287,7 +286,6 @@ def main():
   logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
   logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
 
-  # Call ArgParser module to parse arguments
   args = argparser.parse_arguments()
 
   if not args.key_path and not args.gcloud_profile_path \
