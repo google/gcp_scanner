@@ -31,7 +31,8 @@ from google.cloud import iam_credentials
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from googleapiclient import discovery
 from httplib2 import Credentials
-from .models import SpiderContext
+from models import SpiderContext
+import argparser
 
 
 def is_set(config, config_setting):
