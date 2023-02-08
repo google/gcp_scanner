@@ -288,6 +288,14 @@ def main():
 
   args = argparser.parse_arguments()
 
+  if not args.key_path and not args.gcloud_profile_path \
+    and not args.use_metadata and not args.access_token_files\
+    and not args.refresh_token_files:
+    logging.error(
+        'Please select at least one option to begin scan\
+ -k/--sa_key_path,-g/--gcloud_profile_path, -m, -rt, -at'
+    )
+
   force_projects_list = list()
   if args.force_projects:
     force_projects_list = args.force_projects.split(',')
