@@ -82,14 +82,14 @@ Required parameters:
   -o OUTPUT             Path to output directory
 ```
 
-Option `-f` requires an additional explanation. In some cases, service account does not have permissions to explicitly list project names. However, it still might have access to underlying resources if we provide correct project name. This option specifically designed to handle such cases.
+Option `-f` requires an additional explanation. In some cases, a service account does not have permissions to explicitly list project names. However, it still might have access to underlying resources if we provide the correct project name. This option is specifically designed to handle such cases.
 
 
 ### Building standalone binary with pyinstaller
 
 Please replace `google-api-python-client==2.9.0` with `google-api-python-client==1.8.0` in `pyproject.toml`. After that, navigate to the scanner source code directory and use pyinstaller to compile a standalone binary:
 
-`pyinstaller -F --add-data 'roots.pem:grpc/_cython/_credentials/" scanner.py`
+`pyinstaller -F --add-data "roots.pem:grpc/_cython/_credentials/" scanner.py`
 
 
 ### Working with results
