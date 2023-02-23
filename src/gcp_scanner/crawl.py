@@ -1005,3 +1005,38 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
     logging.info(sys.exc_info())
 
   return list_of_services
+
+
+def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
+  """Retrieve a list of cloud source repositories enabled in the project.
+
+  Args:
+    project_id: An id of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of cloud source repositories in the project.
+  """
+
+  logging.info("Retrieving cloud source repositories %s", project_id)
+  list_of_repos = list()
+  service = discovery.build("sourcerepo", "v1", credentials=credentials)
+
+  request = service.projects().repos().list(
+    name="projects/" + project_id,
+    pageSize=200
+  )
+  try:
+    while request is not None:
+      response = request.execute()
+      list_of_repos.append(response.get("repos", None))
+
+      request = service.services().list_next(
+        previous_request=request,
+        previous_response=response
+      )
+  except Exception:
+    logging.info("Failed to retrieve cloud source repos for project %s", project_id)
+    logging.info(sys.exc_info())
+
+  return list_of_repos
