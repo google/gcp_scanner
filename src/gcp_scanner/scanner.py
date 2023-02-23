@@ -66,7 +66,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
     # Don't process this service account again
     processed_sas.add(sa_name)
-    logging.info('>> current service account: %s', sa_name)
+    logging.info('>> current service account: {0}'.format(sa_name))
     sa_results = crawl.infinite_defaultdict()
     # Log the chain we used to get here (even if we have no privs)
     sa_results['service_account_chain'] = chain_so_far

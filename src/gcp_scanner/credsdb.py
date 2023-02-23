@@ -60,7 +60,7 @@ def get_creds_from_file(file_path: str) -> Tuple[str, Credentials]:
     google.auth.service_account.Credentials: The constructed credentials.
   """
 
-  logging.info("Retrieving credentials from %s", file_path)
+  logging.info("Retrieving credentials from {0}".format(file_path))
   creds = service_account.Credentials.from_service_account_file(file_path)
   return creds.service_account_email, creds
 
@@ -98,22 +98,19 @@ service-accounts/default/email"
   try:
     res = requests.get(token_url, headers=headers)
     if not res.ok:
-      logging.error("Failed to retrieve instance token. Status code %d",
-        res.status_code)
+      logging.error("Failed to retrieve instance token. Status code {0}".format(res.status_code))
       return None, None
     token = res.json()["access_token"]
 
     res = requests.get(scope_url, headers=headers)
     if not res.ok:
-      logging.error("Failed to retrieve instance scopes. Status code %d",
-        res.status_code)
+      logging.error("Failed to retrieve instance scopes. Status code {0}".format(res.status_code))
       return None, None
     instance_scopes = res.content.decode("utf-8")
 
     res = requests.get(email_url, headers=headers)
     if not res.ok:
-      logging.error("Failed to retrieve instance email. Status code %d",
-        res.status_code)
+      logging.error("Failed to retrieve instance email. Status code {0}".format(res.status_code))
       return None, None
     email = res.content.decode("utf-8")
 
@@ -123,9 +120,9 @@ service-accounts/default/email"
     return None, None
 
   print("Successfully retrieved instance metadata")
-  logging.info("Access token length: %d", len(token))
-  logging.info("Instance email: %s", email)
-  logging.info("Instance scopes: %s", instance_scopes)
+  logging.info("Access token length: {0}".format(len(token)))
+  logging.info("Instance email: {0}".format(email))
+  logging.info("Instance scopes: {0}".format(instance_scopes))
   return email, credentials_from_token(token, None, None, None, None,
                                        instance_scopes)
 
@@ -214,7 +211,7 @@ def get_access_tokens_dict(path_to_creds_db: str) -> Dict[str, str]:
                                                 "access_tokens.db")
   if os.path.exists(access_tokens_path) and os.access(access_tokens_path,
                                                       os.R_OK):
-    logging.info("Identified access tokens DB in %s", access_tokens_path)
+    logging.info("Identified access tokens DB in {0}".format(access_tokens_path))
     conn = sqlite3.connect(access_tokens_path)
     cursor = conn.execute(
         "SELECT account_id, access_token, token_expiry FROM access_tokens")
@@ -228,7 +225,7 @@ def get_access_tokens_dict(path_to_creds_db: str) -> Dict[str, str]:
       token_time_obj = datetime.datetime.strptime(expiration_date,
                                                   "%Y-%m-%d %H:%M:%S")
       if datetime.datetime.now() > token_time_obj:
-        logging.info("Token for %s expired", associated_account)
+        logging.info("Token for {0} expired".format(associated_account))
         continue
 
       access_tokens_dict[associated_account] = token
@@ -246,7 +243,7 @@ def extract_creds(path_to_creds_db: str) -> List[Tuple[str, str, str]]:
     list of tuples: (account name, refresh token, access token).
   """
 
-  logging.info("Opening %s DB", path_to_creds_db)
+  logging.info("Opening {0} DB".format(path_to_creds_db))
   SA = collections.namedtuple("SA", "account_name, creds, token")
 
   res = list()
@@ -261,7 +258,7 @@ def extract_creds(path_to_creds_db: str) -> List[Tuple[str, str, str]]:
   for row in rows:
     access_token = None
     if access_tokens.get(row[0], None) is not None:
-      logging.info("Found valid access token for %s", row[0])
+      logging.info("Found valid access token for {0}".format(row[0]))
       access_token = access_tokens[row[0]]
     res.append(SA(row[0], row[1], access_token))
   print(f"Identified {len(res)} credential entries")
