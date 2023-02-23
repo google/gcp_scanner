@@ -247,8 +247,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             logging.info('Successfully impersonated {candidate_service_account}'
             'using {sa_name}')
           except Exception:
-            logging.error('Failed to get token for %s',
-                                                      candidate_service_account)
+            logging.error('Failed to get token for {0}'.format(candidate_service_account))
             logging.error(sys.exc_info()[1])
 
       # Write out results to json DB
@@ -381,7 +380,7 @@ token_uri and client_secret stored in JSON format.'
       full_key_path = os.path.join(args.key_path, keyfile)
       account_name, credentials = credsdb.get_creds_from_file(full_key_path)
       if credentials is None:
-        logging.error('Failed to retrieve credentials for %s', account_name)
+        logging.error('Failed to retrieve credentials for {0}'.format(account_name))
         continue
       sa_tuples.append((account_name, credentials, []))
 
@@ -407,11 +406,11 @@ token_uri and client_secret stored in JSON format.'
         if args.key_name and args.key_name not in account_name:
           continue
 
-        logging.info('Retrieving credentials for %s', account_name)
+        logging.info('Retrieving credentials for {0}'.format(account_name))
         credentials = credsdb.get_creds_from_data(access_token,
                                                   json.loads(account_creds))
         if credentials is None:
-          logging.error('Failed to retrieve access token for %s', account_name)
+          logging.error('Failed to retrieve access token for {0}'.format(account_name))
           continue
 
         sa_tuples.append((account_name, credentials, []))
