@@ -1,0 +1,5 @@
+- [ ] closes #xxxx (Replace xxxx with the GitHub issue number)
+- [ ] [Tests added and passed](Test links) if fixing a bug or adding a new feature
+- [ ] All [code checks passed](code check links).
+- [ ] Added [type annotations](links) to new arguments/methods/functions.
+- [ ] Added an entry in the latest `doc/source/whatsnew/vX.X.X.rst` file if fixing a bug or adding a new feature.
