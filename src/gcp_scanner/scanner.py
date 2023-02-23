@@ -221,6 +221,13 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         project_result['services'] = crawl.list_services(project_id,
                                                          credentials)
 
+      # Get list of cloud source repositories enabled in the project
+      if is_set(scan_config, 'repos'):
+        project_result['repos'] = crawl.list_sourcerepo(
+          project_id,
+          credentials
+        )
+
       # trying to impersonate SAs within project
       if scan_config is not None:
         impers = scan_config.get('service_accounts', None)
