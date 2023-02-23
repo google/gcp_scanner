@@ -3,8 +3,11 @@ name: "tagged-release"
 
 on:
   push:
+    branches: [ "main" ]
     tags:
       - "v*"
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   tagged-release:
