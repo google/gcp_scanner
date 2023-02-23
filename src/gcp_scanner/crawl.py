@@ -1036,7 +1036,7 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
         previous_response=response
       )
   except Exception:
-    logging.info("Failed to retrieve cloud source repos for project %s", project_id)
+    logging.info("Failed to retrieve source repos for project %s", project_id)
     logging.info(sys.exc_info())
 
   return list_of_repos
