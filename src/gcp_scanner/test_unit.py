@@ -400,3 +400,14 @@ class TestCrawler(unittest.TestCase):
         "project_info",
       )
     )
+
+  def test_sourcerepos(self):
+    """Test list of cloud source repositories in the project."""
+    # TODO: Enable cloud source repo in the test project
+    # TODO: Update the sourcerepos file in the test dir
+    self.assertTrue(
+      verify(
+        crawl.list_sourcerepo(PROJECT_NAME, self.credentials),
+        "sourcerepos",
+      )
+    )
