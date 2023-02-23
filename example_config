@@ -69,6 +69,9 @@
   "services": {
     "fetch": true
   },
+  "sourcerepos": {
+    "fetch": true
+  },
   "iam_policy": {
     "fetch": false
   },
