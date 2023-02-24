@@ -1001,7 +1001,7 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
       request = serviceusage.services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.info("Failed to retrive services for project %s", project_id)
+    logging.info("Failed to retrieve services for project %s", project_id)
     logging.info(sys.exc_info())
 
   return list_of_services
