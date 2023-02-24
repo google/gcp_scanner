@@ -26,3 +26,21 @@ information on using pull requests.
 
 This project follows [Google's Open Source Community
 Guidelines](https://opensource.google/conduct/).
+
+## Commit Message Conventions
+- Start with a short summary (50 characters or less) of the changes made.
+- Use the present tense and imperative mood.
+- Separate the summary from the body of the message with a blank line.
+- Use the body to explain what and why changes were made, as well as any necessary details.
+- Addionally, you can consider using semantic commit messages like "feat:" or "docs:" which will provide additional context to the commit message.
+
+**Example:** Add support for GCP Compute Engine in scanner
+
+**Example:** feat:add support for GCP Compute Engine in scanner
+
+## Branching Naming Conventions
+- Use lowercase letters.
+- Separate words with hyphens.
+- Use descriptive names that reflect the purpose of the branch.
+
+**Example:** feature/gcp-compute-engine-support
