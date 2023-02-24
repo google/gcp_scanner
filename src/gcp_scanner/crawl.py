@@ -420,7 +420,7 @@ def get_gke_clusters(
     project_name: str, gke_client: container_v1.services.cluster_manager.client
     .ClusterManagerClient
 ) -> List[Tuple[str, str]]:
-  """Retrieve a list of DNS zones available in the project.
+  """Retrieve a list of GKE clusters available in the project.
 
   Args:
     project_name: A name of a project to query info about.
