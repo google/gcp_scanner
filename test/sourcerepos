@@ -1,0 +1,8 @@
+[
+  [
+    {
+      "name": "projects/test-gcp-scanner/repos/test_source_repo",
+      "url": "https://source.developers.google.com/p/test-gcp-scanner/r/test_source_repo"
+    }
+  ]
+]
