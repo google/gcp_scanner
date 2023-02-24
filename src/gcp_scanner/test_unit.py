@@ -409,3 +409,12 @@ class TestCrawler(unittest.TestCase):
         "sourcerepos",
       )
     )
+
+  def test_dns_policies(self):
+    """Test list of cloud DNS policies in the project."""
+    self.assertTrue(
+      verify(
+        crawl.list_dns_policies(PROJECT_NAME, self.credentials),
+        "dns_policies",
+      )
+    )
