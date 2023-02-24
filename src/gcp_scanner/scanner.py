@@ -259,7 +259,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             logging.error(sys.exc_info()[1])
 
       # Write out results to json DB
-      logging.info('Saving results for {project_id} into the file')
+      logging.info('Saving results for %s into the file', project_id)
 
       sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
