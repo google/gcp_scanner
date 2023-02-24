@@ -1031,7 +1031,7 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
       response = request.execute()
       list_of_repos.append(response.get("repos", None))
 
-      request = service.services().list_next(
+      request = service.projects().repos().list_next(
         previous_request=request,
         previous_response=response
       )
