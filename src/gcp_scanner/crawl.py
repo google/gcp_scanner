@@ -1040,3 +1040,37 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
     logging.info(sys.exc_info())
 
   return list_of_repos
+
+
+def list_dns_policies(project_id: str, credentials: Credentials) -> List[Any]:
+  """Retrieve a list of cloud DNS policies in the project.
+  Args:
+    project_id: An id of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+  Returns:
+    A list of cloud DNS policies in the project.
+  """
+
+  logging.info("Retrieving cloud DNS policies %s", project_id)
+  list_of_policies = list()
+  service = discovery.build("dns", "v1", credentials=credentials)
+
+  request = service.policies().list(
+    project=project_id,
+    maxResults=200
+  )
+  try:
+    while request is not None:
+      response = request.execute()
+      list_of_policies.append(response.get("policies", None))
+
+      request = service.policies().list_next(
+        previous_request=request,
+        previous_response=response
+      )
+  except Exception:
+    logging.info("Failed to retrieve DNS policies for project %s", project_id)
+    logging.info(sys.exc_info())
+
+  return list_of_policies
+
