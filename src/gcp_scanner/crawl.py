@@ -1024,7 +1024,7 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
 
   request = service.projects().repos().list(
     name="projects/" + project_id,
-    pageSize=200
+    pageSize=500
   )
   try:
     while request is not None:
