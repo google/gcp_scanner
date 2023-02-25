@@ -380,8 +380,6 @@ def creds_from_refresh_token(refresh_token_file):
     creds_dict = json.load(f)
 
   user_scopes = creds_dict.get("scopes", None)
-  if user_scopes is None:
-    user_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
 
   return credentials.Credentials(
       None,
