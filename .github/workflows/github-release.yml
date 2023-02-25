@@ -1,13 +1,13 @@
----
-name: "tagged-release"
+# This workflow will create a release when there is a push on the main branch
+# For more information see: https://github.com/marvinpinto/action-automatic-releases
+
+name: GCP Scanner Auto Release
 
 on:
   push:
     branches: [ "main" ]
     tags:
       - "v*"
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   tagged-release:
@@ -16,23 +16,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.10
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install .
-      - name: "Build & test"
-        run: |
-          echo "done!"
-
-      - uses: "marvinpinto/action-automatic-releases@latest"
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Create Release
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: false
           files: |
             LICENSE.txt
-            *.jar
