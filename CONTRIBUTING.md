@@ -36,7 +36,7 @@ Guidelines](https://opensource.google/conduct/).
 
 **Example:** Add support for GCP Compute Engine in scanner
 
-**Example:** feat:add support for GCP Compute Engine in scanner
+**Example:** feat: add support for GCP Compute Engine in scanner
 
 ## Branching Naming Conventions
 - Use lowercase letters.
