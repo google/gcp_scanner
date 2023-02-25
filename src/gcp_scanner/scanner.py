@@ -192,7 +192,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         project_result['cloud_functions'] = crawl.get_cloudfunctions(
             project_id, credentials)
 
-      # Get List of BigTable Instanses
+      # Get List of BigTable Instances
       if is_set(scan_config, 'bigtable_instances'):
         project_result['bigtable_instances'] = crawl.get_bigtable_instances(
             project_id, credentials)
@@ -290,7 +290,7 @@ def gke_client_for_credentials(
 
 
 def main():
-  logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
+  logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
   logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
 
   parser = argparse.ArgumentParser(
