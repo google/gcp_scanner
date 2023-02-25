@@ -358,7 +358,12 @@ def get_bucket_names(project_name: str, credentials: Credentials,
 
     for bucket in response.get("items", []):
       buckets_dict[bucket["name"]] = (bucket, None)
-      if dump_fd is not None:
+
+    # Retrieve root folder info for the bucket
+    root_folder = service.objects().get(bucket=bucket["name"], object=bucket["name"]).execute()
+    buckets_dict[bucket["name"]][1] = [root_folder]
+
+    if dump_fd is not None:
         ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
 
         req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
