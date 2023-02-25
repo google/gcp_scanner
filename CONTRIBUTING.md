@@ -44,4 +44,4 @@ Guidelines](https://opensource.google/conduct/).
 - Use descriptive names that reflect the purpose of the branch.
 - Add `issue tracker id`
 
-**Example:** feature/gcp-compute-engine-support
+**Example:** feat/<issue-id>/gcp-compute-engine-support
