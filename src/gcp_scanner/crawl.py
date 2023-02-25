@@ -360,25 +360,25 @@ def get_bucket_names(project_name: str, credentials: Credentials,
       buckets_dict[bucket["name"]] = (bucket, None)
 
     # Retrieve root folder info for the bucket
-    root_folder = service.objects().get(bucket=bucket["name"], object=bucket["name"]).execute()
-    buckets_dict[bucket["name"]][1] = [root_folder]
+      root_folder = service.objects().get(bucket=bucket["name"], object=bucket["name"]).execute()
+      buckets_dict[bucket["name"]][1] = [root_folder]
 
-    if dump_fd is not None:
-        ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
+      if dump_fd is not None:
+          ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
 
-        req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
+          req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
 
-        while req:
-          try:
-            resp = req.execute()
-            for item in resp.get("items", []):
-              dump_fd.write(json.dumps(item, indent=2, sort_keys=False))
+          while req:
+            try:
+              resp = req.execute()
+              for item in resp.get("items", []):
+                dump_fd.write(json.dumps(item, indent=2, sort_keys=False))
 
-            req = service.objects().list_next(req, resp)
-          except googleapiclient.errors.HttpError:
-            logging.info("Failed to read the bucket %s", bucket["name"])
-            logging.info(sys.exc_info())
-            break
+              req = service.objects().list_next(req, resp)
+            except googleapiclient.errors.HttpError:
+              logging.info("Failed to read the bucket %s", bucket["name"])
+              logging.info(sys.exc_info())
+              break
 
     request = service.buckets().list_next(
         previous_request=request, previous_response=response)
