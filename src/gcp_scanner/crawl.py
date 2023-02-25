@@ -33,7 +33,7 @@ from requests.auth import HTTPBasicAuth
 
 
 def infinite_defaultdict():
-  """Initalize infinite default.
+  """Initialize infinite default.
 
   Returns:
     DefaultDict
@@ -568,7 +568,7 @@ def get_bq(project_id: str,
       request = service.datasets().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.info("Failed to retrieve BQ datesets for project %s", project_id)
+    logging.info("Failed to retrieve BQ datasets for project %s", project_id)
     logging.info(sys.exc_info())
   return bq_datasets
 
