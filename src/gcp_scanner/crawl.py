@@ -517,7 +517,7 @@ def get_bq_tables(project_id: str, dataset_id: str,
     bq_service: I do not know.
 
   Returns:
-    A list of BigQuety tables in the dataset.
+    A list of BigQuery tables in the dataset.
   """
 
   logging.info("Retrieving BigQuery Tables for dataset %s", dataset_id)
@@ -568,7 +568,7 @@ def get_bq(project_id: str,
       request = service.datasets().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.info("Failed to retrieve BQ datesets for project %s", project_id)
+    logging.info("Failed to retrieve BQ dateset for project %s", project_id)
     logging.info(sys.exc_info())
   return bq_datasets
 
