@@ -32,14 +32,13 @@ from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMC
 from googleapiclient import discovery
 from httplib2 import Credentials
 from .models import SpiderContext
+from typing import Union
 
-
-def is_set(config, config_setting):
+def is_set(config: Union[None,dict], config_setting: str) -> Union[dict,bool]:
   if config is None:
     return True
   obj = config.get(config_setting, {})
   return obj.get('fetch', False)
-
 
 def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                out_dir: str,
