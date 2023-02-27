@@ -270,8 +270,7 @@ def get_subnets(project_name: str,
     while request is not None:
       response = request.execute()
       if response.get("items", None) is not None:
-        subnets_list = [(name, subnetworks_scoped_list)
-          for name, subnetworks_scoped_list in response["items"].items()]
+        subnets_list = list(response["items"].items())
       request = compute_client.subnetworks().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
