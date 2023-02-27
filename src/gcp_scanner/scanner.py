@@ -22,7 +22,7 @@ import json
 import logging
 import os
 import sys
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional,Union
 
 from . import crawl
 from . import credsdb
@@ -32,7 +32,6 @@ from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMC
 from googleapiclient import discovery
 from httplib2 import Credentials
 from .models import SpiderContext
-from typing import Union,Optional
 
 def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
   if config is None:
