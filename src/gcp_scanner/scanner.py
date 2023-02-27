@@ -304,6 +304,7 @@ def main():
   required_named = parser.add_argument_group('Required parameters')
   required_named.add_argument(
       '-o',
+      '--output_dir',
       required=True,
       dest='output',
       default='scan_db',
@@ -325,32 +326,41 @@ def main():
   )
   parser.add_argument(
       '-m',
+      '--use_metadata',
       default=False,
       dest='use_metadata',
       action='store_true',
       help='Extract credentials from GCE instance metadata')
   parser.add_argument(
       '-at',
+      '--access_token_files',
       default=None,
       dest='access_token_files',
       help='A list of comma separated files with access token and OAuth scopes.\
 TTL limited. A token and scopes should be stored in JSON format.')
   parser.add_argument(
       '-rt',
+      '--refresh_token_files',
       default=None,
       dest='refresh_token_files',
       help='A list of comma separated files with refresh_token, client_id,\
 token_uri and client_secret stored in JSON format.'
   )
   parser.add_argument(
-      '-s', default=None, dest='key_name', help='Name of individual SA to scan')
+      '-s', 
+      '--service_account',
+      default=None,
+      dest='key_name', 
+      help='Name of individual SA to scan')
   parser.add_argument(
       '-p',
+      '--project',
       default=None,
       dest='target_project',
       help='Name of individual project to scan')
   parser.add_argument(
       '-f',
+      '--force_projects',
       default=None,
       dest='force_projects',
       help='Comma separated list of project names to include in the scan')
@@ -368,7 +378,9 @@ token_uri and client_secret stored in JSON format.'
       choices=('INFO', 'WARNING', 'ERROR'),
       help='Set logging level (INFO, WARNING, ERROR)')
 
-  args = parser.parse_args()
+  args: argparse.Namespace = parser.parse_args()
+
+
   if not args.key_path and not args.gcloud_profile_path \
     and not args.use_metadata and not args.access_token_files\
     and not args.refresh_token_files:
