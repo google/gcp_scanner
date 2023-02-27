@@ -180,8 +180,8 @@ def get_compute_disks_names(
     while request is not None:
       response = request.execute()
       if response.get("items", None) is not None:
-        disk_names_list = [disk 
-          for _, disks_scoped_list in response["items"].items() 
+        disk_names_list = [disk
+          for _, disks_scoped_list in response["items"].items()
           for disk in disks_scoped_list.get("disks", [])]
       request = service.disks().aggregatedList_next(
           previous_request=request, previous_response=response)
@@ -211,8 +211,8 @@ def get_static_ips(project_name: str,
     request = service.addresses().aggregatedList(project=project_name)
     while request is not None:
       response = request.execute()
-      ips_list = [{name: addresses_scoped_list} 
-        for name, addresses_scoped_list in response["items"].items() 
+      ips_list = [{name: addresses_scoped_list}
+        for name, addresses_scoped_list in response["items"].items()
         if addresses_scoped_list.get("addresses", None) is not None]
       request = service.addresses().aggregatedList_next(
           previous_request=request, previous_response=response)
@@ -415,7 +415,6 @@ def get_gke_clusters(
   try:
     clusters = gke_client.list_clusters(parent=parent)
     return list(map(lambda x: (x.name,x.description),clusters.clusters))
-  
   except Exception:
     logging.info("Failed to retrieve cluster list for project %s", project_name)
     logging.info(sys.exc_info())
@@ -921,9 +920,8 @@ def get_service_accounts(project_name: str,
     request = service.projects().serviceAccounts().list(name=name)
     while request is not None:
       response = request.execute()
-      service_lf = lambda x: (x["email"],x["description"]
-      if "description" in x else "")
-      service_accounts=list(map(service_lf,response.get["accounts"],[]))
+      service_accounts=list(map(lambda x: (x["email"],x["description"]
+        if "description" in x else ""),response.get["accounts"],[]))
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
   except Exception:
