@@ -122,9 +122,9 @@ def get_compute_instances_names(
     while request is not None:
       response = request.execute()
       if response.get("items", None) is not None:
-        images_result = [instance 
-                         for _, instances_scoped_list in response["items"].items() 
-                         for instance in instances_scoped_list.get("instances",[])]
+        images_result = [instance
+          for _, instances_scoped_list in response["items"].items()
+          for instance in instances_scoped_list.get("instances",[])]
       request = service.instances().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -181,8 +181,8 @@ def get_compute_disks_names(
       response = request.execute()
       if response.get("items", None) is not None:
         disk_names_list = [disk 
-                           for _, disks_scoped_list in response["items"].items() 
-                           for disk in disks_scoped_list.get("disks", [])]
+          for _, disks_scoped_list in response["items"].items() 
+          for disk in disks_scoped_list.get("disks", [])]
       request = service.disks().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -212,8 +212,8 @@ def get_static_ips(project_name: str,
     while request is not None:
       response = request.execute()
       ips_list = [{name: addresses_scoped_list} 
-                  for name, addresses_scoped_list in response["items"].items() 
-                  if addresses_scoped_list.get("addresses", None) is not None]
+        for name, addresses_scoped_list in response["items"].items() 
+        if addresses_scoped_list.get("addresses", None) is not None]
       request = service.addresses().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -299,8 +299,8 @@ def get_firewall_rules(
     request = compute_client.firewalls().list(project=project_name)
     while request is not None:
       response = request.execute()
-      firewall_rules_list = [(firewall['name'],) 
-                             for firewall in response.get("items", [])]
+      firewall_rules_list=list(map(lambda x:(x["name"],),
+        response.get("items",[])))
       request = compute_client.firewalls().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -414,8 +414,7 @@ def get_gke_clusters(
   parent = f"projects/{project_name}/locations/-"
   try:
     clusters = gke_client.list_clusters(parent=parent)
-    return [(cluster.name, cluster.description) 
-            for cluster in clusters.clusters]
+    return list(map(lambda x: (x.name,x.description),clusters.clusters))
   
   except Exception:
     logging.info("Failed to retrieve cluster list for project %s", project_name)
@@ -539,7 +538,7 @@ def get_bq(project_id: str,
 
       for dataset in response.get("datasets", []):
         dataset_id = dataset["datasetReference"]["datasetId"]
-        bq_datasets[dataset_id] = get_bq_tables(project_id,dataset_id, service)      
+        bq_datasets[dataset_id]=get_bq_tables(project_id,dataset_id, service)
       request = service.datasets().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -787,7 +786,7 @@ def get_app_services(project_name: str,
     app_services["services"] = list()
     while request is not None:
       response = request.execute()
-      app_services['services'] = response.get("services", [])
+      app_services["services"] = response.get("services", [])
       request = app_client.apps().services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -922,9 +921,9 @@ def get_service_accounts(project_name: str,
     request = service.projects().serviceAccounts().list(name=name)
     while request is not None:
       response = request.execute()
-      service_accounts = [(service_account["email"], service_account["description"] 
-                           if "description" in service_account else "") 
-                           for service_account in response.get("accounts", [])] 
+      service_lf = lambda x: (x["email"],x["description"]
+      if "description" in x else "")
+      service_accounts=list(map(service_lf,response.get["accounts"],[]))
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
   except Exception:
