@@ -921,7 +921,7 @@ def get_service_accounts(project_name: str,
     request = service.projects().serviceAccounts().list(name=name)
     while request is not None:
       response = request.execute()
-      service_account=list(map(lambda x:(x["email"],x["description"]
+      service_accounts=list(map(lambda x:(x["email"],x["description"]
         if "description" in x else ""),response.get("accounts",[])))
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
