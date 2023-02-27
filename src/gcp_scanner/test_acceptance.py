@@ -21,7 +21,7 @@ import unittest.mock
 import os
 import json
 
-RESOURCE_COUNT = 26
+RESOURCE_COUNT = 28
 RESULTS_JSON_COUNT = 1
 PROJECT_INFO_COUNT = 5
 IAM_POLICY_COUNT = 14

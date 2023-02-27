@@ -90,8 +90,8 @@ def verify(res_to_verify, resource_type, volatile=False):
 
 
 def test_creds_fetching():
-  os.mkdir("creds")
-  conn = sqlite3.connect("creds/credentials.db")
+  os.mkdir("unit")
+  conn = sqlite3.connect("unit/credentials.db")
   c = conn.cursor()
   c.execute("""
            CREATE TABLE credentials (account_id TEXT PRIMARY KEY, value BLOB)
@@ -104,9 +104,9 @@ def test_creds_fetching():
   c.execute(sqlite_insert_with_param, data_value)
   conn.commit()
 
-  assert str(credsdb.find_creds("./creds")) == "['./creds/credentials.db']"
+  assert str(credsdb.find_creds("./unit")) == "['./unit/credentials.db']"
 
-  conn = sqlite3.connect("creds/access_tokens.db")
+  conn = sqlite3.connect("unit/access_tokens.db")
   c = conn.cursor()
   c.execute("""
             CREATE TABLE IF NOT EXISTS access_tokens
@@ -130,20 +130,22 @@ def test_creds_fetching():
   c.execute(sqlite_insert_with_param, data_value)
   conn.commit()
 
-  assert str(credsdb.get_access_tokens_dict("./creds/credentials.db")) == \
+  assert str(credsdb.get_access_tokens_dict("./unit/credentials.db")) == \
          "{'test_account@gmail.com': 'ya.29c.TEST'}"
 
-  res = str(credsdb.extract_creds("./creds/credentials.db"))
+  res = str(credsdb.extract_creds("./unit/credentials.db"))
   print(res)
   assert res == "[SA(account_name='test_account@gmail.com', \
 creds='test_data', token='ya.29c.TEST')]"
 
-  assert str(credsdb.get_account_creds_list("./creds")) == \
+  res = credsdb.get_account_creds_list("./unit")
+  print(str(res))
+  assert str(credsdb.get_account_creds_list("./unit")) == \
          "[[SA(account_name='test_account@gmail.com', \
-     creds='test_data', token='ya.29c.TEST')]]"
+creds='test_data', token='ya.29c.TEST')]]"
 
   # impersonate_sa()
-  shutil.rmtree("creds")
+  shutil.rmtree("unit")
 
 
 class TestCrawler(unittest.TestCase):

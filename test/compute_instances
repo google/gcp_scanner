@@ -28,7 +28,7 @@ VOLATILE      "fingerprint": "42WmSpB8rSM="
             "networkTier": "PREMIUM"
           }
         ],
-        "fingerprint": "lmNrXiagDVc=",
+VOLATILE        "fingerprint": "lmNrXiagDVc=",
         "stackType": "IPV4_ONLY"
       }
     ],
@@ -365,7 +365,7 @@ VOLATILE          "value": "projects/413204024550/global/instanceTemplates/gke-t
         },
         {
           "key": "kube-labels",
-          "value": "cloud.google.com/gke-boot-disk=pd-standard,cloud.google.com/gke-container-runtime=containerd,cloud.google.com/gke-cpu-scaling-level=2,cloud.google.com/gke-max-pods-per-node=110,cloud.google.com/gke-nodepool=default-pool,cloud.google.com/gke-os-distribution=ubuntu,cloud.google.com/machine-family=e2"
+VOLATILE          "value": "cloud.google.com/gke-boot-disk=pd-standard,cloud.google.com/gke-container-runtime=containerd,cloud.google.com/gke-cpu-scaling-level=2,cloud.google.com/gke-max-pods-per-node=110,cloud.google.com/gke-nodepool=default-pool,cloud.google.com/gke-os-distribution=ubuntu,cloud.google.com/machine-family=e2"
         },
         {
           "key": "enable-oslogin",
