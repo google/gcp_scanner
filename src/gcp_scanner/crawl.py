@@ -270,7 +270,8 @@ def get_subnets(project_name: str,
     while request is not None:
       response = request.execute()
       if response.get("items", None) is not None:
-        subnets_list = response["items"].items()
+        subnets_list = [(name, subnetworks_scoped_list)
+          for name, subnetworks_scoped_list in response["items"].items()]
       request = compute_client.subnetworks().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -920,8 +921,8 @@ def get_service_accounts(project_name: str,
     request = service.projects().serviceAccounts().list(name=name)
     while request is not None:
       response = request.execute()
-      service_accounts=list(map(lambda x: (x["email"],x["description"]
-        if "description" in x else ""),response.get["accounts"],[]))
+      service_account=list(map(lambda x:(x["email"],x["description"]
+        if "description" in x else ""),response.get("accounts",[])))
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
   except Exception:
