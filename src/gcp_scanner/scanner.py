@@ -32,9 +32,9 @@ from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMC
 from googleapiclient import discovery
 from httplib2 import Credentials
 from .models import SpiderContext
-from typing import Union
+from typing import Union,Optional
 
-def is_set(config: Union[None,dict], config_setting: str) -> Union[dict,bool]:
+def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
   if config is None:
     return True
   obj = config.get(config_setting, {})
