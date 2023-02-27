@@ -299,8 +299,8 @@ def get_firewall_rules(
     request = compute_client.firewalls().list(project=project_name)
     while request is not None:
       response = request.execute()
-      firewall_rules_list=list(map(lambda x:(x["name"],),
-        response.get("items",[])))
+      firewall_rules_list=[(firewall["name"],)
+        for firewall in response.get("items",[])]
       request = compute_client.firewalls().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -386,7 +386,7 @@ def get_managed_zones(project_name: str,
     request = service.managedZones().list(project=project_name)
     while request is not None:
       response = request.execute()
-      zones_list = response["managedZones"]
+      zones_list = response.get("managedZones",[])
       request = service.managedZones().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -414,7 +414,8 @@ def get_gke_clusters(
   parent = f"projects/{project_name}/locations/-"
   try:
     clusters = gke_client.list_clusters(parent=parent)
-    return list(map(lambda x: (x.name,x.description),clusters.clusters))
+    return [(cluster.name, cluster.description) 
+      for cluster in clusters.clusters]
   except Exception:
     logging.info("Failed to retrieve cluster list for project %s", project_name)
     logging.info(sys.exc_info())
@@ -538,6 +539,7 @@ def get_bq(project_id: str,
       for dataset in response.get("datasets", []):
         dataset_id = dataset["datasetReference"]["datasetId"]
         bq_datasets[dataset_id]=get_bq_tables(project_id,dataset_id, service)
+
       request = service.datasets().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -920,8 +922,10 @@ def get_service_accounts(project_name: str,
     request = service.projects().serviceAccounts().list(name=name)
     while request is not None:
       response = request.execute()
-      service_accounts=list(map(lambda x:(x["email"],x["description"]
-        if "description" in x else ""),response.get("accounts",[])))
+      service_accounts=[(service_account["email"],service_account["description"] 
+        if "description" in service_account else "") 
+        for service_account in response.get("accounts",[])]
+      
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
   except Exception:
