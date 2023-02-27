@@ -1057,7 +1057,7 @@ def list_dns_policies(project_id: str, credentials: Credentials) -> List[Any]:
 
   request = service.policies().list(
     project=project_id,
-    maxResults=200
+    maxResults=500
   )
   try:
     while request is not None:
