@@ -270,8 +270,7 @@ def get_subnets(project_name: str,
     while request is not None:
       response = request.execute()
       if response.get("items", None) is not None:
-        subnets_list = [(name, subnetworks_scoped_list) 
-                        for name, subnetworks_scoped_list in response["items"].items()]
+        subnets_list = response["items"].items()
       request = compute_client.subnetworks().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -300,7 +299,7 @@ def get_firewall_rules(
     request = compute_client.firewalls().list(project=project_name)
     while request is not None:
       response = request.execute()
-      firewall_rules_list = [(firewall['name']) 
+      firewall_rules_list = [(firewall['name'],) 
                              for firewall in response.get("items", [])]
       request = compute_client.firewalls().list_next(
           previous_request=request, previous_response=response)
@@ -539,8 +538,8 @@ def get_bq(project_id: str,
       response = request.execute()
 
       for dataset in response.get("datasets", []):
-        datasetid = dataset["datasetReference"]["datasetId"]
-        bq_datasets[datasetid] = get_bq_tables(project_id,datasetid, service)      
+        dataset_id = dataset["datasetReference"]["datasetId"]
+        bq_datasets[dataset_id] = get_bq_tables(project_id,dataset_id, service)      
       request = service.datasets().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -788,9 +787,7 @@ def get_app_services(project_name: str,
     app_services["services"] = list()
     while request is not None:
       response = request.execute()
-      app_services['services'] = [service_entry 
-                                  for service_entry in response.get("services", [])]
-
+      app_services['services'] = response.get("services", [])
       request = app_client.apps().services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
