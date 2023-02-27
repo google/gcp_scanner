@@ -59,27 +59,35 @@ There is a docker build file if you want to run the scanner from a container:
 ### Command-line options
 
 ```
-usage: gcp-scanner -o /folder_to_save_results/ -g -
+usage: python3 scanner.py -o folder_to_save_results -g -
 
-optional arguments:
+GCP Scanner
+
+options:
   -h, --help            show this help message and exit
   -k KEY_PATH, --sa_key_path KEY_PATH
                         Path to directory with SA keys in json format
   -g GCLOUD_PROFILE_PATH, --gcloud_profile_path GCLOUD_PROFILE_PATH
-                        Path to directory with gcloud profile. Specify - to search in default gcloud config path
-  -m                    Extract credentials from GCE instance metadata
-  -at ACCESS_TOKEN      Use access token directly to scan GCP resources. Limited by TTL
-  -rt REFRESH_TOKEN_FILES
-                        A list of comma separated files with refresh_token, client_id, token_uri and client_secret
-  -s KEY_NAME           Name of individual SA to scan
-  -p TARGET_PROJECT     Name of individual project to scan
-  -f FORCE_PROJECTS     Comma separated list of project names to include in the scan
-  -c SCAN_CONFIG        A path to configuration file with a set of specific resources to scan.
-  -l LOG_LEVEL, -logging LOG_LEVEL
+                        Path to directory with gcloud profile. Specify - to search for credentials in default gcloud config path
+  -m, --use_metadata    Extract credentials from GCE instance metadata
+  -at ACCESS_TOKEN_FILES, --access_token_files ACCESS_TOKEN_FILES
+                        A list of comma separated files with access token and OAuth scopes.TTL limited. A token and scopes should be stored in JSON format.
+  -rt REFRESH_TOKEN_FILES, --refresh_token_files REFRESH_TOKEN_FILES
+                        A list of comma separated files with refresh_token, client_id,token_uri and client_secret stored in JSON format.
+  -s KEY_NAME, --service_account KEY_NAME
+                        Name of individual SA to scan
+  -p TARGET_PROJECT, --project TARGET_PROJECT
+                        Name of individual project to scan
+  -f FORCE_PROJECTS, --force_projects FORCE_PROJECTS
+                        Comma separated list of project names to include in the scan
+  -c CONFIG_PATH, --config CONFIG_PATH
+                        A path to config file with a set of specific resources to scan.
+  -l {INFO,WARNING,ERROR}, --logging {INFO,WARNING,ERROR}
                         Set logging level (INFO, WARNING, ERROR)
 
 Required parameters:
-  -o OUTPUT             Path to output directory
+  -o OUTPUT, --output_dir OUTPUT
+                        Path to output directory
 ```
 
 Option `-f` requires an additional explanation. In some cases, the service account does not have permissions to explicitly list project names. However, it still might have access to underlying resources if we provide correct project name. This option is specifically designed to handle such cases.
