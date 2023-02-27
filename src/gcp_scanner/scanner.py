@@ -301,6 +301,7 @@ def main():
       prog='scanner.py',
       description='GCP Scanner',
       usage='python3 %(prog)s -o folder_to_save_results -g -')
+  
   required_named = parser.add_argument_group('Required parameters')
   required_named.add_argument(
       '-o',
@@ -379,7 +380,6 @@ token_uri and client_secret stored in JSON format.'
       help='Set logging level (INFO, WARNING, ERROR)')
 
   args: argparse.Namespace = parser.parse_args()
-
 
   if not args.key_path and not args.gcloud_profile_path \
     and not args.use_metadata and not args.access_token_files\
