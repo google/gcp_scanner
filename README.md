@@ -59,7 +59,7 @@ There is a docker build file if you want to run the scanner from a container:
 ### Command-line options
 
 ```
-usage: python3 scanner.py -o folder_to_save_results -g -
+usage: gcp-scanner -o /folder_to_save_results/ -g -
 
 GCP Scanner
 
