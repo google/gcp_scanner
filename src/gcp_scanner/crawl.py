@@ -414,7 +414,7 @@ def get_gke_clusters(
   parent = f"projects/{project_name}/locations/-"
   try:
     clusters = gke_client.list_clusters(parent=parent)
-    return [(cluster.name, cluster.description) 
+    return [(cluster.name, cluster.description)
       for cluster in clusters.clusters]
   except Exception:
     logging.info("Failed to retrieve cluster list for project %s", project_name)
@@ -922,10 +922,9 @@ def get_service_accounts(project_name: str,
     request = service.projects().serviceAccounts().list(name=name)
     while request is not None:
       response = request.execute()
-      service_accounts=[(service_account["email"],service_account["description"] 
-        if "description" in service_account else "") 
+      service_accounts=[(service_account["email"],service_account["description"]
+        if "description" in service_account else "")
         for service_account in response.get("accounts",[])]
-      
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
   except Exception:
