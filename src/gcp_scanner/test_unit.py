@@ -411,7 +411,7 @@ class TestCrawler(unittest.TestCase):
     )
 
   def test_dns_policies(self):
-    """Test cloud DNS policies in the project."""
+    """Test cloud DNS policies."""
     self.assertTrue(
       verify(
         crawl.list_dns_policies(PROJECT_NAME, self.credentials),
