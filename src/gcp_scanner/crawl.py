@@ -922,9 +922,9 @@ def get_service_accounts(project_name: str,
     request = service.projects().serviceAccounts().list(name=name)
     while request is not None:
       response = request.execute()
-      service_accounts=[(service_account["email"],service_account["description"]
-        if "description" in service_account else "")
+      service_accounts=[(service_account["email"],service_account.get("description",""))
         for service_account in response.get("accounts",[])]
+      
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
   except Exception:
