@@ -411,5 +411,5 @@ def get_scope_from_refresh_token(context) -> Union[List[str], None]:
 
   # prepare the scope string into a list
   raw = response.json().get("scope", None)
-  return raw.split(' ') if raw else None
+  return raw.split(" ") if raw else None
 
