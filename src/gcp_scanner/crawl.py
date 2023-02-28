@@ -538,7 +538,7 @@ def get_bq(project_id: str,
 
       for dataset in response.get("datasets", []):
         dataset_id = dataset["datasetReference"]["datasetId"]
-        bq_datasets[dataset_id]=get_bq_tables(project_id,dataset_id, service)
+        bq_datasets[dataset_id] = get_bq_tables(project_id,dataset_id, service)
 
       request = service.datasets().list_next(
           previous_request=request, previous_response=response)
@@ -922,9 +922,10 @@ def get_service_accounts(project_name: str,
     request = service.projects().serviceAccounts().list(name=name)
     while request is not None:
       response = request.execute()
-      service_accounts=[(service_account["email"],
+      service_accounts = [(service_account["email"],
         service_account.get("description",""))
         for service_account in response.get("accounts",[])]
+      
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
   except Exception:
