@@ -301,7 +301,6 @@ def main():
       prog='scanner.py',
       description='GCP Scanner',
       usage='python3 %(prog)s -o folder_to_save_results -g -')
-  
   required_named = parser.add_argument_group('Required parameters')
   required_named.add_argument(
       '-o',
@@ -348,10 +347,10 @@ TTL limited. A token and scopes should be stored in JSON format.')
 token_uri and client_secret stored in JSON format.'
   )
   parser.add_argument(
-      '-s', 
+      '-s',
       '--service_account',
       default=None,
-      dest='key_name', 
+      dest='key_name',
       help='Name of individual SA to scan')
   parser.add_argument(
       '-p',
