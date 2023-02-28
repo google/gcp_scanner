@@ -16,16 +16,18 @@
 
 """
 
-from . import crawl
-from . import credsdb
-import json
-from . import scanner
-import filecmp
+import datetime
 import difflib
+import filecmp
+import json
 import os
 import shutil
 import sqlite3
-import datetime
+import unittest
+
+from . import crawl
+from . import credsdb
+from . import scanner
 
 PROJECT_NAME = "test-gcp-scanner"
 
@@ -44,10 +46,12 @@ def print_diff(f1, f2):
     print(line)
     res += line
 
+
 def save_to_test_file(res):
   res = json.dumps(res, indent=2, sort_keys=False)
   with open("test_res", "w", encoding="utf-8") as outfile:
     outfile.write(res)
+
 
 def compare_volatile(f1, f2):
   res = True
@@ -58,9 +62,9 @@ def compare_volatile(f1, f2):
     file_2_text = file_2.readlines()
 
   for line in file_2_text:
-    #line = line[:-1]
+    # line = line[:-1]
     if line.startswith("VOLATILE"):
-      continue # we do not compare volatile lines
+      continue  # we do not compare volatile lines
     if line in file_1_text:
       continue
     else:
@@ -68,6 +72,7 @@ def compare_volatile(f1, f2):
       res = False
 
   return res
+
 
 def verify(res_to_verify, resource_type, volatile=False):
   save_to_test_file(res_to_verify)
@@ -85,8 +90,8 @@ def verify(res_to_verify, resource_type, volatile=False):
 
 
 def test_creds_fetching():
-  os.mkdir("creds")
-  conn = sqlite3.connect("creds/credentials.db")
+  os.mkdir("unit")
+  conn = sqlite3.connect("unit/credentials.db")
   c = conn.cursor()
   c.execute("""
            CREATE TABLE credentials (account_id TEXT PRIMARY KEY, value BLOB)
@@ -99,9 +104,9 @@ def test_creds_fetching():
   c.execute(sqlite_insert_with_param, data_value)
   conn.commit()
 
-  assert str(credsdb.find_creds("./creds")) == "['./creds/credentials.db']"
+  assert str(credsdb.find_creds("./unit")) == "['./unit/credentials.db']"
 
-  conn = sqlite3.connect("creds/access_tokens.db")
+  conn = sqlite3.connect("unit/access_tokens.db")
   c = conn.cursor()
   c.execute("""
             CREATE TABLE IF NOT EXISTS access_tokens
@@ -125,116 +130,293 @@ def test_creds_fetching():
   c.execute(sqlite_insert_with_param, data_value)
   conn.commit()
 
-  assert str(credsdb.get_access_tokens_dict("./creds/credentials.db")) == \
-    "{'test_account@gmail.com': 'ya.29c.TEST'}"
+  assert str(credsdb.get_access_tokens_dict("./unit/credentials.db")) == \
+         "{'test_account@gmail.com': 'ya.29c.TEST'}"
 
-  res = str(credsdb.extract_creds("./creds/credentials.db"))
+  res = str(credsdb.extract_creds("./unit/credentials.db"))
   print(res)
   assert res == "[SA(account_name='test_account@gmail.com', \
 creds='test_data', token='ya.29c.TEST')]"
 
-  assert str(credsdb.get_account_creds_list("./creds")) == \
-    "[[SA(account_name='test_account@gmail.com', \
+  res = credsdb.get_account_creds_list("./unit")
+  print(str(res))
+  assert str(credsdb.get_account_creds_list("./unit")) == \
+         "[[SA(account_name='test_account@gmail.com', \
 creds='test_data', token='ya.29c.TEST')]]"
 
-  #impersonate_sa()
-  shutil.rmtree("creds")
+  # impersonate_sa()
+  shutil.rmtree("unit")
 
 
-def test_crawler():
-  _, credentials = credsdb.get_creds_from_metadata()
-  assert credentials is not None
+class TestCrawler(unittest.TestCase):
+  """Test crawler functionalities."""
 
-  # GCE section
-  compute_client = scanner.compute_client_for_credentials(credentials)
-  assert verify(crawl.get_compute_instances_names(PROJECT_NAME, compute_client),
-                                                  "compute_instances",
-                                                  True) is True
-  assert verify(crawl.get_compute_disks_names(PROJECT_NAME, compute_client),
-                                             "compute_disks",
-                                             True) is True
-  assert verify(crawl.get_compute_images_names(PROJECT_NAME, compute_client),
-                                             "compute_images") is True
-  assert verify(crawl.get_static_ips(PROJECT_NAME, compute_client),
-                                     "static_ips") is True
-  assert verify(crawl.get_compute_snapshots(PROJECT_NAME, compute_client),
-                                            "compute_snapshots",
-                                            True) is True
-  assert verify(crawl.get_firewall_rules(PROJECT_NAME, compute_client),
-                                         "firewall_rules") is True
-  assert verify(crawl.get_subnets(PROJECT_NAME, compute_client),
-                                  "subnets",
-                                  True) is True
+  def setUp(self):
+    _, self.credentials = credsdb.get_creds_from_metadata()
+    self.compute_client = scanner.compute_client_for_credentials(
+      self.credentials,
+    )
 
-  assert verify(crawl.get_bucket_names(PROJECT_NAME, credentials=credentials,
-                                       dump_fd = None),
-                                      "storage_buckets") is True
+  def test_credential(self):
+    """Checks if credential is not none."""
+    self.assertIsNotNone(self.credentials)
 
-  assert verify(crawl.get_managed_zones(PROJECT_NAME, credentials=credentials),
-                                        "managed_zones",
-                                        True) is True
+  def test_compute_instance_name(self):
+    """Test compute instance name."""
+    self.assertTrue(
+      verify(
+        crawl.get_compute_instances_names(PROJECT_NAME, self.compute_client),
+        "compute_instances",
+        True,
+      )
+    )
 
-  gke_client = scanner.gke_client_for_credentials(credentials=credentials)
-  assert verify(crawl.get_gke_clusters(PROJECT_NAME, gke_client),
-                                       "gke_clusters") is True
+  def test_compute_disks_names(self):
+    """Test compute disk names."""
+    self.assertTrue(
+      verify(
+        crawl.get_compute_disks_names(PROJECT_NAME, self.compute_client),
+        "compute_disks",
+        True,
+      )
+    )
 
-  assert verify(crawl.get_gke_images(PROJECT_NAME, credentials.token),
-                                     "gke_images",
-                                     True) is True
+  def test_compute_images_names(self):
+    """Test compute image names."""
+    self.assertTrue(
+      verify(
+        crawl.get_compute_images_names(PROJECT_NAME, self.compute_client),
+        "compute_images",
+        True,
+      )
+    )
 
-  assert verify(crawl.get_app_services(PROJECT_NAME, credentials),
-                                       "app_services") is True
+  def test_static_ips(self):
+    """Test static IPs."""
+    self.assertTrue(
+      verify(
+        crawl.get_static_ips(PROJECT_NAME, self.compute_client),
+        "static_ips",
+        True,
+      )
+    )
 
-  # Get SQL instances
-  assert verify(crawl.get_sql_instances(PROJECT_NAME, credentials),
-                                        "sql_instances",
-                                        True) is True
+  def test_compute_snapshots(self):
+    """Test compute snapshot."""
+    self.assertTrue(
+      verify(
+        crawl.get_compute_snapshots(PROJECT_NAME, self.compute_client),
+        "compute_snapshots",
+        True,
+      )
+    )
 
-  # Get BigQuery databases and table names
-  assert verify(crawl.get_bq(PROJECT_NAME, credentials), "bq") is True
+  def test_firewall_rules(self):
+    """Test firewall rules."""
+    self.assertTrue(
+      verify(
+        crawl.get_firewall_rules(PROJECT_NAME, self.compute_client),
+        "firewall_rules",
+      )
+    )
 
-  # Get PubSub Subscriptions
-  assert verify(crawl.get_pubsub_subscriptions(
-          PROJECT_NAME, credentials), "pubsub_subs") is True
+  def test_subnets(self):
+    """Test subnets."""
+    self.assertTrue(
+      verify(
+        crawl.get_subnets(PROJECT_NAME, self.compute_client),
+        "subnets",
+        True,
+      )
+    )
 
-  # Get CloudFunctions list
-  assert verify(crawl.get_cloudfunctions(
-          PROJECT_NAME, credentials), "cloud_functions") is True
+  def test_storage_buckets(self):
+    """Test storage bucket."""
+    self.assertTrue(
+      verify(
+        crawl.get_bucket_names(
+          PROJECT_NAME,
+          credentials=self.credentials,
+          dump_fd=None,
+        ),
+        "storage_buckets",
+      )
+    )
 
-  # Get List of BigTable Instanses
-  assert verify(crawl.get_bigtable_instances(
-          PROJECT_NAME, credentials), "bigtable_instances") is True
+  def test_managed_zones(self):
+    """Test managed zones."""
+    self.assertTrue(
+      verify(
+        crawl.get_managed_zones(PROJECT_NAME, credentials=self.credentials),
+        "managed_zones",
+        True,
+      )
+    )
 
-  # Get Spanner Instances
-  assert verify(crawl.get_spanner_instances(
-          PROJECT_NAME, credentials), "spanner_instances") is True
+  def test_gke_clusters(self):
+    """Test GKE clusters."""
+    gke_client = scanner.gke_client_for_credentials(
+      credentials=self.credentials,
+    )
+    self.assertTrue(
+      verify(
+        crawl.get_gke_clusters(PROJECT_NAME, gke_client),
+        "gke_clusters",
+      )
+    )
 
-  # Get CloudStore Instances
-  assert verify(crawl.get_filestore_instances(
-          PROJECT_NAME, credentials), "cloudstore_instances") is True
+  def test_gke_images(self):
+    self.assertTrue(
+      verify(
+        crawl.get_gke_images(PROJECT_NAME, self.credentials.token),
+        "gke_images",
+        True,
+      )
+    )
 
-  # Get list of KMS keys
-  assert verify(crawl.get_kms_keys(PROJECT_NAME, credentials),
-                                   "kms",
-                                   True) is True
+  def test_app_services(self):
+    """Test app services."""
+    self.assertTrue(
+      verify(
+        crawl.get_app_services(PROJECT_NAME, self.credentials),
+        "app_services",
+      )
+    )
 
-  # Get information about Endpoints
-  assert verify(crawl.get_endpoints(PROJECT_NAME, credentials),
-                                    "endpoints") is True
+  def test_sql_instances(self):
+    """Test SQL instances."""
+    self.assertTrue(
+      verify(
+        crawl.get_sql_instances(PROJECT_NAME, self.credentials),
+        "sql_instances",
+        True,
+      )
+    )
 
-  # Get list of API services enabled in the project
-  assert verify(crawl.list_services(PROJECT_NAME, credentials),
-                                    "services",
-                                    True) is True
+  def test_bq(self):
+    """Test BigQuery databases and table names."""
+    self.assertTrue(
+      verify(
+        crawl.get_bq(PROJECT_NAME, self.credentials),
+        "bq",
+      )
+    )
 
-  # IAM Policy
-  assert verify(crawl.get_iam_policy(PROJECT_NAME, credentials),
-                                     "iam_policy") is True
+  def test_pubsub_subs(self):
+    """Test PubSub Subscriptions."""
+    self.assertTrue(
+      verify(
+        crawl.get_pubsub_subscriptions(PROJECT_NAME, self.credentials),
+        "pubsub_subs",
+      )
+    )
 
-  # Get service accounts
-  assert verify(crawl.get_service_accounts(PROJECT_NAME, credentials),
-                                           "service_accounts") is True
+  def test_cloud_functions(self):
+    """Test CloudFunctions list."""
+    self.assertTrue(
+      verify(
+        crawl.get_cloudfunctions(PROJECT_NAME, self.credentials),
+        "cloud_functions",
+      )
+    )
 
-  # Get project info
-  assert verify(crawl.fetch_project_info(PROJECT_NAME, credentials),
-                                         "project_info") is True
+  def test_bigtable_instances(self):
+    """Test BigTable Instances."""
+    self.assertTrue(
+      verify(
+        crawl.get_bigtable_instances(PROJECT_NAME, self.credentials),
+        "bigtable_instances",
+      )
+    )
+
+  def test_spanner_instances(self):
+    """Test Spanner Instances."""
+    self.assertTrue(
+      verify(
+        crawl.get_spanner_instances(PROJECT_NAME, self.credentials),
+        "spanner_instances",
+      )
+    )
+
+  def test_cloudstore_instances(self):
+    """Test CloudStore Instances."""
+    self.assertTrue(
+      verify(
+        crawl.get_filestore_instances(PROJECT_NAME, self.credentials),
+        "cloudstore_instances",
+      )
+    )
+
+  def test_kms(self):
+    """Test list of KMS keys."""
+    self.assertTrue(
+      verify(
+        crawl.get_kms_keys(PROJECT_NAME, self.credentials),
+        "kms",
+        True,
+      )
+    )
+
+  def test_endpoints(self):
+    """Test endpoints' information."""
+    self.assertTrue(
+      verify(
+        crawl.get_endpoints(PROJECT_NAME, self.credentials),
+        "endpoints",
+      )
+    )
+
+  def test_services(self):
+    """Test list of API services enabled in the project."""
+    self.assertTrue(
+      verify(
+        crawl.list_services(PROJECT_NAME, self.credentials),
+        "services",
+        True
+      )
+    )
+
+  def test_iam_policy(self):
+    """Test IAM policy."""
+    self.assertTrue(
+      verify(
+        crawl.get_iam_policy(PROJECT_NAME, self.credentials),
+        "iam_policy",
+      )
+    )
+
+  def test_service_accounts(self):
+    """Test service accounts."""
+    self.assertTrue(
+      verify(
+        crawl.get_service_accounts(PROJECT_NAME, self.credentials),
+        "service_accounts",
+      )
+    )
+
+  def test_project_info(self):
+    """Test project info."""
+    self.assertTrue(
+      verify(
+        crawl.fetch_project_info(PROJECT_NAME, self.credentials),
+        "project_info",
+      )
+    )
+
+  def test_sourcerepos(self):
+    """Test list of cloud source repositories in the project."""
+    self.assertTrue(
+      verify(
+        crawl.list_sourcerepo(PROJECT_NAME, self.credentials),
+        "sourcerepos",
+      )
+    )
+
+  def test_dns_policies(self):
+    """Test cloud DNS policies."""
+    self.assertTrue(
+      verify(
+        crawl.list_dns_policies(PROJECT_NAME, self.credentials),
+        "dns_policies",
+      )
+    )

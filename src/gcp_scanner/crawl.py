@@ -33,7 +33,7 @@ from requests.auth import HTTPBasicAuth
 
 
 def infinite_defaultdict():
-  """Initalize infinite default.
+  """Initialize infinite default.
 
   Returns:
     DefaultDict
@@ -420,7 +420,7 @@ def get_gke_clusters(
     project_name: str, gke_client: container_v1.services.cluster_manager.client
     .ClusterManagerClient
 ) -> List[Tuple[str, str]]:
-  """Retrieve a list of DNS zones available in the project.
+  """Retrieve a list of GKE clusters available in the project.
 
   Args:
     project_name: A name of a project to query info about.
@@ -517,7 +517,7 @@ def get_bq_tables(project_id: str, dataset_id: str,
     bq_service: I do not know.
 
   Returns:
-    A list of BigQuety tables in the dataset.
+    A list of BigQuery tables in the dataset.
   """
 
   logging.info("Retrieving BigQuery Tables for dataset %s", dataset_id)
@@ -568,7 +568,7 @@ def get_bq(project_id: str,
       request = service.datasets().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.info("Failed to retrieve BQ datesets for project %s", project_id)
+    logging.info("Failed to retrieve BQ datasets for project %s", project_id)
     logging.info(sys.exc_info())
   return bq_datasets
 
@@ -980,7 +980,7 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   """Retrieve a list of services enabled in the project.
 
   Args:
-    project_name: An id of a project to query info about.
+    project_id: An id of a project to query info about.
     credentials: An google.oauth2.credentials.Credentials object.
 
   Returns:
@@ -1001,7 +1001,76 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
       request = serviceusage.services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.info("Failed to retrive services for project %s", project_id)
+    logging.info("Failed to retrieve services for project %s", project_id)
     logging.info(sys.exc_info())
 
   return list_of_services
+
+
+def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
+  """Retrieve a list of cloud source repositories enabled in the project.
+
+  Args:
+    project_id: An id of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+
+  Returns:
+    A list of cloud source repositories in the project.
+  """
+
+  logging.info("Retrieving cloud source repositories %s", project_id)
+  list_of_repos = list()
+  service = discovery.build("sourcerepo", "v1", credentials=credentials)
+
+  request = service.projects().repos().list(
+    name="projects/" + project_id,
+    pageSize=500
+  )
+  try:
+    while request is not None:
+      response = request.execute()
+      list_of_repos.append(response.get("repos", None))
+
+      request = service.projects().repos().list_next(
+        previous_request=request,
+        previous_response=response
+      )
+  except Exception:
+    logging.info("Failed to retrieve source repos for project %s", project_id)
+    logging.info(sys.exc_info())
+
+  return list_of_repos
+
+
+def list_dns_policies(project_id: str, credentials: Credentials) -> List[Any]:
+  """Retrieve a list of cloud DNS policies in the project.
+  Args:
+    project_id: An id of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+  Returns:
+    A list of cloud DNS policies in the project.
+  """
+
+  logging.info("Retrieving cloud DNS policies %s", project_id)
+  list_of_policies = list()
+  service = discovery.build("dns", "v1", credentials=credentials)
+
+  request = service.policies().list(
+    project=project_id,
+    maxResults=500
+  )
+  try:
+    while request is not None:
+      response = request.execute()
+      list_of_policies.append(response.get("policies", None))
+
+      request = service.policies().list_next(
+        previous_request=request,
+        previous_response=response
+      )
+  except Exception:
+    logging.info("Failed to retrieve DNS policies for project %s", project_id)
+    logging.info(sys.exc_info())
+
+  return list_of_policies
+

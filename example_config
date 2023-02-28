@@ -69,6 +69,9 @@
   "services": {
     "fetch": true
   },
+  "sourcerepos": {
+    "fetch": true
+  },
   "iam_policy": {
     "fetch": false
   },
@@ -76,5 +79,8 @@
     "fetch": true,
     "comment": "Fetch list of available service accounts",
     "impersonate": true
+  },
+  "dns_policies": {
+    "fetch": true
   }
 }

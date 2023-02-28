@@ -21,7 +21,7 @@ import json
 import logging
 import os
 import sys
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional,Union
 
 from . import crawl
 from . import credsdb
@@ -33,13 +33,11 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 from .models import SpiderContext
 
-
-def is_set(config, config_setting):
+def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
   if config is None:
     return True
   obj = config.get(config_setting, {})
   return obj.get('fetch', False)
-
 
 def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                out_dir: str,
@@ -163,6 +161,12 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'managed_zones'):
         project_result['managed_zones'] = crawl.get_managed_zones(project_id,
                                                                   credentials)
+      # Get DNS policies
+      if is_set(scan_config, 'dns_policies'):
+        project_result['dns_policies'] = crawl.list_dns_policies(
+          project_id,
+          credentials
+        )
 
       # Get GKE resources
       if is_set(scan_config, 'gke_clusters'):
@@ -192,7 +196,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         project_result['cloud_functions'] = crawl.get_cloudfunctions(
             project_id, credentials)
 
-      # Get List of BigTable Instanses
+      # Get List of BigTable Instances
       if is_set(scan_config, 'bigtable_instances'):
         project_result['bigtable_instances'] = crawl.get_bigtable_instances(
             project_id, credentials)
@@ -220,6 +224,13 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'services'):
         project_result['services'] = crawl.list_services(project_id,
                                                          credentials)
+
+      # Get list of cloud source repositories enabled in the project
+      if is_set(scan_config, 'sourcerepos'):
+        project_result['sourcerepos'] = crawl.list_sourcerepo(
+          project_id,
+          credentials
+        )
 
       # trying to impersonate SAs within project
       if scan_config is not None:
@@ -252,7 +263,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             logging.error(sys.exc_info()[1])
 
       # Write out results to json DB
-      logging.info('Saving results for {project_id} into the file')
+      logging.info('Saving results for %s into the file', project_id)
 
       sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
@@ -283,7 +294,7 @@ def gke_client_for_credentials(
 
 
 def main():
-  logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
+  logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
   logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
 
   args = argparser.parse_arguments()
