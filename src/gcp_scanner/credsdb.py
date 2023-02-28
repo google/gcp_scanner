@@ -24,14 +24,13 @@ import logging
 import os
 import sqlite3
 import sys
-from typing import List, Dict, Tuple, Optional, Mapping
+from typing import List, Dict, Tuple, Optional, Mapping, Union
 
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from google.oauth2 import credentials
 from google.oauth2 import service_account
 from httplib2 import Credentials
 import requests
-
 
 credentials_db_search_places = ["/home/", "/root/"]
 
@@ -41,12 +40,12 @@ def credentials_from_token(access_token: str, refresh_token: Optional[str],
                            client_secret: Optional[str],
                            scopes_user: Optional[str]) -> Credentials:
   return credentials.Credentials(
-      access_token,
-      refresh_token=refresh_token,
-      token_uri=token_uri,
-      client_id=client_id,
-      client_secret=client_secret,
-      scopes=scopes_user)
+    access_token,
+    refresh_token=refresh_token,
+    token_uri=token_uri,
+    client_id=client_id,
+    client_secret=client_secret,
+    scopes=scopes_user)
 
 
 def get_creds_from_file(file_path: str) -> Tuple[str, Credentials]:
@@ -99,21 +98,21 @@ service-accounts/default/email"
     res = requests.get(token_url, headers=headers)
     if not res.ok:
       logging.error("Failed to retrieve instance token. Status code %d",
-        res.status_code)
+                    res.status_code)
       return None, None
     token = res.json()["access_token"]
 
     res = requests.get(scope_url, headers=headers)
     if not res.ok:
       logging.error("Failed to retrieve instance scopes. Status code %d",
-        res.status_code)
+                    res.status_code)
       return None, None
     instance_scopes = res.content.decode("utf-8")
 
     res = requests.get(email_url, headers=headers)
     if not res.ok:
       logging.error("Failed to retrieve instance email. Status code %d",
-        res.status_code)
+                    res.status_code)
       return None, None
     email = res.content.decode("utf-8")
 
@@ -217,13 +216,13 @@ def get_access_tokens_dict(path_to_creds_db: str) -> Dict[str, str]:
     logging.info("Identified access tokens DB in %s", access_tokens_path)
     conn = sqlite3.connect(access_tokens_path)
     cursor = conn.execute(
-        "SELECT account_id, access_token, token_expiry FROM access_tokens")
+      "SELECT account_id, access_token, token_expiry FROM access_tokens")
     rows = cursor.fetchall()
     for row in rows:
       associated_account = row[0]
       token = row[1]
       expiration_date = row[2]
-      expiration_date = expiration_date.split(".")[0] # omit milliseconds
+      expiration_date = expiration_date.split(".")[0]  # omit milliseconds
 
       token_time_obj = datetime.datetime.strptime(expiration_date,
                                                   "%Y-%m-%d %H:%M:%S")
@@ -306,8 +305,8 @@ def impersonate_sa(iam_client: IAMCredentialsClient,
 
   scopes_sa = ["https://www.googleapis.com/auth/cloud-platform"]
   intermediate_access_token = iam_client.generate_access_token(
-      name=target_account, scope=scopes_sa, retry=None
-      # lifetime = "43200"
+    name=target_account, scope=scopes_sa, retry=None
+    # lifetime = "43200"
   )
 
   return credentials_from_token(intermediate_access_token.access_token, None,
@@ -344,12 +343,12 @@ def creds_from_access_token(access_token_file):
     user_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
 
   return credentials_from_token(
-            creds_dict["access_token"],
-            None,
-            None,
-            None,
-            None,
-            user_scopes)
+    creds_dict["access_token"],
+    None,
+    None,
+    None,
+    None,
+    user_scopes)
 
 
 def creds_from_refresh_token(refresh_token_file):
@@ -379,12 +378,38 @@ def creds_from_refresh_token(refresh_token_file):
   with open(refresh_token_file, encoding="utf-8") as f:
     creds_dict = json.load(f)
 
-  user_scopes = creds_dict.get("scopes", None)
+  user_scopes = get_scope_from_refresh_token(creds_dict)
 
   return credentials.Credentials(
-      None,
-      refresh_token=creds_dict["refresh_token"],
-      token_uri=creds_dict["token_uri"],
-      client_id=creds_dict["client_id"],
-      client_secret=creds_dict["client_secret"],
-      scopes=user_scopes)
+    None,
+    refresh_token=creds_dict["refresh_token"],
+    token_uri=creds_dict["token_uri"],
+    client_id=creds_dict["client_id"],
+    client_secret=creds_dict["client_secret"],
+    scopes=user_scopes,
+  )
+
+
+def get_scope_from_refresh_token(context) -> Union[List[str], None]:
+  """The function is used to obtain scope from refresh token.
+
+  Args:
+    context: dictionary containing refresh_token data
+    Example:
+      {
+        "refresh_token": "<token>",
+        "client_id": "id",
+        "client_secret": "secret",
+      }
+  Returns:
+    a list of scopes
+  """
+  # Obtain access token from the refresh token
+  token_uri = "https://oauth2.googleapis.com/token"
+  context["grant_type"] = "refresh_token"
+  response = requests.post(token_uri, data=context)
+
+  # prepare the scope string into a list
+  raw = response.json().get("scope", None)
+  return raw.split(' ') if raw else None
+
