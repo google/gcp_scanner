@@ -925,7 +925,7 @@ def get_service_accounts(project_name: str,
       service_accounts = [(service_account["email"],
         service_account.get("description",""))
         for service_account in response.get("accounts",[])]
-      
+
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
   except Exception:
