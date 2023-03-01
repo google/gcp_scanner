@@ -70,7 +70,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
     sa_results['service_account_chain'] = chain_so_far
     sa_results['current_service_account'] = sa_name
     # Add token scopes in the result
-    sa_results["token_scopes"] = credentials.scopes
+    sa_results['token_scopes'] = credentials.scopes
 
     project_list = crawl.get_project_list(credentials)
     if len(project_list) <= 0:
