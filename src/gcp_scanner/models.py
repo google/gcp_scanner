@@ -24,7 +24,7 @@ from httplib2 import Credentials
 
 
 class SpiderContext:
-  """A simple class to initalize the context with a list of root SAs
+  """A simple class to initialize the context with a list of root SAs
   """
 
   def __init__(self, sa_tuples: List[Tuple[str, Credentials, List[str]]]):
