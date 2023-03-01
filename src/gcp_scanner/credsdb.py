@@ -378,7 +378,7 @@ def creds_from_refresh_token(refresh_token_file):
   with open(refresh_token_file, encoding="utf-8") as f:
     creds_dict = json.load(f)
 
-  user_scopes = get_scope_from_refresh_token(creds_dict)
+  user_scopes = get_scopes_from_refresh_token(creds_dict)
 
   return credentials.Credentials(
     None,
@@ -390,8 +390,8 @@ def creds_from_refresh_token(refresh_token_file):
   )
 
 
-def get_scope_from_refresh_token(context) -> Union[List[str], None]:
-  """The function is used to obtain scope from refresh token.
+def get_scopes_from_refresh_token(context) -> Union[List[str], None]:
+  """The function is used to obtain scopes from refresh token.
 
   Args:
     context: dictionary containing refresh_token data
