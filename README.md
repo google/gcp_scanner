@@ -14,12 +14,12 @@ Currently, the scanner supports the following GCP resources:
 * GCE
 * GCS
 * GKE
-* AppEngine
-* CloudSQL
+* App Engine
+* Cloud SQL
 * BigQuery
 * Spanner
-* PubSub
-* CloudFunctions
+* Pub/Sub
+* Cloud Functions
 * BigTable
 * CloudStore
 * KMS
