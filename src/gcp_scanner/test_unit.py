@@ -24,10 +24,14 @@ import os
 import shutil
 import sqlite3
 import unittest
+from unittest.mock import patch, Mock
+
+import requests
 
 from . import crawl
 from . import credsdb
 from . import scanner
+from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner"
 
@@ -146,6 +150,62 @@ creds='test_data', token='ya.29c.TEST')]]"
 
   # impersonate_sa()
   shutil.rmtree("unit")
+
+
+class TestScopes(unittest.TestCase):
+  """Test fetching scopes from a refresh token."""
+
+  def setUp(self):
+    """Setup common variables."""
+    self.ctx = {
+      "refresh_token": "<token>",
+      "client_id": "id",
+      "client_secret": "secret",
+    }
+
+  @patch("requests.post")
+  def test_get_scope_from_rt(self, mocked_post):
+    """Test get_scope_from_rt valid."""
+    scope_str = "scope1 scope2 scope3 openid"
+    mocked_post.return_value = Mock(
+      status_code=201,
+      json=lambda: {
+        "scope": scope_str
+      }
+    )
+    expect = scope_str.split()
+    actual = get_scopes_from_refresh_token(self.ctx)
+    self.assertEqual(actual, expect)
+
+  @patch("requests.post")
+  def test_get_scope_from_rt_exception(self, mocked_post):
+    """Test get_scope_from_rt for exception."""
+
+    mocked_post.side_effect = Mock(
+      side_effect=requests.exceptions.ConnectionError()
+    )
+
+    # returns None if any error occurs
+    self.assertEqual(
+      None,
+      get_scopes_from_refresh_token(self.ctx),
+    )
+
+  @patch("requests.post")
+  def test_get_scope_from_rt_no_scope(self, mocked_post):
+    """Test get_scope_from_rt for invalid json."""
+
+    # Empty JSON returned
+    mocked_post.return_value = Mock(
+      status_code=201,
+      json=lambda: {}
+    )
+
+    # returns None if any error occurs
+    self.assertEqual(
+      None,
+      get_scopes_from_refresh_token(self.ctx),
+    )
 
 
 class TestCrawler(unittest.TestCase):
