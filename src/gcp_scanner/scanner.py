@@ -304,7 +304,7 @@ def main():
   required_named = parser.add_argument_group('Required parameters')
   required_named.add_argument(
       '-o',
-      '--output_dir',
+      '--output-dir',
       required=True,
       dest='output',
       default='scan_db',
@@ -312,13 +312,13 @@ def main():
 
   parser.add_argument(
       '-k',
-      '--sa_key_path',
+      '--sa-key-path',
       default=None,
       dest='key_path',
       help='Path to directory with SA keys in json format')
   parser.add_argument(
       '-g',
-      '--gcloud_profile_path',
+      '--gcloud-profile-path',
       default=None,
       dest='gcloud_profile_path',
       help='Path to directory with gcloud profile. Specify -\
