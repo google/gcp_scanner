@@ -326,21 +326,21 @@ def main():
   )
   parser.add_argument(
       '-m',
-      '--use_metadata',
+      '--use-metadata',
       default=False,
       dest='use_metadata',
       action='store_true',
       help='Extract credentials from GCE instance metadata')
   parser.add_argument(
       '-at',
-      '--access_token_files',
+      '--access-token-files',
       default=None,
       dest='access_token_files',
       help='A list of comma separated files with access token and OAuth scopes.\
 TTL limited. A token and scopes should be stored in JSON format.')
   parser.add_argument(
       '-rt',
-      '--refresh_token_files',
+      '--refresh-token-files',
       default=None,
       dest='refresh_token_files',
       help='A list of comma separated files with refresh_token, client_id,\
@@ -348,7 +348,7 @@ token_uri and client_secret stored in JSON format.'
   )
   parser.add_argument(
       '-s',
-      '--service_account',
+      '--service-account',
       default=None,
       dest='key_name',
       help='Name of individual SA to scan')
@@ -360,7 +360,7 @@ token_uri and client_secret stored in JSON format.'
       help='Name of individual project to scan')
   parser.add_argument(
       '-f',
-      '--force_projects',
+      '--force-projects',
       default=None,
       dest='force_projects',
       help='Comma separated list of project names to include in the scan')
