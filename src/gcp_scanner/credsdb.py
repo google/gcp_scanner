@@ -402,14 +402,24 @@ def get_scopes_from_refresh_token(context) -> Union[List[str], None]:
         "client_secret": "secret",
       }
   Returns:
-    a list of scopes
+    a list of scopes or None
   """
   # Obtain access token from the refresh token
   token_uri = "https://oauth2.googleapis.com/token"
   context["grant_type"] = "refresh_token"
-  response = requests.post(token_uri, data=context)
 
-  # prepare the scope string into a list
-  raw = response.json().get("scope", None)
-  return raw.split(" ") if raw else None
+  try:
+    response = requests.post(token_uri, data=context, timeout=5)
+    # prepare the scope string into a list
+    raw = response.json().get("scope", None)
+    return raw.split(" ") if raw else None
+  except Exception as ex:
+    logging.error(
+      "Failed to retrieve access token from refresh token.",
+    )
+    logging.debug("Token refresh exception", exc_info=ex)
+
+  return None
+
+
 
