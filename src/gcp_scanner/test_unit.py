@@ -208,6 +208,30 @@ class TestScopes(unittest.TestCase):
     )
 
 
+class TestScopesIntegration(unittest.TestCase):
+  """Integration test against live test-porject."""
+  def setUp(self):
+    # TODO: get_creds_from_metadata or some other method should
+    # TODO: return refresh token
+    # TODO: this self.credentials does not have refresh_token
+    _, self.credentials = credsdb.get_creds_from_metadata()
+
+  def test_get_scope_from_rt(self):
+    """Test get_scope_from_rt valid."""
+    ctx = {
+      "refresh_token": self.credentials.refresh_token,
+      "client_id": self.credentials.client_id,
+      "client_secret": self.credentials.client_secret,
+    }
+    actual = get_scopes_from_refresh_token(ctx)
+    self.assertTrue(
+      verify(
+        actual,
+        "refresh_scopes",
+        True,
+      )
+    )
+
 class TestCrawler(unittest.TestCase):
   """Test crawler functionalities."""
 
