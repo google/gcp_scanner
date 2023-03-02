@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "GCP Scanner Google Group"
+    url: "https://groups.google.com/g/gcp-scanner"
+    about: "Please ask and answer questions here"
