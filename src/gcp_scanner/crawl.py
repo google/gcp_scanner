@@ -33,7 +33,7 @@ from requests.auth import HTTPBasicAuth
 
 
 def infinite_defaultdict():
-  """Initalize infinite default.
+  """Initialize infinite default.
 
   Returns:
     DefaultDict
@@ -94,10 +94,7 @@ def get_project_list(credentials: Credentials) -> List[Dict[str, Any]]:
     request = service.projects().list()
     while request is not None:
       response = request.execute()
-
-      for project in response.get("projects", []):
-        project_list.append(project)
-
+      project_list = response.get("projects",[])
       request = service.projects().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -125,10 +122,9 @@ def get_compute_instances_names(
     while request is not None:
       response = request.execute()
       if response.get("items", None) is not None:
-        for _, instances_scoped_list in response["items"].items():
-          for instance in instances_scoped_list.get("instances", []):
-            images_result.append(instance)
-
+        images_result = [instance
+          for _, instances_scoped_list in response["items"].items()
+          for instance in instances_scoped_list.get("instances",[])]
       request = service.instances().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -156,9 +152,7 @@ def get_compute_images_names(
     request = service.images().list(project=project_name)
     while request is not None:
       response = request.execute()
-      for image in response.get("items", []):
-        images_result.append(image)
-
+      images_result = response.get("items", [])
       request = service.images().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -186,10 +180,9 @@ def get_compute_disks_names(
     while request is not None:
       response = request.execute()
       if response.get("items", None) is not None:
-        for _, disks_scoped_list in response["items"].items():
-          for disk in disks_scoped_list.get("disks", []):
-            disk_names_list.append(disk)
-
+        disk_names_list = [disk
+          for _, disks_scoped_list in response["items"].items()
+          for disk in disks_scoped_list.get("disks", [])]
       request = service.disks().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -218,11 +211,9 @@ def get_static_ips(project_name: str,
     request = service.addresses().aggregatedList(project=project_name)
     while request is not None:
       response = request.execute()
-      for name, addresses_scoped_list in response["items"].items():
-        if addresses_scoped_list.get("addresses", None) is None:
-          continue
-        ips_list.append({name: addresses_scoped_list})
-
+      ips_list = [{name: addresses_scoped_list}
+        for name, addresses_scoped_list in response["items"].items()
+        if addresses_scoped_list.get("addresses", None) is not None]
       request = service.addresses().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -250,9 +241,7 @@ def get_compute_snapshots(project_name: str,
     request = service.snapshots().list(project=project_name)
     while request is not None:
       response = request.execute()
-      for snapshot in response.get("items", []):
-        snapshots_list.append(snapshot)
-
+      snapshots_list = response.get("items", [])
       request = service.snapshots().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -281,9 +270,7 @@ def get_subnets(project_name: str,
     while request is not None:
       response = request.execute()
       if response.get("items", None) is not None:
-        for name, subnetworks_scoped_list in response["items"].items():
-          subnets_list.append((name, subnetworks_scoped_list))
-
+        subnets_list = list(response["items"].items())
       request = compute_client.subnetworks().aggregatedList_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -312,12 +299,8 @@ def get_firewall_rules(
     request = compute_client.firewalls().list(project=project_name)
     while request is not None:
       response = request.execute()
-      for firewall in response.get("items", []):
-        firewall_rules_list.append((
-            firewall["name"],
-            # firewall['description'],
-        ))
-
+      firewall_rules_list=[(firewall["name"],)
+        for firewall in response.get("items",[])]
       request = compute_client.firewalls().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -403,10 +386,7 @@ def get_managed_zones(project_name: str,
     request = service.managedZones().list(project=project_name)
     while request is not None:
       response = request.execute()
-
-      for managed_zone in response["managedZones"]:
-        zones_list.append(managed_zone)
-
+      zones_list = response.get("managedZones",[])
       request = service.managedZones().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -434,8 +414,8 @@ def get_gke_clusters(
   parent = f"projects/{project_name}/locations/-"
   try:
     clusters = gke_client.list_clusters(parent=parent)
-    return [(cluster.name, cluster.description) for cluster in clusters.clusters
-           ]
+    return [(cluster.name, cluster.description)
+      for cluster in clusters.clusters]
   except Exception:
     logging.info("Failed to retrieve cluster list for project %s", project_name)
     logging.info(sys.exc_info())
@@ -495,9 +475,7 @@ def get_sql_instances(project_name: str,
     request = service.instances().list(project=project_name)
     while request is not None:
       response = request.execute()
-      for database_instance in response.get("items", []):
-        sql_instances_list.append(database_instance)
-
+      sql_instances_list = response.get("items", [])
       request = service.instances().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -517,7 +495,7 @@ def get_bq_tables(project_id: str, dataset_id: str,
     bq_service: I do not know.
 
   Returns:
-    A list of BigQuety tables in the dataset.
+    A list of BigQuery tables in the dataset.
   """
 
   logging.info("Retrieving BigQuery Tables for dataset %s", dataset_id)
@@ -527,10 +505,7 @@ def get_bq_tables(project_id: str, dataset_id: str,
         projectId=project_id, datasetId=dataset_id)
     while request is not None:
       response = request.execute()
-
-      for table in response.get("tables", []):
-        list_of_tables.append(table)
-
+      list_of_tables = response.get("tables", [])
       request = bq_service.tables().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -563,12 +538,12 @@ def get_bq(project_id: str,
 
       for dataset in response.get("datasets", []):
         dataset_id = dataset["datasetReference"]["datasetId"]
-        bq_datasets[dataset_id] = get_bq_tables(project_id, dataset_id, service)
+        bq_datasets[dataset_id] = get_bq_tables(project_id,dataset_id, service)
 
       request = service.datasets().list_next(
           previous_request=request, previous_response=response)
   except Exception:
-    logging.info("Failed to retrieve BQ datesets for project %s", project_id)
+    logging.info("Failed to retrieve BQ datasets for project %s", project_id)
     logging.info(sys.exc_info())
   return bq_datasets
 
@@ -595,9 +570,7 @@ def get_pubsub_subscriptions(project_id: str,
         project=f"projects/{project_id}")
     while request is not None:
       response = request.execute()
-      for subscription in response.get("subscriptions", []):
-        pubsubs_list.append(subscription)
-
+      pubsubs_list = response.get("subscriptions", [])
       request = service.projects().subscriptions().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -627,9 +600,7 @@ def get_cloudfunctions(project_id: str,
         parent=f"projects/{project_id}/locations/-")
     while request is not None:
       response = request.execute()
-      for function in response.get("functions", []):
-        functions_list.append(function)
-
+      functions_list = response.get("functions", [])
       request = service.projects().locations().functions().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -661,9 +632,7 @@ def get_bigtable_instances(project_id: str,
         parent=f"projects/{project_id}")
     while request is not None:
       response = request.execute()
-      for instance in response.get("instances", []):
-        bigtable_instances_list.append(instance)
-
+      bigtable_instances_list = response.get("instances", [])
       request = service.projects().instances().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -695,9 +664,7 @@ def get_spanner_instances(project_id: str,
         parent=f"projects/{project_id}")
     while request is not None:
       response = request.execute()
-      for instance in response.get("instances", []):
-        spanner_instances_list.append(instance)
-
+      spanner_instances_list = response.get("instances", [])
       request = service.projects().instances().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -728,9 +695,7 @@ def get_filestore_instances(project_id: str,
         parent=f"projects/{project_id}/locations/-")
     while request is not None:
       response = request.execute()
-      for instance in response.get("instances", []):
-        filestore_instances_list.append(instance)
-
+      filestore_instances_list = response.get("instances", [])
       request = service.projects().locations().instances().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -822,9 +787,7 @@ def get_app_services(project_name: str,
     app_services["services"] = list()
     while request is not None:
       response = request.execute()
-      for service_entry in response.get("services", []):
-        app_services["services"].append(service_entry)
-
+      app_services["services"] = response.get("services", [])
       request = app_client.apps().services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -857,9 +820,7 @@ def get_endpoints(project_id: str,
     request = service.services().list(producerProjectId=project_id)
     while request is not None:
       response = request.execute()
-      for service_entry in response.get("services", []):
-        endpoints_list.append(service_entry)
-
+      endpoints_list = response.get("services", [])
       request = service.services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
@@ -961,11 +922,9 @@ def get_service_accounts(project_name: str,
     request = service.projects().serviceAccounts().list(name=name)
     while request is not None:
       response = request.execute()
-
-      for service_account in response.get("accounts", []):
-        service_accounts.append(
-            (service_account["email"], service_account["description"]
-             if "description" in service_account else ""))
+      service_accounts = [(service_account["email"],
+        service_account.get("description",""))
+        for service_account in response.get("accounts",[])]
 
       request = service.projects().serviceAccounts().list_next(
           previous_request=request, previous_response=response)
@@ -1040,3 +999,37 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
     logging.info(sys.exc_info())
 
   return list_of_repos
+
+
+def list_dns_policies(project_id: str, credentials: Credentials) -> List[Any]:
+  """Retrieve a list of cloud DNS policies in the project.
+  Args:
+    project_id: An id of a project to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+  Returns:
+    A list of cloud DNS policies in the project.
+  """
+
+  logging.info("Retrieving cloud DNS policies %s", project_id)
+  list_of_policies = list()
+  service = discovery.build("dns", "v1", credentials=credentials)
+
+  request = service.policies().list(
+    project=project_id,
+    maxResults=500
+  )
+  try:
+    while request is not None:
+      response = request.execute()
+      list_of_policies.append(response.get("policies", None))
+
+      request = service.policies().list_next(
+        previous_request=request,
+        previous_response=response
+      )
+  except Exception:
+    logging.info("Failed to retrieve DNS policies for project %s", project_id)
+    logging.info(sys.exc_info())
+
+  return list_of_policies
+

@@ -22,7 +22,7 @@ import json
 import logging
 import os
 import sys
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional,Union
 
 from . import crawl
 from . import credsdb
@@ -33,13 +33,11 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 from .models import SpiderContext
 
-
-def is_set(config, config_setting):
+def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
   if config is None:
     return True
   obj = config.get(config_setting, {})
   return obj.get('fetch', False)
-
 
 def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                out_dir: str,
@@ -71,6 +69,8 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
     # Log the chain we used to get here (even if we have no privs)
     sa_results['service_account_chain'] = chain_so_far
     sa_results['current_service_account'] = sa_name
+    # Add token scopes in the result
+    sa_results['token_scopes'] = credentials.scopes
 
     project_list = crawl.get_project_list(credentials)
     if len(project_list) <= 0:
@@ -163,6 +163,12 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'managed_zones'):
         project_result['managed_zones'] = crawl.get_managed_zones(project_id,
                                                                   credentials)
+      # Get DNS policies
+      if is_set(scan_config, 'dns_policies'):
+        project_result['dns_policies'] = crawl.list_dns_policies(
+          project_id,
+          credentials
+        )
 
       # Get GKE resources
       if is_set(scan_config, 'gke_clusters'):
@@ -192,7 +198,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         project_result['cloud_functions'] = crawl.get_cloudfunctions(
             project_id, credentials)
 
-      # Get List of BigTable Instanses
+      # Get List of BigTable Instances
       if is_set(scan_config, 'bigtable_instances'):
         project_result['bigtable_instances'] = crawl.get_bigtable_instances(
             project_id, credentials)
@@ -290,7 +296,7 @@ def gke_client_for_credentials(
 
 
 def main():
-  logging.getLogger('googleapicliet.discovery_cache').setLevel(logging.ERROR)
+  logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
   logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
 
   parser = argparse.ArgumentParser(
@@ -300,6 +306,7 @@ def main():
   required_named = parser.add_argument_group('Required parameters')
   required_named.add_argument(
       '-o',
+      '--output-dir',
       required=True,
       dest='output',
       default='scan_db',
@@ -307,13 +314,13 @@ def main():
 
   parser.add_argument(
       '-k',
-      '--sa_key_path',
+      '--sa-key-path',
       default=None,
       dest='key_path',
       help='Path to directory with SA keys in json format')
   parser.add_argument(
       '-g',
-      '--gcloud_profile_path',
+      '--gcloud-profile-path',
       default=None,
       dest='gcloud_profile_path',
       help='Path to directory with gcloud profile. Specify -\
@@ -321,32 +328,41 @@ def main():
   )
   parser.add_argument(
       '-m',
+      '--use-metadata',
       default=False,
       dest='use_metadata',
       action='store_true',
       help='Extract credentials from GCE instance metadata')
   parser.add_argument(
       '-at',
+      '--access-token-files',
       default=None,
       dest='access_token_files',
       help='A list of comma separated files with access token and OAuth scopes.\
 TTL limited. A token and scopes should be stored in JSON format.')
   parser.add_argument(
       '-rt',
+      '--refresh-token-files',
       default=None,
       dest='refresh_token_files',
       help='A list of comma separated files with refresh_token, client_id,\
 token_uri and client_secret stored in JSON format.'
   )
   parser.add_argument(
-      '-s', default=None, dest='key_name', help='Name of individual SA to scan')
+      '-s',
+      '--service-account',
+      default=None,
+      dest='key_name',
+      help='Name of individual SA to scan')
   parser.add_argument(
       '-p',
+      '--project',
       default=None,
       dest='target_project',
       help='Name of individual project to scan')
   parser.add_argument(
       '-f',
+      '--force-projects',
       default=None,
       dest='force_projects',
       help='Comma separated list of project names to include in the scan')
@@ -364,7 +380,8 @@ token_uri and client_secret stored in JSON format.'
       choices=('INFO', 'WARNING', 'ERROR'),
       help='Set logging level (INFO, WARNING, ERROR)')
 
-  args = parser.parse_args()
+  args: argparse.Namespace = parser.parse_args()
+
   if not args.key_path and not args.gcloud_profile_path \
     and not args.use_metadata and not args.access_token_files\
     and not args.refresh_token_files:

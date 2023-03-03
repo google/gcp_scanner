@@ -172,7 +172,89 @@
             "serviceusage.googleapis.com/tos/cloud"
           ]
         },
-        "monitoring": {}
+        "monitoredResources": [
+          {
+            "type": "bigquery.googleapis.com/Table",
+            "displayName": "BigQuery Table Resource.",
+            "description": "BigQuery Table Resource.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP resource container associated with this resource, such as \"my-project\" or \"organizations/123\u201d."
+              },
+              {
+                "key": "location",
+                "description": "The cloud location of the BigQuery table."
+              },
+              {
+                "key": "table_reference",
+                "description": "The table reference in the format of project_id:dataset_id.table_id for the BigQuery table."
+              }
+            ],
+            "launchStage": "ALPHA"
+          },
+          {
+            "type": "bigquery.googleapis.com/Location",
+            "displayName": "CheckIamPolicy Request Location",
+            "description": "A BigQuery Location (sometimes called Region).",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The id of the GCP resource container associated with this resource."
+              },
+              {
+                "key": "location",
+                "description": "Location of resource."
+              }
+            ],
+            "launchStage": "ALPHA"
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "bigquery.googleapis.com/Table",
+              "metrics": [
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_org/exceeded",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_org_eu/exceeded",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_org_us/exceeded",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_project/exceeded",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_project_eu/exceeded",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_project_us/exceeded"
+              ]
+            },
+            {
+              "monitoredResource": "bigquery.googleapis.com/Table",
+              "metrics": [
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_org/limit",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_org/usage",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_org_eu/limit",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_org_eu/usage",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_org_us/limit",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_org_us/usage",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_project/limit",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_project/usage",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_project_eu/limit",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_project_eu/usage",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_project_us/limit",
+                "bigquery.googleapis.com/quota/internal/table/base_table_bytes_for_free_indexing_per_project_us/usage"
+              ]
+            },
+            {
+              "monitoredResource": "bigquery.googleapis.com/Location",
+              "metrics": [
+                "bigquery.googleapis.com/quota/internalCheckIamPolicyRequests/exceeded",
+                "bigquery.googleapis.com/quota/internalCheckIamPolicyRequests/usage"
+              ]
+            },
+            {
+              "monitoredResource": "bigquery.googleapis.com/Location",
+              "metrics": [
+                "bigquery.googleapis.com/quota/internalCheckIamPolicyRequests/limit"
+              ]
+            }
+          ]
+        }
       },
       "state": "ENABLED",
       "parent": "projects/413204024550"
@@ -291,7 +373,42 @@
             "serviceusage.googleapis.com/billing-enabled"
           ]
         },
-        "monitoring": {}
+        "monitoredResources": [
+          {
+            "type": "cloudbuild.googleapis.com/Location",
+            "displayName": "Cloud Build Location",
+            "description": "A location in the Cloud Build API.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identified of the GCP resource container associated with this resource, such as \"my_project\" or \"organizations/5678\"."
+              },
+              {
+                "key": "location",
+                "description": "Location of resource."
+              }
+            ],
+            "launchStage": "ALPHA"
+          }
+        ],
+        "monitoring": {
+          "consumerDestinations": [
+            {
+              "monitoredResource": "cloudbuild.googleapis.com/Location",
+              "metrics": [
+                "cloudbuild.googleapis.com/concurrent_public_pool_build_cpus",
+                "cloudbuild.googleapis.com/quota/concurrent_public_pool_build_cpus/exceeded"
+              ]
+            },
+            {
+              "monitoredResource": "cloudbuild.googleapis.com/Location",
+              "metrics": [
+                "cloudbuild.googleapis.com/quota/concurrent_public_pool_build_cpus/limit",
+                "cloudbuild.googleapis.com/quota/concurrent_public_pool_build_cpus/usage"
+              ]
+            }
+          ]
+        }
       },
       "state": "ENABLED",
       "parent": "projects/413204024550"
@@ -849,7 +966,47 @@
                 "description": "Location of resource."
               }
             ],
+            "launchStage": "BETA"
+          },
+          {
+            "type": "compute.googleapis.com/Reservation",
+            "displayName": "Reservation",
+            "description": "Monitored resource representing a reservation.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The GCP container (e.g. project number) associated with the reservation."
+              },
+              {
+                "key": "location",
+                "description": "The zone that contains the reservation."
+              },
+              {
+                "key": "reservation_id",
+                "description": "Reservation resource ID."
+              }
+            ],
             "launchStage": "ALPHA"
+          },
+          {
+            "type": "gce_instance",
+            "displayName": "VM Instance",
+            "description": "A virtual machine instance hosted in Compute Engine.",
+            "labels": [
+              {
+                "key": "project_id",
+                "description": "The identifier of the GCP project associated with this resource, such as \"my-project\"."
+              },
+              {
+                "key": "instance_id",
+                "description": "The numeric VM instance identifier assigned by Compute Engine."
+              },
+              {
+                "key": "zone",
+                "description": "The Compute Engine zone in which the VM is running."
+              }
+            ],
+            "launchStage": "GA"
           }
         ],
         "monitoring": {
@@ -864,19 +1021,29 @@
                 "compute.googleapis.com/ip_aliases_per_vpc_network",
                 "compute.googleapis.com/psc_google_apis_forwarding_rules_per_vpc_network",
                 "compute.googleapis.com/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network",
+                "compute.googleapis.com/quota/global_internal_managed_forwarding_rules_per_region_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/instances_per_peering_group/exceeded",
                 "compute.googleapis.com/quota/instances_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/instances_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_peering_group/exceeded",
                 "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_peering_group/exceeded",
                 "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_peering_group/exceeded",
                 "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/ip_aliases_per_peering_group/exceeded",
                 "compute.googleapis.com/quota/ip_aliases_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/ip_aliases_per_vpc_network/exceeded",
                 "compute.googleapis.com/quota/psc_google_apis_forwarding_rules_per_vpc_network/exceeded",
                 "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/exceeded",
+                "compute.googleapis.com/quota/regional_external_managed_forwarding_rules_per_region_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/regional_internal_managed_forwarding_rules_per_region_per_vpc_network/exceeded",
+                "compute.googleapis.com/quota/static_routes_per_peering_group/exceeded",
+                "compute.googleapis.com/quota/subnet_ranges_per_peering_group/exceeded",
                 "compute.googleapis.com/quota/subnet_ranges_per_regional_vpc_network/exceeded",
                 "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/exceeded",
                 "compute.googleapis.com/subnet_ranges_per_vpc_network"
@@ -885,35 +1052,61 @@
             {
               "monitoredResource": "compute.googleapis.com/Location",
               "metrics": [
-                "compute.googleapis.com/quota/local_ssd_total_storage_per_vm_family/exceeded"
+                "compute.googleapis.com/global_dns/request_count",
+                "compute.googleapis.com/local_ssd_total_storage_per_vm_family",
+                "compute.googleapis.com/quota/cpus_per_vm_family/exceeded",
+                "compute.googleapis.com/quota/gpus_per_gpu_family/exceeded",
+                "compute.googleapis.com/quota/local_ssd_total_storage_per_vm_family/exceeded",
+                "compute.googleapis.com/quota/preemptible_gpus_per_gpu_family/exceeded",
+                "compute.googleapis.com/quota/reserved_resource_per_aggregate_reservation_per_cluster/exceeded"
               ]
             },
             {
               "monitoredResource": "compute.googleapis.com/Location",
               "metrics": [
+                "compute.googleapis.com/quota/cpus_per_vm_family/limit",
+                "compute.googleapis.com/quota/cpus_per_vm_family/usage",
+                "compute.googleapis.com/quota/gpus_per_gpu_family/limit",
+                "compute.googleapis.com/quota/gpus_per_gpu_family/usage",
                 "compute.googleapis.com/quota/local_ssd_total_storage_per_vm_family/limit",
-                "compute.googleapis.com/quota/local_ssd_total_storage_per_vm_family/usage"
+                "compute.googleapis.com/quota/local_ssd_total_storage_per_vm_family/usage",
+                "compute.googleapis.com/quota/preemptible_gpus_per_gpu_family/limit",
+                "compute.googleapis.com/quota/preemptible_gpus_per_gpu_family/usage",
+                "compute.googleapis.com/quota/reserved_resource_per_aggregate_reservation_per_cluster/limit",
+                "compute.googleapis.com/quota/reserved_resource_per_aggregate_reservation_per_cluster/usage"
               ]
             },
             {
               "monitoredResource": "compute.googleapis.com/VpcNetwork",
               "metrics": [
+                "compute.googleapis.com/quota/global_internal_managed_forwarding_rules_per_region_per_vpc_network/limit",
+                "compute.googleapis.com/quota/global_internal_managed_forwarding_rules_per_region_per_vpc_network/usage",
+                "compute.googleapis.com/quota/instances_per_peering_group/limit",
+                "compute.googleapis.com/quota/instances_per_peering_group/usage",
                 "compute.googleapis.com/quota/instances_per_regional_vpc_network/limit",
                 "compute.googleapis.com/quota/instances_per_regional_vpc_network/usage",
                 "compute.googleapis.com/quota/instances_per_vpc_network/limit",
                 "compute.googleapis.com/quota/instances_per_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_peering_group/limit",
+                "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_peering_group/usage",
                 "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_regional_vpc_network/limit",
                 "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_regional_vpc_network/usage",
                 "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/limit",
                 "compute.googleapis.com/quota/internal_lb_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_peering_group/limit",
+                "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_peering_group/usage",
                 "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_regional_vpc_network/limit",
                 "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_regional_vpc_network/usage",
                 "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/limit",
                 "compute.googleapis.com/quota/internal_managed_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_peering_group/limit",
+                "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_peering_group/usage",
                 "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_regional_vpc_network/limit",
                 "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_regional_vpc_network/usage",
                 "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/limit",
                 "compute.googleapis.com/quota/internal_protocol_forwarding_rules_per_vpc_network/usage",
+                "compute.googleapis.com/quota/ip_aliases_per_peering_group/limit",
+                "compute.googleapis.com/quota/ip_aliases_per_peering_group/usage",
                 "compute.googleapis.com/quota/ip_aliases_per_regional_vpc_network/limit",
                 "compute.googleapis.com/quota/ip_aliases_per_regional_vpc_network/usage",
                 "compute.googleapis.com/quota/ip_aliases_per_vpc_network/limit",
@@ -924,10 +1117,32 @@
                 "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_regional_vpc_network/usage",
                 "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/limit",
                 "compute.googleapis.com/quota/psc_ilb_consumer_forwarding_rules_per_producer_vpc_network/usage",
+                "compute.googleapis.com/quota/regional_external_managed_forwarding_rules_per_region_per_vpc_network/limit",
+                "compute.googleapis.com/quota/regional_external_managed_forwarding_rules_per_region_per_vpc_network/usage",
+                "compute.googleapis.com/quota/regional_internal_managed_forwarding_rules_per_region_per_vpc_network/limit",
+                "compute.googleapis.com/quota/regional_internal_managed_forwarding_rules_per_region_per_vpc_network/usage",
+                "compute.googleapis.com/quota/static_routes_per_peering_group/limit",
+                "compute.googleapis.com/quota/static_routes_per_peering_group/usage",
+                "compute.googleapis.com/quota/subnet_ranges_per_peering_group/limit",
+                "compute.googleapis.com/quota/subnet_ranges_per_peering_group/usage",
                 "compute.googleapis.com/quota/subnet_ranges_per_regional_vpc_network/limit",
                 "compute.googleapis.com/quota/subnet_ranges_per_regional_vpc_network/usage",
                 "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/limit",
                 "compute.googleapis.com/quota/subnet_ranges_per_vpc_network/usage"
+              ]
+            },
+            {
+              "monitoredResource": "compute.googleapis.com/Reservation",
+              "metrics": [
+                "compute.googleapis.com/reservation/reserved",
+                "compute.googleapis.com/reservation/assured",
+                "compute.googleapis.com/reservation/used"
+              ]
+            },
+            {
+              "monitoredResource": "gce_instance",
+              "metrics": [
+                "compute.googleapis.com/instance/global_dns/request_count"
               ]
             }
           ]
@@ -962,7 +1177,9 @@
       "config": {
         "name": "containerfilesystem.googleapis.com",
         "title": "Container File System API",
-        "documentation": {},
+        "documentation": {
+          "summary": "Stream images stored in Artifact Registry to GKE\n"
+        },
         "quota": {},
         "authentication": {},
         "usage": {
@@ -1192,13 +1409,23 @@
                 "file.googleapis.com/nfs/server/metadata_latency",
                 "file.googleapis.com/highscale/devices_total",
                 "file.googleapis.com/highscale/devices_up",
-                "file.googleapis.com/nfs/server/connections"
+                "file.googleapis.com/nfs/server/connections",
+                "file.googleapis.com/highscale/efsck/runs",
+                "file.googleapis.com/highscale/efsck/aborts",
+                "file.googleapis.com/nfs/server/free_raw_capacity_percent",
+                "file.googleapis.com/nfs/server/snapshots_used_bytes"
               ]
             },
             {
               "monitoredResource": "saas_instance",
               "metrics": [
                 "file.googleapis.com/highscale/snapshot/last_valid_backup_creation_timestamp"
+              ]
+            },
+            {
+              "monitoredResource": "filestore_instance",
+              "metrics": [
+                "file.googleapis.com/highscale/efsck/is_running"
               ]
             }
           ]
@@ -1350,7 +1577,8 @@
             {
               "monitoredResource": "logging.googleapis.com/ChargedProject",
               "metrics": [
-                "logging.googleapis.com/billing/ingested_bytes"
+                "logging.googleapis.com/billing/ingested_bytes",
+                "logging.googleapis.com/billing/stored_bytes"
               ]
             }
           ]
@@ -1687,6 +1915,26 @@
       "parent": "projects/413204024550"
     },
     {
+      "name": "projects/413204024550/services/sourcerepo.googleapis.com",
+      "config": {
+        "name": "sourcerepo.googleapis.com",
+        "title": "Cloud Source Repositories API",
+        "documentation": {
+          "summary": "Accesses source code repositories hosted by Google."
+        },
+        "quota": {},
+        "authentication": {},
+        "usage": {
+          "requirements": [
+            "serviceusage.googleapis.com/tos/cloud"
+          ]
+        },
+        "monitoring": {}
+      },
+      "state": "ENABLED",
+      "parent": "projects/413204024550"
+    },
+    {
       "name": "projects/413204024550/services/spanner.googleapis.com",
       "config": {
         "name": "spanner.googleapis.com",
@@ -1848,7 +2096,7 @@
       "name": "projects/413204024550/services/sqladmin.googleapis.com",
       "config": {
         "name": "sqladmin.googleapis.com",
-        "title": "Cloud SQL Admin API",
+        "title": "sqladmin API (prod)",
         "documentation": {
           "summary": "API for Cloud SQL database instance management"
         },
@@ -1856,6 +2104,7 @@
         "authentication": {},
         "usage": {
           "requirements": [
+            "serviceusage.googleapis.com/tos/cloud",
             "serviceusage.googleapis.com/tos/cloud"
           ]
         },
