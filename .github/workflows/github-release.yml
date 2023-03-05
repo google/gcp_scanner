@@ -25,12 +25,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install .
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Declare some variables
+        id: vars
+        shell: bash
+        run: |
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          title: $(git rev-parse --short "$GITHUB_SHA")
+          automatic_release_tag: "${{ steps.vars.outputs.sha_short }}"
           prerelease: false
           files: |
             LICENSE.txt
