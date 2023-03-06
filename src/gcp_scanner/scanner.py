@@ -387,7 +387,7 @@ token_uri and client_secret stored in JSON format.'
     and not args.refresh_token_files:
     logging.error(
         'Please select at least one option to begin scan\
- -k/--sa_key_path,-g/--gcloud_profile_path, -m, -rt, -at'
+ -k/--sa-key-path,-g/--gcloud-profile-path, -m, -rt, -at'
     )
 
   force_projects_list = list()
