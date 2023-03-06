@@ -93,7 +93,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       project_id = project['projectId']
       project_number = project['projectNumber']
-      logging.info(f'Inspecting project {project_id}')
+      logging.info('Inspecting project %s', project_id)
       project_result = sa_results['projects'][project_id]
 
       project_result['project_info'] = project
