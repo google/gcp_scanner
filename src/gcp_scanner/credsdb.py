@@ -85,7 +85,7 @@ def get_creds_from_metadata() -> Tuple[Optional[str], Optional[Credentials]]:
     google.auth.service_account.Credentials: The constructed credentials.
   """
 
-  print("Retrieving access token from instance metadata")
+  logging.info("Retrieving access token from instance metadata")
 
   token_url = "http://metadata.google.internal/computeMetadata/v1/instance/\
 service-accounts/default/token"
@@ -121,7 +121,7 @@ service-accounts/default/email"
     logging.error(sys.exc_info()[1])
     return None, None
 
-  print("Successfully retrieved instance metadata")
+  logging.info("Successfully retrieved instance metadata")
   logging.info("Access token length: %d", len(token))
   logging.info("Instance email: %s", email)
   logging.info("Instance scopes: %s", instance_scopes)
