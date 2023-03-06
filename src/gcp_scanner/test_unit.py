@@ -209,7 +209,7 @@ class TestScopes(unittest.TestCase):
 
 
 class TestScopesIntegration(unittest.TestCase):
-  """Integration test against live test-porject."""
+  """Integration test against live test-project."""
   def setUp(self):
     # TODO: get_creds_from_metadata or some other method should
     # TODO: return refresh token
