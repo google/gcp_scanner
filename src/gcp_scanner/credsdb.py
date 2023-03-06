@@ -195,7 +195,6 @@ def find_creds(explicit_path: Optional[str] = None) -> List[str]:
       logging.info("Identified accessible gcloud config profile %s", full_path)
       list_of_creds_files.append(full_path)
   logging.info("Identified %d credential DBs", len(list_of_creds_files))
-  
   return list_of_creds_files
 
 
@@ -264,7 +263,7 @@ def extract_creds(path_to_creds_db: str) -> List[Tuple[str, str, str]]:
       logging.info("Found valid access token for %s", row[0])
       access_token = access_tokens[row[0]]
     res.append(SA(row[0], row[1], access_token))
-  logging.info(f"Identified {len(res)} credential entries")
+  logging.info("Identified %d credential entries", len(res))
   return res
 
 
