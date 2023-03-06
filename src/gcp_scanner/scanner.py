@@ -247,7 +247,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             iam_policy)
 
         for candidate_service_account in project_service_accounts:
-          logging.info('Trying {candidate_service_account}')
+          logging.info('Trying %s', candidate_service_account)
           if not candidate_service_account.startswith('serviceAccount'):
             continue
           try:
