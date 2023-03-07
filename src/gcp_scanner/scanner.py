@@ -22,6 +22,7 @@ import json
 import logging
 import os
 import sys
+from datetime import datetime
 from typing import List, Tuple, Dict, Optional,Union
 
 from . import crawl
@@ -269,7 +270,8 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
-      with open(out_dir + '/%s.json' % project_id, 'a',
+      scan_time_suffix = datetime.now().strftime("%d-%m-%Y-%H:%M:%S")
+      with open(out_dir + '/%s-' % project_id + scan_time_suffix + '.json', 'a',
                 encoding='utf-8') as outfile:
         outfile.write(sa_results_data)
 
