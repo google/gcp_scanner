@@ -395,7 +395,7 @@ token_uri and client_secret stored in JSON format.'
     force_projects_list = args.force_projects.split(',')
 
   if args.log_level != 'DISABLED':
-     logging_level = getattr(logging, args.log_level.upper(), None) or logging.INFO
+    logging_level = getattr(logging, args.log_level.upper(), None) or logging.INFO
   else:
     logging_level = None
 
