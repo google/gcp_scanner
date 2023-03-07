@@ -377,7 +377,7 @@ token_uri and client_secret stored in JSON format.'
       '--logging',
       default='WARNING',
       dest='log_level',
-      choices=('INFO', 'WARNING', 'ERROR'),
+      choices=('INFO', 'WARNING', 'ERROR','DISABLED'),
       help='Set logging level (INFO, WARNING, ERROR)')
 
   args: argparse.Namespace = parser.parse_args()
@@ -394,7 +394,8 @@ token_uri and client_secret stored in JSON format.'
   if args.force_projects:
     force_projects_list = args.force_projects.split(',')
 
-  logging_level = getattr(logging, args.log_level.upper(), None) or logging.INFO
+  if args.log_level == 'DISABLED':
+     logging_level = getattr(logging, args.log_level.upper(), None) or logging.INFO
   logging.basicConfig(level=logging_level,format="%(asctime)s - %(levelname)s - %(message)s",datefmt="%d-%b-%y %H:%M:%S")
 
   sa_tuples = []
