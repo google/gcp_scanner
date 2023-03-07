@@ -24,10 +24,14 @@ import os
 import shutil
 import sqlite3
 import unittest
+from unittest.mock import patch, Mock
+
+import requests
 
 from . import crawl
 from . import credsdb
 from . import scanner
+from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner"
 
@@ -90,8 +94,8 @@ def verify(res_to_verify, resource_type, volatile=False):
 
 
 def test_creds_fetching():
-  os.mkdir("creds")
-  conn = sqlite3.connect("creds/credentials.db")
+  os.mkdir("unit")
+  conn = sqlite3.connect("unit/credentials.db")
   c = conn.cursor()
   c.execute("""
            CREATE TABLE credentials (account_id TEXT PRIMARY KEY, value BLOB)
@@ -104,9 +108,9 @@ def test_creds_fetching():
   c.execute(sqlite_insert_with_param, data_value)
   conn.commit()
 
-  assert str(credsdb.find_creds("./creds")) == "['./creds/credentials.db']"
+  assert str(credsdb.find_creds("./unit")) == "['./unit/credentials.db']"
 
-  conn = sqlite3.connect("creds/access_tokens.db")
+  conn = sqlite3.connect("unit/access_tokens.db")
   c = conn.cursor()
   c.execute("""
             CREATE TABLE IF NOT EXISTS access_tokens
@@ -130,20 +134,78 @@ def test_creds_fetching():
   c.execute(sqlite_insert_with_param, data_value)
   conn.commit()
 
-  assert str(credsdb.get_access_tokens_dict("./creds/credentials.db")) == \
+  assert str(credsdb.get_access_tokens_dict("./unit/credentials.db")) == \
          "{'test_account@gmail.com': 'ya.29c.TEST'}"
 
-  res = str(credsdb.extract_creds("./creds/credentials.db"))
+  res = str(credsdb.extract_creds("./unit/credentials.db"))
   print(res)
   assert res == "[SA(account_name='test_account@gmail.com', \
 creds='test_data', token='ya.29c.TEST')]"
 
-  assert str(credsdb.get_account_creds_list("./creds")) == \
+  res = credsdb.get_account_creds_list("./unit")
+  print(str(res))
+  assert str(credsdb.get_account_creds_list("./unit")) == \
          "[[SA(account_name='test_account@gmail.com', \
-     creds='test_data', token='ya.29c.TEST')]]"
+creds='test_data', token='ya.29c.TEST')]]"
 
   # impersonate_sa()
-  shutil.rmtree("creds")
+  shutil.rmtree("unit")
+
+
+class TestScopes(unittest.TestCase):
+  """Test fetching scopes from a refresh token."""
+
+  def setUp(self):
+    """Setup common variables."""
+    self.ctx = {
+      "refresh_token": "<token>",
+      "client_id": "id",
+      "client_secret": "secret",
+    }
+
+  @patch("requests.post")
+  def test_get_scope_from_rt(self, mocked_post):
+    """Test get_scope_from_rt valid."""
+    scope_str = "scope1 scope2 scope3 openid"
+    mocked_post.return_value = Mock(
+      status_code=201,
+      json=lambda: {
+        "scope": scope_str
+      }
+    )
+    expect = scope_str.split()
+    actual = get_scopes_from_refresh_token(self.ctx)
+    self.assertEqual(actual, expect)
+
+  @patch("requests.post")
+  def test_get_scope_from_rt_exception(self, mocked_post):
+    """Test get_scope_from_rt for exception."""
+
+    mocked_post.side_effect = Mock(
+      side_effect=requests.exceptions.ConnectionError()
+    )
+
+    # returns None if any error occurs
+    self.assertEqual(
+      None,
+      get_scopes_from_refresh_token(self.ctx),
+    )
+
+  @patch("requests.post")
+  def test_get_scope_from_rt_no_scope(self, mocked_post):
+    """Test get_scope_from_rt for invalid json."""
+
+    # Empty JSON returned
+    mocked_post.return_value = Mock(
+      status_code=201,
+      json=lambda: {}
+    )
+
+    # returns None if any error occurs
+    self.assertEqual(
+      None,
+      get_scopes_from_refresh_token(self.ctx),
+    )
 
 
 class TestCrawler(unittest.TestCase):
@@ -398,5 +460,23 @@ class TestCrawler(unittest.TestCase):
       verify(
         crawl.fetch_project_info(PROJECT_NAME, self.credentials),
         "project_info",
+      )
+    )
+
+  def test_sourcerepos(self):
+    """Test list of cloud source repositories in the project."""
+    self.assertTrue(
+      verify(
+        crawl.list_sourcerepo(PROJECT_NAME, self.credentials),
+        "sourcerepos",
+      )
+    )
+
+  def test_dns_policies(self):
+    """Test cloud DNS policies."""
+    self.assertTrue(
+      verify(
+        crawl.list_dns_policies(PROJECT_NAME, self.credentials),
+        "dns_policies",
       )
     )
