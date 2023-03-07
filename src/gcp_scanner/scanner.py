@@ -395,7 +395,7 @@ token_uri and client_secret stored in JSON format.'
     force_projects_list = args.force_projects.split(',')
 
   logging_level = getattr(logging, args.log_level.upper(), None) or logging.INFO
-  logging.basicConfig(level=logging_level,format="%(asctime)s - %(levelname)s - %(message)s")
+  logging.basicConfig(level=logging_level,format="%(asctime)s - %(levelname)s - %(message)s",datefmt="%d-%b-%y %H:%M:%S")
 
   sa_tuples = []
   if args.key_path:
