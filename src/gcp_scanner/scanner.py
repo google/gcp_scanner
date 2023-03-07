@@ -393,13 +393,15 @@ token_uri and client_secret stored in JSON format.'
   force_projects_list = list()
   if args.force_projects:
     force_projects_list = args.force_projects.split(',')
+
   if args.log_level != 'DISABLED':
      logging_level = getattr(logging, args.log_level.upper(), None) or logging.INFO
   else:
-    logging = None
+    logging_level = None
+
   logging.basicConfig(level=logging_level,
-                      format="%(asctime)s - %(levelname)s - %(message)s",
-                      datefmt="%d-%b-%y %H:%M:%S")
+                      format='%(asctime)s - %(levelname)s - %(message)s',
+                      datefmt='%d-%b-%y %H:%M:%S')
 
   sa_tuples = []
   if args.key_path:
