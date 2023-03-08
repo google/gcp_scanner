@@ -270,8 +270,8 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
-      scan_time_suffix = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-      with open(out_dir + '/%s-' % project_id + scan_time_suffix + '.json', 'a',
+      scan_time_suffix = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+      with open(f'{out_dir}/{project_id}-{scan_time_suffix}.json', 'a',
                 encoding='utf-8') as outfile:
         outfile.write(sa_results_data)
 
