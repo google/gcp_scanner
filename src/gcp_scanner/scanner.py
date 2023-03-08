@@ -387,16 +387,16 @@ token_uri and client_secret stored in JSON format.'
     and not args.refresh_token_files:
     logging.error(
         'Please select at least one option to begin scan\
- -k/--sa-key-path,-g/--gcloud-profile-path, -m, -rt, -at'
+ -k/--sa_key_path,-g/--gcloud_profile_path, -m, -rt, -at'
     )
 
   force_projects_list = list()
   if args.force_projects:
     force_projects_list = args.force_projects.split(',')
 
-  logging.basicConfig(level=getattr(logging, args.log_level.upper(), None),)
-                    #   format='%(asctime)s - %(levelname)s - %(message)s',
-                    #   datefmt='%d-%b-%y %H:%M:%S')
+  logging.basicConfig(level=getattr(logging, args.log_level.upper(), None),
+                      format='%(asctime)s - %(levelname)s - %(message)s',
+                      datefmt='%d-%b-%y %H:%M:%S')
 
   sa_tuples = []
   if args.key_path:
