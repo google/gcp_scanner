@@ -389,6 +389,46 @@
               }
             ],
             "launchStage": "ALPHA"
+          },
+          {
+            "type": "cloudbuild.googleapis.com/GkeInstance",
+            "displayName": "GKE instance",
+            "description": "GKE instance.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP resource container associated with this resource, such as \"my_project\" or \"organizations/5678\"."
+              },
+              {
+                "key": "location",
+                "description": "Location of resource."
+              },
+              {
+                "key": "gke_instance_id",
+                "description": "The identifier of the GKE instance."
+              }
+            ],
+            "launchStage": "ALPHA"
+          },
+          {
+            "type": "cloudbuild.googleapis.com/PrivatePool",
+            "displayName": "Private Worker Pool",
+            "description": "Private Worker Pool.",
+            "labels": [
+              {
+                "key": "resource_container",
+                "description": "The identifier of the GCP resource container associated with this resource, such as \"my_project\" or \"organizations/5678\"."
+              },
+              {
+                "key": "location",
+                "description": "Location of resource."
+              },
+              {
+                "key": "worker_pool_uuid",
+                "description": "The UUID of the worker pool."
+              }
+            ],
+            "launchStage": "ALPHA"
           }
         ],
         "monitoring": {
@@ -405,6 +445,19 @@
               "metrics": [
                 "cloudbuild.googleapis.com/quota/concurrent_public_pool_build_cpus/limit",
                 "cloudbuild.googleapis.com/quota/concurrent_public_pool_build_cpus/usage"
+              ]
+            },
+            {
+              "monitoredResource": "cloudbuild.googleapis.com/GkeInstance",
+              "metrics": [
+                "cloudbuild.googleapis.com/internal/gke_instance/pod",
+                "cloudbuild.googleapis.com/internal/gke_instance/node"
+              ]
+            },
+            {
+              "monitoredResource": "cloudbuild.googleapis.com/PrivatePool",
+              "metrics": [
+                "cloudbuild.googleapis.com/internal/private_pool_ready_worker_replicas"
               ]
             }
           ]
@@ -782,14 +835,10 @@
             {
               "monitoredResource": "serviceruntime.googleapis.com/api",
               "metrics": [
-                "serviceruntime.googleapis.com/api/consumer/quota_used_count",
-                "serviceruntime.googleapis.com/api/consumer/quota_refund_count",
-                "serviceruntime.googleapis.com/quota/used",
-                "serviceruntime.googleapis.com/quota/limit",
-                "serviceruntime.googleapis.com/quota/exceeded",
-                "serviceruntime.googleapis.com/allocation/consumer/quota_used_count",
                 "serviceruntime.googleapis.com/api/consumer/request_count",
                 "serviceruntime.googleapis.com/api/consumer/error_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_used_count",
+                "serviceruntime.googleapis.com/api/consumer/quota_refund_count",
                 "serviceruntime.googleapis.com/api/consumer/total_latencies",
                 "serviceruntime.googleapis.com/api/consumer/request_overhead_latencies",
                 "serviceruntime.googleapis.com/api/consumer/backend_latencies",
@@ -797,7 +846,11 @@
                 "serviceruntime.googleapis.com/api/consumer/response_sizes",
                 "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user",
                 "serviceruntime.googleapis.com/api/consumer/top_request_count_by_end_user_country",
-                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_referer"
+                "serviceruntime.googleapis.com/api/consumer/top_request_count_by_referer",
+                "serviceruntime.googleapis.com/quota/used",
+                "serviceruntime.googleapis.com/quota/limit",
+                "serviceruntime.googleapis.com/quota/exceeded",
+                "serviceruntime.googleapis.com/allocation/consumer/quota_used_count"
               ]
             },
             {
@@ -966,7 +1019,7 @@
                 "description": "Location of resource."
               }
             ],
-            "launchStage": "BETA"
+            "launchStage": "GA"
           },
           {
             "type": "compute.googleapis.com/Reservation",
