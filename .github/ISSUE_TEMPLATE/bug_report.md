@@ -29,10 +29,10 @@ Your issue may already be reported! Please search on the [issue tracker](https:/
 <!-- Please provide detailed instructions on how to reproduce the behaviour, including code samples if applicable. -->
 
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1. Set the credentials to'...'
+2. Update the scope to '....'
+3. Run the command `gcp-scanner ....`
+4. See the output JSON line no ....
 
 **Expected behavior**
 <!--- Please provide a clear and concise description of what you expected to happen -->
