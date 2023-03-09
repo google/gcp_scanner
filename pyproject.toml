@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "gcp_scanner"
+name = "gcp-scanner"
 description = "GCP Scanner is a tool that provides insights into the access levels of various GCloud credentials"
 readme = "README.md"
 requires-python = ">=3.7"
