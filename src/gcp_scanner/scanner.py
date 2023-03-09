@@ -270,8 +270,13 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
+      # Generate current timestamp to append to output filename
       scan_time_suffix = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-      with open(f'{out_dir}/{project_id}-{scan_time_suffix}.json', 'a',
+      
+      # Generate the output filename and append the timestamp (to make filename unique for every scan)
+      output_file_name = f'{out_dir}/{project_id}-{scan_time_suffix}.json'
+      
+      with open(output_file_name, 'a',
                 encoding='utf-8') as outfile:
         outfile.write(sa_results_data)
 
