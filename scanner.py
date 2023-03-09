@@ -15,4 +15,5 @@
 # limitations under the License.
 
 from src.gcp_scanner import scanner
+
 scanner.main()
