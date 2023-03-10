@@ -410,7 +410,6 @@ token_uri and client_secret stored in JSON format.'
     logging.basicConfig(level=getattr(logging, args.log_level.upper(), None),
                         format='%(asctime)s - %(levelname)s - %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
-    
   sa_tuples = []
   if args.key_path:
     # extracting SA keys from folder
