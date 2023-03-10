@@ -4,10 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gcp-scanner"
-description = "GCP Scanner is a tool that provides insights into the access levels of various GCloud credentials"
+description = "GCP resource scanner that can help determine what level of access certain credentials possess on GCP"
 readme = "README.md"
 requires-python = ">=3.7"
-keywords = ["gcp", "scan", "access", "cloud"]
+keywords = ["gcp", "scan", "access", "security-tool", "python"]
 license = { text = "Apache License" }
 classifiers = [
     "Programming Language :: Python :: 3",
