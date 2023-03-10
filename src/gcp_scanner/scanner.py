@@ -379,13 +379,6 @@ token_uri and client_secret stored in JSON format.'
       dest='log_level',
       choices=('INFO', 'WARNING', 'ERROR'),
       help='Set logging level (INFO, WARNING, ERROR)')
-  parser.add_argument(
-      '-lf',
-      '--log-file',
-      default=False,
-      dest='log_file',
-      action='store_true',
-      help='Save logs to logs.log file rather than displaying in console')
 
   args: argparse.Namespace = parser.parse_args()
 
@@ -401,15 +394,10 @@ token_uri and client_secret stored in JSON format.'
   if args.force_projects:
     force_projects_list = args.force_projects.split(',')
 
-  if argparse.log_file:
-    logging.basicConfig(filename='../logs.log',
-                        level=getattr(logging, args.log_level.upper(), None),
-                        format='%(asctime)s - %(levelname)s - %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
-  else:
-    logging.basicConfig(level=getattr(logging, args.log_level.upper(), None),
-                        format='%(asctime)s - %(levelname)s - %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
+  logging.basicConfig(level=getattr(logging, args.log_level.upper(), None),
+                      format='%(asctime)s - %(levelname)s - %(message)s',
+                      datefmt='%Y-%m-%d %H:%M:%S')
+
   sa_tuples = []
   if args.key_path:
     # extracting SA keys from folder
