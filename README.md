@@ -8,6 +8,8 @@ merchantability, or fitness for a particular purpose.
 
 ### GCP Scanner
 
+![Logo](misc/gcp_scanner_logo.png?raw=true "Logo of GCP Scanner")
+
 This is a GCP resource scanner that can help determine what level of access certain credentials possess on GCP. The scanner is designed to help security engineers evaluate the impact of a certain VM/container compromise, GCP service account or OAuth2 token key leak.
 
 Currently, the scanner supports the following GCP resources:
