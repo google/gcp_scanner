@@ -22,6 +22,7 @@ import json
 import logging
 import os
 import sys
+from pathlib import Path
 from datetime import datetime
 from typing import List, Tuple, Dict, Optional,Union
 
@@ -272,16 +273,18 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Generate current timestamp to append to output filename
       scan_time_suffix = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+      output_file_name = f'{project_id}-{scan_time_suffix}.json'
+      output_path = Path(out_dir, output_file_name)
       
-      # Generate the output filename and append the timestamp (to make filename unique for every scan)
-      output_file_name = f'{out_dir}/{project_id}-{scan_time_suffix}.json'
-      
-      with open(output_file_name, 'a',
-                encoding='utf-8') as outfile:
-        outfile.write(sa_results_data)
+      try:
+          with open(output_path, 'x',
+                    encoding='utf-8') as outfile:
+              outfile.write(sa_results_data)
 
-      # Clean memory to avoid leak for large amount projects.
-      sa_results.clear()
+              # Clean memory to avoid leak for large amount projects.
+              sa_results.clear()
+      except FileExistsError:
+          logging.error('Output file already exists. Try rescanning after removing the existing file.')
 
 
 def iam_client_for_credentials(
