@@ -299,7 +299,7 @@ def main():
   logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
   logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
 
-  args = arguments.parser()
+  args = arguments.arg_parser()
 
   force_projects_list = list()
   if args.force_projects:

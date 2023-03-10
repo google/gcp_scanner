@@ -20,7 +20,7 @@
 import argparse
 import logging
 
-def parser():
+def arg_parser():
   parser = argparse.ArgumentParser(
       prog='scanner.py',
       description='GCP Scanner',
