@@ -88,7 +88,8 @@ options:
                         A path to config file with a set of specific resources to scan.
   -l {INFO,WARNING,ERROR}, --logging {INFO,WARNING,ERROR}
                         Set logging level (INFO, WARNING, ERROR)
-  -lf, --log-file       Save logs to logs.log file rather than displaying in console
+  -ld LOG_DIRECTORY, --log-directory LOG_DIRECTORY
+                        Save logs to the directory specified rather than displaying in console
 
 Required parameters:
   -o OUTPUT, --output-dir OUTPUT

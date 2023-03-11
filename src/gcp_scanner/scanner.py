@@ -305,15 +305,18 @@ def main():
   if args.force_projects:
     force_projects_list = args.force_projects.split(',')
 
-  if args.log_file:
-    logging.basicConfig(filename='../logs.log',
-                        level=getattr(logging, args.log_level.upper(), None),
-                        format='%(asctime)s - %(levelname)s - %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
-  else:
-    logging.basicConfig(level=getattr(logging, args.log_level.upper(), None),
-                        format='%(asctime)s - %(levelname)s - %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
+  # logging to a directory functionality
+  if args.log_directory and args.log_directory[0] == "/":
+      args.log_directory = args.log_directory[1:]
+
+  outputDir = f"{args.log_directory}" if args.log_directory else None
+  outputFile = f"{args.log_directory}/logs.log" if args.log_directory else None
+
+  if outputDir:
+      os.makedirs(outputDir, exist_ok=True)
+
+  logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", datefmt="%d-%b-%y %H:%M:%S",filename=outputFile, filemode="a")
+
   sa_tuples = []
   if args.key_path:
     # extracting SA keys from folder

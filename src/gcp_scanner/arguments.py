@@ -21,6 +21,14 @@ import argparse
 import logging
 
 def arg_parser():
+  """Creates an argument parser using the `argparse` module and defines several command-line arguments.
+
+  Args:
+    None
+
+  Returns:
+    argparse.Namespace: A namespace object containing the parsed command-line arguments.
+  """
   parser = argparse.ArgumentParser(
       prog='scanner.py',
       description='GCP Scanner',
@@ -102,12 +110,11 @@ token_uri and client_secret stored in JSON format.'
       choices=('INFO', 'WARNING', 'ERROR'),
       help='Set logging level (INFO, WARNING, ERROR)')
   parser.add_argument(
-      '-lf',
-      '--log-file',
-      default=False,
-      dest='log_file',
-      action='store_true',
-      help='Save logs to logs.log file rather than displaying in console')
+      '-ld',
+      '--log-directory',
+      default=None,
+      dest='log_directory',
+      help='Save logs to the directory specified rather than displaying in console')
 
   args: argparse.Namespace = parser.parse_args()
 
