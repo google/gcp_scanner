@@ -315,10 +315,10 @@ def main():
   if outputDir:
     os.makedirs(outputDir, exist_ok=True)
 
-  logging.basicConfig(level=logging.INFO, 
-                      format="%(asctime)s - %(levelname)s - %(message)s", 
-                      datefmt="%d-%b-%y %H:%M:%S",
-                      filename=outputFile, filemode="a")
+  logging.basicConfig(level=logging.INFO,
+                      format='%(asctime)s - %(levelname)s - %(message)s',
+                      datefmt='%d-%b-%y %H:%M:%S',
+                      filename=outputFile, filemode='a')
 
   sa_tuples = []
   if args.key_path:
