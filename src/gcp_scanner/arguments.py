@@ -21,13 +21,15 @@ import argparse
 import logging
 
 def arg_parser():
-  """Creates an argument parser using the `argparse` module and defines several command-line arguments.
+  """Creates an argument parser using the `argparse` module and defines 
+  several command-line arguments.
 
   Args:
     None
 
   Returns:
-    argparse.Namespace: A namespace object containing the parsed command-line arguments.
+    argparse.Namespace: A namespace object containing the parsed command-line 
+    arguments.
   """
   parser = argparse.ArgumentParser(
       prog='scanner.py',
@@ -111,7 +113,7 @@ token_uri and client_secret stored in JSON format.'
       help='Set logging level (INFO, WARNING, ERROR)')
   parser.add_argument(
       '-ld',
-      '--log-directory',
+      '--log-dir',
       default=None,
       dest='log_directory',
       help='Save logs to the directory specified rather than displaying in console')
