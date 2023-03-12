@@ -309,59 +309,54 @@ def get_firewall_rules(
   return firewall_rules_list
 
 
-def get_bucket_names(project_name: str, credentials: Credentials,
-                     dump_fd: io.TextIOWrapper
-                     ) -> Dict[str, Tuple[Any, List[Any]]]:
-  """Retrieve a list of buckets available in the project.
+def get_bucket_names(project_name: str,
+                credentials: Credentials) -> Dict[str, Dict[str, Any]]:
+    """Retrieve a dictionary of GCS buckets available in the project.
+    Args:
+      project_name: A name of a project to query info about.
+      credentials: An google.oauth2.credentials.Credentials object.
+    Returns:
+      A dictionary of GCS buckets in the project.
+    """
 
-  Args:
-    project_name: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
-    dump_fd: If set, the function will enumerate files stored in buckets and
-      save them in a file corresponding to provided file descriptor.
-      This is a very slow, noisy operation and should be used with caution.
+    logging.info("Retrieving GCS buckets")
 
-  Returns:
-    A dictionary where key is bucket name and value is a bucket Object.
-  """
+    service = discovery.build("storage", "v1", credentials=credentials,
+                              cache_discovery=False)
 
-  logging.info("Retrieving GCS Buckets")
-  buckets_dict = dict()
-  service = discovery.build(
-      "storage", "v1", credentials=credentials, cache_discovery=False)
-  # Make an authenticated API request
-  request = service.buckets().list(project=project_name)
-  while request is not None:
-    try:
-      response = request.execute()
-    except googleapiclient.errors.HttpError:
-      logging.info("Failed to list buckets in the %s", project_name)
-      logging.info(sys.exc_info())
-      break
+    buckets_dict = {}
 
-    for bucket in response.get("items", []):
-      buckets_dict[bucket["name"]] = (bucket, None)
-      if dump_fd is not None:
-        ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
+    request = service.buckets().list(project=project_name, maxResults=1000)
 
-        req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
+    while request is not None:
+        response = request.execute()
 
-        while req:
-          try:
-            resp = req.execute()
-            for item in resp.get("items", []):
-              dump_fd.write(json.dumps(item, indent=2, sort_keys=False))
+        for bucket in response.get("items", []):
+            try:
+                logging.info("Retrieving GCS bucket info for bucket %s", bucket["name"])
+                bucket_info = {"location": bucket["location"],
+                               "storage_class": bucket["storageClass"],
+                               "root_folder": None}
 
-            req = service.objects().list_next(req, resp)
-          except googleapiclient.errors.HttpError:
-            logging.info("Failed to read the bucket %s", bucket["name"])
-            logging.info(sys.exc_info())
-            break
+                # Retrieve the root folder information for the bucket
+                if "name" in bucket and bucket["name"] != "":
+                    root_folder = service.objects().get(
+                        bucket=bucket["name"], object="").execute()
+                    if root_folder is not None and "name" in root_folder:
+                        bucket_info["root_folder"] = root_folder["name"]
 
-    request = service.buckets().list_next(
-        previous_request=request, previous_response=response)
+                buckets_dict[bucket["name"]] = bucket_info
 
-  return buckets_dict
+            except googleapiclient.errors.HttpError:
+                logging.info("Failed to read the bucket %s", bucket["name"])
+                logging.info(sys.exc_info())
+                break
+
+        request = service.buckets().list_next(
+            previous_request=request, previous_response=response)
+
+    return buckets_dict
+
 
 
 def get_managed_zones(project_name: str,
