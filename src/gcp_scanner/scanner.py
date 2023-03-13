@@ -306,17 +306,17 @@ def main():
     force_projects_list = args.force_projects.split(',')
 
   # logging to a directory functionality
-  if args.log_directory and args.log_directory[0] == '/':
-    args.log_directory = args.log_directory[1:]
+  if args.log_file and args.log_file[0] == '/':
+    args.log_file = args.log_file[1:]
 
-  if args.log_directory:
-    if not os.path.exists(os.path.dirname(args.log_directory)):
+  if args.log_file:
+    if not os.path.exists(os.path.dirname(args.log_file)):
       os.makedirs(os.path.dirname(args.logfile))
 
   logging.basicConfig(level=logging.INFO,
                       format='%(asctime)s - %(levelname)s - %(message)s',
                       datefmt='%d-%b-%y %H:%M:%S',
-                      filename=args.log_directory, filemode='a')
+                      filename=args.log_file, filemode='a')
 
   sa_tuples = []
   if args.key_path:
