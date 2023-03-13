@@ -3,24 +3,39 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "gcp_scanner"
-description = "Google GCP Scanner"
+name = "gcp-scanner"
+description = "GCP resource scanner that can help determine what level of access certain credentials possess on GCP"
 readme = "README.md"
 requires-python = ">=3.7"
-keywords = ["gcp"]
-license = {text = "Apache License"}
+keywords = ["gcp", "scan", "access", "security-tool", "python"]
+license = { text = "Apache License" }
 classifiers = [
     "Programming Language :: Python :: 3",
 ]
 dependencies = [
     "pyu2f==0.1.5",
-    "google-api-python-client==2.9.0",
-    "google-cloud-container==2.4.1",
-    "google-cloud-iam==2.2.0",
-    "httplib2==0.19.1",
-    "requests==2.25.1"
+    "google-api-python-client==2.80.0",
+    "google-cloud-container==2.17.4",
+    "google-cloud-iam==2.11.2",
+    "httplib2==0.21.0",
+    "requests==2.28.2",
 ]
 version = "1.0.0"
 
+[project.urls]
+Homepage = "https://github.com/google/gcp_scanner"
+
 [project.scripts]
 gcp-scanner = "gcp_scanner.scanner:main"
+
+[tool.hatch.build]
+exclude = [
+    "test",
+    ".idea",
+    "*.md",
+    "test_*.py",
+    ".github",
+    ".gitignore",
+    "Dockerfile",
+    "example_config",
+]
