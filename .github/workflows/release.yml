@@ -1,0 +1,35 @@
+# GitHub release for GCP versioning
+name: release
+
+# the release workflow is triggered by each push with new tag
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload asset
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          # upload all files
+          file: ./*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+
+### Test Usage ###
+# First finish git commit
+# $ git tag [tagname] -m '[comment]'
+# e.g. $ git tag v1.0.0 -m 'test for versioning'
+# git push origin v1.0.0
