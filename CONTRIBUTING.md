@@ -32,7 +32,7 @@ Guidelines](https://opensource.google/conduct/).
 - Use the present tense and imperative mood.
 - Separate the summary from the body of the message with a blank line.
 - Use the body to explain what and why changes were made, as well as any necessary details.
-- Additionally, you can consider using [semantic commit messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716?permalink_comment_id=3867882) like "feat:", "docs:", etc. which will provide additional context to the commit message.
+- Addionally, you can consider using [semantic commit messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716?permalink_comment_id=3867882) like "feat:", "docs:", etc. which will provide additional context to the commit message.
 
 **Example:** Add support for GCP Compute Engine in scanner
 
