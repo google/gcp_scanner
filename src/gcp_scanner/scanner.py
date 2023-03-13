@@ -305,8 +305,6 @@ def main():
   if args.force_projects:
     force_projects_list = args.force_projects.split(',')
 
-  # logging to a directory functionality
-
   logging.basicConfig(level=logging.INFO,
                       format='%(asctime)s - %(levelname)s - %(message)s',
                       datefmt='%d-%b-%y %H:%M:%S',
