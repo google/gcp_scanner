@@ -89,7 +89,7 @@ options:
   -l {INFO,WARNING,ERROR}, --logging {INFO,WARNING,ERROR}
                         Set logging level (INFO, WARNING, ERROR)
   -lf LOG_DIRECTORY, --log-file LOG_DIRECTORY
-                        Save logs to the directory specified rather than displaying in console
+                        Save logs to the path specified rather than displaying in console
 
 Required parameters:
   -o OUTPUT, --output-dir OUTPUT

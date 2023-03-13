@@ -116,7 +116,7 @@ token_uri and client_secret stored in JSON format.'
       '--log-file',
       default=None,
       dest='log_file',
-      help='Save logs to the directory specified rather than displaying in\
+      help='Save logs to the path specified rather than displaying in\
  console')
 
   args: argparse.Namespace = parser.parse_args()
