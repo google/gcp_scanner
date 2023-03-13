@@ -309,6 +309,10 @@ def main():
   if args.log_directory and args.log_directory[0] == '/':
     args.log_directory = args.log_directory[1:]
 
+  if args.log_directory:
+    if not os.path.exists(os.path.dirname(args.log_directory)):
+      os.makedirs(os.path.dirname(args.logfile))
+
   logging.basicConfig(level=logging.INFO,
                       format='%(asctime)s - %(levelname)s - %(message)s',
                       datefmt='%d-%b-%y %H:%M:%S',
