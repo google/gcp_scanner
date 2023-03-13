@@ -33,6 +33,21 @@ This project follows [Google's Open Source Community Guidelines](https://opensou
 | `chore` | Maintenance tasks such as refactoring, dependencies updates, or removing unused code |
 | `ci` | Changes to the build or continuous integration process |
 
+**Example:** Add support for GCP Compute Engine in scanner
+
+**Example:** feat: add support for GCP Compute Engine in scanner
+
+**Example:** docs: updated README.md with installation instructions
+
+**Example:** feat: added support for scanning additional GCP resources
+
+**Example:** fix: fixed bug in scan logic for GCE instances
+
+**Example:** test: added unit tests for new scan feature
+
+**Example:** ci: updated build pipeline to include new dependency
+
+**Example:** chore: removed unused code and refactored some variables
 
 ## Branching Naming Conventions
 
