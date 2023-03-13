@@ -112,8 +112,8 @@ token_uri and client_secret stored in JSON format.'
       choices=('INFO', 'WARNING', 'ERROR'),
       help='Set logging level (INFO, WARNING, ERROR)')
   parser.add_argument(
-      '-ld',
-      '--log-dir',
+      '-lf',
+      '--log-file',
       default=None,
       dest='log_directory',
       help='Save logs to the directory specified rather than displaying in\
