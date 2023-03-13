@@ -109,7 +109,7 @@ token_uri and client_secret stored in JSON format.'
       '--logging',
       default='WARNING',
       dest='log_level',
-      choices=('INFO', 'WARNING', 'ERROR'),
+      choices=('DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'),
       help='Set logging level (INFO, WARNING, ERROR)')
   parser.add_argument(
       '-lf',
