@@ -88,6 +88,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           project_list.append({'projectId': force_project_id,
                                'projectNumber': 'N/A'})
 
+    # Generate current timestamp to append to output filename
+    scan_time_suffix = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
     # Enumerate projects accessible by SA
     for project in project_list:
       if target_project and target_project not in project['projectId']:
@@ -99,6 +102,18 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       project_result = sa_results['projects'][project_id]
 
       project_result['project_info'] = project
+
+      # Fail with error if the output file already exists
+      output_file_name = f'{project_id}-{scan_time_suffix}.json'
+      output_path = Path(out_dir, output_file_name)
+
+      try:
+        with open(output_path, 'x', encoding='utf-8') as outfile:
+          pass
+
+      except FileExistsError:
+        logging.error(f'Output file {output_file_name} already exists. \
+Try rescanning after removing the existing file.')
 
       if is_set(scan_config, 'iam_policy'):
         # Get IAM policy
@@ -271,20 +286,11 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
-      # Generate current timestamp to append to output filename
-      scan_time_suffix = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-      output_file_name = f'{project_id}-{scan_time_suffix}.json'
-      output_path = Path(out_dir, output_file_name)
-      
-      try:
-        with open(output_path, 'x', encoding='utf-8') as outfile:
-          outfile.write(sa_results_data)
+      with open(output_path, 'a', encoding='utf-8') as outfile:
+        outfile.write(sa_results_data)
 
-        # Clean memory to avoid leak for large amount projects.
-        sa_results.clear()
-      except FileExistsError:
-        logging.error('Output file already exists. Try rescanning \
-          after removing the existing file.')
+      # Clean memory to avoid leak for large amount projects.
+      sa_results.clear()
 
 
 def iam_client_for_credentials(
