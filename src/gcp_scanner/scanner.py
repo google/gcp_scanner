@@ -277,14 +277,14 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       output_path = Path(out_dir, output_file_name)
       
       try:
-          with open(output_path, 'x',
-                    encoding='utf-8') as outfile:
-              outfile.write(sa_results_data)
+        with open(output_path, 'x', encoding='utf-8') as outfile:
+          outfile.write(sa_results_data)
 
-              # Clean memory to avoid leak for large amount projects.
-              sa_results.clear()
+        # Clean memory to avoid leak for large amount projects.
+        sa_results.clear()
       except FileExistsError:
-          logging.error('Output file already exists. Try rescanning after removing the existing file.')
+        logging.error('Output file already exists. Try rescanning \
+          after removing the existing file.')
 
 
 def iam_client_for_credentials(
