@@ -101,7 +101,7 @@ Option `-f` requires an additional explanation. In some cases, the service accou
 
 ### Building a standalone binary with PyInstaller
 
-Please replace `google-api-python-client==2.9.0` with `google-api-python-client==1.8.0` in `pyproject.toml`. After that, navigate to the scanner source code directory and use pyinstaller to compile a standalone binary:
+Please replace `google-api-python-client==2.80.0` with `google-api-python-client==1.8.0` in `pyproject.toml`. After that, navigate to the scanner source code directory and use pyinstaller to compile a standalone binary:
 
 `pyinstaller -F --add-data 'roots.pem:grpc/_cython/_credentials/' scanner.py`
 
