@@ -4,7 +4,7 @@ We'd love to accept your patches and contributions to this project. There are ju
 
 ## Contributor License Agreement
 
-Contributions to this project must be accompanied by a Contributor License Agreement. You (or your employer) retain the copyright to your contribution; this simply gives us permission to use and redistribute your contributions as part of the project. Head over to <https://cla.developers.google.com/> to see your current agreements on file or to sign a new one.
+Contributions to this project must be accompanied by a Contributor License Agreement. You (or your employer) retain the copyright to your contribution; this simply gives us permission to use and redistribute your contributions as part of the project. Head over to [CLA](https://cla.developers.google.com/) to see your current agreements on file or to sign a new one.
 
 You generally only need to submit a CLA once, so if you've already submitted one (even if it was for a different project), you probably don't need to do it again.
 
@@ -53,6 +53,7 @@ This project follows [Google's Open Source Community Guidelines](https://opensou
 
 - Use lowercase letters.
 - Separate words with hyphens.
+- Use descriptive names that reflect the purpose of the branch.
 
 
 **Example:** feat/<issue-id>/gcp-compute-engine-support
@@ -72,6 +73,4 @@ If you need help or have any questions about the project, please feel free to:
 
 We believe in creating a friendly and welcoming environment for all members of our community. As such, we follow the [Google Open Source Community Guidelines](https://opensource.google/conduct/), which outlines our expectations for all those who participate in our project.
 
-
-
-
+Please read the code of conduct carefully and make sure you understand what is expected of you. If you have any questions or concerns, please contact the project maintainers by posting to the [Google Group](https://groups.google.com/g/gcp-scanner).
