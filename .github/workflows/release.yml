@@ -27,6 +27,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./your-asset-file-name
-          asset_name: your-asset-file-name
+          asset_path: ./our-asset-file-name
+          asset_name: our-asset-file-name
           asset_content_type: application/zip
