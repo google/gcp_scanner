@@ -17,3 +17,13 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: simple
+          package-name: gcp_scanner
+          changelog-types: |
+            [
+              {"type":"feat","section":"Features","hidden":false},
+              {"type":"fix","section":"Bug Fixes","hidden":false},
+              {"type":"docs","section":"Documentation","hidden":false},
+              {"type":"test","section":"Tests","hidden":false},
+              {"type":"chore","section":"Miscellaneous","hidden":false},
+              {"type":"ci","section":"Miscellaneous","hidden":false}
+            ]
