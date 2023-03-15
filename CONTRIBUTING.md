@@ -54,6 +54,7 @@ This project follows [Google's Open Source Community Guidelines](https://opensou
 - Use lowercase letters.
 - Separate words with hyphens.
 - Use descriptive names that reflect the purpose of the branch.
+- Add `issue tracker id`.
 
 **Example:** feat/&lt;issue-id&gt;/gcp-compute-engine-support
 
