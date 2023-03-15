@@ -24,7 +24,7 @@ from typing import List, Dict, Any
 from googleapiclient import discovery
 
 class ComputeCrawler:
-  def __get_compute_instances_names(
+  def _get_compute_instances_names(
       self, project_name: str, 
       service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Compute VMs available in the project.
@@ -56,7 +56,7 @@ class ComputeCrawler:
     return images_result
 
 
-  def __get_compute_images_names(
+  def _get_compute_images_names(
       self, project_name: str, 
       service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Compute images available in the project.
@@ -84,7 +84,7 @@ class ComputeCrawler:
     return images_result
 
 
-  def __get_compute_disks_names(
+  def _get_compute_disks_names(
       self, project_name: str, 
       service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Compute disks available in the project.
@@ -115,7 +115,7 @@ class ComputeCrawler:
 
     return disk_names_list
 
-  def __get_compute_snapshots(self, project_name: str,
+  def _get_compute_snapshots(self, project_name: str,
                             service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Compute snapshots available in the project.
 
