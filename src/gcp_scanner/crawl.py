@@ -57,22 +57,22 @@ class Crawler(ComputeCrawler,
   
   def get_compute_instances_names(
       self,project_name, service):
-    return self._compute_crawler._get_compute_instances_names(
+    return self._compute_crawler.get_compute_instances_names(
       project_name, service)
 
   def get_compute_images_names(
       self, project_name, service):
-    return self._compute_crawler._get_compute_images_names(
+    return self._compute_crawler.get_compute_images_names(
       project_name, service)
 
   def get_compute_disks_names(
       self, project_name, service):
-    return self._compute_crawler._get_compute_disks_names(
+    return self._compute_crawler.get_compute_disks_names(
       project_name, service)
 
   def get_compute_snapshots(
       self, project_name, service):
-    return self._compute_crawler._get_compute_snapshots(
+    return self._compute_crawler.get_compute_snapshots(
       project_name, service)
 
   def get_sql_instances(
