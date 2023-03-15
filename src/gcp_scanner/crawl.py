@@ -41,7 +41,7 @@ def infinite_defaultdict():
   return collections.defaultdict(infinite_defaultdict)
 
 class Crawler:
-  """A Composition class to access all the crawler classes from crawlers module package.
+  """A Composition class to access all the crawler classes.
   """
   def __init__(self):
     self._compute_crawler = ComputeCrawler()
