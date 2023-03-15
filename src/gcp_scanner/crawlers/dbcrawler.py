@@ -25,7 +25,7 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 
 class DBCrawler:
-  def get_sql_instances(project_name: str,
+  def get_sql_instances(self, project_name: str,
                         credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of SQL instances available in the project.
 
@@ -55,7 +55,7 @@ class DBCrawler:
 
     return sql_instances_list
 
-  def get_bq_tables(project_id: str, dataset_id: str,
+  def get_bq_tables(self, project_id: str, dataset_id: str,
                     bq_service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of BigQuery tables available in the dataset.
 
