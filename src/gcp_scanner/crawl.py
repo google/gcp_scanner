@@ -19,7 +19,17 @@
 
 import collections
 
-from crawlers import *
+from crawlers import (ComputeCrawler,
+                      DBCrawler,
+                      GKECrawler,
+                      MQCrawler,
+                      NetworkCrawler,
+                      ProjectInfoCrawler,
+                      SecurityCrawler,
+                      ServerlessCrawler,
+                      ServiceAccountCrawler,
+                      SourceRepoCrawler,
+                      StorageCrawler)
 
 
 def infinite_defaultdict():
