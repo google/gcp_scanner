@@ -55,8 +55,7 @@ This project follows [Google's Open Source Community Guidelines](https://opensou
 - Separate words with hyphens.
 - Use descriptive names that reflect the purpose of the branch.
 
-
-**Example:** feat/<issue-id>/gcp-compute-engine-support
+**Example:** feat/&lt;issue-id&gt;/gcp-compute-engine-support
 
 **Example:** docs/11/update-installation-instructions
  
