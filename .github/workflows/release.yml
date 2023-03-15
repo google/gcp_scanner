@@ -1,32 +1,27 @@
 # GitHub release for GCP versioning
 name: release
 
-# the release workflow is triggered by each push with new tag
+# The release workflow is triggered by each push with new tag
 on:
   push:
     tags:
       - '*'
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Creat a release and upload assets.
+      # Note that the release automatically contains source code, the upload assets can be a description file of this version, e.g. change.txt
       - name: Create Release
-        uses: ncipollo/release-action@v1
+        run: |
+          gh release create ${{ github.ref }} ./*.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload asset
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          # upload all files
-          file: ./*
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
 
 ### Test Usage ###
 # First finish git commit
