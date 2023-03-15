@@ -21,7 +21,9 @@ import json
 import logging
 import os
 import sys
+import multiprocessing
 from typing import List, Tuple, Dict, Optional,Union
+from multiprocessing import Pool, cpu_count
 
 from . import crawl
 from . import credsdb
@@ -32,6 +34,36 @@ from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMC
 from googleapiclient import discovery
 from httplib2 import Credentials
 from .models import SpiderContext
+from concurrent.futures import ThreadPoolExecutor
+
+def scan_single_resource(resource, concurrency):
+    # Perform scanning on a single GCP resource
+    # Modify the following code to execute scanning of resources in parallel
+    with ThreadPoolExecutor(max_workers=concurrency) as executor:
+        scan_results = executor.submit(scan_resource, resource).result()
+    return scan_results
+  
+def scan_project(project_id):
+    # Get list of GCP resources to scan
+    resources = get_resources(project_id)
+    # Create a pool of processes
+    pool = multiprocessing.Pool()
+    # Map the scan_single_resource function to the list of resources
+    pool.map(scan_single_resource, resources)
+    # Close the pool of processes
+    pool.close()
+    pool.join()
+    
+def scan_projects(projects, output_file, concurrency=None):
+    if concurrency is None:
+        concurrency = cpu_count()
+
+    with Pool(concurrency) as pool:
+        results = pool.map(scan_project, projects)
+
+    with open(output_file, 'w') as f:
+        for result in results:
+            f.write(json.dumps(result) + '\n')
 
 def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
   if config is None:
@@ -300,6 +332,13 @@ def main():
   logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
 
   args = arguments.arg_parser()
+  
+  parser = argparse.ArgumentParser()
+  parser.add_argument('--concurrency', type=int, default=10, help='Number of projects to scan in parallel')
+  args = parser.parse_args()
+
+  credentials, projects = load_projects(args.project_file)
+  results = scan_projects(projects, credentials, args.concurrency)
 
   force_projects_list = list()
   if args.force_projects:
