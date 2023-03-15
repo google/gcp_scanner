@@ -25,7 +25,7 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 
 class SecurityCrawler:
-  def __get_kms_keys(self, project_id: str,
+  def get_kms_keys(self, project_id: str,
                   credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of KMS keys available in the project.
 
@@ -77,7 +77,7 @@ class SecurityCrawler:
       logging.info(sys.exc_info())
     return kms_keys_list
 
-  def __get_iam_policy(self, project_name: str,
+  def get_iam_policy(self, project_name: str,
                     credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve an IAM Policy in the project.
 

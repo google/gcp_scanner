@@ -28,7 +28,7 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 
 class StorageCrawler:
-  def __get_bucket_names(self, project_name: str, credentials: Credentials,
+  def get_bucket_names(self, project_name: str, credentials: Credentials,
                       dump_fd: io.TextIOWrapper
                       ) -> Dict[str, Tuple[Any, List[Any]]]:
     """Retrieve a list of buckets available in the project.
@@ -82,7 +82,7 @@ class StorageCrawler:
 
     return buckets_dict
 
-  def __get_filestore_instances(self, project_id: str,
+  def get_filestore_instances(self, project_id: str,
                               credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of Filestore instances available in the project.
 

@@ -25,7 +25,7 @@ import googleapiclient
 from httplib2 import Credentials
 
 class ProjectInfoCrawler:
-  def __fetch_project_info(self, project_name: str,
+  def fetch_project_info(self, project_name: str,
                         credentials: Credentials) -> Dict[str, Any]:
     """Retrieve information about specific project.
 
@@ -57,7 +57,7 @@ class ProjectInfoCrawler:
     return project_info
 
 
-  def __get_project_list(self, 
+  def get_project_list(self, 
                          credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of projects accessible by credentials provided.
 

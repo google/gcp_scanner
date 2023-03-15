@@ -25,7 +25,7 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 
 class NetworkCrawler:
-  def __get_static_ips(self, project_name: str,
+  def get_static_ips(self, project_name: str,
                     service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of static IPs available in the project.
 
@@ -55,7 +55,7 @@ class NetworkCrawler:
 
     return ips_list
 
-  def __get_subnets(self, project_name: str,
+  def get_subnets(self, project_name: str,
                   compute_client: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of subnets available in the project.
 
@@ -83,7 +83,7 @@ class NetworkCrawler:
 
     return subnets_list
 
-  def __get_firewall_rules(
+  def get_firewall_rules(
       self, project_name: str,
       compute_client: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of firewall rules in the project.
@@ -111,7 +111,7 @@ class NetworkCrawler:
       logging.info(sys.exc_info())
     return firewall_rules_list
 
-  def __get_managed_zones(self, project_name: str,
+  def get_managed_zones(self, project_name: str,
                         credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of DNS zones available in the project.
 
@@ -142,7 +142,7 @@ class NetworkCrawler:
 
     return zones_list
 
-  def __get_endpoints(self, project_id: str,
+  def get_endpoints(self, project_id: str,
                     credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of Endpoints available in the project.
 
@@ -174,7 +174,7 @@ class NetworkCrawler:
       logging.info(sys.exc_info())
     return endpoints_list
 
-  def __list_dns_policies(self, project_id: str, 
+  def list_dns_policies(self, project_id: str, 
                           credentials: Credentials) -> List[Any]:
     """Retrieve a list of cloud DNS policies in the project.
     Args:

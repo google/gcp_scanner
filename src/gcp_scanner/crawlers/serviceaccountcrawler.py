@@ -25,7 +25,7 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 
 class ServiceAccountCrawler:
-  def __get_associated_service_accounts(
+  def get_associated_service_accounts(
       self, iam_policy: List[Dict[str, Any]]) -> List[str]:
     """Extract a list of unique SAs from IAM policy associated with project.
 
@@ -55,7 +55,7 @@ class ServiceAccountCrawler:
     return list_of_sas
 
 
-  def __get_service_accounts(self, project_name: str,
+  def get_service_accounts(self, project_name: str,
                           credentials: Credentials) -> List[Tuple[str, str]]:
     """Retrieve a list of service accounts managed in the project.
 
@@ -91,7 +91,7 @@ class ServiceAccountCrawler:
     return service_accounts
 
 
-  def __list_services(self, project_id: str, 
+  def list_services(self, project_id: str, 
                       credentials: Credentials) -> List[Any]:
     """Retrieve a list of services enabled in the project.
 

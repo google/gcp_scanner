@@ -77,129 +77,129 @@ class Crawler(ComputeCrawler,
 
   def get_sql_instances(
       self, project_name, credentials):
-    return self._db_crawler.__get_sql_instances(
+    return self._db_crawler.get_sql_instances(
       project_name, credentials)
 
   def get_bq_tables(
       self, project_id, dataset_id, bq_service):
-    return self._db_crawler.__get_bq_tables(
+    return self._db_crawler.get_bq_tables(
       project_id, dataset_id, bq_service)
 
   def get_bq(
       self, project_id, credentials):
-    return self._db_crawler.__get_bq(
+    return self._db_crawler.get_bq(
       project_id, credentials)
 
   def get_bigtable_instances(
       self, project_id, credentials):
-    return self._db_crawler.__get_bigtable_instances(
+    return self._db_crawler.get_bigtable_instances(
       project_id, credentials)
 
   def get_spanner_instances(
       self, project_id, credentials):
-    return self._db_crawler.__get_spanner_instances(
+    return self._db_crawler.get_spanner_instances(
       project_id, credentials)
 
   def get_gke_clusters(
       self, project_name, gke_client):
-    return self._gke_crawler.__get_gke_clusters(
+    return self._gke_crawler.get_gke_clusters(
       project_name, gke_client)
 
   def get_gke_images(
       self, project_name, access_token):
-    return self._gke_crawler.__get_gke_images(
+    return self._gke_crawler.get_gke_images(
       project_name, access_token)
 
   def get_pubsub_subscriptions(
       self, project_id, credentials):
-    return self._mq_crawler.__get_pubsub_subscriptions(
+    return self._mq_crawler.get_pubsub_subscriptions(
       project_id, credentials)
 
   def get_static_ips(
       self, project_name, service):
-    return self._network_crawler.__get_static_ips(
+    return self._network_crawler.get_static_ips(
       project_name, service)
 
   def get_subnets(
       self, project_name, compute_client):
-    return self._network_crawler.__get_subnets(
+    return self._network_crawler.get_subnets(
       project_name, compute_client)
 
   def get_firewall_rules(
       self, project_name, compute_client):
-    return self._network_crawler.__get_firewall_rules(
+    return self._network_crawler.get_firewall_rules(
       project_name, compute_client)
 
   def get_managed_zones(
       self, project_name, credentials):
-    return self._network_crawler.__get_managed_zones(
+    return self._network_crawler.get_managed_zones(
       project_name, credentials)
 
   def get_endpoints(
       self, project_id, credentials):
-    return self._network_crawler.__get_endpoints(
+    return self._network_crawler.get_endpoints(
       project_id, credentials)
 
   def list_dns_policies(
       self, project_id, credentials):
-    return self._network_crawler.__list_dns_policies(
+    return self._network_crawler.list_dns_policies(
       project_id, credentials)
 
   def fetch_project_info(
       self, project_name, credentials):
-    return self._project_crawler.__fetch_project_info(
+    return self._project_crawler.fetch_project_info(
       project_name, credentials)
 
   def get_project_list(
       self, credentials):
-    return self._project_crawler.__get_project_list(credentials)
+    return self._project_crawler.get_project_list(credentials)
 
   def get_kms_keys(
       self, project_id, credentials):
-    return self._security_crawler.__get_kms_keys(
+    return self._security_crawler.get_kms_keys(
       project_id, credentials)
 
   def get_iam_policy(
       self, project_name, credentials):
-    return self._security_crawler.__get_iam_policy(
+    return self._security_crawler.get_iam_policy(
       project_name, credentials)
 
   def get_cloudfunctions(
       self, project_id, credentials):
-    return self._serverless_crawler.__get_cloudfunctions(
+    return self._serverless_crawler.get_cloudfunctions(
       project_id, credentials)
 
   def get_app_services(
       self, project_name, credentials):
-    return self._serverless_crawler.__get_app_services(
+    return self._serverless_crawler.get_app_services(
       project_name, credentials)
 
   def get_associated_service_accounts(
       self, iam_policy):
-    return self._service_account_crawler.__get_associated_service_accounts(
+    return self._service_account_crawler.get_associated_service_accounts(
       iam_policy)
 
   def get_service_accounts(
       self, project_name, credentials):
-    return self._service_account_crawler.__get_service_accounts(
+    return self._service_account_crawler.get_service_accounts(
       project_name, credentials)
 
   def list_services(
       self, project_id, credentials):
-    return self._service_account_crawler.__list_services(
+    return self._service_account_crawler.list_services(
       project_id, credentials)
 
   def list_sourcerepo(
       self, project_id, credentials):
-    return self._source_repo_crawler.__list_sourcerepo(
+    return self._source_repo_crawler.list_sourcerepo(
       project_id, credentials)
 
   def get_bucket_names(
       self, project_name, credentials, dump_fd):
-    return self._storage_crawler.__get_bucket_names(
+    return self._storage_crawler.get_bucket_names(
       project_name, credentials, dump_fd)
 
   def get_filestore_instances(
       self, project_id, credentials):
-    return self._storage_crawler.__get_filestore_instances(
+    return self._storage_crawler.get_filestore_instances(
       project_id, credentials)

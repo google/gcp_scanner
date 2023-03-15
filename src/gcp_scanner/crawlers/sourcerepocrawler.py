@@ -25,7 +25,7 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 
 class SourceRepoCrawler:
-  def __list_sourcerepo(self, project_id: str, 
+  def list_sourcerepo(self, project_id: str, 
                         credentials: Credentials) -> List[Any]:
     """Retrieve a list of cloud source repositories enabled in the project.
 

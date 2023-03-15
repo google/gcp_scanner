@@ -25,7 +25,7 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 
 class ServerlessCrawler:
-  def __get_cloudfunctions(self, project_id: str,
+  def get_cloudfunctions(self, project_id: str,
                         credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of CloudFunctions available in the project.
 
@@ -55,7 +55,7 @@ class ServerlessCrawler:
 
     return functions_list
 
-  def __get_app_services(self, project_name: str,
+  def get_app_services(self, project_name: str,
                       credentials: Credentials) -> Dict[str, Any]:
     """Retrieve a list of AppEngine instances available in the project.
 
