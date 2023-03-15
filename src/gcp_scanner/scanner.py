@@ -247,7 +247,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             iam_policy)
 
         for candidate_service_account in project_service_accounts:
-          logging.info('Trying {candidate_service_account}')
+          logging.info(f'Trying {candidate_service_account}')
           if not candidate_service_account.startswith('serviceAccount'):
             continue
           try:
@@ -257,8 +257,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                 (candidate_service_account, creds_impersonated, updated_chain))
             project_result['service_account_edges'].append(
                 candidate_service_account)
-            logging.info('Successfully impersonated {candidate_service_account}'
-            'using {sa_name}')
+            logging.info(f'Successfully impersonated {candidate_service_account} using {sa_name}')
           except Exception:
             logging.error('Failed to get token for %s',
                                                       candidate_service_account)
