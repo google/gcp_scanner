@@ -54,7 +54,7 @@ class Crawler:
     self._service_account_crawler = ServiceAccountCrawler()
     self._source_repo_crawler = SourceRepoCrawler()
     self._storage_crawler = StorageCrawler()
-  
+
   def get_compute_instances_names(
       self,project_name, service):
     return self._compute_crawler.get_compute_instances_names(
@@ -203,3 +203,4 @@ class Crawler:
       self, project_id, credentials):
     return self._storage_crawler.get_filestore_instances(
       project_id, credentials)
+  
