@@ -30,17 +30,7 @@ def infinite_defaultdict():
   """
   return collections.defaultdict(infinite_defaultdict)
 
-class Crawler(ComputeCrawler,
-              DBCrawler,
-              GKECrawler,
-              MQCrawler,
-              NetworkCrawler,
-              ProjectInfoCrawler,
-              SecurityCrawler,
-              ServerlessCrawler,
-              ServiceAccountCrawler,
-              SourceRepoCrawler,
-              StorageCrawler):
+class Crawler:
 
   def __init__(self):
     self._compute_crawler = ComputeCrawler()
