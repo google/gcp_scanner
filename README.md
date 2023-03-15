@@ -6,6 +6,7 @@ This project is not an official Google project. It is not supported by
 Google and Google specifically disclaims all warranties as to its quality,
 merchantability, or fitness for a particular purpose.
 
+
 ### GCP Scanner
 
 ![Logo](misc/gcp_scanner_logo.png?raw=true "Logo of GCP Scanner")
@@ -67,28 +68,31 @@ GCP Scanner
 
 options:
   -h, --help            show this help message and exit
-  -k KEY_PATH, --sa_key_path KEY_PATH
+  -k KEY_PATH, --sa-key-path KEY_PATH
                         Path to directory with SA keys in json format
-  -g GCLOUD_PROFILE_PATH, --gcloud_profile_path GCLOUD_PROFILE_PATH
+  -g GCLOUD_PROFILE_PATH, --gcloud-profile-path GCLOUD_PROFILE_PATH
                         Path to directory with gcloud profile. Specify - to search for credentials in default gcloud config path
-  -m, --use_metadata    Extract credentials from GCE instance metadata
-  -at ACCESS_TOKEN_FILES, --access_token_files ACCESS_TOKEN_FILES
-                        A list of comma separated files with access token and OAuth scopes.TTL limited. A token and scopes should be stored in JSON format.
-  -rt REFRESH_TOKEN_FILES, --refresh_token_files REFRESH_TOKEN_FILES
+  -m, --use-metadata    Extract credentials from GCE instance metadata
+  -at ACCESS_TOKEN_FILES, --access-token-files ACCESS_TOKEN_FILES
+                        A list of comma separated files with access token and OAuth scopes.TTL limited. A token and scopes should be stored in JSON
+                        format.
+  -rt REFRESH_TOKEN_FILES, --refresh-token-files REFRESH_TOKEN_FILES
                         A list of comma separated files with refresh_token, client_id,token_uri and client_secret stored in JSON format.
-  -s KEY_NAME, --service_account KEY_NAME
+  -s KEY_NAME, --service-account KEY_NAME
                         Name of individual SA to scan
   -p TARGET_PROJECT, --project TARGET_PROJECT
                         Name of individual project to scan
-  -f FORCE_PROJECTS, --force_projects FORCE_PROJECTS
+  -f FORCE_PROJECTS, --force-projects FORCE_PROJECTS
                         Comma separated list of project names to include in the scan
   -c CONFIG_PATH, --config CONFIG_PATH
                         A path to config file with a set of specific resources to scan.
   -l {INFO,WARNING,ERROR}, --logging {INFO,WARNING,ERROR}
                         Set logging level (INFO, WARNING, ERROR)
+  -lf LOG_DIRECTORY, --log-file LOG_DIRECTORY
+                        Save logs to the path specified rather than displaying in console
 
 Required parameters:
-  -o OUTPUT, --output_dir OUTPUT
+  -o OUTPUT, --output-dir OUTPUT
                         Path to output directory
 ```
 
