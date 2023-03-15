@@ -19,7 +19,7 @@
 
 import collections
 
-from crawlers import (ComputeCrawler,
+from .crawlers import (ComputeCrawler,
                       DBCrawler,
                       GKECrawler,
                       MQCrawler,
