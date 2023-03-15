@@ -54,9 +54,12 @@ This project follows [Google's Open Source Community Guidelines](https://opensou
 - Use lowercase letters.
 - Separate words with hyphens.
 - Use descriptive names that reflect the purpose of the branch.
-- Add `issue tracker id`
+- Add `issue tracker id`.
 
-**Example:** `feat/<issue-id>/gcp-compute-engine-support`  
+**Example:** feat/&lt;issue-id&gt;/gcp-compute-engine-support
+
+**Example:** docs/11/update-installation-instructions
+ 
 
 ## Getting Help
 
@@ -71,4 +74,3 @@ If you need help or have any questions about the project, please feel free to:
 We believe in creating a friendly and welcoming environment for all members of our community. As such, we follow the [Google Open Source Community Guidelines](https://opensource.google/conduct/), which outlines our expectations for all those who participate in our project.
 
 Please read the code of conduct carefully and make sure you understand what is expected of you. If you have any questions or concerns, please contact the project maintainers by posting to the [Google Group](https://groups.google.com/g/gcp-scanner).
-
