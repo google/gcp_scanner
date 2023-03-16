@@ -32,12 +32,23 @@ from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMC
 from googleapiclient import discovery
 from httplib2 import Credentials
 from .models import SpiderContext
+import collections
+
 
 def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
   if config is None:
     return True
   obj = config.get(config_setting, {})
   return obj.get('fetch', False)
+
+def infinite_defaultdict():
+  """Initialize infinite default.
+
+  Returns:
+    DefaultDict
+  """
+  return collections.defaultdict(infinite_defaultdict)
+
 
 def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                out_dir: str,
@@ -65,7 +76,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
     # Don't process this service account again
     processed_sas.add(sa_name)
     logging.info('>> current service account: %s', sa_name)
-    sa_results = crawl.infinite_defaultdict()
+    sa_results = infinite_defaultdict()
     # Log the chain we used to get here (even if we have no privs)
     sa_results['service_account_chain'] = chain_so_far
     sa_results['current_service_account'] = sa_name
