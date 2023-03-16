@@ -32,7 +32,7 @@ import googleapiclient
 from googleapiclient import discovery
 from httplib2 import Credentials
 
-def get_bucket_names(self, project_name: str, credentials: Credentials,
+def get_bucket_names(project_name: str, credentials: Credentials,
                     dump_fd: io.TextIOWrapper
                     ) -> Dict[str, Tuple[Any, List[Any]]]:
   """Retrieve a list of buckets available in the project.
@@ -86,7 +86,7 @@ def get_bucket_names(self, project_name: str, credentials: Credentials,
 
   return buckets_dict
 
-def get_filestore_instances(self, project_id: str,
+def get_filestore_instances(project_id: str,
                             credentials: Credentials) -> List[Dict[str, Any]]:
   """Retrieve a list of Filestore instances available in the project.
 

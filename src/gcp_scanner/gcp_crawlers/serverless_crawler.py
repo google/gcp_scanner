@@ -30,7 +30,7 @@ from typing import List, Dict, Any
 from googleapiclient import discovery
 from httplib2 import Credentials
 
-def get_cloudfunctions(self, project_id: str,
+def get_cloudfunctions(project_id: str,
                       credentials: Credentials) -> List[Dict[str, Any]]:
   """Retrieve a list of CloudFunctions available in the project.
 
@@ -60,7 +60,7 @@ def get_cloudfunctions(self, project_id: str,
 
   return functions_list
 
-def get_app_services(self, project_name: str,
+def get_app_services(project_name: str,
                     credentials: Credentials) -> Dict[str, Any]:
   """Retrieve a list of AppEngine instances available in the project.
 

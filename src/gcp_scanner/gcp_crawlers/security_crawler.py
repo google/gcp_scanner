@@ -28,7 +28,7 @@ from typing import List, Dict, Any
 from googleapiclient import discovery
 from httplib2 import Credentials
 
-def get_kms_keys(self, project_id: str,
+def get_kms_keys(project_id: str,
                 credentials: Credentials) -> List[Dict[str, Any]]:
   """Retrieve a list of KMS keys available in the project.
 
@@ -81,7 +81,7 @@ def get_kms_keys(self, project_id: str,
   return kms_keys_list
 
 
-def get_iam_policy(self, project_name: str,
+def get_iam_policy(project_name: str,
                   credentials: Credentials) -> List[Dict[str, Any]]:
   """Retrieve an IAM Policy in the project.
 

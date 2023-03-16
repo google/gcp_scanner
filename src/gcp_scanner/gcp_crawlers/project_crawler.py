@@ -28,7 +28,7 @@ from typing import List, Dict, Any
 import googleapiclient
 from httplib2 import Credentials
 
-def fetch_project_info(self, project_name: str,
+def fetch_project_info(project_name: str,
                       credentials: Credentials) -> Dict[str, Any]:
   """Retrieve information about specific project.
 
@@ -60,8 +60,7 @@ def fetch_project_info(self, project_name: str,
   return project_info
 
 
-def get_project_list(self, 
-                        credentials: Credentials) -> List[Dict[str, Any]]:
+def get_project_list(credentials: Credentials) -> List[Dict[str, Any]]:
   """Retrieve a list of projects accessible by credentials provided.
 
   Args:

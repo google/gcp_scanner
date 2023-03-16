@@ -30,7 +30,7 @@ from requests.auth import HTTPBasicAuth
 
 
 def get_gke_clusters(
-    self, project_name: str, 
+    project_name: str, 
     gke_client: container_v1.services.cluster_manager.client
     .ClusterManagerClient
 ) -> List[Tuple[str, str]]:
@@ -56,7 +56,7 @@ def get_gke_clusters(
     return []
 
 
-def get_gke_images(self, project_name: str, 
+def get_gke_images(project_name: str, 
                       access_token: str) -> Dict[str, Any]:
   """Retrieve a list of GKE images available in the project.
 

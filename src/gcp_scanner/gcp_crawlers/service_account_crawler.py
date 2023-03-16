@@ -30,7 +30,7 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 
 def get_associated_service_accounts(
-    self, iam_policy: List[Dict[str, Any]]) -> List[str]:
+    iam_policy: List[Dict[str, Any]]) -> List[str]:
   """Extract a list of unique SAs from IAM policy associated with project.
 
   Args:
@@ -59,7 +59,7 @@ def get_associated_service_accounts(
   return list_of_sas
 
 
-def get_service_accounts(self, project_name: str,
+def get_service_accounts(project_name: str,
                         credentials: Credentials) -> List[Tuple[str, str]]:
   """Retrieve a list of service accounts managed in the project.
 
@@ -95,7 +95,7 @@ def get_service_accounts(self, project_name: str,
   return service_accounts
 
 
-def list_services(self, project_id: str, 
+def list_services(project_id: str, 
                     credentials: Credentials) -> List[Any]:
   """Retrieve a list of services enabled in the project.
 

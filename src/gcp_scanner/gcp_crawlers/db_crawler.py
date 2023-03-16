@@ -28,7 +28,7 @@ from typing import List, Dict, Any
 from googleapiclient import discovery
 from httplib2 import Credentials
 
-def get_sql_instances(self, project_name: str,
+def get_sql_instances(project_name: str,
                       credentials: Credentials) -> List[Dict[str, Any]]:
   """Retrieve a list of SQL instances available in the project.
 
@@ -59,7 +59,8 @@ def get_sql_instances(self, project_name: str,
   return sql_instances_list
 
 
-def get_bq_tables(self, project_id: str, dataset_id: str,
+
+def get_bq_tables(project_id: str, dataset_id: str,
                   bq_service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of BigQuery tables available in the dataset.
 
@@ -88,8 +89,8 @@ def get_bq_tables(self, project_id: str, dataset_id: str,
   return list_of_tables
 
 
-def get_bq(self, project_id: str,
-          credentials: Credentials) -> Dict[str, List[Dict[str, Any]]]:
+def get_bq(project_id: str,
+           credentials: Credentials) -> Dict[str, List[Dict[str, Any]]]:
   """Retrieve a list of BigQuery datasets available in the project.
 
   Args:
@@ -112,7 +113,7 @@ def get_bq(self, project_id: str,
 
       for dataset in response.get("datasets", []):
         dataset_id = dataset["datasetReference"]["datasetId"]
-        bq_datasets[dataset_id] = self.get_bq_tables(project_id,dataset_id, service)
+        bq_datasets[dataset_id] = get_bq_tables(project_id,dataset_id, service)
 
       request = service.datasets().list_next(
           previous_request=request, previous_response=response)
@@ -122,8 +123,8 @@ def get_bq(self, project_id: str,
   return bq_datasets
 
 
-def get_bigtable_instances(self, project_id: str,
-                          credentials: Credentials) -> List[Dict[str, Any]]:
+def get_bigtable_instances(project_id: str,
+                           credentials: Credentials) -> List[Dict[str, Any]]:
   """Retrieve a list of BigTable instances available in the project.
 
   Args:
@@ -149,13 +150,13 @@ def get_bigtable_instances(self, project_id: str,
           previous_request=request, previous_response=response)
   except Exception:
     logging.info("Failed to retrieve BigTable instances for project %s",
-                project_id)
+                 project_id)
     logging.info(sys.exc_info())
   return bigtable_instances_list
 
 
-def get_spanner_instances(self, project_id: str,
-                            credentials: Credentials) -> List[Dict[str, Any]]:
+def get_spanner_instances(project_id: str,
+                          credentials: Credentials) -> List[Dict[str, Any]]:
   """Retrieve a list of Spanner instances available in the project.
 
   Args:
@@ -181,6 +182,7 @@ def get_spanner_instances(self, project_id: str,
           previous_request=request, previous_response=response)
   except Exception:
     logging.info("Failed to retrieve Spanner instances for project %s",
-                project_id)
+                 project_id)
     logging.info(sys.exc_info())
   return spanner_instances_list
+

@@ -26,7 +26,7 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 
 
-def get_pubsub_subscriptions(self, project_id: str,
+def get_pubsub_subscriptions(project_id: str,
                             credentials: Credentials) -> List[Dict[str, Any]]:
   """Retrieve a list of PubSub subscriptions available in the project.
 
