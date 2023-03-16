@@ -23,7 +23,7 @@ import os
 import sys
 from typing import List, Tuple, Dict, Optional,Union
 
-from . import crawl
+from . import gcp_crawlers as crawl
 from . import credsdb
 from . import arguments
 from google.cloud import container_v1

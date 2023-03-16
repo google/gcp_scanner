@@ -29,7 +29,7 @@ from unittest.mock import patch, Mock
 import requests
 from google.oauth2 import credentials
 
-from . import crawl
+from . import gcp_crawlers as crawl
 from . import credsdb
 from . import scanner
 from .credsdb import get_scopes_from_refresh_token
