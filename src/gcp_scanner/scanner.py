@@ -42,6 +42,24 @@ def scan_single_resource(resource, concurrency):
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
         scan_results = executor.submit(scan_resource, resource).result()
     return scan_results
+
+def get_all_resources(credentials, projects):
+    all_resources = []
+    for project in projects:
+        project_id = project['project_id']
+        resources = get_resources(project_id)
+        all_resources.extend(resources)
+    return all_resources
+
+def get_resources(concurrency=None):
+    # code to read the list of resources from a configuration file
+    if concurrency is None:
+        concurrency = cpu_count()
+
+    with Pool(concurrency) as pool:
+        resources = pool.map(get_all_resources, [])
+
+    return resources
   
 def scan_project(project_id):
     # Get list of GCP resources to scan
