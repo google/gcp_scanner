@@ -26,7 +26,6 @@ import logging
 import sys
 from typing import List, Dict, Any, Tuple
 
-import googleapiclient
 from googleapiclient import discovery
 from httplib2 import Credentials
 
@@ -102,7 +101,7 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   Returns:
     A list of service API objects enabled in the project.
   """
-  print("debug: list_services")
+
   logging.info("Retrieving services list %s", project_id)
   list_of_services = list()
   serviceusage = discovery.build("serviceusage", "v1", credentials=credentials)
@@ -119,6 +118,5 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   except Exception:
     logging.info("Failed to retrieve services for project %s", project_id)
     logging.info(sys.exc_info())
-  print("debug: end")
-  print(list_of_services)
+
   return list_of_services
