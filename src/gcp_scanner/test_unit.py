@@ -468,9 +468,6 @@ class TestCrawler(unittest.TestCase):
       )
     )
 
-  def verify_services(self,service_list):
-    return len(service_list) > 0
-
   def test_services(self):
     """Test list of API services enabled in the project."""
     self.assertTrue(
