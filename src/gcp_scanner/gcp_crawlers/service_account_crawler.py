@@ -95,8 +95,8 @@ def get_service_accounts(project_name: str,
   return service_accounts
 
 
-def list_services(project_id: str, 
-                    credentials: Credentials) -> List[Any]:
+
+def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   """Retrieve a list of services enabled in the project.
 
   Args:
