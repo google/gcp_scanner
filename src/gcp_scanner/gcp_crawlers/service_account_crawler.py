@@ -26,6 +26,7 @@ import logging
 import sys
 from typing import List, Dict, Any, Tuple
 
+import googleapiclient
 from googleapiclient import discovery
 from httplib2 import Credentials
 
@@ -60,17 +61,15 @@ def get_associated_service_accounts(
 
 
 def get_service_accounts(project_name: str,
-                        credentials: Credentials) -> List[Tuple[str, str]]:
+                         credentials: Credentials) -> List[Tuple[str, str]]:
   """Retrieve a list of service accounts managed in the project.
-
   Args:
     project_name: A name of a project to query info about.
     credentials: An google.oauth2.credentials.Credentials object.
-
   Returns:
     A list of service accounts managed in the project.
   """
-
+  print("debug: get_service_accounts")
   logging.info("Retrieving SA list %s", project_name)
   service_accounts = []
   service = discovery.build(
@@ -91,9 +90,9 @@ def get_service_accounts(project_name: str,
   except Exception:
     logging.info("Failed to retrieve SA list for project %s", project_name)
     logging.info(sys.exc_info())
-
+  print("debug: end")
+  print(service_accounts)
   return service_accounts
-
 
 
 def list_services(project_id: str, credentials: Credentials) -> List[Any]:
