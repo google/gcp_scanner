@@ -41,6 +41,7 @@ def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
   obj = config.get(config_setting, {})
   return obj.get('fetch', False)
 
+
 def infinite_defaultdict():
   """Initialize infinite default.
 
