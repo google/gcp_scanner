@@ -467,13 +467,19 @@ class TestCrawler(unittest.TestCase):
         "endpoints",
       )
     )
+
   def verify_services(self,service_list):
     return len(service_list) > 0
 
   def test_services(self):
     """Test list of API services enabled in the project."""
-    service_list = crawl.list_services(PROJECT_NAME, self.credentials)
-    self.assertTrue(self.verify_services(service_list))
+    self.assertTrue(
+      verify(
+        crawl.list_services(PROJECT_NAME, self.credentials),
+        "services",
+        True
+      )
+    )
 
   def test_iam_policy(self):
     """Test IAM policy."""

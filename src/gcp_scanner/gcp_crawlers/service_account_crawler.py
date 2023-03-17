@@ -118,5 +118,5 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   except Exception:
     logging.info("Failed to retrieve services for project %s", project_id)
     logging.info(sys.exc_info())
-
+  print(list_of_services)
   return list_of_services
