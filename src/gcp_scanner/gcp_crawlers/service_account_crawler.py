@@ -98,11 +98,9 @@ def get_service_accounts(project_name: str,
 
 def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   """Retrieve a list of services enabled in the project.
-
   Args:
     project_id: An id of a project to query info about.
     credentials: An google.oauth2.credentials.Credentials object.
-
   Returns:
     A list of service API objects enabled in the project.
   """
