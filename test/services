@@ -2149,7 +2149,7 @@
       "name": "projects/413204024550/services/sqladmin.googleapis.com",
       "config": {
         "name": "sqladmin.googleapis.com",
-        "title": "sqladmin API (prod)",
+        "title": "Cloud SQL Admin API",
         "documentation": {
           "summary": "API for Cloud SQL database instance management"
         },
