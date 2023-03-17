@@ -69,7 +69,7 @@ def get_service_accounts(project_name: str,
   Returns:
     A list of service accounts managed in the project.
   """
-  print("debug: get_service_accounts")
+
   logging.info("Retrieving SA list %s", project_name)
   service_accounts = []
   service = discovery.build(
@@ -90,8 +90,7 @@ def get_service_accounts(project_name: str,
   except Exception:
     logging.info("Failed to retrieve SA list for project %s", project_name)
     logging.info(sys.exc_info())
-  print("debug: end")
-  print(service_accounts)
+
   return service_accounts
 
 
@@ -103,7 +102,7 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   Returns:
     A list of service API objects enabled in the project.
   """
-
+  print("debug: list_services")
   logging.info("Retrieving services list %s", project_id)
   list_of_services = list()
   serviceusage = discovery.build("serviceusage", "v1", credentials=credentials)
@@ -120,5 +119,6 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   except Exception:
     logging.info("Failed to retrieve services for project %s", project_id)
     logging.info(sys.exc_info())
-
+  print("debug: end")
+  print(list_of_services)
   return list_of_services
