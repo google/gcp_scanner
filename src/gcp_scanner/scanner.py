@@ -124,7 +124,10 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                                                         project_id,
                                                         compute_client)
       if is_set(scan_config, 'machine_types'):
-        project_result['machine_type'] = crawl.get_machine_images(project_id, compute_client)
+        project_result['machine_type'] = crawl.get_machine_images(
+          project_id,
+          compute_client,
+        )
       if is_set(scan_config, 'compute_disks'):
         project_result['compute_disks'] = crawl.get_compute_disks_names(
                                                         project_id,
