@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-FROM python:3-slim-buster
+FROM python:3.8-slim-buster
 
 RUN mkdir /home/sa_scanner
 COPY src/ /home/sa_scanner/
