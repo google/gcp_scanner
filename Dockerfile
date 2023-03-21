@@ -23,5 +23,4 @@ COPY README.md /home/sa_scanner
 WORKDIR /home/sa_scanner
 RUN pip install .
 
-WORKDIR /home/sa_scanner/
 ENTRYPOINT ["gcp-scanner"]
