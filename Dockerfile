@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-FROM python:3.8-slim-buster
+FROM python:3.10-bullseye
 
 RUN mkdir /home/sa_scanner
 COPY src/ /home/sa_scanner/
@@ -22,5 +22,6 @@ COPY README.md /home/sa_scanner
 
 WORKDIR /home/sa_scanner
 RUN pip install .
+
 
 ENTRYPOINT ["gcp-scanner"]
