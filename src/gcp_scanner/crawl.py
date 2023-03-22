@@ -176,7 +176,7 @@ def get_machine_images(
   logging.info("Retrieving list of Machine Images Resources")
   machine_images_list = list()
   try:
-    request = service.images().list(project=project_name)
+    request = service.machineImages().list(project=project_name)
     while request is not None:
       response = request.execute()
       machine_images_list = response.get("items", [])
