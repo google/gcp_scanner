@@ -180,7 +180,7 @@ def get_machine_images(
     while request is not None:
       response = request.execute()
       machine_images_list = response.get("items", [])
-      request = service.images().list_next(
+      request = service.machineImages().list_next(
         previous_request=request, previous_response=response
       )
   except Exception:
