@@ -1,0 +1,212 @@
+{
+    "kind": "compute#machineImageList",
+    "id": "projects/qwiklabs-gcp-01-4ac901cbfcdf/global/machineImages",
+    "items": [
+      {
+        "kind": "compute#machineImage",
+        "id": "3228948560770099620",
+        "creationTimestamp": "2023-03-20T05:53:32.008-07:00",
+        "name": "test-mi-1",
+        "selfLink": "https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-4ac901cbfcdf/global/machineImages/test-mi-1",
+        "sourceInstance": "https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-4ac901cbfcdf/zones/us-central1-a/instances/test-vm-1",
+        "status": "READY",
+        "sourceInstanceProperties": {
+          "tags": {
+            "items": [
+              "http-server",
+              "https-server"
+            ],
+            "fingerprint": "6smc4R4d39I="
+          },
+          "machineType": "e2-medium",
+          "canIpForward": false,
+          "networkInterfaces": [
+            {
+              "kind": "compute#networkInterface",
+              "network": "https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-4ac901cbfcdf/global/networks/default",
+              "subnetwork": "https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-4ac901cbfcdf/regions/us-central1/subnetworks/default",
+              "networkIP": "10.128.0.2",
+              "name": "nic0",
+              "accessConfigs": [
+                {
+                  "kind": "compute#accessConfig",
+                  "type": "ONE_TO_ONE_NAT",
+                  "name": "External NAT",
+                  "natIP": "34.30.56.213",
+                  "networkTier": "PREMIUM"
+                }
+              ],
+              "fingerprint": "ebuqTuSddxs=",
+              "stackType": "IPV4_ONLY"
+            }
+          ],
+          "disks": [
+            {
+              "kind": "compute#savedAttachedDisk",
+              "type": "PERSISTENT",
+              "mode": "READ_WRITE",
+              "source": "projects/qwiklabs-gcp-01-4ac901cbfcdf/zones/us-central1-a/disks/test-vm-1",
+              "deviceName": "test-vm-1",
+              "index": 0,
+              "boot": true,
+              "autoDelete": true,
+              "licenses": [
+                "projects/707281592825/global/licenses/debian-11-bullseye"
+              ],
+              "interface": "SCSI",
+              "guestOsFeatures": [
+                {
+                  "type": "UEFI_COMPATIBLE"
+                },
+                {
+                  "type": "VIRTIO_SCSI_MULTIQUEUE"
+                },
+                {
+                  "type": "GVNIC"
+                }
+              ],
+              "diskSizeGb": "10",
+              "storageBytes": "559765696",
+              "storageBytesStatus": "UP_TO_DATE",
+              "diskType": "pd-balanced"
+            }
+          ],
+          "metadata": {
+            "kind": "compute#metadata",
+            "fingerprint": "1K-9I6bDxc4=",
+            "items": [
+              {
+                "key": "enable-oslogin",
+                "value": "true"
+              }
+            ]
+          },
+          "serviceAccounts": [
+            {
+              "email": "118241340375-compute@developer.gserviceaccount.com",
+              "scopes": [
+                "https://www.googleapis.com/auth/devstorage.read_only",
+                "https://www.googleapis.com/auth/logging.write",
+                "https://www.googleapis.com/auth/monitoring.write",
+                "https://www.googleapis.com/auth/servicecontrol",
+                "https://www.googleapis.com/auth/service.management.readonly",
+                "https://www.googleapis.com/auth/trace.append"
+              ]
+            }
+          ],
+          "scheduling": {
+            "onHostMaintenance": "MIGRATE",
+            "automaticRestart": true,
+            "preemptible": false,
+            "provisioningModel": "STANDARD"
+          },
+          "deletionProtection": false,
+          "keyRevocationActionType": "NONE"
+        },
+        "instanceProperties": {
+          "description": "",
+          "tags": {
+            "items": [
+              "http-server",
+              "https-server"
+            ],
+            "fingerprint": "6smc4R4d39I="
+          },
+          "machineType": "e2-medium",
+          "canIpForward": false,
+          "networkInterfaces": [
+            {
+              "kind": "compute#networkInterface",
+              "network": "https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-4ac901cbfcdf/global/networks/default",
+              "subnetwork": "https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-4ac901cbfcdf/regions/us-central1/subnetworks/default",
+              "networkIP": "10.128.0.2",
+              "name": "nic0",
+              "accessConfigs": [
+                {
+                  "kind": "compute#accessConfig",
+                  "type": "ONE_TO_ONE_NAT",
+                  "name": "External NAT",
+                  "natIP": "34.30.56.213",
+                  "networkTier": "PREMIUM"
+                }
+              ],
+              "fingerprint": "ebuqTuSddxs=",
+              "stackType": "IPV4_ONLY"
+            }
+          ],
+          "disks": [
+            {
+              "kind": "compute#attachedDisk",
+              "type": "PERSISTENT",
+              "mode": "READ_WRITE",
+              "source": "https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-4ac901cbfcdf/zones/us-central1-a/disks/test-vm-1",
+              "deviceName": "test-vm-1",
+              "index": 0,
+              "boot": true,
+              "autoDelete": true,
+              "licenses": [
+                "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-11-bullseye"
+              ],
+              "interface": "SCSI",
+              "guestOsFeatures": [
+                {
+                  "type": "UEFI_COMPATIBLE"
+                },
+                {
+                  "type": "VIRTIO_SCSI_MULTIQUEUE"
+                },
+                {
+                  "type": "GVNIC"
+                }
+              ],
+              "diskSizeGb": "10"
+            }
+          ],
+          "metadata": {
+            "kind": "compute#metadata",
+            "fingerprint": "1K-9I6bDxc4=",
+            "items": [
+              {
+                "key": "enable-oslogin",
+                "value": "true"
+              }
+            ]
+          },
+          "serviceAccounts": [
+            {
+              "email": "118241340375-compute@developer.gserviceaccount.com",
+              "scopes": [
+                "https://www.googleapis.com/auth/devstorage.read_only",
+                "https://www.googleapis.com/auth/logging.write",
+                "https://www.googleapis.com/auth/monitoring.write",
+                "https://www.googleapis.com/auth/servicecontrol",
+                "https://www.googleapis.com/auth/service.management.readonly",
+                "https://www.googleapis.com/auth/trace.append"
+              ]
+            }
+          ],
+          "scheduling": {
+            "onHostMaintenance": "MIGRATE",
+            "automaticRestart": true,
+            "preemptible": false,
+            "provisioningModel": "STANDARD"
+          },
+          "minCpuPlatform": ""
+        },
+        "savedDisks": [
+          {
+            "kind": "compute#savedDisk",
+            "sourceDisk": "projects/qwiklabs-gcp-01-4ac901cbfcdf/zones/us-central1-a/disks/test-vm-1",
+            "storageBytes": "559765696",
+            "storageBytesStatus": "UP_TO_DATE"
+          }
+        ],
+        "storageLocations": [
+          "us"
+        ],
+        "totalStorageBytes": "559765696"
+      }
+    ],
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-4ac901cbfcdf/global/machineImages"
+  }
+  
