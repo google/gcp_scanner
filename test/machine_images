@@ -1,4 +1,5 @@
-{
+[
+  {
     "kind": "compute#machineImageList",
     "id": "projects/qwiklabs-gcp-01-4ac901cbfcdf/global/machineImages",
     "items": [
@@ -209,4 +210,5 @@
     ],
     "selfLink": "https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-4ac901cbfcdf/global/machineImages"
   }
+]
   
