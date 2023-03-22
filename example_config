@@ -10,6 +10,9 @@
   "compute_images": {
     "fetch": true
   },
+  "machine_images": {
+    "fetch": true
+  },
   "static_ips": {
     "fetch": true
   },

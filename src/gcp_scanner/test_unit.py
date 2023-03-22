@@ -293,6 +293,16 @@ class TestCrawler(unittest.TestCase):
       )
     )
 
+  def test_machine_images(self):
+    """Test machine images"""
+    self.assertTrue(
+      verify(
+        crawl.get_machine_images(PROJECT_NAME, self.compute_client),
+        "machine_images",
+        True,
+      )
+    )
+
   def test_static_ips(self):
     """Test static IPs."""
     self.assertTrue(
