@@ -2,7 +2,7 @@
 
 """
 
-from .compute_crawler import *
+from .compute_crawler import GCPComputeResources
 from .db_crawler import *
 from .gke_crawler import *
 from .mq_crawler import *
