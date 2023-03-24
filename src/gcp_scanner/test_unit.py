@@ -258,6 +258,7 @@ class TestCrawler(unittest.TestCase):
     self.compute_client = scanner.compute_client_for_credentials(
       self.credentials,
     )
+    self.compute_resources = crawl.GCPComputeResources(PROJECT_NAME, self.compute_client)
 
   def test_credential(self):
     """Checks if credential is not none."""
@@ -267,7 +268,7 @@ class TestCrawler(unittest.TestCase):
     """Test compute instance name."""
     self.assertTrue(
       verify(
-        crawl.get_compute_instances_names(PROJECT_NAME, self.compute_client),
+        self.compute_resources.get_compute_instances_names(),
         "compute_instances",
         True,
       )
@@ -277,7 +278,7 @@ class TestCrawler(unittest.TestCase):
     """Test compute disk names."""
     self.assertTrue(
       verify(
-        crawl.get_compute_disks_names(PROJECT_NAME, self.compute_client),
+        self.compute_resources.get_compute_disks_names(),
         "compute_disks",
         True,
       )
@@ -287,7 +288,7 @@ class TestCrawler(unittest.TestCase):
     """Test compute image names."""
     self.assertTrue(
       verify(
-        crawl.get_compute_images_names(PROJECT_NAME, self.compute_client),
+        self.compute_resources.get_compute_images_names(),
         "compute_images",
         True,
       )
@@ -307,7 +308,7 @@ class TestCrawler(unittest.TestCase):
     """Test compute snapshot."""
     self.assertTrue(
       verify(
-        crawl.get_compute_snapshots(PROJECT_NAME, self.compute_client),
+        self.compute_resources.get_compute_snapshots(),
         "compute_snapshots",
         True,
       )
