@@ -259,7 +259,7 @@ class TestCrawler(unittest.TestCase):
       self.credentials,
     )
     self.compute_resources = crawl.GCPComputeResources(PROJECT_NAME,
-                                                       self.compute_client)
+                                                      self.compute_client)
 
   def test_credential(self):
     """Checks if credential is not none."""
