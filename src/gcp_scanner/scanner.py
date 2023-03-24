@@ -130,21 +130,24 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       compute_client = compute_client_for_credentials(credentials)
       compute_resources = crawl.GCPComputeResources(project_id, compute_client)
       if is_set(scan_config, 'compute_instances'):
-        project_result['compute_instances'] = compute_resources.get_compute_instances_names()
+        project_result['compute_instances'] = (
+          compute_resources.get_compute_instances_names())
 
       if is_set(scan_config, 'compute_images'):
-        project_result['compute_images'] = compute_resources.get_compute_images_names()
+        project_result['compute_images'] = (
+          compute_resources.get_compute_images_names())
 
       if is_set(scan_config, 'compute_disks'):
-        project_result['compute_disks'] = compute_resources.get_compute_disks_names()
+        project_result['compute_disks'] = (
+          compute_resources.get_compute_disks_names())
 
       if is_set(scan_config, 'compute_snapshots'):
-        project_result['compute_snapshots'] = compute_resources.get_compute_snapshots()
-        
+        project_result['compute_snapshots'] = (
+          compute_resources.get_compute_snapshots())
+
       if is_set(scan_config, 'static_ips'):
         project_result['static_ips'] = crawl.get_static_ips(project_id,
                                                             compute_client)
-        
       if is_set(scan_config, 'subnets'):
         project_result['subnets'] = crawl.get_subnets(project_id,
                                                       compute_client)
