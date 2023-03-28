@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-FROM python:bullseye
+FROM python:slim-bullseye
 
 RUN mkdir /home/sa_scanner
 COPY src/ /home/sa_scanner/
