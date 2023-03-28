@@ -154,7 +154,7 @@ VOLATILE    "lastStopTimestamp": "2022-06-12T13:19:32.337-07:00"
             "networkTier": "STANDARD"
           }
         ],
-        "fingerprint": "RmRh6M3Nyh8=",
+VOLATILE        "fingerprint": "RmRh6M3Nyh8=",
         "stackType": "IPV4_ONLY"
       }
     ],
