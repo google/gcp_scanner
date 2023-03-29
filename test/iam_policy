@@ -52,7 +52,7 @@ CHECK    "role": "roles/editor",
 CHECK    "members": [
 CHECK      "serviceAccount:413204024550-compute@developer.gserviceaccount.com",
 CHECK      "serviceAccount:413204024550@cloudservices.gserviceaccount.com",
-CHECK     "serviceAccount:test-gcp-scanner@appspot.gserviceaccount.com"
+CHECK      "serviceAccount:test-gcp-scanner@appspot.gserviceaccount.com"
     ]
   },
   {

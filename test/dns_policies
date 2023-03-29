@@ -5,7 +5,7 @@
 CHECK      "name": "test-policy",
 CHECK      "enableInboundForwarding": true,
 CHECK      "description": "A test policy",
-CHECK     "networks": [
+CHECK      "networks": [
         {
 CHECK          "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
 CHECK          "kind": "dns#policyNetwork"

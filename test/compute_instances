@@ -37,7 +37,7 @@ CHECK    "disks": [
 CHECK        "kind": "compute#attachedDisk",
 CHECK        "type": "PERSISTENT",
 CHECK        "mode": "READ_WRITE",
-CHECK       "source": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/github-action-runner",
+CHECK        "source": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/github-action-runner",
 CHECK        "deviceName": "github-action-runner",
         "index": 0,
 CHECK        "boot": true,
@@ -244,7 +244,7 @@ CHECK          "https://www.googleapis.com/auth/trace.append"
     "kind": "compute#instance",
     "id": "6591960025746571537",
     "creationTimestamp": "2022-06-06T20:03:26.753-07:00",
-CHECK    "name": "gke-test-cluster1-default-pool-41b54cce-d2ld",
+    "name": "gke-test-cluster1-default-pool-41b54cce-d2ld",
     "tags": {
       "items": [
         "gke-test-cluster1-555b5b65-node",

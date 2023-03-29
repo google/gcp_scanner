@@ -7,7 +7,7 @@ CHECK    "tier": "BASIC_HDD",
     "fileShares": [
       {
 CHECK        "name": "test_filestore1",
-CHECK       "capacityGb": "1024"
+CHECK        "capacityGb": "1024"
       }
     ],
     "networks": [
