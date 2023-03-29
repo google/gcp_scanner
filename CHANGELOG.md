@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.1](https://github.com/google/gcp_scanner/compare/v1.0.0...v1.0.1) (2023-03-29)
+
+
+### Miscellaneous
+
+* Enable release to PyPI ([45c22a1](https://github.com/google/gcp_scanner/commit/45c22a134f968f407e9e7c618ddc0359cec40ba5))
+* fix PyPI release ([4cf77a5](https://github.com/google/gcp_scanner/commit/4cf77a55c048a2b055e95d29783cfaf09f2d9862))
+* Remove extra build from PyPI release ([278e41a](https://github.com/google/gcp_scanner/commit/278e41a0f87a23fb27a6706ec8a2cfbdce5220a4))
+* Removing extra PyPI release file. ([79c3f47](https://github.com/google/gcp_scanner/commit/79c3f47117ea33ff6cea972f94b098d32def7a37))
+
 ## 1.0.0 (2023-03-29)
 
 
