@@ -44,7 +44,7 @@ CHECK      "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zone
     "creationTimestamp": "2022-06-06T19:39:49.218-07:00",
 CHECK    "name": "instance-1",
 CHECK    "sizeGb": "10",
-CHECK   "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a",
+    "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a",
 CHECK    "status": "READY",
 CHECK    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
 CHECK    "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20220519",
