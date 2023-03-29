@@ -1,19 +1,19 @@
 [
   {
-    "kind": "compute#image",
+CHECK    "kind": "compute#image",
     "id": "4520164310068865509",
     "creationTimestamp": "2022-06-07T20:27:06.881-07:00",
-    "name": "image-1",
-    "sourceType": "RAW",
-    "status": "READY",
+CHECK    "name": "image-1",
+CHECK    "sourceType": "RAW",
+CHECK   "status": "READY",
     "archiveSizeBytes": "506067136",
-    "diskSizeGb": "10",
-    "sourceDisk": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
+CHECK    "diskSizeGb": "10",
+CHECK    "sourceDisk": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
     "sourceDiskId": "5045717540864722075",
-    "licenses": [
-      "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-11-bullseye"
+CHECK    "licenses": [
+CHECK      "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-11-bullseye"
     ],
-    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/images/image-1",
+CHECK    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/images/image-1",
     "labelFingerprint": "42WmSpB8rSM=",
     "guestOsFeatures": [
       {

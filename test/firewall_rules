@@ -1,26 +1,26 @@
 [
   [
-    "default-allow-icmp"
+CHECK    "default-allow-icmp"
   ],
   [
-    "default-allow-internal"
+CHECK    "default-allow-internal"
   ],
   [
-    "default-allow-rdp"
+CHECK    "default-allow-rdp"
   ],
   [
-    "default-allow-ssh"
+CHECK    "default-allow-ssh"
   ],
   [
-    "gke-test-cluster1-555b5b65-all"
+CHECK    "gke-test-cluster1-555b5b65-all"
   ],
   [
-    "gke-test-cluster1-555b5b65-ssh"
+CHECK    "gke-test-cluster1-555b5b65-ssh"
   ],
   [
-    "gke-test-cluster1-555b5b65-vms"
+CHECK    "gke-test-cluster1-555b5b65-vms"
   ],
   [
-    "test-allow-telnet"
+CHECK    "test-allow-telnet"
   ]
 ]

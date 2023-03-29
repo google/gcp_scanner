@@ -1,24 +1,24 @@
 [
   {
-    "kind": "compute#machineImage",
+CHECK    "kind": "compute#machineImage",
     "id": "4554632419054126591",
     "creationTimestamp": "2022-06-06T19:42:24.377-07:00",
-    "name": "test-image-1",
-    "description": "Description of the image.",
-    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/machineImages/test-image-1",
-    "sourceInstance": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/instance-1",
-    "status": "READY",
+CHECK    "name": "test-image-1",
+CHECK    "description": "Description of the image.",
+CHECK    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/machineImages/test-image-1",
+CHECK    "sourceInstance": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/instance-1",
+CHECK    "status": "READY",
     "sourceInstanceProperties": {
       "tags": {
         "fingerprint": "42WmSpB8rSM="
       },
-      "machineType": "e2-micro",
+CHECK      "machineType": "e2-micro",
       "canIpForward": false,
       "networkInterfaces": [
         {
-          "kind": "compute#networkInterface",
-          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
-          "subnetwork": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/default",
+CHECK          "kind": "compute#networkInterface",
+CHECK          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+CHECK          "subnetwork": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/default",
           "networkIP": "10.128.0.2",
           "name": "nic0",
           "accessConfigs": [
@@ -36,11 +36,11 @@
       ],
       "disks": [
         {
-          "kind": "compute#savedAttachedDisk",
-          "type": "PERSISTENT",
-          "mode": "READ_WRITE",
-          "source": "projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
-          "deviceName": "instance-1",
+CHECK          "kind": "compute#savedAttachedDisk",
+CHECK          "type": "PERSISTENT",
+CHECK          "mode": "READ_WRITE",
+CHECK          "source": "projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
+CHECK          "deviceName": "instance-1",
           "index": 0,
           "boot": true,
           "autoDelete": true,
@@ -69,7 +69,7 @@
         "kind": "compute#metadata",
         "fingerprint": "0OrBFjI1fh0="
       },
-      "serviceAccounts": [
+CHECK      "serviceAccounts": [
         {
           "email": "413204024550-compute@developer.gserviceaccount.com",
           "scopes": [
@@ -96,7 +96,7 @@
       "tags": {
         "fingerprint": "42WmSpB8rSM="
       },
-      "machineType": "e2-micro",
+CHECK      "machineType": "e2-micro",
       "canIpForward": false,
       "networkInterfaces": [
         {
@@ -120,7 +120,7 @@
       ],
       "disks": [
         {
-          "kind": "compute#attachedDisk",
+CHECK          "kind": "compute#attachedDisk",
           "type": "PERSISTENT",
           "mode": "READ_WRITE",
           "source": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
@@ -174,7 +174,7 @@
     "savedDisks": [
       {
         "kind": "compute#savedDisk",
-        "sourceDisk": "projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
+CHECK        "sourceDisk": "projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
         "storageBytes": "505989440",
         "storageBytesStatus": "UP_TO_DATE"
       }

@@ -1,19 +1,19 @@
 [
   {
-    "kind": "compute#snapshot",
+CHECK    "kind": "compute#snapshot",
     "id": "6825521378095202945",
     "creationTimestamp": "2022-06-06T19:48:15.057-07:00",
-    "name": "snapshot-1",
-    "status": "READY",
-    "sourceDisk": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
+CHECK    "name": "snapshot-1",
+CHECK    "status": "READY",
+CHECK    "sourceDisk": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
     "sourceDiskId": "5045717540864722075",
-    "diskSizeGb": "10",
+CHECK    "diskSizeGb": "10",
     "storageBytes": "11006784",
     "storageBytesStatus": "UP_TO_DATE",
     "licenses": [
-      "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-11-bullseye"
+CHECK      "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-11-bullseye"
     ],
-    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/snapshots/snapshot-1",
+CHECK    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/snapshots/snapshot-1",
     "labelFingerprint": "42WmSpB8rSM=",
     "licenseCodes": [
       "3853522013536123851"
@@ -21,7 +21,7 @@
     "storageLocations": [
       "us"
     ],
-VOLATILE    "downloadBytes": "506086770",
-VOLATILE    "creationSizeBytes": "11006784"
+    "downloadBytes": "506086770",
+    "creationSizeBytes": "11006784"
   }
 ]

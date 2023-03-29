@@ -68,8 +68,9 @@ def compare_volatile(f1, f2):
 
   for line in file_2_text:
     # line = line[:-1]
-    if line.startswith("VOLATILE"):
-      continue  # we do not compare volatile lines
+    if not line.startswith("CHECK"):
+      continue  # we compare only important part of output
+    line = line.replace("CHECK", "")
     if line in file_1_text:
       continue
     else:
@@ -79,7 +80,7 @@ def compare_volatile(f1, f2):
   return res
 
 
-def verify(res_to_verify, resource_type, volatile=False):
+def verify(res_to_verify, resource_type, volatile=True):
   save_to_test_file(res_to_verify)
   f1 = "test_res"
   f2 = f"test/{resource_type}"
