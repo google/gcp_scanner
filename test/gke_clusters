@@ -1,6 +1,6 @@
 [
   [
-    "test-cluster1",
-    ""
+CHECK    "test-cluster1",
+CHECK    ""
   ]
 ]

@@ -1,27 +1,27 @@
 [
   {
-    "name": "test-dns-zone90511",
-    "dnsName": "test-dns-name90511.",
-    "description": "Test DNS Zone Description",
+CHECK    "name": "test-dns-zone90511",
+CHECK    "dnsName": "test-dns-name90511.",
+CHECK    "description": "Test DNS Zone Description",
     "id": "2232379990912533161",
-    "nameServers": [
-      "ns-gcp-private.googledomains.com."
+CHECK    "nameServers": [
+CHECK      "ns-gcp-private.googledomains.com."
     ],
     "creationTime": "2022-06-07T02:57:06.932Z",
-    "visibility": "private",
-    "privateVisibilityConfig": {
+CHECK    "visibility": "private",
+CHECK    "privateVisibilityConfig": {
       "networks": [
         {
-          "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
-          "kind": "dns#managedZonePrivateVisibilityConfigNetwork"
+CHECK          "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
+CHECK          "kind": "dns#managedZonePrivateVisibilityConfigNetwork"
         }
       ],
-VOLATILE      "gkeClusters": [],
-      "kind": "dns#managedZonePrivateVisibilityConfig"
+      "gkeClusters": [],
+CHECK      "kind": "dns#managedZonePrivateVisibilityConfig"
     },
-    "cloudLoggingConfig": {
-      "kind": "dns#managedZoneCloudLoggingConfig"
+CHECK    "cloudLoggingConfig": {
+CHECK      "kind": "dns#managedZoneCloudLoggingConfig"
     },
-    "kind": "dns#managedZone"
+CHECK    "kind": "dns#managedZone"
   }
 ]

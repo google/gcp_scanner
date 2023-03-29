@@ -1,12 +1,12 @@
 [
   {
-    "kind": "sql#instance",
-    "state": "RUNNABLE",
+CHECK    "kind": "sql#instance",
+CHECK    "state": "RUNNABLE",
     "databaseVersion": "POSTGRES_14",
     "settings": {
       "authorizedGaeApplications": [],
-      "tier": "db-f1-micro",
-      "kind": "sql#settings",
+CHECK      "tier": "db-f1-micro",
+CHECK      "kind": "sql#settings",
       "availabilityType": "ZONAL",
       "pricingPlan": "PER_USE",
       "replicationType": "SYNCHRONOUS",
@@ -37,12 +37,12 @@
         "pointInTimeRecoveryEnabled": false,
         "transactionLogRetentionDays": 7
       },
-VOLATILE      "settingsVersion": "3",
+      "settingsVersion": "3",
       "storageAutoResizeLimit": "0",
       "storageAutoResize": false,
       "dataDiskSizeGb": "10"
     },
-VOLATILE    "etag": "251768210441984d569bdd3c68b19da17d492a8fdc4553be60271154f215fcef",
+    "etag": "251768210441984d569bdd3c68b19da17d492a8fdc4553be60271154f215fcef",
     "ipAddresses": [
       {
         "type": "PRIMARY",
@@ -53,7 +53,7 @@ VOLATILE    "etag": "251768210441984d569bdd3c68b19da17d492a8fdc4553be60271154f21
         "ipAddress": "34.133.92.53"
       }
     ],
-    "serverCaCert": {
+CHECK    "serverCaCert": {
       "kind": "sql#sslCert",
       "certSerialNumber": "0",
       "cert": "-----BEGIN CERTIFICATE-----\nMIIDfzCCAmegAwIBAgIBADANBgkqhkiG9w0BAQsFADB3MS0wKwYDVQQuEyQ2YWY5\nNDU2Ni03ODIzLTQyMmQtYTA4OC1lMjhjYjhkOGQwOGExIzAhBgNVBAMTGkdvb2ds\nZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUsIEluYzELMAkG\nA1UEBhMCVVMwHhcNMjIwNjA3MDMwNzI1WhcNMzIwNjA0MDMwODI1WjB3MS0wKwYD\nVQQuEyQ2YWY5NDU2Ni03ODIzLTQyMmQtYTA4OC1lMjhjYjhkOGQwOGExIzAhBgNV\nBAMTGkdvb2dsZSBDbG91ZCBTUUwgU2VydmVyIENBMRQwEgYDVQQKEwtHb29nbGUs\nIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB\nAQCLM7p6HS5x4akTtpoNxz+F1MXciqNJJ1rcZhpMsBlVOMHR+/WZ0DfNqDqpadaR\n64L93TpF70JVAdROIKi0SRA9rMNVauWOSp0nnG54F9yWYzuanCAoctZuJX9xMJor\n6Y/iILI716dDlKG1sMlPuQFZHTK2igezxW/Jx7rEKtQEBfGjfzdh1XfY+7dDiljw\nco7ouaxsAR9cXbG7x0rIct69FdpnHphzOQv1GuoxOszVpAWjHM8SugUVbioG09rL\na4ABcTMxzlCG+P/kFUd/h1LY3nJgOQ8Z6A2izaajqTqN+hn2wkrjGxLzDe6aPdI0\ncPbrNO8KUZrR+DfqL26uXoIzAgMBAAGjFjAUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nDQYJKoZIhvcNAQELBQADggEBAECJoDL+s5n4gn1gTcO8dF/cQPX/1ZAG3zkSHnwT\nlit/oqW0DcLyjmIx05YW0Liy2o3bQX6pJgov4/lB59lXKYTjTbxo9dLAYpUEIvj5\naTCIJF/QOG6V6jhMQPJ91JaKSt2BHSlRTw6GaKYLyDLpucrrB+LFgT3w1/IsX+BX\nLhCee4QsjGL4thfh5ijuuE1q6aIgD0yqK5LOyygeUNY35ideZSpmTnZNC3Qu9Kgr\nRN162BQDFbdEipHkSq1OHEDZ3eroG1BH+Y2eJDY6JogExeVqwNgI4cEkBD2AbZSi\n3Ve76NIZG9KL/BIbA2RhXj9nkE9L4MUWCvwiuhuJWeSyLS8=\n-----END CERTIFICATE-----",
@@ -63,16 +63,16 @@ VOLATILE    "etag": "251768210441984d569bdd3c68b19da17d492a8fdc4553be60271154f21
       "createTime": "2022-06-07T03:07:25.360Z",
       "expirationTime": "2032-06-04T03:08:25.360Z"
     },
-    "instanceType": "CLOUD_SQL_INSTANCE",
-    "project": "test-gcp-scanner",
+CHECK    "instanceType": "CLOUD_SQL_INSTANCE",
+CHECK    "project": "test-gcp-scanner",
     "serviceAccountEmailAddress": "p413204024550-weo0n3@gcp-sa-cloud-sql.iam.gserviceaccount.com",
-    "backendType": "SECOND_GEN",
-    "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/test-gcp-scanner/instances/test-postresql",
-    "connectionName": "test-gcp-scanner:us-central1:test-postresql",
-    "name": "test-postresql",
-    "region": "us-central1",
-    "gceZone": "us-central1-a",
-    "databaseInstalledVersion": "POSTGRES_14_4",
+CHECK    "backendType": "SECOND_GEN",
+CHECK    "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/test-gcp-scanner/instances/test-postresql",
+CHECK    "connectionName": "test-gcp-scanner:us-central1:test-postresql",
+CHECK    "name": "test-postresql",
+CHECK    "region": "us-central1",
+CHECK    "gceZone": "us-central1-a",
+CHECK    "databaseInstalledVersion": "POSTGRES_14_4",
     "createTime": "2022-06-07T03:05:38.461Z"
   }
 ]

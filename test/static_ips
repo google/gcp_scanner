@@ -1,22 +1,22 @@
 [
   {
-    "regions/us-central1": {
+CHECK    "regions/us-central1": {
       "addresses": [
         {
-          "kind": "compute#address",
+CHECK          "kind": "compute#address",
           "id": "7598630205933158956",
           "creationTimestamp": "2022-06-06T19:49:39.729-07:00",
-          "name": "test-static-ip1",
-          "description": "",
-          "address": "35.208.33.166",
-          "status": "IN_USE",
-          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1",
-          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/addresses/test-static-ip1",
+CHECK          "name": "test-static-ip1",
+CHECK          "description": "",
+CHECK          "address": "35.208.33.166",
+CHECK          "status": "IN_USE",
+CHECK          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1",
+CHECK          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/addresses/test-static-ip1",
           "users": [
-            "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/instance-1"
+CHECK            "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/instance-1"
           ],
-          "networkTier": "STANDARD",
-          "addressType": "EXTERNAL"
+CHECK          "networkTier": "STANDARD",
+CHECK          "addressType": "EXTERNAL"
         }
       ]
     }

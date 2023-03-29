@@ -1,14 +1,14 @@
 {
-  "test_bq_dataset1": [
+CHECK  "test_bq_dataset1": [
     {
-      "kind": "bigquery#table",
-      "id": "test-gcp-scanner:test_bq_dataset1.test-bq-table",
-      "tableReference": {
-        "projectId": "test-gcp-scanner",
-        "datasetId": "test_bq_dataset1",
-        "tableId": "test-bq-table"
+CHECK      "kind": "bigquery#table",
+CHECK      "id": "test-gcp-scanner:test_bq_dataset1.test-bq-table",
+CHECK      "tableReference": {
+CHECK        "projectId": "test-gcp-scanner",
+CHECK        "datasetId": "test_bq_dataset1",
+CHECK        "tableId": "test-bq-table"
       },
-      "type": "TABLE",
+CHECK      "type": "TABLE",
       "creationTime": "1654571278700"
     }
   ]

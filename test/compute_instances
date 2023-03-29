@@ -1,29 +1,29 @@
 [
   {
-    "kind": "compute#instance",
+CHECK    "kind": "compute#instance",
     "id": "4214486389486056124",
     "creationTimestamp": "2022-06-11T19:15:47.772-07:00",
-    "name": "github-action-runner",
-    "description": "",
+CHECK    "name": "github-action-runner",
+CHECK    "description": "",
     "tags": {
-VOLATILE      "fingerprint": "42WmSpB8rSM="
+      "fingerprint": "42WmSpB8rSM="
     },
-    "machineType": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/machineTypes/e2-medium",
-    "status": "RUNNING",
-    "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a",
-    "canIpForward": false,
+CHECK    "machineType": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/machineTypes/e2-medium",
+CHECK    "status": "RUNNING",
+CHECK    "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a",
+CHECK    "canIpForward": false,
     "networkInterfaces": [
       {
-        "kind": "compute#networkInterface",
-        "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
-        "subnetwork": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/default",
+CHECK        "kind": "compute#networkInterface",
+CHECK        "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+CHECK        "subnetwork": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/default",
         "networkIP": "10.128.0.3",
         "name": "nic0",
         "accessConfigs": [
           {
             "kind": "compute#accessConfig",
-            "type": "ONE_TO_ONE_NAT",
-            "name": "External NAT",
+CHECK            "type": "ONE_TO_ONE_NAT",
+CHECK            "name": "External NAT",
             "natIP": "104.155.154.71",
             "networkTier": "PREMIUM"
           }
@@ -32,20 +32,20 @@ VOLATILE        "fingerprint": "lmNrXiagDVc=",
         "stackType": "IPV4_ONLY"
       }
     ],
-    "disks": [
+CHECK    "disks": [
       {
-        "kind": "compute#attachedDisk",
-        "type": "PERSISTENT",
-        "mode": "READ_WRITE",
-        "source": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/github-action-runner",
-        "deviceName": "github-action-runner",
+CHECK        "kind": "compute#attachedDisk",
+CHECK        "type": "PERSISTENT",
+CHECK        "mode": "READ_WRITE",
+CHECK        "source": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/github-action-runner",
+CHECK        "deviceName": "github-action-runner",
         "index": 0,
-        "boot": true,
+CHECK        "boot": true,
         "autoDelete": true,
         "licenses": [
           "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1804-lts"
         ],
-        "interface": "SCSI",
+CHECK        "interface": "SCSI",
         "guestOsFeatures": [
           {
             "type": "VIRTIO_SCSI_MULTIQUEUE"
@@ -60,7 +60,7 @@ VOLATILE        "fingerprint": "lmNrXiagDVc=",
             "type": "GVNIC"
           }
         ],
-        "diskSizeGb": "20",
+CHECK        "diskSizeGb": "20",
         "shieldedInstanceInitialState": {
           "dbxs": [
             {
@@ -73,23 +73,23 @@ VOLATILE        "fingerprint": "lmNrXiagDVc=",
     ],
     "metadata": {
       "kind": "compute#metadata",
-VOLATILE      "fingerprint": "5m4E23iGGaA=",
+      "fingerprint": "5m4E23iGGaA=",
       "items": [
         {
-          "key": "ssh-keys",
-VOLATILE          "value": "mshudrak:ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNYnUma/sPWsBROvDsHSMpOOlMJKqlohvwiDBd3hdhGOLgerEInuMQYpJo34UOqGOs3HjqhBEYaIsaFV0X9f2XQ= google-ssh {\"userName\":\"mshudrak@google.com\",\"expireOn\":\"2022-06-12T20:33:19+0000\"}\nmshudrak:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAE/0FeaLThS8EfH5MAmDNCMR2miRAxCeEbpbQ8ReS2gtQZ3Xc/djAsE7pe+HxL6zfsCl3pC4ZpHuQvn4EV26iONyNP4qQCa9b1akNdbtr7Qqpm6/4jqG5pVazhewS0MEu0Kh439LO2KDxw3U+Yja75E0oNnuRmN9Ojs/BbmV3UI/crpZJq3IS+n/lH587FEciouBhmDbCnH9V8zBz4OS/0kS5YcoKsVZakHfjgg4fqYNJb/UY4QXHEcRzaJhICZagcWarxSDx5/5D5r3ZN3rOFpAfbgzRYtkjA2Lcmp4NJCkOtCGuJNkvj3mBt8r12k4qFaO+1l2JYZNuGO0Wkp6t8s= google-ssh {\"userName\":\"mshudrak@google.com\",\"expireOn\":\"2022-06-12T20:33:33+0000\"}"
+CHECK          "key": "ssh-keys",
+          "value": "mshudrak:ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNYnUma/sPWsBROvDsHSMpOOlMJKqlohvwiDBd3hdhGOLgerEInuMQYpJo34UOqGOs3HjqhBEYaIsaFV0X9f2XQ= google-ssh {\"userName\":\"mshudrak@google.com\",\"expireOn\":\"2022-06-12T20:33:19+0000\"}\nmshudrak:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAE/0FeaLThS8EfH5MAmDNCMR2miRAxCeEbpbQ8ReS2gtQZ3Xc/djAsE7pe+HxL6zfsCl3pC4ZpHuQvn4EV26iONyNP4qQCa9b1akNdbtr7Qqpm6/4jqG5pVazhewS0MEu0Kh439LO2KDxw3U+Yja75E0oNnuRmN9Ojs/BbmV3UI/crpZJq3IS+n/lH587FEciouBhmDbCnH9V8zBz4OS/0kS5YcoKsVZakHfjgg4fqYNJb/UY4QXHEcRzaJhICZagcWarxSDx5/5D5r3ZN3rOFpAfbgzRYtkjA2Lcmp4NJCkOtCGuJNkvj3mBt8r12k4qFaO+1l2JYZNuGO0Wkp6t8s= google-ssh {\"userName\":\"mshudrak@google.com\",\"expireOn\":\"2022-06-12T20:33:33+0000\"}"
         }
       ]
     },
-    "serviceAccounts": [
+CHECK    "serviceAccounts": [
       {
         "email": "functional-test-gcp-scanner@test-gcp-scanner.iam.gserviceaccount.com",
-        "scopes": [
-          "https://www.googleapis.com/auth/cloud-platform"
+CHECK        "scopes": [
+CHECK          "https://www.googleapis.com/auth/cloud-platform"
         ]
       }
     ],
-    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/github-action-runner",
+CHECK    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/github-action-runner",
     "scheduling": {
       "onHostMaintenance": "MIGRATE",
       "automaticRestart": true,
@@ -117,16 +117,15 @@ VOLATILE          "value": "mshudrak:ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbml
     "confidentialInstanceConfig": {
       "enableConfidentialCompute": false
     },
-VOLATILE    "fingerprint": "tetJRFCTcZI=",
+    "fingerprint": "tetJRFCTcZI=",
     "lastStartTimestamp": "2022-06-12T13:27:53.977-07:00",
-VOLATILE    "keyRevocationActionType": "NONE"
-VOLATILE    "lastStopTimestamp": "2022-06-12T13:19:32.337-07:00"
+    "keyRevocationActionType": "NONE""lastStopTimestamp": "2022-06-12T13:19:32.337-07:00"
   },
   {
     "kind": "compute#instance",
     "id": "5603984257651508380",
     "creationTimestamp": "2022-06-06T19:39:49.210-07:00",
-    "name": "instance-1",
+CHECK    "name": "instance-1",
     "description": "",
     "tags": {
       "items": [
@@ -134,15 +133,15 @@ VOLATILE    "lastStopTimestamp": "2022-06-12T13:19:32.337-07:00"
       ],
       "fingerprint": "DsMzsZ7MrP8="
     },
-    "machineType": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/machineTypes/e2-micro",
-    "status": "TERMINATED",
-    "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a",
+CHECK    "machineType": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/machineTypes/e2-micro",
+CHECK    "status": "TERMINATED",
+CHECK    "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a",
     "canIpForward": false,
     "networkInterfaces": [
       {
         "kind": "compute#networkInterface",
-        "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
-        "subnetwork": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/default",
+CHECK        "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+CHECK        "subnetwork": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/default",
         "networkIP": "10.128.0.2",
         "name": "nic0",
         "accessConfigs": [
@@ -154,19 +153,19 @@ VOLATILE    "lastStopTimestamp": "2022-06-12T13:19:32.337-07:00"
             "networkTier": "STANDARD"
           }
         ],
-VOLATILE        "fingerprint": "RmRh6M3Nyh8=",
+        "fingerprint": "RmRh6M3Nyh8=",
         "stackType": "IPV4_ONLY"
       }
     ],
     "disks": [
       {
-        "kind": "compute#attachedDisk",
-        "type": "PERSISTENT",
-        "mode": "READ_WRITE",
-        "source": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
-        "deviceName": "instance-1",
+CHECK        "kind": "compute#attachedDisk",
+CHECK        "type": "PERSISTENT",
+CHECK        "mode": "READ_WRITE",
+CHECK        "source": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
+CHECK        "deviceName": "instance-1",
         "index": 0,
-        "boot": true,
+CHECK        "boot": true,
         "autoDelete": true,
         "licenses": [
           "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-11-bullseye"
@@ -196,16 +195,16 @@ VOLATILE        "fingerprint": "RmRh6M3Nyh8=",
         }
       ]
     },
-    "serviceAccounts": [
+CHECK    "serviceAccounts": [
       {
         "email": "413204024550-compute@developer.gserviceaccount.com",
-        "scopes": [
-          "https://www.googleapis.com/auth/devstorage.read_only",
-          "https://www.googleapis.com/auth/logging.write",
-          "https://www.googleapis.com/auth/monitoring.write",
-          "https://www.googleapis.com/auth/servicecontrol",
-          "https://www.googleapis.com/auth/service.management.readonly",
-          "https://www.googleapis.com/auth/trace.append"
+CHECK        "scopes": [
+CHECK          "https://www.googleapis.com/auth/devstorage.read_only",
+CHECK          "https://www.googleapis.com/auth/logging.write",
+CHECK          "https://www.googleapis.com/auth/monitoring.write",
+CHECK          "https://www.googleapis.com/auth/servicecontrol",
+CHECK          "https://www.googleapis.com/auth/service.management.readonly",
+CHECK          "https://www.googleapis.com/auth/trace.append"
         ]
       }
     ],
@@ -237,16 +236,15 @@ VOLATILE        "fingerprint": "RmRh6M3Nyh8=",
     "confidentialInstanceConfig": {
       "enableConfidentialCompute": false
     },
-VOLATILE    "fingerprint": "k-g_ODjnRyY=",
+    "fingerprint": "k-g_ODjnRyY=",
     "lastStartTimestamp": "2022-06-06T19:39:57.643-07:00",
-VOLATILE    "keyRevocationActionType": "NONE"
-VOLATILE    "lastStopTimestamp": "2022-06-06T19:45:12.126-07:00"
+    "keyRevocationActionType": "NONE""lastStopTimestamp": "2022-06-06T19:45:12.126-07:00"
   },
   {
     "kind": "compute#instance",
-VOLATILE    "id": "6591960025746571537",
-VOLATILE    "creationTimestamp": "2022-06-06T20:03:26.753-07:00",
-VOLATILE    "name": "gke-test-cluster1-default-pool-41b54cce-d2ld",
+    "id": "6591960025746571537",
+    "creationTimestamp": "2022-06-06T20:03:26.753-07:00",
+    "name": "gke-test-cluster1-default-pool-41b54cce-d2ld",
     "tags": {
       "items": [
         "gke-test-cluster1-555b5b65-node",
@@ -261,26 +259,26 @@ VOLATILE    "name": "gke-test-cluster1-default-pool-41b54cce-d2ld",
     "networkInterfaces": [
       {
         "kind": "compute#networkInterface",
-        "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
-        "subnetwork": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/test-subnet",
-VOLATILE        "networkIP": "192.168.0.2",
+CHECK        "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
+CHECK        "subnetwork": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/test-subnet",
+        "networkIP": "192.168.0.2",
         "name": "nic0",
         "accessConfigs": [
           {
             "kind": "compute#accessConfig",
             "type": "ONE_TO_ONE_NAT",
             "name": "external-nat",
-VOLATILE            "natIP": "34.72.246.60",
+            "natIP": "34.72.246.60",
             "networkTier": "PREMIUM"
           }
         ],
         "aliasIpRanges": [
           {
-VOLATILE            "ipCidrRange": "10.80.0.0/24",
+            "ipCidrRange": "10.80.0.0/24",
             "subnetworkRangeName": "gke-test-cluster1-pods-555b5b65"
           }
         ],
-VOLATILE        "fingerprint": "XNyHqTmbBqg=",
+        "fingerprint": "XNyHqTmbBqg=",
         "stackType": "IPV4_ONLY"
       }
     ],
@@ -289,8 +287,8 @@ VOLATILE        "fingerprint": "XNyHqTmbBqg=",
         "kind": "compute#attachedDisk",
         "type": "PERSISTENT",
         "mode": "READ_WRITE",
-VOLATILE        "source": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/disks/gke-test-cluster1-default-pool-41b54cce-d2ld",
-        "deviceName": "persistent-disk-0",
+        "source": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/disks/gke-test-cluster1-default-pool-41b54cce-d2ld",
+CHECK        "deviceName": "persistent-disk-0",
         "index": 0,
         "boot": true,
         "autoDelete": true,
@@ -349,23 +347,23 @@ VOLATILE        "source": "https://www.googleapis.com/compute/v1/projects/test-g
     ],
     "metadata": {
       "kind": "compute#metadata",
-VOLATILE      "fingerprint": "XTsRK13uUng=",
+      "fingerprint": "XTsRK13uUng=",
       "items": [
         {
-          "key": "instance-template",
-VOLATILE          "value": "projects/413204024550/global/instanceTemplates/gke-test-cluster1-default-pool-41b54cce"
+CHECK          "key": "instance-template",
+          "value": "projects/413204024550/global/instanceTemplates/gke-test-cluster1-default-pool-41b54cce"
         },
         {
-          "key": "created-by",
+CHECK          "key": "created-by",
           "value": "projects/413204024550/zones/us-central1-c/instanceGroupManagers/gke-test-cluster1-default-pool-41b54cce-grp"
         },
         {
-          "key": "serial-port-logging-enable",
+CHECK          "key": "serial-port-logging-enable",
           "value": "true"
         },
         {
-          "key": "kube-labels",
-VOLATILE          "value": "cloud.google.com/gke-boot-disk=pd-standard,cloud.google.com/gke-container-runtime=containerd,cloud.google.com/gke-cpu-scaling-level=2,cloud.google.com/gke-max-pods-per-node=110,cloud.google.com/gke-nodepool=default-pool,cloud.google.com/gke-os-distribution=ubuntu,cloud.google.com/machine-family=e2"
+CHECK          "key": "kube-labels",
+          "value": "cloud.google.com/gke-boot-disk=pd-standard,cloud.google.com/gke-container-runtime=containerd,cloud.google.com/gke-cpu-scaling-level=2,cloud.google.com/gke-max-pods-per-node=110,cloud.google.com/gke-nodepool=default-pool,cloud.google.com/gke-os-distribution=ubuntu,cloud.google.com/machine-family=e2"
         },
         {
           "key": "enable-oslogin",
@@ -377,10 +375,10 @@ VOLATILE          "value": "cloud.google.com/gke-boot-disk=pd-standard,cloud.goo
         },
         {
           "key": "kubeconfig",
-VOLATILE          "value": "apiVersion: v1\nkind: Config\nclusters:\n- cluster:\n    server: https://35.232.113.49\n    certificate-authority: '/etc/srv/kubernetes/pki/ca-certificates.crt'\n  name: default-cluster\ncontexts:\n- context:\n    cluster: default-cluster\n    namespace: default\n    user: exec-plugin-auth\n  name: default-context\ncurrent-context: default-context\nusers:\n- name: exec-plugin-auth\n  user:\n    exec:\n      apiVersion: \"client.authentication.k8s.io/v1alpha1\"\n      command: '/home/kubernetes/bin/gke-exec-auth-plugin'\n      args: [\"--cache-dir\", '/var/lib/kubelet/pki/']\n"
+          "value": "apiVersion: v1\nkind: Config\nclusters:\n- cluster:\n    server: https://35.232.113.49\n    certificate-authority: '/etc/srv/kubernetes/pki/ca-certificates.crt'\n  name: default-cluster\ncontexts:\n- context:\n    cluster: default-cluster\n    namespace: default\n    user: exec-plugin-auth\n  name: default-context\ncurrent-context: default-context\nusers:\n- name: exec-plugin-auth\n  user:\n    exec:\n      apiVersion: \"client.authentication.k8s.io/v1alpha1\"\n      command: '/home/kubernetes/bin/gke-exec-auth-plugin'\n      args: [\"--cache-dir\", '/var/lib/kubelet/pki/']\n"
         },
         {
-          "key": "cluster-name",
+CHECK          "key": "cluster-name",
           "value": "test-cluster1"
         },
         {
@@ -397,7 +395,7 @@ VOLATILE          "value": "apiVersion: v1\nkind: Config\nclusters:\n- cluster:\
         },
         {
           "key": "configure-sh",
-VOLATILE          "value":
+          "value":
         },
         {
           "key": "TEST",
@@ -409,11 +407,11 @@ VOLATILE          "value":
         },
         {
           "key": "user-data",
-VOLATILE          "value":
+          "value":
         },
         {
           "key": "kube-env",
-VOLATILE          "value":
+          "value":
         },
         {
           "key": "cluster-uid",
@@ -438,7 +436,7 @@ VOLATILE          "value":
         ]
       }
     ],
-VOLATILE    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/instances/gke-test-cluster1-default-pool-41b54cce-d2ld",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/instances/gke-test-cluster1-default-pool-41b54cce-d2ld",
     "scheduling": {
       "onHostMaintenance": "MIGRATE",
       "automaticRestart": true,
@@ -460,8 +458,8 @@ VOLATILE    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp
     "shieldedInstanceIntegrityPolicy": {
       "updateAutoLearnPolicy": true
     },
-VOLATILE    "fingerprint": "x2RFM3bPHxE=",
-VOLATILE    "lastStartTimestamp": "2022-06-06T20:03:40.951-07:00",
+    "fingerprint": "x2RFM3bPHxE=",
+    "lastStartTimestamp": "2022-06-06T20:03:40.951-07:00",
     "networkPerformanceConfig": {
       "totalEgressBandwidthTier": "DEFAULT"
     }

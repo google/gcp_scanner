@@ -1,13 +1,13 @@
 {
-  "gcf-sources-413204024550-us-central1": [
+CHECK  "gcf-sources-413204024550-us-central1": [
     {
-      "kind": "storage#bucket",
+CHECK      "kind": "storage#bucket",
       "selfLink": "https://www.googleapis.com/storage/v1/b/gcf-sources-413204024550-us-central1",
       "id": "gcf-sources-413204024550-us-central1",
-      "name": "gcf-sources-413204024550-us-central1",
-      "projectNumber": "413204024550",
+CHECK      "name": "gcf-sources-413204024550-us-central1",
+CHECK      "projectNumber": "413204024550",
       "metageneration": "1",
-      "location": "US-CENTRAL1",
+CHECK      "location": "US-CENTRAL1",
       "storageClass": "STANDARD",
       "etag": "CAE=",
       "timeCreated": "2022-06-07T03:12:30.376Z",
@@ -39,13 +39,13 @@
     },
     null
   ],
-  "gcp-scanner-test-bucket": [
+CHECK  "gcp-scanner-test-bucket": [
     {
       "kind": "storage#bucket",
       "selfLink": "https://www.googleapis.com/storage/v1/b/gcp-scanner-test-bucket",
-      "id": "gcp-scanner-test-bucket",
-      "name": "gcp-scanner-test-bucket",
-      "projectNumber": "413204024550",
+CHECK      "id": "gcp-scanner-test-bucket",
+CHECK      "name": "gcp-scanner-test-bucket",
+CHECK      "projectNumber": "413204024550",
       "metageneration": "1",
       "location": "US",
       "storageClass": "STANDARD",
@@ -68,12 +68,12 @@
     },
     null
   ],
-  "staging.test-gcp-scanner.appspot.com": [
+CHECK  "staging.test-gcp-scanner.appspot.com": [
     {
       "kind": "storage#bucket",
       "selfLink": "https://www.googleapis.com/storage/v1/b/staging.test-gcp-scanner.appspot.com",
-      "id": "staging.test-gcp-scanner.appspot.com",
-      "name": "staging.test-gcp-scanner.appspot.com",
+CHECK      "id": "staging.test-gcp-scanner.appspot.com",
+CHECK      "name": "staging.test-gcp-scanner.appspot.com",
       "projectNumber": "413204024550",
       "metageneration": "1",
       "location": "US",
@@ -107,12 +107,12 @@
     },
     null
   ],
-  "test-gcp-scanner.appspot.com": [
+CHECK  "test-gcp-scanner.appspot.com": [
     {
       "kind": "storage#bucket",
       "selfLink": "https://www.googleapis.com/storage/v1/b/test-gcp-scanner.appspot.com",
-      "id": "test-gcp-scanner.appspot.com",
-      "name": "test-gcp-scanner.appspot.com",
+CHECK      "id": "test-gcp-scanner.appspot.com",
+CHECK      "name": "test-gcp-scanner.appspot.com",
       "projectNumber": "413204024550",
       "metageneration": "1",
       "location": "US",
@@ -134,12 +134,12 @@
     },
     null
   ],
-  "us.artifacts.test-gcp-scanner.appspot.com": [
+CHECK  "us.artifacts.test-gcp-scanner.appspot.com": [
     {
       "kind": "storage#bucket",
       "selfLink": "https://www.googleapis.com/storage/v1/b/us.artifacts.test-gcp-scanner.appspot.com",
-      "id": "us.artifacts.test-gcp-scanner.appspot.com",
-      "name": "us.artifacts.test-gcp-scanner.appspot.com",
+CHECK      "id": "us.artifacts.test-gcp-scanner.appspot.com",
+CHECK      "name": "us.artifacts.test-gcp-scanner.appspot.com",
       "projectNumber": "413204024550",
       "metageneration": "1",
       "location": "US",

@@ -1,14 +1,14 @@
 [
   [
-    "regions/us-central1",
+CHECK    "regions/us-central1",
     {
-      "subnetworks": [
+CHECK      "subnetworks": [
         {
-          "kind": "compute#subnetwork",
+CHECK          "kind": "compute#subnetwork",
           "id": "1203117821344810822",
           "creationTimestamp": "2022-06-06T19:36:25.623-07:00",
           "name": "default",
-          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+CHECK          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
           "ipCidrRange": "10.128.0.0/20",
           "gatewayAddress": "10.128.0.1",
           "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1",
@@ -57,7 +57,7 @@
     }
   ],
   [
-    "regions/europe-west1",
+CHECK    "regions/europe-west1",
     {
       "subnetworks": [
         {
@@ -80,7 +80,7 @@
     }
   ],
   [
-    "regions/us-west1",
+CHECK    "regions/us-west1",
     {
       "subnetworks": [
         {
@@ -103,7 +103,7 @@
     }
   ],
   [
-    "regions/asia-east1",
+CHECK    "regions/asia-east1",
     {
       "subnetworks": [
         {
@@ -126,7 +126,7 @@
     }
   ],
   [
-    "regions/us-east1",
+CHECK    "regions/us-east1",
     {
       "subnetworks": [
         {
@@ -149,7 +149,7 @@
     }
   ],
   [
-    "regions/asia-northeast1",
+CHECK    "regions/asia-northeast1",
     {
       "subnetworks": [
         {
@@ -172,7 +172,7 @@
     }
   ],
   [
-    "regions/asia-southeast1",
+CHECK    "regions/asia-southeast1",
     {
       "subnetworks": [
         {
@@ -195,7 +195,7 @@
     }
   ],
   [
-    "regions/us-east4",
+CHECK    "regions/us-east4",
     {
       "subnetworks": [
         {
@@ -218,7 +218,7 @@
     }
   ],
   [
-    "regions/australia-southeast1",
+CHECK    "regions/australia-southeast1",
     {
       "subnetworks": [
         {
@@ -241,7 +241,7 @@
     }
   ],
   [
-    "regions/europe-west2",
+CHECK    "regions/europe-west2",
     {
       "subnetworks": [
         {
@@ -264,7 +264,7 @@
     }
   ],
   [
-    "regions/europe-west3",
+CHECK    "regions/europe-west3",
     {
       "subnetworks": [
         {
@@ -287,7 +287,7 @@
     }
   ],
   [
-    "regions/southamerica-east1",
+CHECK    "regions/southamerica-east1",
     {
       "subnetworks": [
         {
@@ -310,7 +310,7 @@
     }
   ],
   [
-    "regions/asia-south1",
+CHECK    "regions/asia-south1",
     {
       "subnetworks": [
         {
@@ -333,7 +333,7 @@
     }
   ],
   [
-    "regions/northamerica-northeast1",
+CHECK    "regions/northamerica-northeast1",
     {
       "subnetworks": [
         {
@@ -356,7 +356,7 @@
     }
   ],
   [
-    "regions/europe-west4",
+CHECK    "regions/europe-west4",
     {
       "subnetworks": [
         {
@@ -379,7 +379,7 @@
     }
   ],
   [
-    "regions/europe-north1",
+CHECK    "regions/europe-north1",
     {
       "subnetworks": [
         {
@@ -402,7 +402,7 @@
     }
   ],
   [
-    "regions/us-west2",
+CHECK    "regions/us-west2",
     {
       "subnetworks": [
         {
@@ -425,7 +425,7 @@
     }
   ],
   [
-    "regions/asia-east2",
+CHECK    "regions/asia-east2",
     {
       "subnetworks": [
         {
@@ -448,7 +448,7 @@
     }
   ],
   [
-    "regions/europe-west6",
+CHECK    "regions/europe-west6",
     {
       "subnetworks": [
         {
@@ -471,7 +471,7 @@
     }
   ],
   [
-    "regions/asia-northeast2",
+CHECK    "regions/asia-northeast2",
     {
       "subnetworks": [
         {
@@ -494,7 +494,7 @@
     }
   ],
   [
-    "regions/asia-northeast3",
+CHECK    "regions/asia-northeast3",
     {
       "subnetworks": [
         {
@@ -517,7 +517,7 @@
     }
   ],
   [
-    "regions/us-west3",
+CHECK    "regions/us-west3",
     {
       "subnetworks": [
         {
@@ -540,7 +540,7 @@
     }
   ],
   [
-    "regions/us-west4",
+CHECK    "regions/us-west4",
     {
       "subnetworks": [
         {
@@ -563,7 +563,7 @@
     }
   ],
   [
-    "regions/asia-southeast2",
+CHECK    "regions/asia-southeast2",
     {
       "subnetworks": [
         {
@@ -586,7 +586,7 @@
     }
   ],
   [
-    "regions/europe-central2",
+CHECK    "regions/europe-central2",
     {
       "subnetworks": [
         {
@@ -609,7 +609,7 @@
     }
   ],
   [
-    "regions/northamerica-northeast2",
+CHECK    "regions/northamerica-northeast2",
     {
       "subnetworks": [
         {
@@ -632,7 +632,7 @@
     }
   ],
   [
-    "regions/asia-south2",
+CHECK    "regions/asia-south2",
     {
       "subnetworks": [
         {
@@ -655,7 +655,7 @@
     }
   ],
   [
-    "regions/australia-southeast2",
+CHECK    "regions/australia-southeast2",
     {
       "subnetworks": [
         {
@@ -678,7 +678,7 @@
     }
   ],
   [
-    "regions/southamerica-west1",
+CHECK    "regions/southamerica-west1",
     {
       "subnetworks": [
         {
@@ -701,7 +701,7 @@
     }
   ],
   [
-    "regions/us-east7",
+CHECK    "regions/us-east7",
     {
       "subnetworks": [
         {
@@ -715,15 +715,15 @@
           "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east7",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-east7/subnetworks/default",
           "privateIpGoogleAccess": false,
-VOLATILE          "fingerprint": "AQwQsWlsVxc=",
-VOLATILE          "purpose": "PRIVATE",
-VOLATILE          "stackType": "IPV4_ONLY"
+          "fingerprint": "AQwQsWlsVxc=",
+          "purpose": "PRIVATE",
+          "stackType": "IPV4_ONLY"
         }
       ]
     }
   ],
   [
-    "regions/europe-west8",
+CHECK    "regions/europe-west8",
     {
       "subnetworks": [
         {
@@ -746,7 +746,7 @@ VOLATILE          "stackType": "IPV4_ONLY"
     }
   ],
   [
-    "regions/europe-west9",
+CHECK    "regions/europe-west9",
     {
       "subnetworks": [
         {
@@ -769,7 +769,7 @@ VOLATILE          "stackType": "IPV4_ONLY"
     }
   ],
   [
-    "regions/us-east5",
+CHECK    "regions/us-east5",
     {
       "subnetworks": [
         {
@@ -792,7 +792,7 @@ VOLATILE          "stackType": "IPV4_ONLY"
     }
   ],
   [
-    "regions/europe-southwest1",
+CHECK    "regions/europe-southwest1",
     {
       "subnetworks": [
         {
@@ -815,7 +815,7 @@ VOLATILE          "stackType": "IPV4_ONLY"
     }
   ],
   [
-    "regions/us-south1",
+CHECK    "regions/us-south1",
     {
       "subnetworks": [
         {

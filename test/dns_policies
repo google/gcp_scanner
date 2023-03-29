@@ -2,28 +2,28 @@
   [
     {
       "id": "1199893578059967130",
-      "name": "test-policy",
-      "enableInboundForwarding": true,
-      "description": "A test policy",
-      "networks": [
+CHECK      "name": "test-policy",
+CHECK      "enableInboundForwarding": true,
+CHECK      "description": "A test policy",
+CHECK      "networks": [
         {
-          "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
-          "kind": "dns#policyNetwork"
+CHECK          "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
+CHECK          "kind": "dns#policyNetwork"
         }
       ],
-      "alternativeNameServerConfig": {
-        "targetNameServers": [
+CHECK      "alternativeNameServerConfig": {
+CHECK        "targetNameServers": [
           {
-            "ipv4Address": "8.8.8.8",
-            "forwardingPath": "private",
-            "ipv6Address": "",
-            "kind": "dns#policyAlternativeNameServerConfigTargetNameServer"
+CHECK            "ipv4Address": "8.8.8.8",
+CHECK            "forwardingPath": "private",
+CHECK            "ipv6Address": "",
+CHECK            "kind": "dns#policyAlternativeNameServerConfigTargetNameServer"
           }
         ],
-        "kind": "dns#policyAlternativeNameServerConfig"
+CHECK        "kind": "dns#policyAlternativeNameServerConfig"
       },
       "enableLogging": false,
-      "kind": "dns#policy"
+CHECK      "kind": "dns#policy"
     }
   ]
 ]

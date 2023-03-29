@@ -2,28 +2,28 @@
   "": {
     "child": [],
     "manifest": {},
+CHECK    "name": "test-gcp-scanner",
+    "tags": []
+  },
+  "us": {
+    "child": [
+      "app-engine-tmp",
+      "gcf"
+    ],
+    "manifest": {},
     "name": "test-gcp-scanner",
     "tags": []
   },
-VOLATILE  "us": {
-VOLATILE    "child": [
-VOLATILE      "app-engine-tmp",
-VOLATILE      "gcf"
-VOLATILE    ],
-VOLATILE    "manifest": {},
-VOLATILE    "name": "test-gcp-scanner",
-VOLATILE    "tags": []
-VOLATILE  },
   "eu": {
     "child": [],
     "manifest": {},
-    "name": "test-gcp-scanner",
+CHECK    "name": "test-gcp-scanner",
     "tags": []
   },
   "asia": {
     "child": [],
     "manifest": {},
-    "name": "test-gcp-scanner",
+CHECK    "name": "test-gcp-scanner",
     "tags": []
   }
 }
