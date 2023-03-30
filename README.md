@@ -1,4 +1,5 @@
 ![pytests](https://github.com/google/gcp_scanner/actions/workflows/python-app.yml/badge.svg)
+[![GCP scanner version](https://img.shields.io/github/v/release/google/gcp_scanner?label=version&color=blue)](https://github.com/google/gcp_scanner/releases/latest)
 
 ### Disclaimer
 
