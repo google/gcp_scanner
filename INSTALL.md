@@ -23,14 +23,6 @@ Check if installation was done correctly -
 gcp-scanner --help
 ```
 
-### Build using docker
-
-There is a docker build file if you want to run the scanner from a container: 
-
-```bash
-docker build -f Dockerfile -t sa_scanner .
-```
-
 ### Build from source
 
 1. Open the Terminal & Clone the project using
@@ -88,3 +80,10 @@ docker build -f Dockerfile -t sa_scanner .
     ```bash
     gcp-scanner --help
     ```
+### Build using docker
+
+There is a docker build file if you want to run the scanner from a container: 
+
+```bash
+docker build -f Dockerfile -t sa_scanner .
+```
