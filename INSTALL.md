@@ -14,7 +14,7 @@
 Install the package using `pip`
 
 ```bash
-pip install https://github.com/google/gcp_scanner/archive/main.zip
+pip install gcp-scanner
 ```
 
 Check if installation was done correctly -
