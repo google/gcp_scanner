@@ -15,8 +15,8 @@
 """The main module of GCP Scanner.
 
 """
-
+# imprted main module of GCP
 from . import scanner
 
-if __name__ == '__main__':
-  scanner.main()
+if __name__ == "__main__":
+    scanner.main()
