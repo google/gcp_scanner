@@ -67,7 +67,7 @@ This project follows [Google's Open Source Community Guidelines](https://opensou
 ### Some other things to keep in mind before any PR
 
 1. Check for linting using PyLint:
-    - for first time do: (to install a local copy of `pylintrc`)
+    - for first time do (to install a local copy of `pylintrc`):
 
     ```bash
     wget https://google.github.io/styleguide/pylintrc
