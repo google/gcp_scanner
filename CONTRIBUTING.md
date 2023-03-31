@@ -8,6 +8,10 @@ Contributions to this project must be accompanied by a Contributor License Agree
 
 You generally only need to submit a CLA once, so if you've already submitted one (even if it was for a different project), you probably don't need to do it again.
 
+## Installation
+
+Please refer [`INSTALL.md`](https://github.com/google/gcp_scanner/blob/main/INSTALL.md) for detailed installation guideline on the tool.
+
 ## Code Reviews
 
 All submissions, including submissions by project members, require review. We use GitHub pull requests for this purpose. Consult [GitHub Help](https://help.github.com/articles/about-pull-requests/) for more information on using pull requests.
@@ -60,6 +64,24 @@ This project follows [Google's Open Source Community Guidelines](https://opensou
 
 **Example:** docs/11/update-installation-instructions
  
+### Some other things to keep in mind before any PR
+
+1. Check for linting using PyLint:
+    - for first time do (to install a local copy of `pylintrc`):
+
+    ```bash
+    wget https://google.github.io/styleguide/pylintrc
+    ```
+
+    - to run `pylint` for `gcp_scanner`
+
+    ```bash
+    pylint --rcfile pylintrc --disable=W0703,R1734,R1735,C0209,C0103,R1732 src/gcp_scanner/*.py
+    ```
+
+2. Ensure that the corresponding tests are successful.
+
+3. If any new features have been added, then check with GCP to ensure they work as expected.
 
 ## Getting Help
 
