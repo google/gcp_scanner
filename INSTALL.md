@@ -17,7 +17,7 @@ Install the package using `pip`
 pip install gcp-scanner
 ```
 
-Check if installation was done correctly -
+Check if installation was done correctly
 
 ```bash
 gcp-scanner --help
@@ -37,7 +37,7 @@ gcp-scanner --help
     cd gcp_scanner
     ```
 
-3. Create a Virtual Environment to install all your dependencies with -
+3. Create a Virtual Environment to install all your dependencies with
     - **on linux or wsl:**
 
     ```bash
@@ -50,7 +50,7 @@ gcp-scanner --help
     python -m venv venv
     ```
 
-4. Activate the Virtual Environment with -
+4. Activate the Virtual Environment with
     - **on linux or wsl:**
     
     ```bash
