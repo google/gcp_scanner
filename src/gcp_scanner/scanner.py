@@ -42,7 +42,7 @@ def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
 
 def generate_unique_filename(base_name: str, ext: str, out_dir: str) -> str:
   """
-  Generate a unique file name by appending a counter to the base name 
+  Generate a unique file name by appending a counter to the base name
   if a file with the same name already exists.
 
     Args:
@@ -51,14 +51,14 @@ def generate_unique_filename(base_name: str, ext: str, out_dir: str) -> str:
       out_dir (str): The directory where the output file will be saved.
 
     Returns:
-      str: A unique file name within the output directory, including the base 
+      str: A unique file name within the output directory, including the base
       name, a counter (if necessary), and the extension.
   """
   counter = 1
-  file_name = f"{base_name}{ext}"
+  file_name = f'{base_name}{ext}'
   while os.path.exists(os.path.join(out_dir, file_name)):
     logging.warning('Output file %s already exists.', file_name)
-    file_name = f"{base_name}_{counter}{ext}"
+    file_name = f'{base_name}_{counter}{ext}'
     counter += 1
   return file_name
 
@@ -80,7 +80,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
   # Main loop
   processed_sas = set()
 
-  current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+  current_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
   while not context.service_account_queue.empty():
     # Get a new candidate service account / token
@@ -300,8 +300,8 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
-      output_file_name = generate_unique_filename(f"{project_id}-{current_time}"
-                                                  , ".json", out_dir)
+      output_file_name = generate_unique_filename(f'{project_id}-{current_time}'
+                                                  , '.json', out_dir)
       output_file_path = os.path.join(out_dir, output_file_name)
 
       with open(output_file_path, 'a', encoding='utf-8') as outfile:
