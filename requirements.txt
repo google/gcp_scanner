@@ -1,3 +1,4 @@
+# List of required Python packages and their corresponding versions
 pyu2f==0.1.5
 google-api-python-client==2.80.0
 google-cloud-container==2.17.4
