@@ -27,62 +27,77 @@ gcp-scanner --help
 
 1. Open the Terminal & Clone the project using
 
-    ```bash
-    git clone https://github.com/google/gcp_scanner.git
-    ```
+   ```bash
+   git clone https://github.com/google/gcp_scanner.git
+   ```
 
 2. Then,
 
-    ```bash
-    cd gcp_scanner
-    ```
+   ```bash
+   cd gcp_scanner
+   ```
 
 3. Create a Virtual Environment to install all your dependencies with
-    - **on linux or wsl:**
 
-    ```bash
-    python3 -m venv venv
-    ```
+   - **on linux or wsl:**
 
-    - **on windows:**
+   ```bash
+   python3 -m venv venv
+   ```
 
-    ```bash
-    python -m venv venv
-    ```
+   - **on windows:**
+
+   ```bash
+   python -m venv venv
+   ```
+
+   - **on MacOS:**
+
+   ```zsh
+   python3 -m venv venv
+   ```
 
 4. Activate the Virtual Environment with
-    - **on linux or wsl:**
-    
-    ```bash
-    source venv/bin/activate
-    ```
 
-    - **on windows:**
+   - **on linux or wsl:**
 
-    ```bash
-    .\venv\Scripts\activate.bat
-    ```
+   ```bash
+   source venv/bin/activate
+   ```
+
+   - **on windows:**
+
+   ```bash
+   .\venv\Scripts\activate.bat
+   ```
+
+   - **on MacOS:**
+
+   ```zsh
+   source venv/bin/activate
+   ```
 
 5. Install all dependencies using
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 6. Install the tool in your local machine
 
-    ```bash
-    pip install .
-    ```
+   ```bash
+   pip install .
+   ```
 
 7. Run to check if the tool was installed correctly
 
-    ```bash
-    gcp-scanner --help
-    ```
+   ```bash
+   gcp-scanner --help
+   ```
+
 ### Build using docker
 
-There is a docker build file if you want to run the scanner from a container: 
+There is a docker build file if you want to run the scanner from a container:
 
 ```bash
 docker build -f Dockerfile -t sa_scanner .
