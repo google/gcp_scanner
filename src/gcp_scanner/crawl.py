@@ -341,16 +341,15 @@ def get_bucket_names(project_name: str, credentials: Credentials,
                      dump_fd: io.TextIOWrapper
                      ) -> Dict[str, Tuple[Any, List[Any]]]:
   """Retrieve a list of buckets available in the project.
-
   Args:
     project_name: A name of a project to query info about.
     credentials: An google.oauth2.credentials.Credentials object.
     dump_fd: If set, the function will enumerate files stored in buckets and
       save them in a file corresponding to provided file descriptor.
       This is a very slow, noisy operation and should be used with caution.
-
   Returns:
-    A dictionary where key is bucket name and value is a bucket Object.
+    A dictionary where key is bucket name and value is a tuple containing
+    bucket object and a list of root folder objects.
   """
 
   logging.info("Retrieving GCS Buckets")
@@ -368,23 +367,28 @@ def get_bucket_names(project_name: str, credentials: Credentials,
       break
 
     for bucket in response.get("items", []):
-      buckets_dict[bucket["name"]] = (bucket, None)
-      if dump_fd is not None:
-        ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
+      buckets_dict[bucket["name"]] = (bucket, [])
 
-        req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
+      # Retrieve root folder information
+      ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
 
-        while req:
-          try:
-            resp = req.execute()
-            for item in resp.get("items", []):
+      req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
+
+      while req:
+        try:
+          resp = req.execute()
+          for item in resp.get("items", []):
+            if item["name"] == "":
+              # This is the root folder
+              buckets_dict[bucket["name"]][1].append(item)
+            if dump_fd is not None:
               dump_fd.write(json.dumps(item, indent=2, sort_keys=False))
 
-            req = service.objects().list_next(req, resp)
-          except googleapiclient.errors.HttpError:
-            logging.info("Failed to read the bucket %s", bucket["name"])
-            logging.info(sys.exc_info())
-            break
+          req = service.objects().list_next(req, resp)
+        except googleapiclient.errors.HttpError:
+          logging.info("Failed to read the bucket %s", bucket["name"])
+          logging.info(sys.exc_info())
+          break
 
     request = service.buckets().list_next(
         previous_request=request, previous_response=response)
