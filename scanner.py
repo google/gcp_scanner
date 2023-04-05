@@ -14,5 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Import the scanner module from the gcp_scanner package
 from src.gcp_scanner import scanner
+
+# Call the main function of the scanner module to start the scanning process
 scanner.main()
