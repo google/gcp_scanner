@@ -34,6 +34,7 @@ from requests.auth import HTTPBasicAuth
 
 import collections
 
+
 def infinite_defaultdict():
     """Initialize infinite default.
 
@@ -41,7 +42,6 @@ def infinite_defaultdict():
         DefaultDict
     """
     return collections.defaultdict(infinite_defaultdict)
-
 
 
 def fetch_project_info(project_name: str,
@@ -69,12 +69,11 @@ def fetch_project_info(project_name: str,
         if "projectNumber" in response:
             project_info = response
 
-    except Exception:
+    except ImportError:
         logging.info("Failed to enumerate projects")
         logging.info(sys.exc_info())
 
     return project_info
-
 
 
 def get_project_list(credentials: Credentials) -> List[Dict[str, Any]]:
@@ -100,14 +99,15 @@ def get_project_list(credentials: Credentials) -> List[Dict[str, Any]]:
             project_list = response.get("projects", [])
             request = service.projects().list_next(
                 previous_request=request, previous_response=response)
-    except Exception:
+    except ImportError:
         logging.info("Failed to enumerate projects")
         logging.info(sys.exc_info())
     return project_list
 
 
 def get_compute_instances_names(
-    project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+     project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+
     """Retrieve a list of Compute VMs available in the project.
 
     Args:
@@ -125,16 +125,22 @@ def get_compute_instances_names(
             response = request.execute()
             if response.get("items", None) is not None:
                 images_result = [instance
-                                 for _, instances_scoped_list in response["items"].items()
-                                 for instance in instances_scoped_list.get("instances", [])]
+                                 for _,
+                                 instances_scoped_list in response[
+                                  "items"].items()
+                                 for instance in instances_scoped_list.get(
+                                  "instances", [])]
             request = service.instances().aggregatedList_next(
                 previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to enumerate compute instances in the %s", project_name)
+    except ImportError:
+        logging.info(
+            "Failed to enumerate compute instances in the %s", project_name)
         logging.info(sys.exc_info())
     return images_result
 
-def get_compute_images_names(project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+
+def get_compute_images_names(
+     project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Compute images available in the project.
 
     Args:
@@ -152,14 +158,17 @@ def get_compute_images_names(project_name: str, service: discovery.Resource) -> 
         while request is not None:
             response = request.execute()
             images_result = response.get("items", [])
-            request = service.images().list_next(previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to enumerate compute images in the %s", project_name)
+            request = service.images().list_next(
+                previous_request=request, previous_response=response)
+    except ImportError:
+        logging.info(
+            "Failed to enumerate compute images in the %s", project_name)
         logging.info(sys.exc_info())
     return images_result
 
 
-def get_machine_images(project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+def get_machine_images(project_name: str, service: discovery.Resource) -> List[
+                       Dict[str, Any]]:
     """Retrieve a list of Machine Images Resources available in the project.
 
     Args:
@@ -177,14 +186,17 @@ def get_machine_images(project_name: str, service: discovery.Resource) -> List[D
         while request is not None:
             response = request.execute()
             machine_images_list = response.get("items", [])
-            request = service.machineImages().list_next(previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to enumerate machine images in the %s", project_name)
+            request = service.machineImages().list_next(
+                previous_request=request, previous_response=response)
+    except ImportError:
+        logging.info(
+            "Failed to enumerate machine images in the %s", project_name)
         logging.info(sys.exc_info())
     return machine_images_list
 
 
-def get_compute_disks_names(project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+def get_compute_disks_names(
+     project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Compute disks available in the project.
 
     Args:
@@ -208,14 +220,16 @@ def get_compute_disks_names(project_name: str, service: discovery.Resource) -> L
                 ]
             request = service.disks().aggregatedList_next(
                 previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to enumerate compute disks in the %s", project_name)
+    except ImportError:
+        logging.info(
+            "Failed to enumerate compute disks in the %s", project_name)
         logging.info(sys.exc_info())
 
     return disk_names_list
 
 
-def get_static_ips(project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+def get_static_ips(
+     project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of static IPs available in the project.
 
     Args:
@@ -240,14 +254,15 @@ def get_static_ips(project_name: str, service: discovery.Resource) -> List[Dict[
             ]
             request = service.addresses().aggregatedList_next(
                 previous_request=request, previous_response=response)
-    except Exception:
+    except ImportError:
         logging.info("Failed to get static IPs in the %s", project_name)
         logging.info(sys.exc_info())
 
     return ips_list
 
 
-def get_compute_snapshots(project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+def get_compute_snapshots(
+     project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Compute snapshots available in the project.
 
     Args:
@@ -264,15 +279,18 @@ def get_compute_snapshots(project_name: str, service: discovery.Resource) -> Lis
         while request is not None:
             response = request.execute()
             snapshots_list = response.get("items", [])
-            request = service.snapshots().list_next(previous_request=request, previous_response=response)
-    except Exception:
+            request = service.snapshots().list_next(
+                previous_request=request, previous_response=response)
+    except ImportError:
         logging.info("Failed to get compute snapshots in the %s", project_name)
         logging.info(sys.exc_info())
 
     return snapshots_list
 
 
-def get_subnets(project_name: str, compute_client: discovery.Resource) -> List[Dict[str, Any]]:
+def get_subnets(
+     project_name: str,
+     compute_client: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of subnets available in the project.
 
     Args:
@@ -285,20 +303,24 @@ def get_subnets(project_name: str, compute_client: discovery.Resource) -> List[D
     logging.info("Retrieving Subnets")
     subnets_list = list()
     try:
-        request = compute_client.subnetworks().aggregatedList(project=project_name)
+        request = compute_client.subnetworks().aggregatedList(
+            project=project_name)
         while request is not None:
             response = request.execute()
             if response.get("items", None) is not None:
                 subnets_list = list(response["items"].items())
-            request = compute_client.subnetworks().aggregatedList_next(previous_request=request, previous_response=response)
-    except Exception:
+            request = compute_client.subnetworks().aggregatedList_next(
+                previous_request=request, previous_response=response)
+    except ImportError:
         logging.info("Failed to get subnets in the %s", project_name)
         logging.info(sys.exc_info())
 
     return subnets_list
 
 
-def get_firewall_rules(project_name: str, compute_client: discovery.Resource) -> List[Dict[str, Any]]:
+def get_firewall_rules(
+        project_name: str,
+        compute_client: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of firewall rules in the project.
 
     Args:
@@ -314,15 +336,19 @@ def get_firewall_rules(project_name: str, compute_client: discovery.Resource) ->
         request = compute_client.firewalls().list(project=project_name)
         while request is not None:
             response = request.execute()
-            firewall_rules_list = [(firewall["name"],) for firewall in response.get("items", [])]
-            request = compute_client.firewalls().list_next(previous_request=request, previous_response=response)
-    except Exception:
+            firewall_rules_list = [(
+                firewall["name"],) for firewall in response.get("items", [])]
+            request = compute_client.firewalls().list_next(
+                previous_request=request, previous_response=response)
+    except ImportError:
         logging.info("Failed to get firewall rules in the %s", project_name)
         logging.info(sys.exc_info())
     return firewall_rules_list
 
+
 def get_bucket_names(project_name: str, credentials: Credentials,
-                     dump_fd: io.TextIOWrapper) -> Dict[str, Tuple[Any, List[Any]]]:
+                     dump_fd: io.TextIOWrapper) -> Dict[str,
+                                                        Tuple[Any, List[Any]]]:
     """Retrieve a list of buckets available in the project.
 
     Args:
@@ -338,8 +364,8 @@ def get_bucket_names(project_name: str, credentials: Credentials,
 
     logging.info("Retrieving GCS Buckets")
     buckets_dict = dict()
-    service = discovery.build("storage", "v1", credentials=credentials, cache_discovery=False)
-
+    service = discovery.build("storage", "v1", credentials=credentials,
+                              cache_discovery=False)
     # Make an authenticated API request
     request = service.buckets().list(project=project_name)
     while request is not None:
@@ -353,26 +379,34 @@ def get_bucket_names(project_name: str, credentials: Credentials,
         for bucket in response.get("items", []):
             buckets_dict[bucket["name"]] = (bucket, None)
             if dump_fd is not None:
-                ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
-                req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
+                ret_fields = (
+                    "nextPageToken,"
+                    "items(name,size,contentType,timeCreated)"
+                )
+                req = service.objects().list(
+                    bucket=bucket["name"], fields=ret_fields)
 
                 while req:
                     try:
                         resp = req.execute()
                         for item in resp.get("items", []):
-                            dump_fd.write(json.dumps(item, indent=2, sort_keys=False))
+                            dump_fd.write(json.dumps(
+                                item, indent=2, sort_keys=False))
                         req = service.objects().list_next(req, resp)
                     except googleapiclient.errors.HttpError:
-                        logging.info("Failed to read the bucket %s", bucket["name"])
+                        logging.info(
+                            "Failed to read the bucket %s", bucket["name"])
                         logging.info(sys.exc_info())
                         break
 
-        request = service.buckets().list_next(previous_request=request, previous_response=response)
+        request = service.buckets().list_next(
+            previous_request=request, previous_response=response)
 
     return buckets_dict
 
 
-def get_managed_zones(project_name: str, credentials: Credentials) -> List[Dict[str, Any]]:
+def get_managed_zones(
+        project_name: str, credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of DNS zones available in the project.
 
     Args:
@@ -387,22 +421,26 @@ def get_managed_zones(project_name: str, credentials: Credentials) -> List[Dict[
     zones_list = list()
 
     try:
-        service = discovery.build("dns", "v1", credentials=credentials, cache_discovery=False)
+        service = discovery.build(
+            "dns", "v1", credentials=credentials, cache_discovery=False)
 
         request = service.managedZones().list(project=project_name)
         while request is not None:
             response = request.execute()
-            zones_list = response.get("managedZones",[])
-            request = service.managedZones().list_next(previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to enumerate DNS zones for project %s", project_name)
+            zones_list = response.get("managedZones", [])
+            request = service.managedZones().list_next(
+                previous_request=request, previous_response=response)
+    except ImportError:
+        logging.info(
+            "Failed to enumerate DNS zones for project %s", project_name)
         logging.info(sys.exc_info())
 
     return zones_list
 
 
 def get_gke_clusters(
-    project_name: str, gke_client: container_v1.services.cluster_manager.client.ClusterManagerClient
+ project_name: str,
+ gke_client: container_v1.services.cluster_manager.client.ClusterManagerClient
 ) -> List[Tuple[str, str]]:
     """Retrieve a list of GKE clusters available in the project.
 
@@ -418,9 +456,12 @@ def get_gke_clusters(
     parent = f"projects/{project_name}/locations/-"
     try:
         clusters = gke_client.list_clusters(parent=parent)
-        return [(cluster.name, cluster.description) for cluster in clusters.clusters]
-    except Exception:
-        logging.info("Failed to retrieve cluster list for project %s", project_name)
+        return [(
+            cluster.name,
+            cluster.description) for cluster in clusters.clusters]
+    except ImportError:
+        logging.info(
+            "Failed to retrieve cluster list for project %s", project_name)
         logging.info(sys.exc_info())
         return []
 
@@ -430,7 +471,8 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
 
     Args:
         project_name: A name of a project to query info about.
-        access_token: An Oauth2 token with permissions to query list of gke images.
+        access_token: An Oauth2 token with permissions\
+              to query list of gke images.
 
     Returns:
         A gke images JSON object for each accessible zone.
@@ -446,18 +488,21 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
             res = requests.get(
                 gcr_url, auth=HTTPBasicAuth("oauth2accesstoken", access_token))
             if not res.ok:
-                logging.info("Failed to retrieve gcr images list. Status code: %d",
-                             res.status_code)
+                logging.info(
+                    "Failed to retrieve gcr images list. Status code: %d",
+                    res.status_code)
                 continue
             images[region.replace(".", "")] = res.json()
-        except Exception:
-            logging.info("Failed to retrieve gke images for project %s", project_name)
+        except ImportError:
+            logging.info(
+                "Failed to retrieve gke images for project %s", project_name)
             logging.info(sys.exc_info())
 
     return images
 
 
-def get_sql_instances(project_name: str, credentials: Credentials) -> List[Dict[str, Any]]:
+def get_sql_instances(
+        project_name: str, credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of SQL instances available in the project.
 
     Args:
@@ -472,7 +517,8 @@ def get_sql_instances(project_name: str, credentials: Credentials) -> List[Dict[
     sql_instances_list = list()
     try:
         service = discovery.build(
-            "sqladmin", "v1beta4", credentials=credentials, cache_discovery=False)
+            "sqladmin", "v1beta4",
+            credentials=credentials, cache_discovery=False)
 
         request = service.instances().list(project=project_name)
         while request is not None:
@@ -480,14 +526,16 @@ def get_sql_instances(project_name: str, credentials: Credentials) -> List[Dict[
             sql_instances_list = response.get("items", [])
             request = service.instances().list_next(
                 previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to get SQL instances for project %s", project_name)
+    except ImportError:
+        logging.info(
+            "Failed to get SQL instances for project %s", project_name)
         logging.info(sys.exc_info())
 
     return sql_instances_list
 
 
-def get_bq_tables(project_id: str, dataset_id: str, bq_service: discovery.Resource) -> List[Dict[str, Any]]:
+def get_bq_tables(project_id: str, dataset_id: str,
+                  bq_service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of BigQuery tables available in the dataset.
 
     Args:
@@ -502,18 +550,22 @@ def get_bq_tables(project_id: str, dataset_id: str, bq_service: discovery.Resour
     logging.info("Retrieving BigQuery Tables for dataset %s", dataset_id)
     list_of_tables = list()
     try:
-        request = bq_service.tables().list(projectId=project_id, datasetId=dataset_id)
+        request = bq_service.tables().list(
+            projectId=project_id, datasetId=dataset_id)
         while request is not None:
             response = request.execute()
             list_of_tables = response.get("tables", [])
-            request = bq_service.tables().list_next(previous_request=request, previous_response=response)
-    except Exception:
+            request = bq_service.tables().list_next(
+                previous_request=request, previous_response=response)
+    except ImportError:
         logging.info("Failed to retrieve BQ tables for dataset %s", dataset_id)
         logging.info(sys.exc_info())
     return list_of_tables
 
 
-def get_bq(project_id: str, credentials: Credentials) -> Dict[str, List[Dict[str, Any]]]:
+def get_bq(
+        project_id: str,
+        credentials: Credentials) -> Dict[str, List[Dict[str, Any]]]:
     """Retrieve a list of BigQuery datasets available in the project.
 
     Args:
@@ -527,7 +579,8 @@ def get_bq(project_id: str, credentials: Credentials) -> Dict[str, List[Dict[str
     logging.info("Retrieving BigQuery Datasets")
     bq_datasets = dict()
     try:
-        service = discovery.build("bigquery", "v2", credentials=credentials, cache_discovery=False)
+        service = discovery.build(
+            "bigquery", "v2", credentials=credentials, cache_discovery=False)
 
         request = service.datasets().list(projectId=project_id)
         while request is not None:
@@ -535,17 +588,21 @@ def get_bq(project_id: str, credentials: Credentials) -> Dict[str, List[Dict[str
 
             for dataset in response.get("datasets", []):
                 dataset_id = dataset["datasetReference"]["datasetId"]
-                bq_datasets[dataset_id] = get_bq_tables(project_id, dataset_id, service)
+                bq_datasets[dataset_id] = get_bq_tables(
+                    project_id, dataset_id, service)
 
-            request = service.datasets().list_next(previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to retrieve BQ datasets for project %s", project_id)
+            request = service.datasets().list_next(
+                previous_request=request, previous_response=response)
+    except ImportError:
+        logging.info(
+            "Failed to retrieve BQ datasets for project %s", project_id)
         logging.info(sys.exc_info())
 
     return bq_datasets
 
 
-def get_pubsub_subscriptions(project_id: str, credentials: Credentials) -> List[Dict[str, Any]]:
+def get_pubsub_subscriptions(
+        project_id: str, credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of PubSub subscriptions available in the project.
 
     Args:
@@ -559,21 +616,25 @@ def get_pubsub_subscriptions(project_id: str, credentials: Credentials) -> List[
     logging.info("Retrieving PubSub Subscriptions")
     pubsubs_list = list()
     try:
-        service = discovery.build("pubsub", "v1", credentials=credentials, cache_discovery=False)
+        service = discovery.build(
+            "pubsub", "v1", credentials=credentials, cache_discovery=False)
 
-        request = service.projects().subscriptions().list(project=f"projects/{project_id}")
+        request = service.projects().subscriptions().list(
+            project=f"projects/{project_id}")
         while request is not None:
             response = request.execute()
             pubsubs_list = response.get("subscriptions", [])
-            request = service.projects().subscriptions().list_next(previous_request=request, previous_response=response)
-    except Exception:
+            request = service.projects().subscriptions().list_next(
+                previous_request=request, previous_response=response)
+    except ImportError:
         logging.info("Failed to get PubSubs for project %s", project_id)
         logging.info(sys.exc_info())
 
     return pubsubs_list
 
 
-def get_cloudfunctions(project_id: str, credentials: Credentials) -> List[Dict[str, Any]]:
+def get_cloudfunctions(
+        project_id: str, credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of CloudFunctions available in the project.
 
     Args:
@@ -586,15 +647,19 @@ def get_cloudfunctions(project_id: str, credentials: Credentials) -> List[Dict[s
 
     logging.info("Retrieving CloudFunctions")
     functions_list = list()
-    service = discovery.build("cloudfunctions", "v1", credentials=credentials, cache_discovery=False)
+    service = discovery.build(
+        "cloudfunctions", "v1", credentials=credentials, cache_discovery=False)
     try:
-        request = service.projects().locations().functions().list(parent=f"projects/{project_id}/locations/-")
+        request = service.projects().locations().functions().list(
+            parent=f"projects/{project_id}/locations/-")
         while request is not None:
             response = request.execute()
             functions_list = response.get("functions", [])
-            request = service.projects().locations().functions().list_next(previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to retrieve CloudFunctions for project %s", project_id)
+            request = service.projects().locations().functions().list_next(
+                previous_request=request, previous_response=response)
+    except ImportError:
+        logging.info(
+            "Failed to retrieve CloudFunctions for project %s", project_id)
         logging.info(sys.exc_info())
 
     return functions_list
@@ -616,7 +681,7 @@ def get_bigtable_instances(project_id: str,
     bigtable_instances_list = list()
     try:
         service = discovery.build(
-            "bigtableadmin", "v2", credentials=credentials, cache_discovery=False)
+         "bigtableadmin", "v2", credentials=credentials, cache_discovery=False)
 
         request = service.projects().instances().list(
             parent=f"projects/{project_id}")
@@ -625,7 +690,7 @@ def get_bigtable_instances(project_id: str,
             bigtable_instances_list = response.get("instances", [])
             request = service.projects().instances().list_next(
                 previous_request=request, previous_response=response)
-    except Exception:
+    except ImportError:
         logging.info("Failed to retrieve BigTable instances for project %s",
                      project_id)
         logging.info(sys.exc_info())
@@ -657,7 +722,7 @@ def get_spanner_instances(project_id: str,
             spanner_instances_list = response.get("instances", [])
             request = service.projects().instances().list_next(
                 previous_request=request, previous_response=response)
-    except Exception:
+    except ImportError:
         logging.info("Failed to retrieve Spanner instances for project %s",
                      project_id)
         logging.info(sys.exc_info())
@@ -688,13 +753,15 @@ def get_filestore_instances(project_id: str,
             filestore_instances_list = response.get("instances", [])
             request = service.projects().locations().instances().list_next(
                 previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to get filestore instances for project %s", project_id)
+    except ImportError:
+        logging.info(
+            "Failed to get filestore instances for project %s", project_id)
         logging.info(sys.exc_info())
     return filestore_instances_list
 
 
-def get_kms_keys(project_id: str, credentials: Credentials) -> List[Dict[str, Any]]:
+def get_kms_keys(
+        project_id: str, credentials: Credentials) -> List[Dict[str, Any]]:
     """Retrieve a list of KMS keys available in the project.
 
     Args:
@@ -708,32 +775,42 @@ def get_kms_keys(project_id: str, credentials: Credentials) -> List[Dict[str, An
     logging.info("Retrieving KMS keys")
     kms_keys_list = list()
     try:
-        service = discovery.build("cloudkms", "v1", credentials=credentials, cache_discovery=False)
+        service = discovery.build(
+            "cloudkms", "v1", credentials=credentials, cache_discovery=False)
 
         # list all possible locations
         locations_list = list()
-        request = service.projects().locations().list(name=f"projects/{project_id}")
+        request = service.projects().locations().list(
+            name=f"projects/{project_id}")
         while request is not None:
             response = request.execute()
             for location in response.get("locations", []):
                 locations_list.append(location["locationId"])
-            request = service.projects().locations().list_next(previous_request=request, previous_response=response)
+            request = service.projects().locations().list_next(
+                previous_request=request, previous_response=response)
 
         for location_id in locations_list:
-            request_loc = service.projects().locations().keyRings().list(parent=f"projects/{project_id}/locations/{location_id}")
+            request_loc = service.projects().locations().keyRings().list(
+                parent=f"projects/{project_id}/locations/{location_id}")
             while request_loc is not None:
                 response_loc = request_loc.execute()
                 for keyring in response_loc.get("keyRings", []):
-                    request = service.projects().locations().keyRings().cryptoKeys().list(parent=keyring["name"])
+                    request = service.projects().locations(
+                    ).keyRings().cryptoKeys().list(parent=keyring["name"])
                     while request is not None:
                         response = request.execute()
                         for key in response.get("cryptoKeys", []):
                             kms_keys_list.append(key)
 
-                        request = service.projects().locations().keyRings().cryptoKeys().list_next(previous_request=request, previous_response=response)
+                        request = service.projects().locations().keyRings(
+                        ).cryptoKeys().list_next(
+                            previous_request=request,
+                            previous_response=response)
 
-                request_loc = service.projects().locations().keyRings().list_next(previous_request=request, previous_response=response)
-    except Exception:
+                request_loc = service.projects(
+                ).locations().keyRings().list_next(
+                    previous_request=request, previous_response=response)
+    except ImportError:
         logging.info("Failed to retrieve KMS keys for project %s", project_id)
         logging.info(sys.exc_info())
     return kms_keys_list
@@ -772,8 +849,9 @@ def get_app_services(project_name: str,
             app_services["services"] = response.get("services", [])
             request = app_client.apps().services().list_next(
                 previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to retrieve App services for project %s", project_name)
+    except ImportError:
+        logging.info(
+            "Failed to retrieve App services for project %s", project_name)
         logging.info(sys.exc_info())
     return app_services
 
@@ -805,13 +883,15 @@ def get_endpoints(project_id: str,
             endpoints_list = response.get("services", [])
             request = service.services().list_next(
                 previous_request=request, previous_response=response)
-    except Exception:
-        logging.info("Failed to retrieve endpoints list for project %s", project_id)
+    except ImportError:
+        logging.info(
+            "Failed to retrieve endpoints list for project %s", project_id)
         logging.info(sys.exc_info())
     return endpoints_list
 
 
-def get_iam_policy(project_name: str, credentials: Credentials) -> List[Dict[str, Any]]:
+def get_iam_policy(
+        project_name: str, credentials: Credentials) -> List[Dict[str, Any]]:
 
     """Retrieve an IAM Policy in the project.
 
@@ -838,13 +918,15 @@ def get_iam_policy(project_name: str, credentials: Credentials) -> List[Dict[str
     get_policy_options = {"options": {"requestedPolicyVersion": 3}}
 
     try:
-        # Make a request to the Cloud Resource Manager API to retrieve the IAM policy
+        # Make a request to the Cloud Resource Manager\
+        # API to retrieve the IAM policy
         request = service.projects().getIamPolicy(
             resource=resource, body=get_policy_options)
         response = request.execute()
-    except Exception:
+    except ImportError:
         # Log an error message if the request fails
-        logging.info("Failed to get endpoints list for project %s", project_name)
+        logging.info(
+            "Failed to get endpoints list for project %s", project_name)
         logging.info(sys.exc_info())
         return None
 
@@ -855,7 +937,8 @@ def get_iam_policy(project_name: str, credentials: Credentials) -> List[Dict[str
         return None
 
 
-def get_associated_service_accounts(iam_policy: List[Dict[str, Any]]) -> List[str]:
+def get_associated_service_accounts(
+        iam_policy: List[Dict[str, Any]]) -> List[str]:
     """Extract a list of unique SAs from IAM policy associated with project.
 
     Args:
@@ -865,23 +948,23 @@ def get_associated_service_accounts(iam_policy: List[Dict[str, Any]]) -> List[st
         A list of service accounts represented as string
     """
 
-    if not iam_policy:  
+    if not iam_policy:
         return []
 
-    list_of_sas = list()  
-    for entry in iam_policy:  
-        for member in entry["members"]:  
-            if "deleted:" in member:  
+    list_of_sas = list()
+    for entry in iam_policy:
+        for member in entry["members"]:
+            if "deleted:" in member:
                 continue
             account_name = None  # initialize variable for account name
-            for element in member.split(":"):  
-                if "@" in element:  
+            for element in member.split(":"):
+                if "@" in element:
                     account_name = element
                     break
-            if account_name and account_name not in list_of_sas:  
+            if account_name and account_name not in list_of_sas:
                 list_of_sas.append(account_name)
 
-    return list_of_sas 
+    return list_of_sas
 
 
 def get_service_accounts(project_name: str,
@@ -912,18 +995,21 @@ def get_service_accounts(project_name: str,
         # Send a request to list the service accounts in the project.
         request = service.projects().serviceAccounts().list(name=name)
 
-        # Keep retrieving service accounts as long as there are more to retrieve.
+        # Keep retrieving service accounts as
+        # long as there are more to retrieve.
         while request is not None:
             response = request.execute()
-            # Extract the email and description of each service account and add them to the list.
+            # Extract the email and description of
+            # each service account and add them to the list.
             service_accounts = [(service_account["email"],
-                                 service_account.get("description",""))
-                                for service_account in response.get("accounts",[])]
+                                 service_account.get("description", ""))
+                                for service_account in response.get(
+                "accounts", [])]
 
             # Get the next page of results.
             request = service.projects().serviceAccounts().list_next(
                 previous_request=request, previous_response=response)
-    except Exception:
+    except ImportError:
         # Log an error message if something goes wrong.
         logging.info("Failed to retrieve SA list for project %s", project_name)
         logging.info(sys.exc_info())
@@ -931,8 +1017,8 @@ def get_service_accounts(project_name: str,
     return service_accounts
 
 
-
-def list_services(project_id: str, credentials: Credentials) -> List[Any]:
+def list_services(
+        project_id: str, credentials: Credentials) -> List[Any]:
     """Retrieve a list of services enabled in the project.
 
     Args:
@@ -949,17 +1035,19 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
     # Create a list to hold the enabled services
     list_of_services = list()
 
-    serviceusage = discovery.build("serviceusage", "v1", credentials=credentials)
+    serviceusage = discovery.build(
+        "serviceusage", "v1", credentials=credentials)
 
     # Create a request to list all services enabled in the given project
     request = serviceusage.services().list(
-        parent="projects/" + project_id,  # Specify the parent resource to list services under
-        pageSize=200,  # Specify the maximum number of services to return per page
-        filter="state:ENABLED"  # Specify the filter to return only ENABLED services
+        parent="projects/" + project_id,
+        pageSize=200,
+        filter="state:ENABLED"
     )
 
     try:
-        # Loop through each page of services until all services have been retrieved
+        # Loop through each page of services
+        #  until all services have been retrieved
         while request is not None:
             response = request.execute()
             list_of_services.append(response.get("services", None))
@@ -967,7 +1055,7 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
             request = serviceusage.services().list_next(
                 previous_request=request, previous_response=response)
 
-    except Exception:
+    except ImportError:
         # Log an error message if an exception occurs while retrieving services
         logging.info("Failed to retrieve services for project %s", project_id)
         logging.info(sys.exc_info())
@@ -986,26 +1074,31 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
         A list of cloud source repositories in the project.
     """
 
-    # Log a message indicating that we're retrieving repositories for the specified project.
+    # Log a message indicating that
+    # we're retrieving repositories for the specified project.
     logging.info("Retrieving cloud source repositories %s", project_id)
 
     list_of_repos = list()
 
-    # Build a service object for interacting with the Cloud Source Repositories API.
+    # Build a service object for
+    # interacting with the Cloud Source Repositories API.
     service = discovery.build("sourcerepo", "v1", credentials=credentials)
 
-    # Create a request to list the repositories in the specified project, up to 500 at a time.
+    # Create a request to list the repositories
+    # in the specified project, up to 500 at a time.
     request = service.projects().repos().list(
         name="projects/" + project_id,
         pageSize=500
     )
 
     try:
-        # Keep making requests until there are no more pages of repositories to retrieve.
+        # Keep making requests until there
+        # are no more pages of repositories to retrieve.
         while request is not None:
             response = request.execute()
 
-            # Add the repositories from the response to the list of repositories.
+            # Add the repositories from the
+            # response to the list of repositories.
             list_of_repos.append(response.get("repos", None))
 
             # Get the next page of repositories, if there is one.
@@ -1014,9 +1107,11 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
                 previous_response=response
             )
 
-    except Exception:
-        # If an exception is raised, log a message indicating that we failed to retrieve the repositories.
-        logging.info("Failed to retrieve source repos for project %s", project_id)
+    except ImportError:
+        # If an exception is raised, log a message
+        # indicating that we failed to retrieve the repositories.
+        logging.info(
+            "Failed to retrieve source repos for project %s", project_id)
         logging.info(sys.exc_info())
 
     return list_of_repos
@@ -1055,7 +1150,8 @@ def list_dns_policies(project_id: str, credentials: Credentials) -> List[Any]:
             # Send the request and get the response
             response = request.execute()
 
-            # Get the policies from the response and add them to the list_of_policies
+            # Get the policies from the response
+            # and add them to the list_of_policies
             list_of_policies.append(response.get("policies", None))
 
             # Get the next page of results (if there are any)
@@ -1063,10 +1159,11 @@ def list_dns_policies(project_id: str, credentials: Credentials) -> List[Any]:
                 previous_request=request,
                 previous_response=response
             )
-    except Exception:
-        # Log an error if we failed to retrieve DNS policies for the specified project
-        logging.info("Failed to retrieve DNS policies for project %s", project_id)
+    except ImportError:
+        # Log an error if we failed to retrieve
+        # DNS policies for the specified project
+        logging.info(
+            "Failed to retrieve DNS policies for project %s", project_id)
         logging.info(sys.exc_info())
 
     return list_of_policies
-
