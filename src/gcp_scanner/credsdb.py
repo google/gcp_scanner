@@ -40,32 +40,32 @@ def credentials_from_token(access_token: str, refresh_token: Optional[str],
                            token_uri: Optional[str], client_id: Optional[str],
                            client_secret: Optional[str],
                            scopes_user: Optional[str]) -> Credentials:
-  """
-  Create Credentials instance from tokens
-  """
-  return credentials.Credentials(
-    access_token,
-    refresh_token=refresh_token,
-    token_uri=token_uri,
-    client_id=client_id,
-    client_secret=client_secret,
-    scopes=scopes_user)
+    """
+    Create Credentials instance from tokens
+    """
+    return credentials.Credentials(access_token, refresh_token=refresh_token,
+                                   token_uri=token_uri, client_id=client_id,
+                                   client_secret=client_secret,
+                                   scopes=scopes_user)
 
 
 def get_creds_from_file(file_path: str) -> Tuple[str, Credentials]:
-  """
-  Retrieve Credentials instance from a service account json file.
-  """
-  logging.info("Retrieving credentials from %s", file_path)
-  creds = service_account.Credentials.from_service_account_file(file_path)
-  return creds.service_account_email, creds
+    """
+    Retrieve Credentials instance from a service account json file.
+    """
+
+    logging.info("Retrieving credentials from %s", file_path)
+    creds = service_account.Credentials.from_service_account_file(file_path)
+    return creds.service_account_email, creds
 
 
 def get_creds_from_json(parsed_keyfile: Mapping[str, str]) -> Credentials:
-  """
-  Retrieve Credentials instance from parsed service account info.
-  """
-  return service_account.Credentials.from_service_account_info(parsed_keyfile)
+    """
+    Retrieve Credentials instance from parsed service account info.
+    """
+
+    return service_account.Credentials.from_service_account_info(
+        parsed_keyfile)
 
 
 def get_creds_from_metadata() -> Tuple[Optional[str], Optional[Credentials]]:
@@ -73,16 +73,22 @@ def get_creds_from_metadata() -> Tuple[Optional[str], Optional[Credentials]]:
 
     Returns:
         Tuple[Optional[str], Optional[Credentials]]:
-            A tuple containing the email associated with the credentials and the constructed credentials.
+            A tuple containing the email associated with the
+            credentials and the constructed credentials.
     """
 
-    # Print a message to indicate that we are retrieving the access token from instance metadata
+    # Print a message to indicate that we are
+    # retrieving the access token from instance metadata
     print("Retrieving access token from instance metadata")
 
-    # Define the URLs that we need to access to get the token, scopes, and email
-    token_url = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token"
-    scope_url = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/scopes"
-    email_url = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email"
+    # Define the URLs that we need to
+    # access to get the token, scopes, and email
+    token_url = "http://metadata.google.internal/computeMetadata/v1/" \
+                "instance/service-accounts/default/token"
+    scope_url = "http://metadata.google.internal/computeMetadata/v1/" \
+                "instance/service-accounts/default/scopes"
+    email_url = "http://metadata.google.internal/computeMetadata/v1/" \
+                "instance/service-accounts/default/email"
 
     # Set the headers for the requests
     headers = {"Metadata-Flavor": "Google"}
@@ -93,7 +99,10 @@ def get_creds_from_metadata() -> Tuple[Optional[str], Optional[Credentials]]:
 
         # Check if the response was successful
         if not res.ok:
-            logging.error("Failed to retrieve instance token. Status code %d", res.status_code)
+            logging.error("Failed to retrieve instance token. "
+                          "Status code %d", res.status_code)
+            token_url = None
+
             return None, None
 
         # Parse the JSON response and get the access token
@@ -104,7 +113,8 @@ def get_creds_from_metadata() -> Tuple[Optional[str], Optional[Credentials]]:
 
         # Check if the response was successful
         if not res.ok:
-            logging.error("Failed to retrieve instance scopes. Status code %d", res.status_code)
+            logging.error("Failed to retrieve instance scopes. "
+                          "Status code %d", res.status_code)
             return None, None
 
         # Get the instance scopes from the response
@@ -115,19 +125,21 @@ def get_creds_from_metadata() -> Tuple[Optional[str], Optional[Credentials]]:
 
         # Check if the response was successful
         if not res.ok:
-            logging.error("Failed to retrieve instance email. Status code %d", res.status_code)
+            logging.error("Failed to retrieve instance email. "
+                          "Status code %d", res.status_code)
             return None, None
 
         # Get the instance email from the response
         email = res.content.decode("utf-8")
 
-    except Exception:
+    except ImportError:
         # Log an error message if any exception occurred
         logging.error("Failed to retrieve instance metadata")
         logging.error(sys.exc_info()[1])
         return None, None
 
-    # Print a message to indicate that we have successfully retrieved the instance metadata
+    # Print a message to indicate that
+    # we have successfully retrieved the instance metadata
     print("Successfully retrieved instance metadata")
 
     # Log the length of the access token, instance email, and instance scopes
@@ -135,15 +147,18 @@ def get_creds_from_metadata() -> Tuple[Optional[str], Optional[Credentials]]:
     logging.info("Instance email: %s", email)
     logging.info("Instance scopes: %s", instance_scopes)
 
-    # Return the email and credentials constructed from the token and instance scopes
-    return email, credentials_from_token(token, None, None, None, None, instance_scopes)
+    # Return the email and credentials
+    # constructed from the token and instance scopes
+    return email, credentials_from_token(
+        token, None, None, None, None, instance_scopes)
 
 
-
-def get_creds_from_data(access_token: str, parsed_keyfile: Dict[str, str]) -> Credentials:
+def get_creds_from_data(
+        access_token: str, parsed_keyfile: Dict[str, str]) -> Credentials:
     """Creates a Credentials instance from parsed service account info.
 
-    The function currently supports two types of credentials. Service account key in json format and user account with refresh token.
+    The function currently supports two types of credentials.
+    Service account key in json format and user account with refresh token.
 
     Args:
         access_token: An Oauth2 access token. It can be None.
@@ -170,7 +185,8 @@ def get_creds_from_data(access_token: str, parsed_keyfile: Dict[str, str]) -> Cr
         )
     # Check if the parsed_keyfile contains "private_key"
     elif "private_key" in parsed_keyfile:
-        logging.info("Identified service account key credentials in gcloud profile")
+        logging.info(
+            "Identified service account key credentials in gcloud profile")
         # this is a service account key with private key
         creds = get_creds_from_json(parsed_keyfile)
     else:
@@ -182,11 +198,13 @@ def get_creds_from_data(access_token: str, parsed_keyfile: Dict[str, str]) -> Cr
 
 def find_creds(explicit_path: Optional[str] = None) -> List[str]:
     """
-    The function searches the disk and returns a list of files with GCP credentials.
+    The function searches the disk and returns
+    a list of files with GCP credentials.
 
     Args:
-        explicit_path: An explicit path on disk to search. If None, the function
-            searches in standard locations where gcloud profiles are usually located.
+        explicit_path: An explicit path on disk to search.
+        If None, the function searches in
+        standard locations where gcloud profiles are usually located.
 
     Returns:
         list: The list of files with GCP credentials.
@@ -208,7 +226,8 @@ def find_creds(explicit_path: Optional[str] = None) -> List[str]:
                 full_path = os.path.join(dir_path, subdir_name, "gcloud")
                 search_paths.append(full_path)
 
-    # Scan each search path for credentials.db and add them to the list_of_creds_files
+    # Scan each search path for credentials.db
+    # and add them to the list_of_creds_files
     for dir_path in search_paths:
         print(f"Scanning {dir_path} for credentials.db")
         full_path = os.path.join(dir_path, "credentials.db")
@@ -222,7 +241,8 @@ def find_creds(explicit_path: Optional[str] = None) -> List[str]:
 
 def get_access_tokens_dict(path_to_creds_db: str) -> Dict[str, str]:
     """
-    The function searches and extracts OAuth2 access_tokens from a SQLite3 database.
+    The function searches and extracts OAuth2
+    access_tokens from a SQLite3 database.
 
     Args:
         path_to_creds_db: A path to SQLite3 database with gcloud access tokens.
@@ -233,16 +253,20 @@ def get_access_tokens_dict(path_to_creds_db: str) -> Dict[str, str]:
 
     access_tokens_dict = dict()
 
-    # Replace credentials.db with access_tokens.db to get the path to access tokens database
-    access_tokens_path = path_to_creds_db.replace("credentials.db", "access_tokens.db")
+    # Replace credentials.db with access_tokens.db
+    # to get the path to access tokens database
+    access_tokens_path = path_to_creds_db.replace("credentials.db",
+                                                  "access_tokens.db")
 
     # Check if the access tokens database exists and can be read
-    if os.path.exists(access_tokens_path) and os.access(access_tokens_path, os.R_OK):
+    if os.path.exists(access_tokens_path) and os.access(access_tokens_path,
+                                                        os.R_OK):
 
         # If the access tokens database exists and can be read, connect to it
         logging.info("Identified access tokens DB in %s", access_tokens_path)
         conn = sqlite3.connect(access_tokens_path)
-        cursor = conn.execute("SELECT account_id, access_token, token_expiry FROM access_tokens")
+        cursor = conn.execute("SELECT account_id, access_token,"
+                              "token_expiry FROM access_tokens")
 
         # Fetch all rows from the access tokens database
         rows = cursor.fetchall()
@@ -257,26 +281,30 @@ def get_access_tokens_dict(path_to_creds_db: str) -> Dict[str, str]:
             expiration_date = expiration_date.split(".")[0]
 
             # Convert the expiration date to a datetime object
-            token_time_obj = datetime.datetime.strptime(expiration_date, "%Y-%m-%d %H:%M:%S")
+            token_time_obj = datetime.datetime.strptime(
+                expiration_date, "%Y-%m-%d %H:%M:%S")
 
             # Check if the token has expired
             if datetime.datetime.now() > token_time_obj:
                 logging.info("Token for %s expired", associated_account)
                 continue
 
-            # Add the associated account and token to the access tokens dictionary
+            # Add the associated account and
+            # token to the access tokens dictionary
             access_tokens_dict[associated_account] = token
 
     return access_tokens_dict
 
 
-
-def extract_creds(path_to_creds_db: str) -> List[Tuple[str, str, str]]:
+def extract_creds(path_to_creds_db: str) -> List[
+        Tuple[str, str, str]]:
     """
-    The function extracts refresh and associated access tokens from sqlite3 DBs.
+    The function extracts refresh and associated access
+    tokens from sqlite3 DBs.
 
     Args:
-        path_to_creds_db (str): A path to sqlite3 DB with gcloud refresh tokens.
+        path_to_creds_db (str): A path to sqlite3 DB
+        with gcloud refresh tokens.
 
     Returns:
         List of tuples: (account name, refresh token, access token).
@@ -292,7 +320,6 @@ def extract_creds(path_to_creds_db: str) -> List[Tuple[str, str, str]]:
 
     # Connect to the database
     conn = sqlite3.connect(path_to_creds_db)
-    
     # Select account_id and value from the credentials table
     cursor = conn.execute("SELECT account_id, value FROM credentials")
     rows = cursor.fetchall()
@@ -314,7 +341,8 @@ def extract_creds(path_to_creds_db: str) -> List[Tuple[str, str, str]]:
             logging.info("Found valid access token for %s", row[0])
             access_token = access_tokens[row[0]]
 
-        # Append the account name, credentials, and access token to the results list
+        # Append the account name, credentials, and access
+        # token to the results list
         res.append(SA(row[0], row[1], access_token))
 
     # Print the number of identified credential entries
@@ -324,27 +352,29 @@ def extract_creds(path_to_creds_db: str) -> List[Tuple[str, str, str]]:
     return res
 
 
-def get_account_creds_list(gcloud_profile_path: Optional[str] = None) -> List[List[Tuple[str, str, str]]]:
+def get_account_creds_list(gcloud_profile_path: Optional[
+        str] = None) -> List[List[Tuple[str, str, str]]]:
     """The function searches and extracts gcloud credentials from disk.
 
     Args:
-        gcloud_profile_path: An explicit gcloud profile path on disk to search. If
-            None, the function searches in standard locations where gcloud profiles
-            are usually located.
+        gcloud_profile_path: An explicit gcloud profile path on disk to
+        search. If None, the function searches in standard locations where
+        gcloud profiles are usually located.
 
     Returns:
         list: A list of tuples (account name, refresh token, access token).
     """
     accounts = list()  # initialize an empty list
-    creds_file_list = find_creds(gcloud_profile_path)  # get a list of credentials files
+    creds_file_list = find_creds(gcloud_profile_path)
     for creds_file in creds_file_list:
-        res = extract_creds(creds_file)  # extract the credentials from the file
+        res = extract_creds(creds_file)
         if res is not None:
-            accounts.append(res)  # append the extracted credentials to the accounts list
+            accounts.append(res)
     return accounts  # return the accounts list
 
 
-def impersonate_sa(iam_client: IAMCredentialsClient, target_account: str) -> Credentials:
+def impersonate_sa(iam_client: IAMCredentialsClient,
+                   target_account: str) -> Credentials:
     """
     The function is used to impersonate a service account.
 
@@ -378,13 +408,13 @@ def impersonate_sa(iam_client: IAMCredentialsClient, target_account: str) -> Cre
     )
 
 
-
 def creds_from_access_token(access_token_file):
-    """The function is used to obtain Google Auth Credentials from access token.
+    """The function is used to obtain Google Auth
+    Credentials from access token.
 
     Args:
-        access_token_file: a path to a file with access token and scopes stored in
-        JSON format. Example:
+        access_token_file: a path to a file with access token
+        and scopes stored in JSON format. Example:
         {
             "access_token": "<token>",
             "scopes": [
@@ -448,7 +478,8 @@ def creds_from_refresh_token(refresh_token_file):
     - google.auth.service_account.Credentials: The constructed credentials.
     """
 
-    # Open the refresh_token_file in utf-8 encoding and load the contents to a dictionary
+    # Open the refresh_token_file in utf-8 encoding
+    # and load the contents to a dictionary
     with open(refresh_token_file, encoding="utf-8") as f:
         creds_dict = json.load(f)
 
@@ -464,7 +495,6 @@ def creds_from_refresh_token(refresh_token_file):
         client_secret=creds_dict["client_secret"],
         scopes=user_scopes,
     )
-
 
 
 def get_scopes_from_refresh_token(context) -> Union[List[str], None]:
@@ -495,9 +525,8 @@ def get_scopes_from_refresh_token(context) -> Union[List[str], None]:
         raw = response.json().get("scope", None)
         return raw.split(" ") if raw else None
 
-    except Exception as ex:
+    except ImportError as ex:
         logging.error("Failed to retrieve access token from refresh token.")
         logging.debug("Token refresh exception", exc_info=ex)
 
     return None
-
