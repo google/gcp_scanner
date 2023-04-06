@@ -50,13 +50,17 @@ KMS_COUNT = 1
 SERVICES_COUNT = 1
 SERVICE_ACCOUNTS_COUNT = 3
 
+
 def check_obj_entry(res_dict, subojects_count, entry_name, volatile=False):
-    # Check if an object entry exists in the given dictionary and has the expected number of objects
+    # Check if an object entry exists in the given dictionary
+    # and has the expected number of objects
     obj = res_dict.get(entry_name, None)
     if volatile is True:
-        assert obj is not None and (len(obj) == subojects_count or len(obj) == subojects_count - 1)
+        assert obj is not None and (
+            len(obj) == subojects_count or len(obj) == subojects_count - 1)
     else:
         assert obj is not None and len(obj) == subojects_count
+
 
 def validate_result():
     # Load the results file and validate the resource counts
@@ -88,7 +92,7 @@ def validate_result():
     check_obj_entry(project, STORAGE_BUCKETS_COUNT, "storage_buckets")
 
     check_obj_entry(project, GKE_CLUSTERS_COUNT, "gke_clusters")
-     # Volatile test. US zone sometimes appear and disappear.
+    # Volatile test. US zone sometimes appear and disappear.
     check_obj_entry(project, GKE_IMAGES_COUNT, "gke_images", True)
 
     check_obj_entry(project, SQL_INSTANCES_COUNT, "sql_instances")
@@ -109,17 +113,19 @@ def validate_result():
 def test_acceptance():
     # Create a directory to store the results
     os.mkdir("res")
-    
-    # Define the arguments to run the scanner in test mode and save results in the "res" directory
+    # Define the arguments to run the scanner in
+    # test mode and save results in the "res" directory
     testargs = ["__main__.py", "-m", "-p", "test-gcp-scanner", "-o", "res"]
 
-    # Patch the command-line arguments to run the scanner with the specified arguments
+    # Patch the command-line arguments to run
+    # the scanner with the specified arguments
     with unittest.mock.patch("sys.argv", testargs):
-        # Run the scanner with the patched arguments and assert that it returns 0 (indicating success)
+        # Run the scanner with the patched
+        # arguments and assert that it returns 0 (indicating success)
         assert scanner.main() == 0
-        
-        # Assert that the number of files in the "res" directory is equal to RESULTS_JSON_COUNT
+        # Assert that the number of files in
+        # the "res" directory is equal to RESULTS_JSON_COUNT
         assert len(os.listdir("res/")) == RESULTS_JSON_COUNT
-        
-        # Validate the result to ensure that it conforms to the expected format and contains valid data
+        # Validate the result to ensure that it conforms to
+        # the expected format and contains valid data
         validate_result()
