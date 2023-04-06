@@ -37,6 +37,7 @@ from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner"
 
+
 def print_diff(f1, f2):
     """
     A function that prints the differences between two files.
@@ -57,6 +58,7 @@ def print_diff(f1, f2):
                                      tofile=f2, lineterm=""):
         print(line)
         res += line
+
 
 def save_to_test_file(res):
     """
@@ -86,7 +88,8 @@ def compare_volatile(f1, f2):
         if line in file_1_text:
             continue
         else:
-            print(f"The following line was not identified in the output:\n{line}")
+            print(
+             f"The following line was not identified in the output:\n{line}")
             res = False
 
     return res
@@ -143,13 +146,15 @@ def test_creds_fetching():
     c.execute("""
               CREATE TABLE IF NOT EXISTS access_tokens
               (account_id TEXT PRIMARY KEY,
-               access_token TEXT, token_expiry TIMESTAMP, 
+               access_token TEXT, token_expiry TIMESTAMP,
                rapt_token TEXT, id_token TEXT)
               """)
 
     # Insert test data values into the access tokens database
-    valid_tm = datetime.datetime.now() + datetime.timedelta(hours=2, minutes=10)
-    expired_tm = datetime.datetime.now() - datetime.timedelta(hours=2, minutes=10)
+    valid_tm = datetime.datetime.now() + datetime.timedelta(
+        hours=2, minutes=10)
+    expired_tm = datetime.datetime.now() - datetime.timedelta(
+        hours=2, minutes=10)
     sqlite_insert_with_param = """INSERT INTO "access_tokens"
                                   ("account_id", "access_token",
                                    "token_expiry", "rapt_token", "id_token")
@@ -162,7 +167,8 @@ def test_creds_fetching():
     c.execute(sqlite_insert_with_param, data_value)
     conn.commit()
 
-    # Assert that the access tokens dictionary can be retrieved from the credentials database
+    # Assert that the access tokens dictionary
+    # can be retrieved from the credentials database
     assert str(credsdb.get_access_tokens_dict("./unit/credentials.db")) == \
            "{'test_account@gmail.com': 'ya.29c.TEST'}"
 
@@ -290,7 +296,8 @@ class TestCrawler(unittest.TestCase):
     def setUp(self):
         # Get credentials from metadata and set up compute client
         _, self.credentials = credsdb.get_creds_from_metadata()
-        self.compute_client = scanner.compute_client_for_credentials(self.credentials)
+        self.compute_client = scanner.compute_client_for_credentials(
+            self.credentials)
 
     def test_credential(self):
         """Checks if credential is not none."""
@@ -301,19 +308,21 @@ class TestCrawler(unittest.TestCase):
         # Verify that the compute instance names are returned correctly
         self.assertTrue(
             verify(
-                crawl.get_compute_instances_names(PROJECT_NAME, self.compute_client),
+                crawl.get_compute_instances_names(
+                    PROJECT_NAME, self.compute_client),
                 "compute_instances",
                 True,
             )
         )
 
-
     def test_compute_disks_names(self):
         """Test compute disk names."""
-        # Verify that the list of compute disks names returned by the function is non-empty
+        # Verify that the list of compute disks
+        # names returned by the function is non-empty
         self.assertTrue(
             verify(
-                crawl.get_compute_disks_names(PROJECT_NAME, self.compute_client),
+                crawl.get_compute_disks_names(
+                    PROJECT_NAME, self.compute_client),
                 "compute_disks",
                 True,
             )
@@ -321,10 +330,12 @@ class TestCrawler(unittest.TestCase):
 
     def test_compute_images_names(self):
         """Test compute image names."""
-        # Verify that the list of compute images names returned by the function is non-empty
+        # Verify that the list of compute
+        # images names returned by the function is non-empty
         self.assertTrue(
             verify(
-                crawl.get_compute_images_names(PROJECT_NAME, self.compute_client),
+                crawl.get_compute_images_names(
+                    PROJECT_NAME, self.compute_client),
                 "compute_images",
                 True,
             )
@@ -332,7 +343,8 @@ class TestCrawler(unittest.TestCase):
 
     def test_static_ips(self):
         """Test static IPs."""
-        # Verify that the list of static IPs returned by the function is non-empty
+        # Verify that the list of static IPs
+        # returned by the function is non-empty
         self.assertTrue(
             verify(
                 crawl.get_static_ips(PROJECT_NAME, self.compute_client),
@@ -340,7 +352,6 @@ class TestCrawler(unittest.TestCase):
                 True,
             )
         )
-
 
     def test_compute_snapshots(self):
         """Test compute snapshot."""
@@ -388,13 +399,12 @@ class TestCrawler(unittest.TestCase):
             )
         )
 
-
-
     def test_managed_zones(self):
         # Asserting that the managed zones are verified
         self.assertTrue(
             verify(
-                crawl.get_managed_zones(PROJECT_NAME, credentials=self.credentials),
+                crawl.get_managed_zones(
+                                PROJECT_NAME, credentials=self.credentials),
                 "managed_zones",
                 True,
             )
@@ -460,7 +470,6 @@ class TestCrawler(unittest.TestCase):
             )
         )
 
-
     def test_cloud_functions(self):
         """Test CloudFunctions list."""
         # Verify that cloud_functions list is obtained successfully
@@ -524,7 +533,8 @@ class TestCrawler(unittest.TestCase):
 
     def test_services(self):
         """Test list of API services enabled in the project."""
-        # Verify that a list of API services enabled in the project is obtained successfully
+        # Verify that a list of API services
+        # enabled in the project is obtained successfully
         self.assertTrue(
             verify(
                 crawl.list_services(PROJECT_NAME, self.credentials),
@@ -565,7 +575,8 @@ class TestCrawler(unittest.TestCase):
 
     def test_sourcerepos(self):
         """Test list of cloud source repositories in the project."""
-        # Verify that a list of cloud source repositories in the project is obtained successfully
+        # Verify that a list of cloud source repositories
+        # in the project is obtained successfully
         self.assertTrue(
             verify(
                 crawl.list_sourcerepo(PROJECT_NAME, self.credentials),
