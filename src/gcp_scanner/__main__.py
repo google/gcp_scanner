@@ -21,5 +21,5 @@ from . import scanner
 
 # Checking if the code is running as the main module
 if __name__ == '__main__':
-    # Calling the main function of the scanner module
-    scanner.main()
+  # Calling the main function of the scanner module
+  scanner.main()
