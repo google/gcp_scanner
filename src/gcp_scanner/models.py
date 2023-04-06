@@ -22,6 +22,7 @@ from typing import List, Tuple
 
 from httplib2 import Credentials
 
+
 class SpiderContext:
     """A simple class to initialize the context with a list of root SAs"""
 
@@ -34,7 +35,6 @@ class SpiderContext:
         """
         # Create a new queue to hold the service accounts
         self.service_account_queue = queue.Queue()
-        
         # Add each service account from the sa_tuples list to the queue
         for sa_tuple in sa_tuples:
             self.service_account_queue.put(sa_tuple)
