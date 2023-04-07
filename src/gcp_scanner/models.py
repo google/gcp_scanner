@@ -24,17 +24,17 @@ from httplib2 import Credentials
 
 
 class SpiderContext:
-    """A simple class to initialize the context with a list of root SAs"""
+  """A simple class to initialize the context with a list of root SAs"""
 
-    def __init__(self, sa_tuples: List[Tuple[str, Credentials, List[str]]]):
-        """
-        Initialize the context with a list of the root service accounts.
+  def __init__(self, sa_tuples: List[Tuple[str, Credentials, List[str]]]):
+    """
+    Initialize the context with a list of the root service accounts.
 
-        Args:
-            sa_tuples: [(sa_name, sa_object, chain_so_far)]
-        """
-        # Create a new queue to hold the service accounts
-        self.service_account_queue = queue.Queue()
-        # Add each service account from the sa_tuples list to the queue
-        for sa_tuple in sa_tuples:
-            self.service_account_queue.put(sa_tuple)
+    Args:
+        sa_tuples: [(sa_name, sa_object, chain_so_far)]
+    """
+    # Create a new queue to hold the service accounts
+    self.service_account_queue = queue.Queue()
+    # Add each service account from the sa_tuples list to the queue
+    for sa_tuple in sa_tuples:
+      self.service_account_queue.put(sa_tuple)
