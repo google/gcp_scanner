@@ -35,15 +35,65 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 from .models import SpiderContext
 
+# We define the schema statically to make it easier for the user and avoid extra
+# config files.
+light_version_scan_schema = {
+  'compute_instances': ['name', 'zone', 'machineType', 'networkInterfaces',
+                        'status'],
+  'compute_images': ['name', 'status', 'diskSizeGb', 'sourceDisk'],
+  'machine_images': ['name', 'description', 'status', 'sourceInstance',
+                     'totalStorageBytes', 'savedDisks'],
+  'compute_disks': ['name', 'sizeGb', 'zone', 'status', 'sourceImage', 'users'],
+  'compute_snapshots': ['name', 'status', 'sourceDisk', 'downloadBytes'],
+  'managed_zones': ['name', 'dnsName', 'description', 'nameServers'],
+  'sql_instances': ['name', 'region', 'ipAddresses', 'databaseVersion'
+                    'state'],
+  'cloud_functions': ['name', 'eventTrigger', 'status', 'entryPoint',
+                      'serviceAccountEmail'],
+  'kms': ['name', 'primary', 'purpose', 'createTime'],
+  'services': ['name'],
+}
+
 def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
   if config is None:
     return True
   obj = config.get(config_setting, {})
   return obj.get('fetch', False)
 
+def save_results(res_data: Dict, res_path: str, is_light: bool):
+  """The function to save scan results on disk in json format.
+
+  Args:
+    res_data: scan results as a dictionary of entries
+    res_path: full path to save data in file
+    is_light: save only the most interesting results
+  """
+
+  if is_light is True:
+    # returning the light version of the scan based on predefined schema
+    for gcp_resource, schema in light_version_scan_schema.items():
+      projects = res_data.get('projects', {})
+      for project_name, project_data in projects.items():
+        scan_results = project_data.get(gcp_resource, {})
+        light_results = list()
+        for scan_result in scan_results:
+          light_results.append({key: scan_result.get(key) for key in schema})
+
+        project_data.update({gcp_resource: light_results})
+        projects.update({project_name: project_data})
+      res_data.update({'projects': projects})
+
+  # Write out results to json DB
+  sa_results_data = json.dumps(res_data, indent=2, sort_keys=False)
+
+  with open(res_path, 'a', encoding='utf-8') as outfile:
+    outfile.write(sa_results_data)
+
+
 def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                out_dir: str,
                scan_config: Dict,
+               light_scan: bool,
                target_project: Optional[str] = None,
                force_projects: Optional[str] = None):
   """The main loop function to crawl GCP resources.
@@ -108,7 +158,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       output_path = Path(out_dir, output_file_name)
 
       try:
-        with open(output_path, 'x', encoding='utf-8') as outfile:
+        with open(output_path, 'x', encoding='utf-8'):
           pass
 
       except FileExistsError:
@@ -117,7 +167,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       if is_set(scan_config, 'iam_policy'):
         # Get IAM policy
-        iam_client = iam_client_for_credentials(credentials)
         iam_policy = crawl.get_iam_policy(project_id, credentials)
         project_result['iam_policy'] = iam_policy
 
@@ -256,23 +305,21 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           credentials
         )
 
-      # trying to impersonate SAs within project
       if scan_config is not None:
         impers = scan_config.get('service_accounts', None)
       else:
-        impers = {'impersonate': True}
+        impers = {'impersonate': False} # do not impersonate by default
+
+      # trying to impersonate SAs within project
       if impers is not None and impers.get('impersonate', False) is True:
+        iam_client = iam_client_for_credentials(credentials)
         if is_set(scan_config, 'iam_policy') is False:
           iam_policy = crawl.get_iam_policy(project_id, credentials)
 
-        project_service_accounts = crawl.get_associated_service_accounts(
-            iam_policy)
-
+        project_service_accounts = crawl.get_sas_for_impersonation(iam_policy)
         for candidate_service_account in project_service_accounts:
-          logging.info('Trying %s', candidate_service_account)
-          if not candidate_service_account.startswith('serviceAccount'):
-            continue
           try:
+            logging.info('Trying %s', candidate_service_account)
             creds_impersonated = credsdb.impersonate_sa(
                 iam_client, candidate_service_account)
             context.service_account_queue.put(
@@ -286,14 +333,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                                                       candidate_service_account)
             logging.error(sys.exc_info()[1])
 
-      # Write out results to json DB
       logging.info('Saving results for %s into the file', project_id)
 
-      sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
-
-      with open(output_path, 'a', encoding='utf-8') as outfile:
-        outfile.write(sa_results_data)
-
+      save_results(sa_results, output_path, light_scan)
       # Clean memory to avoid leak for large amount projects.
       sa_results.clear()
 
@@ -400,7 +442,6 @@ def main():
     with open(args.config_path, 'r', encoding='utf-8') as f:
       scan_config = json.load(f)
 
-
-  crawl_loop(sa_tuples, args.output, scan_config, args.target_project,
-             force_projects_list)
+  crawl_loop(sa_tuples, args.output, scan_config, args.light_scan,
+             args.target_project, force_projects_list)
   return 0

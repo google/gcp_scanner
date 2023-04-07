@@ -61,22 +61,24 @@ def save_to_test_file(res):
 def compare_volatile(f1, f2):
   res = True
   with open(f1, "r", encoding="utf-8") as file_1:
-    file_1_text = file_1.readlines()
+    file_1_text = file_1.read()
 
   with open(f2, "r", encoding="utf-8") as file_2:
     file_2_text = file_2.readlines()
 
   for line in file_2_text:
-    # line = line[:-1]
     if not line.startswith("CHECK"):
       continue  # we compare only important part of output
     line = line.replace("CHECK", "")
+    line = line.strip()
     if line in file_1_text:
       continue
     else:
       print(f"The following line was not identified in the output:\n{line}")
       res = False
 
+  if res is False:
+    print(file_1_text)
   return res
 
 

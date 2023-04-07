@@ -43,7 +43,13 @@ def arg_parser():
       dest='output',
       default='scan_db',
       help='Path to output directory')
-
+  parser.add_argument(
+      '-ls',
+      '--light-scan',
+      default=False,
+      dest='light_scan',
+      action='store_true',
+      help='Return only the most important GCP resource fields in the output.')
   parser.add_argument(
       '-k',
       '--sa-key-path',

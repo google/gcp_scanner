@@ -95,21 +95,21 @@ service-accounts/default/scopes"
 service-accounts/default/email"
   headers = {"Metadata-Flavor": "Google"}
   try:
-    res = requests.get(token_url, headers=headers)
+    res = requests.get(token_url, headers=headers, timeout=120)
     if not res.ok:
       logging.error("Failed to retrieve instance token. Status code %d",
                     res.status_code)
       return None, None
     token = res.json()["access_token"]
 
-    res = requests.get(scope_url, headers=headers)
+    res = requests.get(scope_url, headers=headers, timeout=120)
     if not res.ok:
       logging.error("Failed to retrieve instance scopes. Status code %d",
                     res.status_code)
       return None, None
     instance_scopes = res.content.decode("utf-8")
 
-    res = requests.get(email_url, headers=headers)
+    res = requests.get(email_url, headers=headers, timeout=120)
     if not res.ok:
       logging.error("Failed to retrieve instance email. Status code %d",
                     res.status_code)
