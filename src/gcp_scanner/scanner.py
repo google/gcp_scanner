@@ -55,6 +55,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
     force_projects: a list of projects to force scan
   """
 
+  # Generate current timestamp to append to the filename
+  scan_time_suffix = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
   context = SpiderContext(initial_sa_tuples)
   # Main loop
   processed_sas = set()
@@ -88,9 +91,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           project_list.append({'projectId': force_project_id,
                                'projectNumber': 'N/A'})
 
-    # Generate current timestamp to append to output filename
-    scan_time_suffix = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-
     # Enumerate projects accessible by SA
     for project in project_list:
       if target_project and target_project not in project['projectId']:
@@ -112,8 +112,8 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           pass
 
       except FileExistsError:
-        logging.error(f'Output file {output_file_name} already exists. \
-Try rescanning after removing the existing file.')
+        logging.error('Try removing the %s file and restart the scanner.',
+                      output_file_name)
 
       if is_set(scan_config, 'iam_policy'):
         # Get IAM policy
