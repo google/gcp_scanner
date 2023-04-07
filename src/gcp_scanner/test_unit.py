@@ -67,7 +67,6 @@ def compare_volatile(f1, f2):
     file_2_text = file_2.readlines()
 
   for line in file_2_text:
-    # line = line[:-1]
     if not line.startswith("CHECK"):
       continue  # we compare only important part of output
     line = line.replace("CHECK", "")
@@ -78,6 +77,8 @@ def compare_volatile(f1, f2):
       print(f"The following line was not identified in the output:\n{line}")
       res = False
 
+  if res is False:
+    print(file_1_text)
   return res
 
 
