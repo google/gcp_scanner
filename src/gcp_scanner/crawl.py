@@ -22,7 +22,7 @@ import json
 import logging
 import io
 import sys
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any, Tuple, Optional
 
 from google.cloud import container_v1
 import googleapiclient
@@ -341,17 +341,17 @@ def get_bucket_names(project_name: str, credentials: Credentials,
                      dump_fd: Optional[io.TextIOWrapper] = None
                      ) -> Dict[str, Tuple[Any, List[Any]]]:
   """Retrieve a list of buckets available in the project.
-  
+
   Args:
     project_name: A name of a project to query info about.
     credentials: An google.oauth2.credentials.Credentials object.
     dump_fd: If set, the function will enumerate files stored in buckets and
       save them in a file corresponding to provided file descriptor.
       This is a very slow, noisy operation and should be used with caution.
-      
+
   Returns:
-    A dictionary with the bucket name as key containing a tuple 
-    of the bucket object and a list of root directory objects.
+    A dictionary with the bucket name as key containing a
+    tuple of the bucket object and a list of root directory objects.
   """
 
   logging.info("Retrieving GCS Buckets")
@@ -378,7 +378,8 @@ def get_bucket_names(project_name: str, credentials: Credentials,
           root_folder = req.execute()
           buckets_dict[bucket["name"]][1].append(root_folder)
         except googleapiclient.errors.HttpError:
-          logging.info("Failed to retrieve root folder information for bucket %s", bucket["name"])
+          logging.info("Failed to retrieve root folder information for bucket %s",
+                       bucket["name"])
           logging.info(sys.exc_info())
 
       if dump_fd is not None:
