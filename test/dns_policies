@@ -1,29 +1,27 @@
 [
-  [
-    {
-      "id": "1199893578059967130",
-CHECK      "name": "test-policy",
-CHECK      "enableInboundForwarding": true,
-CHECK      "description": "A test policy",
-CHECK      "networks": [
+  {
+    "id": "1199893578059967130",
+CHECK    "name": "test-policy",
+CHECK    "enableInboundForwarding": true,
+CHECK    "description": "A test policy",
+CHECK    "networks": [
+      {
+CHECK        "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
+CHECK        "kind": "dns#policyNetwork"
+      }
+    ],
+CHECK    "alternativeNameServerConfig": {
+CHECK      "targetNameServers": [
         {
-CHECK          "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
-CHECK          "kind": "dns#policyNetwork"
+CHECK          "ipv4Address": "8.8.8.8",
+CHECK          "forwardingPath": "private",
+CHECK          "ipv6Address": "",
+CHECK          "kind": "dns#policyAlternativeNameServerConfigTargetNameServer"
         }
       ],
-CHECK      "alternativeNameServerConfig": {
-CHECK        "targetNameServers": [
-          {
-CHECK            "ipv4Address": "8.8.8.8",
-CHECK            "forwardingPath": "private",
-CHECK            "ipv6Address": "",
-CHECK            "kind": "dns#policyAlternativeNameServerConfigTargetNameServer"
-          }
-        ],
-CHECK        "kind": "dns#policyAlternativeNameServerConfig"
-      },
-      "enableLogging": false,
-CHECK      "kind": "dns#policy"
-    }
-  ]
+CHECK      "kind": "dns#policyAlternativeNameServerConfig"
+    },
+    "enableLogging": false,
+CHECK    "kind": "dns#policy"
+  }
 ]

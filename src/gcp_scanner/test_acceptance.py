@@ -46,7 +46,7 @@ PUBSUB_COUNT = 1
 CLOUD_FUNCTIONS = 1
 ENDPOINTS_COUNT = 0
 KMS_COUNT = 1
-SERVICES_COUNT = 1
+SERVICES_COUNT = 37
 SERVICE_ACCOUNTS_COUNT = 3
 
 def check_obj_entry(res_dict, subojects_count, entry_name, volatile = False):
