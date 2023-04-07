@@ -21,6 +21,8 @@ import json
 import logging
 import os
 import sys
+from pathlib import Path
+from datetime import datetime
 from typing import List, Tuple, Dict, Optional,Union
 
 from . import crawl
@@ -52,6 +54,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
     target_project: project name to scan
     force_projects: a list of projects to force scan
   """
+
+  # Generate current timestamp to append to the filename
+  scan_time_suffix = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
   context = SpiderContext(initial_sa_tuples)
   # Main loop
@@ -97,6 +102,18 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       project_result = sa_results['projects'][project_id]
 
       project_result['project_info'] = project
+
+      # Fail with error if the output file already exists
+      output_file_name = f'{project_id}-{scan_time_suffix}.json'
+      output_path = Path(out_dir, output_file_name)
+
+      try:
+        with open(output_path, 'x', encoding='utf-8') as outfile:
+          pass
+
+      except FileExistsError:
+        logging.error('Try removing the %s file and restart the scanner.',
+                      output_file_name)
 
       if is_set(scan_config, 'iam_policy'):
         # Get IAM policy
@@ -274,8 +291,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       sa_results_data = json.dumps(sa_results, indent=2, sort_keys=False)
 
-      with open(out_dir + '/%s.json' % project_id, 'a',
-                encoding='utf-8') as outfile:
+      with open(output_path, 'a', encoding='utf-8') as outfile:
         outfile.write(sa_results_data)
 
       # Clean memory to avoid leak for large amount projects.
