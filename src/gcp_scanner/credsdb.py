@@ -138,9 +138,9 @@ def get_creds_from_metadata() -> Tuple[Optional[str], Optional[Credentials]]:
     logging.error(sys.exc_info()[1])
     return None, None
 
-    # Print a message to indicate that
-    # we have successfully retrieved the instance metadata
-    print("Successfully retrieved instance metadata")
+  # Print a message to indicate that
+  # we have successfully retrieved the instance metadata
+  print("Successfully retrieved instance metadata")
 
   # Log the length of the access token, instance email, and instance scopes
   logging.info("Access token length: %d", len(token))
@@ -343,7 +343,7 @@ def extract_creds(path_to_creds_db: str) -> List[
 
     # Append the account name, credentials, and access
     # token to the results list
-  res.append(SA(row[0], row[1], access_token))
+    res.append(SA(row[0], row[1], access_token))
 
   # Print the number of identified credential entries
   print(f"Identified {len(res)} credential entries")
