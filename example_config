@@ -81,7 +81,7 @@
   "service_accounts": {
     "fetch": true,
     "comment": "Fetch list of available service accounts",
-    "impersonate": true
+    "impersonate": false
   },
   "dns_policies": {
     "fetch": true

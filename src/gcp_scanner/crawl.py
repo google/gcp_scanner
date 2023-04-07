@@ -368,7 +368,7 @@ def get_bucket_names(project_name: str, credentials: Credentials,
       break
 
     for bucket in response.get("items", []):
-      buckets_dict[bucket["name"]] = (bucket, None)
+      buckets_dict[bucket["name"]] = bucket
       if dump_fd is not None:
         ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
 
@@ -469,7 +469,8 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
     gcr_url = f"https://{region}gcr.io/v2/{project_name}/tags/list"
     try:
       res = requests.get(
-          gcr_url, auth=HTTPBasicAuth("oauth2accesstoken", access_token))
+          gcr_url, auth=HTTPBasicAuth("oauth2accesstoken", access_token),
+          timeout=120)
       if not res.ok:
         logging.info("Failed to retrieve gcr images list. Status code: %d",
                      res.status_code)
@@ -897,7 +898,7 @@ def get_iam_policy(project_name: str,
     return None
 
 
-def get_associated_service_accounts(
+def get_sas_for_impersonation(
     iam_policy: List[Dict[str, Any]]) -> List[str]:
   """Extract a list of unique SAs from IAM policy associated with project.
 
@@ -913,16 +914,11 @@ def get_associated_service_accounts(
 
   list_of_sas = list()
   for entry in iam_policy:
-    for member in entry["members"]:
-      if "deleted:" in member:
-        continue
-      account_name = None
-      for element in member.split(":"):
-        if "@" in element:
-          account_name = element
-          break
-      if account_name and account_name not in list_of_sas:
-        list_of_sas.append(account_name)
+    for sa_name in entry.get("members", []):
+      if sa_name.startswith("serviceAccount") and "@" in sa_name:
+        account_name = sa_name.split(":")[1]
+        if account_name not in list_of_sas:
+          list_of_sas.append(account_name)
 
   return list_of_sas
 
@@ -983,7 +979,7 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   try:
     while request is not None:
       response = request.execute()
-      list_of_services.append(response.get("services", None))
+      list_of_services.extend(response.get("services", []))
 
       request = serviceusage.services().list_next(
           previous_request=request, previous_response=response)
@@ -1016,7 +1012,7 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
   try:
     while request is not None:
       response = request.execute()
-      list_of_repos.append(response.get("repos", None))
+      list_of_repos.extend(response.get("repos", None))
 
       request = service.projects().repos().list_next(
         previous_request=request,
@@ -1049,7 +1045,7 @@ def list_dns_policies(project_id: str, credentials: Credentials) -> List[Any]:
   try:
     while request is not None:
       response = request.execute()
-      list_of_policies.append(response.get("policies", None))
+      list_of_policies.extend(response.get("policies", None))
 
       request = service.policies().list_next(
         previous_request=request,
