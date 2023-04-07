@@ -61,7 +61,7 @@ def save_to_test_file(res):
 def compare_volatile(f1, f2):
   res = True
   with open(f1, "r", encoding="utf-8") as file_1:
-    file_1_text = file_1.readlines()
+    file_1_text = file_1.read()
 
   with open(f2, "r", encoding="utf-8") as file_2:
     file_2_text = file_2.readlines()
@@ -71,7 +71,6 @@ def compare_volatile(f1, f2):
       continue  # we compare only important part of output
     line = line.replace("CHECK", "")
     line = line.strip()
-    line = line[:-1]
     if line in file_1_text:
       continue
     else:
