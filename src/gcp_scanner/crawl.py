@@ -338,7 +338,7 @@ def get_firewall_rules(
 
 
 def get_bucket_names(project_name: str, credentials: Credentials,
-                     dump_fd: io.TextIOWrapper
+                     dump_fd: Optional[io.TextIOWrapper] = None
                      ) -> Dict[str, Tuple[Any, List[Any]]]:
   """Retrieve a list of buckets available in the project.
   
@@ -350,7 +350,8 @@ def get_bucket_names(project_name: str, credentials: Credentials,
       This is a very slow, noisy operation and should be used with caution.
       
   Returns:
-    A dictionary with the bucket name as key containing a tuple of the bucket object and a list of root directory objects.
+    A dictionary with the bucket name as key containing a tuple 
+    of the bucket object and a list of root directory objects.
   """
 
   logging.info("Retrieving GCS Buckets")
@@ -370,26 +371,31 @@ def get_bucket_names(project_name: str, credentials: Credentials,
     for bucket in response.get("items", []):
       buckets_dict[bucket["name"]] = (bucket, [])
 
-      # Retrieve root folder information
-      ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
-
-      req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
-
-      while req:
+      if dump_fd is None:
+        # Retrieve root folder information if dump_fd is not provided
+        req = service.objects().get(bucket=bucket["name"], object="")
         try:
-          resp = req.execute()
-          for item in resp.get("items", []):
-            if item["name"] == "":
-              # This is the root folder
-              buckets_dict[bucket["name"]][1].append(item)
-            if dump_fd is not None:
-              dump_fd.write(json.dumps(item, indent=2, sort_keys=False))
-
-          req = service.objects().list_next(req, resp)
+          root_folder = req.execute()
+          buckets_dict[bucket["name"]][1].append(root_folder)
         except googleapiclient.errors.HttpError:
-          logging.info("Failed to read the bucket %s", bucket["name"])
+          logging.info("Failed to retrieve root folder information for bucket %s", bucket["name"])
           logging.info(sys.exc_info())
-          break
+
+      if dump_fd is not None:
+        # Dump file information if dump_fd is provided
+        ret_fields = "nextPageToken,items(name,size,contentType,timeCreated)"
+        req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
+        while req:
+          try:
+            resp = req.execute()
+            for item in resp.get("items", []):
+              if dump_fd is not None:
+                dump_fd.write(json.dumps(item, indent=2, sort_keys=False))
+            req = service.objects().list_next(req, resp)
+          except googleapiclient.errors.HttpError:
+            logging.info("Failed to read the bucket %s", bucket["name"])
+            logging.info(sys.exc_info())
+            break
 
     request = service.buckets().list_next(
         previous_request=request, previous_response=response)
