@@ -71,6 +71,7 @@ def compare_volatile(f1, f2):
       continue  # we compare only important part of output
     line = line.replace("CHECK", "")
     line = line.strip()
+    line = line[:-1]
     if line in file_1_text:
       continue
     else:
