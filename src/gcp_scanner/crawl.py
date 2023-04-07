@@ -378,8 +378,8 @@ def get_bucket_names(project_name: str, credentials: Credentials,
           root_folder = req.execute()
           buckets_dict[bucket["name"]][1].append(root_folder)
         except googleapiclient.errors.HttpError:
-          logging.info("Failed to retrieve root folder information for bucket %s",
-                       bucket["name"])
+          logging.info("Failed to retrieve root folder information "
+                       "for bucket %s", bucket["name"])
           logging.info(sys.exc_info())
 
       if dump_fd is not None:
