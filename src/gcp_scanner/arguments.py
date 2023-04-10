@@ -127,9 +127,12 @@ token_uri and client_secret stored in JSON format.'
 
   args: argparse.Namespace = parser.parse_args()
 
-  if not args.key_path and not args.gcloud_profile_path \
-    and not args.use_metadata and not args.access_token_files\
-    and not args.refresh_token_files:
+  if not any(
+          [args.key_path,
+           args.gcloud_profile_path,
+           args.use_metadata,
+           args.access_token_files,
+           args.refresh_token_files]):
     logging.error(
         'Please select at least one option to begin scan\
  -k/--sa-key-path,-g/--gcloud-profile-path, -m, -rt, -at'
