@@ -337,18 +337,20 @@ def get_firewall_rules(
   return firewall_rules_list
 
 
-def get_bucket_names(project_name: str, credentials: Credentials,
-                      dump_fd: Optional[io.TextIOWrapper] = None
-                      ) -> Dict[str, Tuple[Any, List[Any]]]:
+def get_bucket_names(
+    project_name: str,
+    credentials: Credentials,
+    dump_fd: Optional[io.TextIOWrapper] = None,
+) -> Dict[str, Tuple[Any, List[Any]]]:
     """Retrieve a list of buckets available in the project.
-    
+
     Args:
         project_name: A name of a project to query info about.
         credentials: An google.oauth2.credentials.Credentials object.
         dump_fd: If set, the function will enumerate files stored in buckets and
             save them in a file corresponding to provided file descriptor.
             This is a very slow, noisy operation and should be used with caution.
-    
+
     Returns:
         A dictionary with the bucket name as key containing a tuple of the
         bucket object and a list of root directory objects.
@@ -356,8 +358,9 @@ def get_bucket_names(project_name: str, credentials: Credentials,
     logging.info("Retrieving GCS Buckets")
     buckets_dict = dict()
     service = discovery.build(
-        "storage", "v1", credentials=credentials, cache_discovery=False)
-    
+        "storage", "v1", credentials=credentials, cache_discovery=False
+    )
+
     # Make an authenticated API request
     request = service.buckets().list(project=project_name)
     while request is not None:
@@ -371,7 +374,7 @@ def get_bucket_names(project_name: str, credentials: Credentials,
         for bucket in response.get("items", []):
             bucket_name = bucket["name"]
             buckets_dict[bucket_name] = (bucket, [])
-            
+
             # Extract the root folder information from the API response
             root_folder = bucket.get("location", None)
 
@@ -389,14 +392,18 @@ def get_bucket_names(project_name: str, credentials: Credentials,
                         resp = req.execute()
                         for item in resp.get("items", []):
                             if dump_fd is not None:
-                                dump_fd.write(json.dumps(item, indent=2, sort_keys=False))
+                                dump_fd.write(
+                                    json.dumps(item, indent=2, sort_keys=False)
+                                )
                         req = service.objects().list_next(req, resp)
                     except googleapiclient.errors.HttpError:
                         logging.info("Failed to read the bucket %s", bucket_name)
                         logging.info(sys.exc_info())
                         break
 
-        request = service.buckets().list_next(previous_request=request, previous_response=response)
+        request = service.buckets().list_next(
+            previous_request=request, previous_response=response
+        )
 
     return buckets_dict
 
