@@ -20,6 +20,9 @@ dependencies = [
     "httplib2==0.21.0",
     "requests==2.28.2",
 ]
+dynamic = [
+  "version"
+]
 
 [project.urls]
 Homepage = "https://github.com/google/gcp_scanner"
