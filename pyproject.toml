@@ -20,7 +20,6 @@ dependencies = [
     "httplib2==0.21.0",
     "requests==2.28.2",
 ]
-version = "1.0.0"
 
 [project.urls]
 Homepage = "https://github.com/google/gcp_scanner"
