@@ -4,8 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools-git-versioning]
 enabled = true
-version_scheme = "guess-next-dev"
-local_scheme = "dirty-tag"
 
 [project]
 name = "gcp-scanner"
@@ -25,6 +23,7 @@ dependencies = [
     "httplib2==0.21.0",
     "requests==2.28.2",
 ]
+dynamic = ["version"]
 
 [project.urls]
 Homepage = "https://github.com/google/gcp_scanner"
