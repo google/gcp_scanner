@@ -72,7 +72,7 @@ CHECK    "connectionName": "test-gcp-scanner:us-central1:test-postresql",
 CHECK    "name": "test-postresql",
 CHECK    "region": "us-central1",
 CHECK    "gceZone": "us-central1-a",
-CHECK    "databaseInstalledVersion": "POSTGRES_14_4",
+    "databaseInstalledVersion": "POSTGRES_14_4",
     "createTime": "2022-06-07T03:05:38.461Z"
   }
 ]
