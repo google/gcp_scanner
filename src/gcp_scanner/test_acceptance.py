@@ -41,7 +41,7 @@ SQL_INSTANCES_COUNT = 1
 BQ_COUNT = 1
 BIGTABLE_COUNT = 0
 SPANNER_COUNT = 1
-CLOUDSTORE_COUNT = 1
+FILESTORE_COUNT = 1
 PUBSUB_COUNT = 1
 CLOUD_FUNCTIONS = 1
 ENDPOINTS_COUNT = 0
@@ -94,7 +94,7 @@ def validate_result():
   check_obj_entry(project, BQ_COUNT, "bq")
   check_obj_entry(project, BIGTABLE_COUNT, "bigtable_instances")
   check_obj_entry(project, SPANNER_COUNT, "spanner_instances")
-  check_obj_entry(project, CLOUDSTORE_COUNT, "cloudstore_instances")
+  check_obj_entry(project, FILESTORE_COUNT, "filestore_instances")
 
   check_obj_entry(project, PUBSUB_COUNT, "pubsub_subs")
   check_obj_entry(project, CLOUD_FUNCTIONS, "cloud_functions")

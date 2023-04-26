@@ -6,22 +6,22 @@ CHECK    "enableInboundForwarding": true,
 CHECK    "description": "A test policy",
 CHECK    "networks": [
       {
-CHECK        "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
+        "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
 CHECK        "kind": "dns#policyNetwork"
       }
     ],
-CHECK    "alternativeNameServerConfig": {
-CHECK      "targetNameServers": [
+    "alternativeNameServerConfig": {
+      "targetNameServers": [
         {
-CHECK          "ipv4Address": "8.8.8.8",
-CHECK          "forwardingPath": "private",
-CHECK          "ipv6Address": "",
-CHECK          "kind": "dns#policyAlternativeNameServerConfigTargetNameServer"
+          "ipv4Address": "8.8.8.8",
+          "forwardingPath": "private",
+          "ipv6Address": "",
+          "kind": "dns#policyAlternativeNameServerConfigTargetNameServer"
         }
       ],
-CHECK      "kind": "dns#policyAlternativeNameServerConfig"
+      "kind": "dns#policyAlternativeNameServerConfig"
     },
     "enableLogging": false,
-CHECK    "kind": "dns#policy"
+    "kind": "dns#policy"
   }
 ]

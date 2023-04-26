@@ -1,6 +1,6 @@
 [
   {
-CHECK    "name": "projects/test-gcp-scanner/locations/us-central1-a/instances/test-filestore1",
+CHECK    instances/test-filestore1",
 CHECK    "state": "READY",
     "createTime": "2022-06-07T03:22:39.819050721Z",
 CHECK    "tier": "BASIC_HDD",

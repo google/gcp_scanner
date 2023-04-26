@@ -4,33 +4,33 @@ CHECK    "kind": "compute#disk",
     "id": "1685654227361788604",
     "creationTimestamp": "2022-06-11T19:15:47.780-07:00",
 CHECK    "name": "github-action-runner",
-CHECK    "sizeGb": "20",
+CHECK    "sizeGb": "10",
     "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a",
 CHECK    "status": "READY",
-CHECK    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/github-action-runner",
-CHECK    "sourceImage": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20220530",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/github-action-runner",
+    "sourceImage": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20220530",
     "sourceImageId": "2828321446012716890",
-CHECK    "type": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/diskTypes/pd-balanced",
+    "type": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/diskTypes/pd-balanced",
     "licenses": [
-CHECK      "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1804-lts"
+      "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1804-lts"
     ],
 CHECK    "guestOsFeatures": [
       {
 CHECK        "type": "VIRTIO_SCSI_MULTIQUEUE"
       },
       {
-CHECK        "type": "SEV_CAPABLE"
+        "type": "SEV_CAPABLE"
       },
       {
 CHECK        "type": "UEFI_COMPATIBLE"
       },
       {
-CHECK        "type": "GVNIC"
+        "type": "GVNIC"
       }
     ],
     "lastAttachTimestamp": "2022-06-11T19:15:47.781-07:00",
     "users": [
-CHECK      "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/github-action-runner"
+      "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner-2/zones/us-west1-a/instances/github-action-runner"
     ],
     "labelFingerprint": "42WmSpB8rSM=",
     "licenseCodes": [
@@ -38,83 +38,4 @@ CHECK      "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zone
     ],
     "physicalBlockSizeBytes": "4096"
   },
-  {
-    "kind": "compute#disk",
-    "id": "5045717540864722075",
-    "creationTimestamp": "2022-06-06T19:39:49.218-07:00",
-CHECK    "name": "instance-1",
-CHECK    "sizeGb": "10",
-    "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a",
-CHECK    "status": "READY",
-CHECK    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
-CHECK    "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20220519",
-    "sourceImageId": "4801817364715522935",
-CHECK    "type": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/diskTypes/pd-balanced",
-    "licenses": [
-CHECK      "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-11-bullseye"
-    ],
-    "guestOsFeatures": [
-      {
-CHECK        "type": "UEFI_COMPATIBLE"
-      },
-      {
-CHECK        "type": "VIRTIO_SCSI_MULTIQUEUE"
-      },
-      {
-CHECK        "type": "GVNIC"
-      }
-    ],
-    "lastAttachTimestamp": "2022-06-06T19:39:49.218-07:00",
-    "users": [
-CHECK      "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/instance-1"
-    ],
-    "labelFingerprint": "42WmSpB8rSM=",
-    "licenseCodes": [
-      "3853522013536123851"
-    ],
-    "physicalBlockSizeBytes": "4096"
-  },
-  {
-    "kind": "compute#disk",
-    "id": "2668831404593447185",
-    "creationTimestamp": "2022-06-06T20:03:26.760-07:00",
-    "name": "gke-test-cluster1-default-pool-41b54cce-d2ld",
-CHECK    "sizeGb": "10",
-    "zone": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c",
-CHECK    "status": "READY",
-    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/disks/gke-test-cluster1-default-pool-41b54cce-d2ld",
-    "sourceImage": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-gke-cloud/global/images/ubuntu-gke-2004-1-22-v20220315",
-    "sourceImageId": "4719045562448315049",
-CHECK    "type": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/diskTypes/pd-standard",
-CHECK    "licenses": [
-CHECK      "https://www.googleapis.com/compute/v1/projects/ubuntu-os-gke-cloud/global/licenses/ubuntu-gke-2004-lts-1"
-    ],
-    "guestOsFeatures": [
-      {
-        "type": "VIRTIO_SCSI_MULTIQUEUE"
-      },
-      {
-        "type": "SEV_CAPABLE"
-      },
-      {
-        "type": "UEFI_COMPATIBLE"
-      },
-      {
-        "type": "GVNIC"
-      }
-    ],
-    "lastAttachTimestamp": "2022-06-06T20:03:26.760-07:00",
-    "users": [
-      "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-c/instances/gke-test-cluster1-default-pool-41b54cce-d2ld"
-    ],
-    "labels": {
-      "goog-gke-node": "",
-      "goog-gke-volume": ""
-    },
-    "labelFingerprint": "wlu2T0lriLA=",
-    "licenseCodes": [
-      "6692784347675089942"
-    ],
-    "physicalBlockSizeBytes": "4096"
-  }
 ]

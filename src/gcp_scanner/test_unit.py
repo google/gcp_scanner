@@ -453,12 +453,12 @@ class TestCrawler(unittest.TestCase):
       )
     )
 
-  def test_cloudstore_instances(self):
-    """Test CloudStore Instances."""
+  def test_filestore_instances(self):
+    """Test FileStore Instances."""
     self.assertTrue(
       verify(
         crawl.get_filestore_instances(PROJECT_NAME, self.credentials),
-        "cloudstore_instances",
+        "filestore_instances",
       )
     )
 

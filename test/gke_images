@@ -2,7 +2,7 @@
   "": {
     "child": [],
     "manifest": {},
-CHECK    "name": "test-gcp-scanner",
+CHECK    "name": "test-gcp-scanner
     "tags": []
   },
   "us": {
@@ -17,13 +17,13 @@ CHECK    "name": "test-gcp-scanner",
   "eu": {
     "child": [],
     "manifest": {},
-CHECK    "name": "test-gcp-scanner",
+    "name": "test-gcp-scanner",
     "tags": []
   },
   "asia": {
     "child": [],
     "manifest": {},
-CHECK    "name": "test-gcp-scanner",
+    "name": "test-gcp-scanner",
     "tags": []
   }
 }

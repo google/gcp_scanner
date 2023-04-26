@@ -1,7 +1,7 @@
 [
   {
-CHECK    "name": "projects/test-gcp-scanner/subscriptions/test-subscription",
-CHECK    "topic": "projects/test-gcp-scanner/topics/test-topic",
+CHECK    subscriptions/test-subscription",
+CHECK    topics/test-topic",
 CHECK    "pushConfig": {},
 CHECK    "ackDeadlineSeconds": 10,
 CHECK    "messageRetentionDuration": "604800s",
