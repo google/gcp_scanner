@@ -63,7 +63,7 @@ def validate_result():
     res_data = json.load(f)
 
   # project
-  project = res_data["projects"].get("test-gcp-scanner", None)
+  project = res_data["projects"].get("test-gcp-scanner-2", None)
   assert project is not None
   assert len(project) == RESOURCE_COUNT
 

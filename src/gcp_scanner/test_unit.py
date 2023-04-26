@@ -34,7 +34,7 @@ from . import credsdb
 from . import scanner
 from .credsdb import get_scopes_from_refresh_token
 
-PROJECT_NAME = "test-gcp-scanner"
+PROJECT_NAME = "test-gcp-scanner-2"
 
 
 def print_diff(f1, f2):
