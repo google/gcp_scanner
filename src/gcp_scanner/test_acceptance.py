@@ -107,7 +107,7 @@ def validate_result():
 
 def test_acceptance():
   os.mkdir("res")
-  testargs = ["__main__.py", "-m", "-p", "test-gcp-scanner", "-o", "res"]
+  testargs = ["__main__.py", "-m", "-p", "test-gcp-scanner-2", "-o", "res"]
   with unittest.mock.patch("sys.argv", testargs):
     assert scanner.main() == 0
     assert len(os.listdir("res/")) == RESULTS_JSON_COUNT
