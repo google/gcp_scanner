@@ -8,6 +8,6 @@ gcloud compute instances create $INSTANCE_NAME \
   --machine-type=e2-micro \
   --boot-disk-size=10GB \
   --boot-disk-type=pd-standard \
-  --image-family=debian-10 \
-  --image-project=debian-cloud \
-  --scopes=cloud-platform
+  --image-family=ubuntu-1804-lts \
+  --image-project=ubuntu-os-cloud \
+  --scopes=https://www.googleapis.com/auth/cloud-platform
