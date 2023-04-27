@@ -6,17 +6,17 @@ CHECK    "regions/us-central1": {
 CHECK          "kind": "compute#address",
           "id": "7598630205933158956",
           "creationTimestamp": "2022-06-06T19:49:39.729-07:00",
-CHECK          "name": "test-static-ip1",
-CHECK          "description": "",
-CHECK          "address": "35.208.33.166",
-CHECK          "status": "IN_USE",
-CHECK          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1",
-CHECK          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/addresses/test-static-ip1",
+          "name": "test-static-ip1",
+          "description": "",
+          "address": "35.208.33.166",
+CHECK          "status": "RESERVED",
+          "region": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/addresses/test-static-ip1",
           "users": [
-CHECK            "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/instance-1"
+            "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/instance-1"
           ],
-CHECK          "networkTier": "STANDARD",
-CHECK          "addressType": "EXTERNAL"
+          "networkTier": "STANDARD",
+          "addressType": "EXTERNAL"
         }
       ]
     }

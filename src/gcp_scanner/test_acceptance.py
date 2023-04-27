@@ -24,30 +24,30 @@ import json
 RESOURCE_COUNT = 29
 RESULTS_JSON_COUNT = 1
 PROJECT_INFO_COUNT = 5
-IAM_POLICY_COUNT = 14
-COMPUTE_INSTANCES_COUNT = 3
+IAM_POLICY_COUNT = 11
+COMPUTE_INSTANCES_COUNT = 1
 COMPUTE_IMAGES_COUNT = 1
-COMPUTE_DISKS_COUNT = 3
-STATIC_IPS_COUNT = 1
+COMPUTE_DISKS_COUNT = 1
+STATIC_IPS_COUNT = 38
 COMPUTE_SNAPSHOTS_COUNT = 1
 SUBNETS_COUNT = 38
-FIREWALL_RULES_COUNT = 8
+FIREWALL_RULES_COUNT = 4
 APP_SERVICES_COUNT = 2
 STORAGE_BUCKETS_COUNT = 5
 MANAGED_ZONES_COUNT = 1
-GKE_CLUSTERS_COUNT = 1
+GKE_CLUSTERS_COUNT = 0
 GKE_IMAGES_COUNT = 4
 SQL_INSTANCES_COUNT = 1
 BQ_COUNT = 1
 BIGTABLE_COUNT = 0
-SPANNER_COUNT = 1
-CLOUDSTORE_COUNT = 1
+SPANNER_COUNT = 0
+FILESTORE_COUNT = 0
 PUBSUB_COUNT = 1
 CLOUD_FUNCTIONS = 1
 ENDPOINTS_COUNT = 0
 KMS_COUNT = 1
 SERVICES_COUNT = 37
-SERVICE_ACCOUNTS_COUNT = 3
+SERVICE_ACCOUNTS_COUNT = 2
 
 def check_obj_entry(res_dict, subojects_count, entry_name, volatile = False):
   obj = res_dict.get(entry_name, None)
@@ -63,7 +63,7 @@ def validate_result():
     res_data = json.load(f)
 
   # project
-  project = res_data["projects"].get("test-gcp-scanner", None)
+  project = res_data["projects"].get("test-gcp-scanner-2", None)
   assert project is not None
   assert len(project) == RESOURCE_COUNT
 
@@ -94,7 +94,7 @@ def validate_result():
   check_obj_entry(project, BQ_COUNT, "bq")
   check_obj_entry(project, BIGTABLE_COUNT, "bigtable_instances")
   check_obj_entry(project, SPANNER_COUNT, "spanner_instances")
-  check_obj_entry(project, CLOUDSTORE_COUNT, "cloudstore_instances")
+  check_obj_entry(project, FILESTORE_COUNT, "filestore_instances")
 
   check_obj_entry(project, PUBSUB_COUNT, "pubsub_subs")
   check_obj_entry(project, CLOUD_FUNCTIONS, "cloud_functions")
@@ -107,7 +107,8 @@ def validate_result():
 
 def test_acceptance():
   os.mkdir("res")
-  testargs = ["__main__.py", "-m", "-p", "test-gcp-scanner", "-o", "res"]
+  testargs = ["__main__.py", "-l", "INFO",
+              "-m", "-p", "test-gcp-scanner-2", "-o", "res"]
   with unittest.mock.patch("sys.argv", testargs):
     assert scanner.main() == 0
     assert len(os.listdir("res/")) == RESULTS_JSON_COUNT

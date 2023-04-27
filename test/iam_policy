@@ -2,88 +2,88 @@
   {
 CHECK    "role": "roles/appengine.serviceAgent",
 CHECK    "members": [
-CHECK      "serviceAccount:service-413204024550@gcp-gae-service.iam.gserviceaccount.com"
+      "serviceAccount:service-413204024550@gcp-gae-service.iam.gserviceaccount.com"
     ]
   },
   {
 CHECK    "role": "roles/cloudbuild.builds.builder",
 CHECK    "members": [
-CHECK      "serviceAccount:413204024550@cloudbuild.gserviceaccount.com"
+      "serviceAccount:413204024550@cloudbuild.gserviceaccount.com"
     ]
   },
   {
 CHECK    "role": "roles/cloudbuild.serviceAgent",
 CHECK    "members": [
-CHECK      "serviceAccount:service-413204024550@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      "serviceAccount:service-413204024550@gcp-sa-cloudbuild.iam.gserviceaccount.com"
     ]
   },
   {
 CHECK    "role": "roles/cloudfunctions.serviceAgent",
 CHECK    "members": [
-CHECK      "serviceAccount:service-413204024550@gcf-admin-robot.iam.gserviceaccount.com"
+      "serviceAccount:service-413204024550@gcf-admin-robot.iam.gserviceaccount.com"
     ]
   },
   {
 CHECK    "role": "roles/compute.serviceAgent",
 CHECK    "members": [
-CHECK      "serviceAccount:service-413204024550@compute-system.iam.gserviceaccount.com"
+      "serviceAccount:service-413204024550@compute-system.iam.gserviceaccount.com"
     ]
   },
   {
-CHECK    "role": "roles/container.nodeServiceAgent",
-CHECK    "members": [
-CHECK      "serviceAccount:service-413204024550@gcp-sa-gkenode.iam.gserviceaccount.com"
+    "role": "roles/container.nodeServiceAgent",
+    "members": [
+      "serviceAccount:service-413204024550@gcp-sa-gkenode.iam.gserviceaccount.com"
     ]
   },
   {
 CHECK    "role": "roles/container.serviceAgent",
 CHECK    "members": [
-CHECK      "serviceAccount:service-413204024550@container-engine-robot.iam.gserviceaccount.com"
+      "serviceAccount:service-413204024550@container-engine-robot.iam.gserviceaccount.com"
     ]
   },
   {
 CHECK    "role": "roles/containerregistry.ServiceAgent",
 CHECK    "members": [
-CHECK      "serviceAccount:service-413204024550@containerregistry.iam.gserviceaccount.com"
+      "serviceAccount:service-413204024550@containerregistry.iam.gserviceaccount.com"
     ]
   },
   {
 CHECK    "role": "roles/editor",
 CHECK    "members": [
-CHECK      "serviceAccount:413204024550-compute@developer.gserviceaccount.com",
-CHECK      "serviceAccount:413204024550@cloudservices.gserviceaccount.com",
-CHECK      "serviceAccount:test-gcp-scanner@appspot.gserviceaccount.com"
+      "serviceAccount:413204024550-compute@developer.gserviceaccount.com",
+      "serviceAccount:413204024550@cloudservices.gserviceaccount.com",
+      "serviceAccount:test-gcp-scanner@appspot.gserviceaccount.com"
     ]
   },
   {
 CHECK    "role": "roles/file.serviceAgent",
-CHECK    "members": [
-CHECK      "serviceAccount:service-413204024550@cloud-filer.iam.gserviceaccount.com"
+    "members": [
+      "serviceAccount:service-413204024550@cloud-filer.iam.gserviceaccount.com"
     ]
   },
   {
 CHECK    "role": "roles/firestore.serviceAgent",
-CHECK    "members": [
-CHECK      "serviceAccount:service-413204024550@gcp-sa-firestore.iam.gserviceaccount.com"
+    "members": [
+      "serviceAccount:service-413204024550@gcp-sa-firestore.iam.gserviceaccount.com"
     ]
   },
   {
 CHECK    "role": "roles/owner",
     "members": [
-CHECK      "user:mshudrak@google.com",
-CHECK      "user:test.gcp.scanner@gmail.com"
+      "user:mshudrak@google.com",
+      "user:test.gcp.scanner@gmail.com"
     ]
   },
   {
-CHECK    "role": "roles/pubsub.serviceAgent",
-CHECK    "members": [
-CHECK      "serviceAccount:service-413204024550@gcp-sa-pubsub.iam.gserviceaccount.com"
+    "role": "roles/pubsub.serviceAgent",
+    "members": [
+      "serviceAccount:service-413204024550@gcp-sa-pubsub.iam.gserviceaccount.com"
     ]
   },
   {
-CHECK    "role": "roles/viewer",
+    "role": "roles/viewer",
 CHECK    "members": [
-CHECK      "serviceAccount:functional-test-gcp-scanner@test-gcp-scanner.iam.gserviceaccount.com"
+      "serviceAccount:functional-test-gcp-scanner@test-gcp-scanner.iam.gserviceaccount.com"
     ]
   }
 ]

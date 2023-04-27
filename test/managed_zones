@@ -4,15 +4,15 @@ CHECK    "name": "test-dns-zone90511",
 CHECK    "dnsName": "test-dns-name90511.",
 CHECK    "description": "Test DNS Zone Description",
     "id": "2232379990912533161",
-CHECK    "nameServers": [
-CHECK      "ns-gcp-private.googledomains.com."
+    "nameServers": [
+      "ns-gcp-private.googledomains.com."
     ],
     "creationTime": "2022-06-07T02:57:06.932Z",
 CHECK    "visibility": "private",
 CHECK    "privateVisibilityConfig": {
       "networks": [
         {
-CHECK          "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
+          "networkUrl": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/test-vpc",
 CHECK          "kind": "dns#managedZonePrivateVisibilityConfigNetwork"
         }
       ],

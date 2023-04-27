@@ -1,12 +1,1 @@
-[
-  {
-CHECK    "name": "projects/test-gcp-scanner/instances/test-spanner-1",
-CHECK    "config": "projects/test-gcp-scanner/instanceConfigs/regional-us-central1",
-CHECK    "displayName": "test-spanner-1",
-CHECK    "state": "READY",
-CHECK    "processingUnits": 100,
-CHECK    "instanceType": "PROVISIONED",
-    "createTime": "2022-06-07T03:18:03.966061Z",
-    "updateTime": "2022-06-07T03:18:03.966061Z"
-  }
-]
+[]

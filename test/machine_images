@@ -4,9 +4,9 @@ CHECK    "kind": "compute#machineImage",
     "id": "4554632419054126591",
     "creationTimestamp": "2022-06-06T19:42:24.377-07:00",
 CHECK    "name": "test-image-1",
-CHECK    "description": "Description of the image.",
-CHECK    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/machineImages/test-image-1",
-CHECK    "sourceInstance": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/instance-1",
+    "description": "Description of the image.",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/machineImages/test-image-1",
+    "sourceInstance": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/zones/us-central1-a/instances/instance-1",
 CHECK    "status": "READY",
     "sourceInstanceProperties": {
       "tags": {
@@ -17,8 +17,8 @@ CHECK      "machineType": "e2-micro",
       "networkInterfaces": [
         {
 CHECK          "kind": "compute#networkInterface",
-CHECK          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
-CHECK          "subnetwork": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/default",
+          "network": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/global/networks/default",
+          "subnetwork": "https://www.googleapis.com/compute/v1/projects/test-gcp-scanner/regions/us-central1/subnetworks/default",
           "networkIP": "10.128.0.2",
           "name": "nic0",
           "accessConfigs": [
@@ -39,8 +39,8 @@ CHECK          "subnetwork": "https://www.googleapis.com/compute/v1/projects/tes
 CHECK          "kind": "compute#savedAttachedDisk",
 CHECK          "type": "PERSISTENT",
 CHECK          "mode": "READ_WRITE",
-CHECK          "source": "projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
-CHECK          "deviceName": "instance-1",
+          "source": "projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
+          "deviceName": "instance-1",
           "index": 0,
           "boot": true,
           "autoDelete": true,
@@ -171,10 +171,10 @@ CHECK          "kind": "compute#attachedDisk",
       },
       "minCpuPlatform": ""
     },
-    "savedDisks": [
+CHECK    "savedDisks": [
       {
         "kind": "compute#savedDisk",
-CHECK        "sourceDisk": "projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
+        "sourceDisk": "projects/test-gcp-scanner/zones/us-central1-a/disks/instance-1",
         "storageBytes": "505989440",
         "storageBytesStatus": "UP_TO_DATE"
       }

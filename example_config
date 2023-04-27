@@ -60,7 +60,7 @@
   "spanner_instances": {
     "fetch": true
   },
-  "cloudstore_instances": {
+  "filestore_instances": {
     "fetch": true
   },
   "kms": {

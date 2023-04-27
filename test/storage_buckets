@@ -1,47 +1,10 @@
 {
-CHECK  "gcf-sources-413204024550-us-central1": {
-CHECK    "kind": "storage#bucket",
-    "selfLink": "https://www.googleapis.com/storage/v1/b/gcf-sources-413204024550-us-central1",
-    "id": "gcf-sources-413204024550-us-central1",
-CHECK    "name": "gcf-sources-413204024550-us-central1",
-CHECK    "projectNumber": "413204024550",
-    "metageneration": "1",
-CHECK    "location": "US-CENTRAL1",
-    "storageClass": "STANDARD",
-    "etag": "CAE=",
-    "timeCreated": "2022-06-07T03:12:30.376Z",
-    "updated": "2022-06-07T03:12:30.376Z",
-    "cors": [
-      {
-        "origin": [
-          "https://*.cloud.google.com",
-          "https://*.corp.google.com",
-          "https://*.corp.google.com:*"
-        ],
-        "method": [
-          "GET"
-        ]
-      }
-    ],
-    "iamConfiguration": {
-      "bucketPolicyOnly": {
-        "enabled": true,
-        "lockedTime": "2022-09-05T03:12:30.376Z"
-      },
-      "uniformBucketLevelAccess": {
-        "enabled": true,
-        "lockedTime": "2022-09-05T03:12:30.376Z"
-      },
-      "publicAccessPrevention": "inherited"
-    },
-    "locationType": "region"
-  },
-CHECK  "gcp-scanner-test-bucket": {
+CHECK  "gcp-scanner-test-bucket
     "kind": "storage#bucket",
     "selfLink": "https://www.googleapis.com/storage/v1/b/gcp-scanner-test-bucket",
-CHECK    "id": "gcp-scanner-test-bucket",
-CHECK    "name": "gcp-scanner-test-bucket",
-CHECK    "projectNumber": "413204024550",
+CHECK    "id": "gcp-scanner-test-bucket
+CHECK    "name": "gcp-scanner-test-bucket
+    "projectNumber": "413204024550",
     "metageneration": "1",
     "location": "US",
     "storageClass": "STANDARD",
@@ -62,88 +25,4 @@ CHECK    "projectNumber": "413204024550",
     "locationType": "multi-region",
     "rpo": "DEFAULT"
   ],
-CHECK  "staging.test-gcp-scanner.appspot.com": {
-    "kind": "storage#bucket",
-    "selfLink": "https://www.googleapis.com/storage/v1/b/staging.test-gcp-scanner.appspot.com",
-CHECK    "id": "staging.test-gcp-scanner.appspot.com",
-CHECK    "name": "staging.test-gcp-scanner.appspot.com",
-    "projectNumber": "413204024550",
-    "metageneration": "1",
-    "location": "US",
-    "storageClass": "STANDARD",
-    "etag": "CAE=",
-    "timeCreated": "2022-06-07T03:24:29.093Z",
-    "updated": "2022-06-07T03:24:29.093Z",
-    "lifecycle": {
-      "rule": [
-        {
-          "action": {
-            "type": "Delete"
-          },
-          "condition": {
-            "age": 15
-          }
-        }
-      ]
-    },
-    "iamConfiguration": {
-      "bucketPolicyOnly": {
-        "enabled": false
-      },
-      "uniformBucketLevelAccess": {
-        "enabled": false
-      },
-      "publicAccessPrevention": "inherited"
-    },
-    "locationType": "multi-region",
-    "rpo": "DEFAULT"
-  },
-CHECK  "test-gcp-scanner.appspot.com": {
-    "kind": "storage#bucket",
-    "selfLink": "https://www.googleapis.com/storage/v1/b/test-gcp-scanner.appspot.com",
-CHECK    "id": "test-gcp-scanner.appspot.com",
-CHECK    "name": "test-gcp-scanner.appspot.com",
-    "projectNumber": "413204024550",
-    "metageneration": "1",
-    "location": "US",
-    "storageClass": "STANDARD",
-    "etag": "CAE=",
-    "timeCreated": "2022-06-07T03:24:28.921Z",
-    "updated": "2022-06-07T03:24:28.921Z",
-    "iamConfiguration": {
-      "bucketPolicyOnly": {
-        "enabled": false
-      },
-      "uniformBucketLevelAccess": {
-        "enabled": false
-      },
-      "publicAccessPrevention": "inherited"
-    },
-    "locationType": "multi-region",
-    "rpo": "DEFAULT"
-  }
-CHECK  "us.artifacts.test-gcp-scanner.appspot.com": {
-    "kind": "storage#bucket",
-    "selfLink": "https://www.googleapis.com/storage/v1/b/us.artifacts.test-gcp-scanner.appspot.com",
-CHECK    "id": "us.artifacts.test-gcp-scanner.appspot.com",
-CHECK    "name": "us.artifacts.test-gcp-scanner.appspot.com",
-    "projectNumber": "413204024550",
-    "metageneration": "1",
-    "location": "US",
-    "storageClass": "STANDARD",
-    "etag": "CAE=",
-    "timeCreated": "2022-06-07T03:13:03.199Z",
-    "updated": "2022-06-07T03:13:03.199Z",
-    "iamConfiguration": {
-      "bucketPolicyOnly": {
-        "enabled": false
-      },
-      "uniformBucketLevelAccess": {
-        "enabled": false
-      },
-      "publicAccessPrevention": "inherited"
-    },
-    "locationType": "multi-region",
-    "rpo": "DEFAULT"
-  }
 }

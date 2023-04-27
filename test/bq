@@ -2,9 +2,9 @@
 CHECK  "test_bq_dataset1": [
     {
 CHECK      "kind": "bigquery#table",
-CHECK      "id": "test-gcp-scanner:test_bq_dataset1.test-bq-table",
+CHECK      "id": "test-gcp-scanner
 CHECK      "tableReference": {
-CHECK        "projectId": "test-gcp-scanner",
+        "projectId": "test-gcp-scanner",
 CHECK        "datasetId": "test_bq_dataset1",
 CHECK        "tableId": "test-bq-table"
       },

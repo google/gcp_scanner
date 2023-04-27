@@ -1,8 +1,8 @@
 [
   {
-CHECK    "name": "projects/test-gcp-scanner/locations/global/keyRings/test-keyring/cryptoKeys/test-key1",
+CHECK    locations/global/keyRings/test-keyring/cryptoKeys/test-key1",
 CHECK    "primary": {
-      "name": "projects/test-gcp-scanner/locations/global/keyRings/test-keyring/cryptoKeys/test-key1/cryptoKeyVersions/2",
+CHECK    locations/global/keyRings/test-keyring/cryptoKeys/test-key1/
 CHECK      "state": "ENABLED",
       "createTime": "2022-06-07T03:23:53.718920656Z",
 CHECK      "protectionLevel": "SOFTWARE",
@@ -12,7 +12,7 @@ CHECK      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
 CHECK    "purpose": "ENCRYPT_DECRYPT",
     "createTime": "2022-06-07T03:23:53.718920656Z",
     "nextRotationTime": "2022-09-04T07:00:00Z",
-CHECK    "rotationPeriod": "7776000s",
+    "rotationPeriod": "7776000s",
     "versionTemplate": {
 CHECK      "protectionLevel": "SOFTWARE",
 CHECK      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION"

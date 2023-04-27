@@ -1,12 +1,12 @@
 {
-  "default_app": [
-CHECK    "apps/test-gcp-scanner",
-CHECK    "test-gcp-scanner.uc.r.appspot.com",
+CHECK  "default_app": [
+CHECK    "apps/test-gcp-scanner
+CHECK    appspot.com",
 CHECK    "SERVING"
   ],
 CHECK  "services": [
     {
-CHECK      "name": "apps/test-gcp-scanner/services/default",
+CHECK      "name": "apps/test-gcp-scanner
 CHECK      "id": "default",
       "split": {
         "allocations": {

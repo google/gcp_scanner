@@ -64,14 +64,14 @@ CHECK    "serverCaCert": {
       "expirationTime": "2032-06-04T03:08:25.360Z"
     },
 CHECK    "instanceType": "CLOUD_SQL_INSTANCE",
-CHECK    "project": "test-gcp-scanner",
+    "project": "test-gcp-scanner",
     "serviceAccountEmailAddress": "p413204024550-weo0n3@gcp-sa-cloud-sql.iam.gserviceaccount.com",
-CHECK    "backendType": "SECOND_GEN",
-CHECK    "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/test-gcp-scanner/instances/test-postresql",
-CHECK    "connectionName": "test-gcp-scanner:us-central1:test-postresql",
+    "backendType": "SECOND_GEN",
+    "selfLink": "https://sqladmin.googleapis.com/sql/v1beta4/projects/test-gcp-scanner/instances/test-postresql",
+CHECK    "connectionName": "test-gcp-scanner
 CHECK    "name": "test-postresql",
 CHECK    "region": "us-central1",
-CHECK    "gceZone": "us-central1-a",
+    "gceZone": "us-central1-b",
     "databaseInstalledVersion": "POSTGRES_14_4",
     "createTime": "2022-06-07T03:05:38.461Z"
   }

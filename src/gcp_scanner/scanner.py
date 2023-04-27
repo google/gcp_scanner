@@ -279,9 +279,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         project_result['spanner_instances'] = crawl.get_spanner_instances(
             project_id, credentials)
 
-      # Get CloudStore Instances
-      if is_set(scan_config, 'cloudstore_instances'):
-        project_result['cloudstore_instances'] = crawl.get_filestore_instances(
+      # Get FileStore Instances
+      if is_set(scan_config, 'filestore_instances'):
+        project_result['filestore_instances'] = crawl.get_filestore_instances(
             project_id, credentials)
 
       # Get list of KMS keys
