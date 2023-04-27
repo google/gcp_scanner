@@ -1,25 +1,26 @@
 [
   {
 CHECK    locations/us-central1/functions/test-function-1",
-    "eventTrigger": {
-CHECK      "eventType": "google.pubsub.topic.publish",
-CHECK      topics/test-topic",
-CHECK      "service": "pubsub.googleapis.com",
-      "failurePolicy": {}
+CHECK    "httpsTrigger": {
+      "url": "https://us-central1-test-gcp-scanner-2.cloudfunctions.net/test-function-1",
+      "securityLevel": "SECURE_ALWAYS"
     },
-    "status": "OFFLINE",
-CHECK    "entryPoint": "test_pubsub_scanner",
+    "status": "ACTIVE",
+CHECK    "entryPoint": "hello_world",
     "timeout": "60s",
     "availableMemoryMb": 128,
-    "serviceAccountEmail": "test-gcp-scanner@appspot.gserviceaccount.com",
-    "updateTime": "2022-06-07T03:13:28.174Z",
+    "serviceAccountEmail": "test-gcp-scanner-2@appspot.gserviceaccount.com",
+    "updateTime": "2023-04-27T18:00:41.402Z",
     "versionId": "1",
-    "sourceUploadUrl": "https://storage.googleapis.com/uploads-550929248917.us-central1.cloudfunctions.appspot.com/3bb45243-5d26-468e-b718-12ee233d818f.zip",
+    "labels": {
+      "deployment-tool": "cli-gcloud"
+    },
+    "sourceUploadUrl": "https://storage.googleapis.com/uploads-661471387767.us-central1.cloudfunctions.appspot.com/5da4f57f-32de-4a74-9235-e94dabf0fc27.zip",
     "runtime": "python310",
-    "maxInstances": 3000,
+    "maxInstances": 30,
     "ingressSettings": "ALLOW_ALL",
-    "buildId": "b204ac5d-e1df-49b7-9fd0-d59d14e7e298",
-    "buildName": "projects/413204024550/locations/us-central1/builds/b204ac5d-e1df-49b7-9fd0-d59d14e7e298",
+    "buildId": "23900528-b396-4676-8adf-35d32b7b6258",
+    "buildName": "projects/1076721540910/locations/us-central1/builds/23900528-b396-4676-8adf-35d32b7b6258",
     "dockerRegistry": "CONTAINER_REGISTRY"
   }
 ]
