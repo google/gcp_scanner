@@ -281,7 +281,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get FileStore Instances
       if is_set(scan_config, 'filestore_instances'):
-        project_result['filetore_instances'] = crawl.get_filestore_instances(
+        project_result['filestore_instances'] = crawl.get_filestore_instances(
             project_id, credentials)
 
       # Get list of KMS keys
