@@ -317,7 +317,7 @@ CHECK    services/bigtable.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    services/bigtableadmin.googleapis.com",
+    services/bigtableadmin.googleapis.com",
     "config": {
       "name": "bigtableadmin.googleapis.com",
       "title": "Cloud Bigtable Admin API",

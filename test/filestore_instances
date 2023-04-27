@@ -1,26 +1,26 @@
 [
   {
-CHECK    instances/test-filestore1",
-CHECK    "state": "READY",
+    instances/test-filestore1",
+    "state": "READY",
     "createTime": "2022-06-07T03:22:39.819050721Z",
-CHECK    "tier": "BASIC_HDD",
+    "tier": "BASIC_HDD",
     "fileShares": [
       {
-CHECK        "name": "test_filestore1",
-CHECK        "capacityGb": "1024"
+        "name": "test_filestore1",
+        "capacityGb": "1024"
       }
     ],
     "networks": [
       {
-CHECK        "network": "test-vpc",
+        "network": "test-vpc",
         "modes": [
-CHECK          "MODE_IPV4"
+          "MODE_IPV4"
         ],
         "reservedIpRange": "192.168.125.48/29",
         "ipAddresses": [
           "192.168.125.50"
         ],
-CHECK        "connectMode": "DIRECT_PEERING"
+        "connectMode": "DIRECT_PEERING"
       }
     ]
   }
