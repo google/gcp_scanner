@@ -30,8 +30,8 @@ CHECK    "members": [
     ]
   },
   {
-CHECK    "role": "roles/container.nodeServiceAgent",
-CHECK    "members": [
+    "role": "roles/container.nodeServiceAgent",
+    "members": [
       "serviceAccount:service-413204024550@gcp-sa-gkenode.iam.gserviceaccount.com"
     ]
   },
@@ -75,13 +75,13 @@ CHECK    "role": "roles/owner",
     ]
   },
   {
-CHECK    "role": "roles/pubsub.serviceAgent",
+    "role": "roles/pubsub.serviceAgent",
     "members": [
       "serviceAccount:service-413204024550@gcp-sa-pubsub.iam.gserviceaccount.com"
     ]
   },
   {
-CHECK    "role": "roles/viewer",
+    "role": "roles/viewer",
 CHECK    "members": [
       "serviceAccount:functional-test-gcp-scanner@test-gcp-scanner.iam.gserviceaccount.com"
     ]

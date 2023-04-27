@@ -1,6 +1,6 @@
 [
   {
-CHECK    "name": "projects/413204024550/services/appengine.googleapis.com",
+CHECK    services/appengine.googleapis.com",
     "config": {
       "name": "appengine.googleapis.com",
       "title": "App Engine Admin API",
@@ -137,7 +137,7 @@ CHECK    "name": "projects/413204024550/services/appengine.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/autoscaling.googleapis.com",
+CHECK    services/autoscaling.googleapis.com",
     "config": {
       "name": "autoscaling.googleapis.com",
       "title": "Cloud Autoscaling API",
@@ -157,7 +157,7 @@ CHECK    "name": "projects/413204024550/services/autoscaling.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-    "name": "projects/413204024550/services/bigquery.googleapis.com",
+    services/bigquery.googleapis.com",
     "config": {
       "name": "bigquery.googleapis.com",
       "title": "BigQuery API",
@@ -259,7 +259,7 @@ CHECK    "name": "projects/413204024550/services/autoscaling.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/bigquerymigration.googleapis.com",
+CHECK    services/bigquerymigration.googleapis.com",
     "config": {
       "name": "bigquerymigration.googleapis.com",
       "title": "BigQuery Migration API",
@@ -279,7 +279,7 @@ CHECK    "name": "projects/413204024550/services/bigquerymigration.googleapis.co
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/bigquerystorage.googleapis.com",
+CHECK    services/bigquerystorage.googleapis.com",
     "config": {
       "name": "bigquerystorage.googleapis.com",
       "title": "BigQuery Storage API",
@@ -297,7 +297,7 @@ CHECK    "name": "projects/413204024550/services/bigquerystorage.googleapis.com"
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/bigtable.googleapis.com",
+CHECK    services/bigtable.googleapis.com",
     "config": {
       "name": "bigtable.googleapis.com",
       "title": "Cloud Bigtable API",
@@ -317,7 +317,7 @@ CHECK    "name": "projects/413204024550/services/bigtable.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/bigtableadmin.googleapis.com",
+CHECK    services/bigtableadmin.googleapis.com",
     "config": {
       "name": "bigtableadmin.googleapis.com",
       "title": "Cloud Bigtable Admin API",
@@ -337,7 +337,7 @@ CHECK    "name": "projects/413204024550/services/bigtableadmin.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/cloudapis.googleapis.com",
+CHECK    services/cloudapis.googleapis.com",
     "config": {
       "name": "cloudapis.googleapis.com",
       "title": "Google Cloud APIs",
@@ -357,7 +357,7 @@ CHECK    "name": "projects/413204024550/services/cloudapis.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/cloudbuild.googleapis.com",
+CHECK    services/cloudbuild.googleapis.com",
     "config": {
       "name": "cloudbuild.googleapis.com",
       "title": "Cloud Build API",
@@ -466,7 +466,7 @@ CHECK    "name": "projects/413204024550/services/cloudbuild.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/clouddebugger.googleapis.com",
+CHECK    services/clouddebugger.googleapis.com",
     "config": {
       "name": "clouddebugger.googleapis.com",
       "title": "Cloud Debugger API",
@@ -486,7 +486,7 @@ CHECK    "name": "projects/413204024550/services/clouddebugger.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/cloudfunctions.googleapis.com",
+CHECK    services/cloudfunctions.googleapis.com",
     "config": {
       "name": "cloudfunctions.googleapis.com",
       "title": "Cloud Functions API",
@@ -660,7 +660,7 @@ CHECK    "name": "projects/413204024550/services/cloudfunctions.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/cloudkms.googleapis.com",
+CHECK    services/cloudkms.googleapis.com",
     "config": {
       "name": "cloudkms.googleapis.com",
       "title": "Cloud Key Management Service (KMS) API",
@@ -732,7 +732,7 @@ CHECK    "name": "projects/413204024550/services/cloudkms.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/cloudresourcemanager.googleapis.com",
+CHECK    services/cloudresourcemanager.googleapis.com",
     "config": {
       "name": "cloudresourcemanager.googleapis.com",
       "title": "Cloud Resource Manager API",
@@ -869,7 +869,7 @@ CHECK    "name": "projects/413204024550/services/cloudresourcemanager.googleapis
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/cloudtrace.googleapis.com",
+CHECK    services/cloudtrace.googleapis.com",
     "config": {
       "name": "cloudtrace.googleapis.com",
       "title": "Cloud Trace API",
@@ -968,7 +968,7 @@ CHECK    "name": "projects/413204024550/services/cloudtrace.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/compute.googleapis.com",
+CHECK    services/compute.googleapis.com",
     "config": {
       "name": "compute.googleapis.com",
       "title": "Compute Engine API",
@@ -1204,7 +1204,7 @@ CHECK    "name": "projects/413204024550/services/compute.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/container.googleapis.com",
+CHECK    services/container.googleapis.com",
     "config": {
       "name": "container.googleapis.com",
       "title": "Kubernetes Engine API",
@@ -1225,7 +1225,7 @@ CHECK    "name": "projects/413204024550/services/container.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/containerfilesystem.googleapis.com",
+CHECK    services/containerfilesystem.googleapis.com",
     "config": {
       "name": "containerfilesystem.googleapis.com",
       "title": "Container File System API",
@@ -1245,7 +1245,7 @@ CHECK    "name": "projects/413204024550/services/containerfilesystem.googleapis.
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/containerregistry.googleapis.com",
+CHECK    services/containerregistry.googleapis.com",
     "config": {
       "name": "containerregistry.googleapis.com",
       "title": "Container Registry API",
@@ -1266,7 +1266,7 @@ CHECK    "name": "projects/413204024550/services/containerregistry.googleapis.co
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/datastore.googleapis.com",
+CHECK    services/datastore.googleapis.com",
     "config": {
       "name": "datastore.googleapis.com",
       "title": "Cloud Datastore API",
@@ -1286,7 +1286,7 @@ CHECK    "name": "projects/413204024550/services/datastore.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/dns.googleapis.com",
+CHECK    services/dns.googleapis.com",
     "config": {
       "name": "dns.googleapis.com",
       "title": "Cloud DNS API",
@@ -1305,7 +1305,7 @@ CHECK    "name": "projects/413204024550/services/dns.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/file.googleapis.com",
+CHECK    services/file.googleapis.com",
     "config": {
       "name": "file.googleapis.com",
       "title": "Cloud Filestore API",
@@ -1487,7 +1487,7 @@ CHECK    "name": "projects/413204024550/services/file.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-    "name": "projects/413204024550/services/iam.googleapis.com",
+    services/iam.googleapis.com",
     "config": {
       "name": "iam.googleapis.com",
       "title": "Identity and Access Management (IAM) API",
@@ -1568,7 +1568,7 @@ CHECK    "name": "projects/413204024550/services/file.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/iamcredentials.googleapis.com",
+CHECK    services/iamcredentials.googleapis.com",
     "config": {
       "name": "iamcredentials.googleapis.com",
       "title": "IAM Service Account Credentials API",
@@ -1588,7 +1588,7 @@ CHECK    "name": "projects/413204024550/services/iamcredentials.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/logging.googleapis.com",
+CHECK    services/logging.googleapis.com",
     "config": {
       "name": "logging.googleapis.com",
       "title": "Cloud Logging API",
@@ -1640,7 +1640,7 @@ CHECK    "name": "projects/413204024550/services/logging.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/monitoring.googleapis.com",
+CHECK    services/monitoring.googleapis.com",
     "config": {
       "name": "monitoring.googleapis.com",
       "title": "Cloud Monitoring API",
@@ -1750,7 +1750,7 @@ CHECK    "name": "projects/413204024550/services/monitoring.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/oslogin.googleapis.com",
+CHECK    services/oslogin.googleapis.com",
     "config": {
       "name": "oslogin.googleapis.com",
       "title": "Cloud OS Login API",
@@ -1770,7 +1770,7 @@ CHECK    "name": "projects/413204024550/services/oslogin.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/pubsub.googleapis.com",
+CHECK    services/pubsub.googleapis.com",
     "config": {
       "name": "pubsub.googleapis.com",
       "title": "Cloud Pub/Sub API",
@@ -1790,7 +1790,7 @@ CHECK    "name": "projects/413204024550/services/pubsub.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/servicemanagement.googleapis.com",
+CHECK    services/servicemanagement.googleapis.com",
     "config": {
       "name": "servicemanagement.googleapis.com",
       "title": "Service Management API",
@@ -1810,7 +1810,7 @@ CHECK    "name": "projects/413204024550/services/servicemanagement.googleapis.co
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/serviceusage.googleapis.com",
+CHECK    services/serviceusage.googleapis.com",
     "config": {
       "name": "serviceusage.googleapis.com",
       "title": "Service Usage API",
@@ -1830,7 +1830,7 @@ CHECK    "name": "projects/413204024550/services/serviceusage.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/source.googleapis.com",
+CHECK    services/source.googleapis.com",
     "config": {
       "name": "source.googleapis.com",
       "title": "Legacy Cloud Source Repositories API",
@@ -1967,7 +1967,7 @@ CHECK    "name": "projects/413204024550/services/source.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/sourcerepo.googleapis.com",
+CHECK    services/sourcerepo.googleapis.com",
     "config": {
       "name": "sourcerepo.googleapis.com",
       "title": "Cloud Source Repositories API",
@@ -1987,7 +1987,7 @@ CHECK    "name": "projects/413204024550/services/sourcerepo.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/spanner.googleapis.com",
+CHECK    services/spanner.googleapis.com",
     "config": {
       "name": "spanner.googleapis.com",
       "title": "Cloud Spanner API",
@@ -2008,7 +2008,7 @@ CHECK    "name": "projects/413204024550/services/spanner.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/sql-component.googleapis.com",
+CHECK    services/sql-component.googleapis.com",
     "config": {
       "name": "sql-component.googleapis.com",
       "title": "Cloud SQL",
@@ -2145,7 +2145,7 @@ CHECK    "name": "projects/413204024550/services/sql-component.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/sqladmin.googleapis.com",
+CHECK    services/sqladmin.googleapis.com",
     "config": {
       "name": "sqladmin.googleapis.com",
       "title": "Cloud SQL Admin API",
@@ -2166,7 +2166,7 @@ CHECK    "name": "projects/413204024550/services/sqladmin.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/storage-api.googleapis.com",
+CHECK    services/storage-api.googleapis.com",
     "config": {
       "name": "storage-api.googleapis.com",
       "title": "Google Cloud Storage JSON API",
@@ -2186,7 +2186,7 @@ CHECK    "name": "projects/413204024550/services/storage-api.googleapis.com",
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/storage-component.googleapis.com",
+CHECK    services/storage-component.googleapis.com",
     "config": {
       "name": "storage-component.googleapis.com",
       "title": "Cloud Storage",
@@ -2323,7 +2323,7 @@ CHECK    "name": "projects/413204024550/services/storage-component.googleapis.co
     "parent": "projects/413204024550"
   },
   {
-CHECK    "name": "projects/413204024550/services/storage.googleapis.com",
+CHECK    services/storage.googleapis.com",
     "config": {
       "name": "storage.googleapis.com",
       "title": "Cloud Storage API",
