@@ -30,6 +30,7 @@ Currently, the scanner supports the following GCP resources:
 * Cloud Services
 * The scanner supports SA [impersonation](https://cloud.google.com/iam/docs/impersonating-service-accounts)
 
+
 The scanner supports extracting and using the following types of credentials:
 * GCP VM instance metadata;
 * User credentials stored in gcloud profiles;
