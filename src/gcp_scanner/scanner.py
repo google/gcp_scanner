@@ -156,6 +156,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Fail with error if the output file already exists
       output_file_name = f'{project_id}-{scan_time_suffix}.json'
       output_path = Path(out_dir, output_file_name)
+      gcs_output_path = Path(out_dir, f'gcs-{output_file_name}')
 
       try:
         with open(output_path, 'x', encoding='utf-8'):
@@ -223,8 +224,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         if scan_config is not None:
           obj = scan_config.get('storage_buckets', None)
           if obj is not None and obj.get('fetch_file_names', False) is True:
-            dump_file_names = open(out_dir + '/%s.gcs' % project_id, 'w',
-                                   encoding='utf-8')
+            dump_file_names = open(gcs_output_path, 'w', encoding='utf-8')
         project_result['storage_buckets'] = crawl.get_bucket_names(project_id,
                                                 credentials, dump_file_names)
         if dump_file_names is not None:
