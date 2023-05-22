@@ -392,6 +392,34 @@ timeCreated)"
 
   return buckets_dict
 
+def get_bucket_iam(bucket_name: str, credentials: Credentials
+                     ) -> List[Any]:
+  """Retrieve a IAM policies in the bucket.
+
+  Args:
+    bucket_name: A name of bucket to query info about.
+    credentials: An google.oauth2.credentials.Credentials object.
+  Returns:
+    A list with bucket IAM policies.
+  """
+
+  logging.info("Retrieving GCS Bucket %s IAM Policy", bucket_name)
+  bucket_iam_policies = list()
+  service = discovery.build(
+      "storage", "v1", credentials=credentials, cache_discovery=False)
+  # Make an authenticated API request
+  request = service.buckets().getIamPolicy(bucket=bucket_name)
+  try:
+    response = request.execute()
+  except googleapiclient.errors.HttpError:
+    logging.info("Failed to IAM Policy in the %s", bucket_name)
+    logging.info(sys.exc_info())
+
+  for bucket_iam_policy in response.get("bindings", []):
+    bucket_iam_policies.append(bucket_iam_policy)
+
+  return bucket_iam_policies
+
 
 def get_managed_zones(project_name: str,
                       credentials: Credentials) -> List[Dict[str, Any]]:

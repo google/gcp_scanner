@@ -30,6 +30,9 @@
     "comment": "Fetch GCS Buckets",
     "fetch_file_names": false
   },
+  "storage_buckets_iam": {
+    "fetch": true
+  },
   "managed_zones": {
     "fetch": true
   },
