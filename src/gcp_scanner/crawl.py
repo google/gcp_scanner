@@ -394,7 +394,7 @@ timeCreated)"
 
 def get_bucket_iam(bucket_name: str, credentials: Credentials
                      ) -> List[Any]:
-  """Retrieve a IAM policies in the bucket.
+  """Retrieve IAM policies in the bucket.
 
   Args:
     bucket_name: A name of bucket to query info about.
