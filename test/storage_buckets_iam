@@ -1,0 +1,14 @@
+{
+  "version": "1",
+  "kind": "storage#policy",
+  "resourceId": "projects/_/buckets/gcp-scanner-test-bucket",
+CHECK "bindings": [
+    {
+      "role": "roles/cloudbuild.serviceAgent",
+      "members": [
+        "serviceAccount:service-413204024550@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ]
+    }
+  ],
+  "etag": "R3hL"
+}
