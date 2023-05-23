@@ -14,6 +14,7 @@
 
 import logging
 
+from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
 
 
@@ -26,6 +27,8 @@ class ClientFactory:
 
     if name == "dns":
       return DNSClient()
+    if name == "compute":
+      return ComputeClient()
 
     logging.error("Client not supported.")
     return None
