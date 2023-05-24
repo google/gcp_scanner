@@ -28,7 +28,7 @@ class DNSClient(IClient):
       credentials: An google.oauth2.credentials.Credentials object.
 
     Returns:
-      An objet discovery.Resource
+      An object of discovery.Resource
     """
     return discovery.build(
       "dns",
