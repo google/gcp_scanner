@@ -15,7 +15,7 @@
 from googleapiclient import discovery
 from httplib2 import Credentials
 
-from interface_client import IClient
+from .interface_client import IClient
 
 
 class DNSClient(IClient):

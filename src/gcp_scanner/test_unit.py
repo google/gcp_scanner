@@ -32,6 +32,7 @@ from google.oauth2 import credentials
 from . import crawl
 from . import credsdb
 from . import scanner
+from .client.client_factory import ClientFactory
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -531,7 +532,10 @@ class TestCrawler(unittest.TestCase):
     """Test cloud DNS policies."""
     self.assertTrue(
       verify(
-        crawl.list_dns_policies(PROJECT_NAME, self.credentials),
+        crawl.list_dns_policies(
+          PROJECT_NAME,
+          ClientFactory.get_client("dns").get_service(self.credentials)
+        ),
         "dns_policies",
       )
     )

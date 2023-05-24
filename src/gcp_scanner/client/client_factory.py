@@ -24,7 +24,7 @@ class ClientFactory:
   def get_client(cls, name):
     """Returns the appropriate client."""
 
-    if name == "compute":
+    if name == "dns":
       return DNSClient()
 
     logging.error("Client not supported.")

@@ -33,6 +33,8 @@ from google.cloud import iam_credentials
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from googleapiclient import discovery
 from httplib2 import Credentials
+
+from .client.client_factory import ClientFactory
 from .models import SpiderContext
 
 # We define the schema statically to make it easier for the user and avoid extra
@@ -238,7 +240,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'dns_policies'):
         project_result['dns_policies'] = crawl.list_dns_policies(
           project_id,
-          credentials
+          ClientFactory.get_client('dns').get_service(credentials),
         )
 
       # Get GKE resources

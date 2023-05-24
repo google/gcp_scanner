@@ -1026,7 +1026,8 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
   return list_of_repos
 
 
-def list_dns_policies(project_id: str, credentials: Credentials) -> List[Any]:
+def list_dns_policies(project_id: str,
+                      service: discovery.Resource) -> List[Any]:
   """Retrieve a list of cloud DNS policies in the project.
   Args:
     project_id: An id of a project to query info about.
@@ -1037,7 +1038,6 @@ def list_dns_policies(project_id: str, credentials: Credentials) -> List[Any]:
 
   logging.info("Retrieving cloud DNS policies %s", project_id)
   list_of_policies = list()
-  service = discovery.build("dns", "v1", credentials=credentials)
 
   request = service.policies().list(
     project=project_id,
