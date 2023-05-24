@@ -19,10 +19,10 @@ from .interface_client import IClient
 
 
 class DNSClient(IClient):
-  """ComputeClient class."""
+  """DNSClient class."""
 
   def get_service(self, credentials: Credentials) -> discovery.Resource:
-    """Create compute client..
+    """Get discovery service for DNS resource.
 
     Args:
       credentials: An google.oauth2.credentials.Credentials object.
