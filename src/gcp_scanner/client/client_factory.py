@@ -18,7 +18,7 @@ from gcp_scanner.client.dns_client import DNSClient
 
 
 class ClientFactory:
-  """Factory class for getting generating SVG."""
+  """Factory class for creating clients."""
 
   @classmethod
   def get_client(cls, name):
