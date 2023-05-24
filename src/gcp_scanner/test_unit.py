@@ -363,7 +363,10 @@ class TestCrawler(unittest.TestCase):
     """Test managed zones."""
     self.assertTrue(
       verify(
-        crawl.get_managed_zones(PROJECT_NAME, credentials=self.credentials),
+        crawl.get_managed_zones(
+          PROJECT_NAME,
+          ClientFactory.get_client("dns").get_service(self.credentials),
+        ),
         "managed_zones",
         True,
       )

@@ -394,7 +394,7 @@ timeCreated)"
 
 
 def get_managed_zones(project_name: str,
-                      credentials: Credentials) -> List[Dict[str, Any]]:
+                      service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of DNS zones available in the project.
 
   Args:
@@ -409,9 +409,6 @@ def get_managed_zones(project_name: str,
   zones_list = list()
 
   try:
-    service = discovery.build(
-        "dns", "v1", credentials=credentials, cache_discovery=False)
-
     request = service.managedZones().list(project=project_name)
     while request is not None:
       response = request.execute()
