@@ -30,7 +30,7 @@ class IClient(metaclass=ABCMeta):
       credentials: An google.oauth2.credentials.Credentials object.
 
     Returns:
-      An objet of discovery.Resource
+      An object of discovery.Resource
     """
 
     raise NotImplementedError("Child class must implement create_client")
