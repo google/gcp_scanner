@@ -292,7 +292,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Get PubSub Subscriptions
       if is_set(scan_config, 'pubsub_subs'):
         project_result['pubsub_subs'] = crawl.get_pubsub_subscriptions(
-          project_id, credentials)
+          project_id,
+          ClientFactory.get_client('pubsub').get_service(credentials),
+        )
 
       # Get CloudFunctions list
       if is_set(scan_config, 'cloud_functions'):

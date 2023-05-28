@@ -566,13 +566,15 @@ def get_bq(project_id: str,
   return bq_datasets
 
 
-def get_pubsub_subscriptions(project_id: str,
-                             credentials: Credentials) -> List[Dict[str, Any]]:
+def get_pubsub_subscriptions(
+  project_id: str,
+  service: discovery.Resource
+) -> List[Dict[str, Any]]:
   """Retrieve a list of PubSub subscriptions available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Compute API.
 
   Returns:
     A list of PubSub subscriptions in the project.
@@ -581,8 +583,6 @@ def get_pubsub_subscriptions(project_id: str,
   logging.info("Retrieving PubSub Subscriptions")
   pubsubs_list = list()
   try:
-    service = discovery.build(
-        "pubsub", "v1", credentials=credentials, cache_discovery=False)
 
     request = service.projects().subscriptions().list(
         project=f"projects/{project_id}")
