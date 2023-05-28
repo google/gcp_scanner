@@ -785,37 +785,34 @@ def get_kms_keys(project_id: str,
 
 
 def get_app_services(project_name: str,
-                     credentials: Credentials) -> Dict[str, Any]:
+                     service: discovery.Resource) -> Dict[str, Any]:
   """Retrieve a list of AppEngine instances available in the project.
 
   Args:
     project_name: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Compute API.
 
   Returns:
     A dict representing default apps and services available in the project.
   """
 
-  app_client = discovery.build(
-      "appengine", "v1", credentials=credentials, cache_discovery=False)
-
   logging.info("Retrieving app services")
   app_services = dict()
   try:
-    request = app_client.apps().get(appsId=project_name)
+    request = service.apps().get(appsId=project_name)
     response = request.execute()
     if response.get("name", None) is not None:
       app_services["default_app"] = (response["name"],
                                      response["defaultHostname"],
                                      response["servingStatus"])
 
-    request = app_client.apps().services().list(appsId=project_name)
+    request = service.apps().services().list(appsId=project_name)
 
     app_services["services"] = list()
     while request is not None:
       response = request.execute()
       app_services["services"] = response.get("services", [])
-      request = app_client.apps().services().list_next(
+      request = service.apps().services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
     logging.info("Failed to retrieve App services for project %s", project_name)
