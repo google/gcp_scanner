@@ -229,7 +229,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Get GCP APP Resources
       if is_set(scan_config, 'app_services'):
         project_result['app_services'] = crawl.get_app_services(
-          project_id, credentials)
+          project_id,
+          ClientFactory.get_client('appengine').get_service(credentials),
+        )
 
       # Get storage buckets
       if is_set(scan_config, 'storage_buckets'):
