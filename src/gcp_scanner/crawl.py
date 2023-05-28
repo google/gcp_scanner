@@ -337,14 +337,14 @@ def get_firewall_rules(
   return firewall_rules_list
 
 
-def get_bucket_names(project_name: str, credentials: Credentials,
+def get_bucket_names(project_name: str, service: discovery.Resource,
                      dump_fd: io.TextIOWrapper
                      ) -> Dict[str, Tuple[Any, List[Any]]]:
   """Retrieve a list of buckets available in the project.
 
   Args:
     project_name: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Compute API.
     dump_fd: If set, the function will enumerate files stored in buckets and
       save them in a file corresponding to provided file descriptor.
       This is a very slow, noisy operation and should be used with caution.
@@ -355,8 +355,6 @@ def get_bucket_names(project_name: str, credentials: Credentials,
 
   logging.info("Retrieving GCS Buckets")
   buckets_dict = dict()
-  service = discovery.build(
-      "storage", "v1", credentials=credentials, cache_discovery=False)
   # Make an authenticated API request
   request = service.buckets().list(project=project_name)
   while request is not None:
