@@ -453,7 +453,10 @@ class TestCrawler(unittest.TestCase):
     """Test PubSub Subscriptions."""
     self.assertTrue(
       verify(
-        crawl.get_pubsub_subscriptions(PROJECT_NAME, self.credentials),
+        crawl.get_pubsub_subscriptions(
+          PROJECT_NAME,
+          ClientFactory.get_client("pubsub").get_service(self.credentials),
+        ),
         "pubsub_subs",
       )
     )
