@@ -14,6 +14,7 @@
 
 import logging
 
+from gcp_scanner.client.appengine_client import AppEngineClient
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
 
@@ -29,6 +30,8 @@ class ClientFactory:
       return DNSClient()
     if name == 'compute':
       return ComputeClient()
+    if name == 'appengine':
+      return AppEngineClient()
 
     logging.error("Client not supported.")
     return None
