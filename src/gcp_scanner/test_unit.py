@@ -410,7 +410,10 @@ class TestCrawler(unittest.TestCase):
     """Test app services."""
     self.assertTrue(
       verify(
-        crawl.get_app_services(PROJECT_NAME, self.credentials),
+        crawl.get_app_services(
+          PROJECT_NAME,
+          ClientFactory.get_client("appengine").get_service(self.credentials),
+        ),
         "app_services",
       )
     )
