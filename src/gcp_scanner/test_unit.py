@@ -437,7 +437,10 @@ class TestCrawler(unittest.TestCase):
     """Test BigQuery databases and table names."""
     self.assertTrue(
       verify(
-        crawl.get_bq(PROJECT_NAME, self.credentials),
+        crawl.get_bq(
+          PROJECT_NAME,
+          ClientFactory.get_client("bigquery").get_service(self.credentials),
+        ),
         "bq",
       )
     )
