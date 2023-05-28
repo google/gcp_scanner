@@ -184,36 +184,37 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       updated_chain = chain_so_far + [sa_name]
 
       # Get GCP Compute Resources
-      compute_client = compute_client_for_credentials(credentials)
+      compute_service = ClientFactory.get_client('compute').get_service(credentials)
+
       if is_set(scan_config, 'compute_instances'):
         project_result['compute_instances'] = crawl.get_compute_instances_names(
-                                                     project_id, compute_client)
+                                                     project_id, compute_service)
       if is_set(scan_config, 'compute_images'):
         project_result['compute_images'] = crawl.get_compute_images_names(
                                                         project_id,
-                                                        compute_client)
+                                                        compute_service)
       if is_set(scan_config, 'machine_images'):
         project_result['machine_images'] = crawl.get_machine_images(
           project_id,
-          compute_client,
+          compute_service,
         )
       if is_set(scan_config, 'compute_disks'):
         project_result['compute_disks'] = crawl.get_compute_disks_names(
                                                         project_id,
-                                                        compute_client)
+                                                        compute_service)
       if is_set(scan_config, 'static_ips'):
         project_result['static_ips'] = crawl.get_static_ips(project_id,
-                                                            compute_client)
+                                                            compute_service)
       if is_set(scan_config, 'compute_snapshots'):
         project_result['compute_snapshots'] = crawl.get_compute_snapshots(
                                                         project_id,
-                                                        compute_client)
+                                                        compute_service)
       if is_set(scan_config, 'subnets'):
         project_result['subnets'] = crawl.get_subnets(project_id,
-                                                      compute_client)
+                                                      compute_service)
       if is_set(scan_config, 'firewall_rules'):
         project_result['firewall_rules'] = crawl.get_firewall_rules(project_id,
-                                                                 compute_client)
+                                                                 compute_service)
 
       # Get GCP APP Resources
       if is_set(scan_config, 'app_services'):
