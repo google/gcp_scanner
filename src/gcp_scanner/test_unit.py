@@ -365,7 +365,9 @@ class TestCrawler(unittest.TestCase):
       verify(
         crawl.get_bucket_names(
           PROJECT_NAME,
-          credentials=self.credentials,
+          service=ClientFactory.get_client("storage").get_service(
+            self.credentials,
+          ),
           dump_fd=None,
         ),
         "storage_buckets",
