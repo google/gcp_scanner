@@ -242,7 +242,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             dump_file_names = open(gcs_output_path, 'w', encoding='utf-8')
         project_result['storage_buckets'] = crawl.get_bucket_names(
           project_id,
-          credentials,
+          ClientFactory.get_client('storage').get_service(credentials),
           dump_file_names,
         )
         if dump_file_names is not None:
