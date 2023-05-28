@@ -17,6 +17,7 @@ import logging
 from gcp_scanner.client.appengine_client import AppEngineClient
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
+from gcp_scanner.client.sql_client import SQLClient
 from gcp_scanner.client.storage_client import StorageClient
 
 
@@ -35,6 +36,8 @@ class ClientFactory:
       return AppEngineClient()
     if name == 'storage':
       return StorageClient()
+    if name == 'sqladmin':
+      return SQLClient()
 
     logging.error("Client not supported.")
     return None
