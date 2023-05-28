@@ -480,13 +480,12 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
 
 
 def get_sql_instances(project_name: str,
-                      credentials: Credentials) -> List[Dict[str, Any]]:
+                      service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of SQL instances available in the project.
 
   Args:
     project_name: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
-
+    service: A resource object for interacting with the Compute API.
   Returns:
     A list of sql instances in the project.
   """
@@ -494,9 +493,6 @@ def get_sql_instances(project_name: str,
   logging.info("Retrieving CloudSQL Instances")
   sql_instances_list = list()
   try:
-    service = discovery.build(
-        "sqladmin", "v1beta4", credentials=credentials, cache_discovery=False)
-
     request = service.instances().list(project=project_name)
     while request is not None:
       response = request.execute()
