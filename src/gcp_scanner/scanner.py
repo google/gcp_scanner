@@ -277,8 +277,10 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get SQL instances
       if is_set(scan_config, 'sql_instances'):
-        project_result['sql_instances'] = crawl.get_sql_instances(project_id,
-                                                                  credentials)
+        project_result['sql_instances'] = crawl.get_sql_instances(
+          project_id,
+          ClientFactory.get_client('sqladmin').get_service(credentials),
+        )
 
       # Get BigQuery databases and table names
       if is_set(scan_config, 'bq'):
