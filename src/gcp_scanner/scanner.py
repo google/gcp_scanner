@@ -21,19 +21,19 @@ import json
 import logging
 import os
 import sys
-from pathlib import Path
 from datetime import datetime
-from typing import List, Tuple, Dict, Optional,Union
+from pathlib import Path
+from typing import List, Tuple, Dict, Optional, Union
 
-from . import crawl
-from . import credsdb
-from . import arguments
 from google.cloud import container_v1
 from google.cloud import iam_credentials
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from googleapiclient import discovery
 from httplib2 import Credentials
 
+from . import arguments
+from . import crawl
+from . import credsdb
 from .client.client_factory import ClientFactory
 from .models import SpiderContext
 
@@ -49,18 +49,20 @@ light_version_scan_schema = {
   'compute_snapshots': ['name', 'status', 'sourceDisk', 'downloadBytes'],
   'managed_zones': ['name', 'dnsName', 'description', 'nameServers'],
   'sql_instances': ['name', 'region', 'ipAddresses', 'databaseVersion'
-                    'state'],
+                                                     'state'],
   'cloud_functions': ['name', 'eventTrigger', 'status', 'entryPoint',
                       'serviceAccountEmail'],
   'kms': ['name', 'primary', 'purpose', 'createTime'],
   'services': ['name'],
 }
 
-def is_set(config: Optional[dict], config_setting: str) -> Union[dict,bool]:
+
+def is_set(config: Optional[dict], config_setting: str) -> Union[dict, bool]:
   if config is None:
     return True
   obj = config.get(config_setting, {})
   return obj.get('fetch', False)
+
 
 def save_results(res_data: Dict, res_path: str, is_light: bool):
   """The function to save scan results on disk in json format.
@@ -176,7 +178,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'service_accounts'):
         # Get service accounts
         project_service_accounts = crawl.get_service_accounts(
-            project_number, credentials)
+          project_number, credentials)
         project_result['service_accounts'] = project_service_accounts
 
       # Iterate over discovered service accounts by attempting impersonation
@@ -184,15 +186,19 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       updated_chain = chain_so_far + [sa_name]
 
       # Get GCP Compute Resources
-      compute_service = ClientFactory.get_client('compute').get_service(credentials)
+      compute_service = ClientFactory.get_client(
+        'compute',
+      ).get_service(credentials)
 
       if is_set(scan_config, 'compute_instances'):
         project_result['compute_instances'] = crawl.get_compute_instances_names(
-                                                     project_id, compute_service)
+          project_id,
+          compute_service,
+        )
       if is_set(scan_config, 'compute_images'):
         project_result['compute_images'] = crawl.get_compute_images_names(
-                                                        project_id,
-                                                        compute_service)
+          project_id,
+          compute_service)
       if is_set(scan_config, 'machine_images'):
         project_result['machine_images'] = crawl.get_machine_images(
           project_id,
@@ -200,26 +206,30 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         )
       if is_set(scan_config, 'compute_disks'):
         project_result['compute_disks'] = crawl.get_compute_disks_names(
-                                                        project_id,
-                                                        compute_service)
+          project_id,
+          compute_service)
       if is_set(scan_config, 'static_ips'):
         project_result['static_ips'] = crawl.get_static_ips(project_id,
                                                             compute_service)
       if is_set(scan_config, 'compute_snapshots'):
         project_result['compute_snapshots'] = crawl.get_compute_snapshots(
-                                                        project_id,
-                                                        compute_service)
+          project_id,
+          compute_service)
       if is_set(scan_config, 'subnets'):
-        project_result['subnets'] = crawl.get_subnets(project_id,
-                                                      compute_service)
+        project_result['subnets'] = crawl.get_subnets(
+          project_id,
+          compute_service,
+        )
       if is_set(scan_config, 'firewall_rules'):
-        project_result['firewall_rules'] = crawl.get_firewall_rules(project_id,
-                                                                 compute_service)
+        project_result['firewall_rules'] = crawl.get_firewall_rules(
+          project_id,
+          compute_service,
+        )
 
       # Get GCP APP Resources
       if is_set(scan_config, 'app_services'):
         project_result['app_services'] = crawl.get_app_services(
-            project_id, credentials)
+          project_id, credentials)
 
       # Get storage buckets
       if is_set(scan_config, 'storage_buckets'):
@@ -228,8 +238,11 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           obj = scan_config.get('storage_buckets', None)
           if obj is not None and obj.get('fetch_file_names', False) is True:
             dump_file_names = open(gcs_output_path, 'w', encoding='utf-8')
-        project_result['storage_buckets'] = crawl.get_bucket_names(project_id,
-                                                credentials, dump_file_names)
+        project_result['storage_buckets'] = crawl.get_bucket_names(
+          project_id,
+          credentials,
+          dump_file_names,
+        )
         if dump_file_names is not None:
           dump_file_names.close()
 
@@ -267,27 +280,27 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Get PubSub Subscriptions
       if is_set(scan_config, 'pubsub_subs'):
         project_result['pubsub_subs'] = crawl.get_pubsub_subscriptions(
-            project_id, credentials)
+          project_id, credentials)
 
       # Get CloudFunctions list
       if is_set(scan_config, 'cloud_functions'):
         project_result['cloud_functions'] = crawl.get_cloudfunctions(
-            project_id, credentials)
+          project_id, credentials)
 
       # Get List of BigTable Instances
       if is_set(scan_config, 'bigtable_instances'):
         project_result['bigtable_instances'] = crawl.get_bigtable_instances(
-            project_id, credentials)
+          project_id, credentials)
 
       # Get Spanner Instances
       if is_set(scan_config, 'spanner_instances'):
         project_result['spanner_instances'] = crawl.get_spanner_instances(
-            project_id, credentials)
+          project_id, credentials)
 
       # Get FileStore Instances
       if is_set(scan_config, 'filestore_instances'):
         project_result['filestore_instances'] = crawl.get_filestore_instances(
-            project_id, credentials)
+          project_id, credentials)
 
       # Get list of KMS keys
       if is_set(scan_config, 'kms'):
@@ -313,7 +326,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if scan_config is not None:
         impers = scan_config.get('service_accounts', None)
       else:
-        impers = {'impersonate': False} # do not impersonate by default
+        impers = {'impersonate': False}  # do not impersonate by default
 
       # trying to impersonate SAs within project
       if impers is not None and impers.get('impersonate', False) is True:
@@ -326,16 +339,16 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           try:
             logging.info('Trying %s', candidate_service_account)
             creds_impersonated = credsdb.impersonate_sa(
-                iam_client, candidate_service_account)
+              iam_client, candidate_service_account)
             context.service_account_queue.put(
-                (candidate_service_account, creds_impersonated, updated_chain))
+              (candidate_service_account, creds_impersonated, updated_chain))
             project_result['service_account_edges'].append(
-                candidate_service_account)
+              candidate_service_account)
             logging.info('Successfully impersonated %s using %s',
                          candidate_service_account, sa_name)
           except Exception:
             logging.error('Failed to get token for %s',
-                                                      candidate_service_account)
+                          candidate_service_account)
             logging.error(sys.exc_info()[1])
 
       logging.info('Saving results for %s into the file', project_id)
@@ -346,21 +359,21 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
 
 def iam_client_for_credentials(
-    credentials: Credentials) -> IAMCredentialsClient:
+  credentials: Credentials) -> IAMCredentialsClient:
   return iam_credentials.IAMCredentialsClient(credentials=credentials)
 
 
 def compute_client_for_credentials(
-    credentials: Credentials) -> discovery.Resource:
+  credentials: Credentials) -> discovery.Resource:
   return discovery.build(
-      'compute', 'v1', credentials=credentials, cache_discovery=False)
+    'compute', 'v1', credentials=credentials, cache_discovery=False)
 
 
 def gke_client_for_credentials(
-    credentials: Credentials
+  credentials: Credentials
 ) -> container_v1.services.cluster_manager.client.ClusterManagerClient:
   return container_v1.services.cluster_manager.ClusterManagerClient(
-      credentials=credentials)
+    credentials=credentials)
 
 
 def main():

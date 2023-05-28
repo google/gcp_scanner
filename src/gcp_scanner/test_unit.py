@@ -270,7 +270,9 @@ class TestCrawler(unittest.TestCase):
     """Test compute instance name."""
     self.assertTrue(
       verify(
-        crawl.get_compute_instances_names(PROJECT_NAME,  ClientFactory.get_client("compute").get_service(self.credentials)),
+        crawl.get_compute_instances_names(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials)),
         "compute_instances",
         True,
       )
@@ -280,7 +282,9 @@ class TestCrawler(unittest.TestCase):
     """Test compute disk names."""
     self.assertTrue(
       verify(
-        crawl.get_compute_disks_names(PROJECT_NAME, ClientFactory.get_client("compute").get_service(self.credentials)),
+        crawl.get_compute_disks_names(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials)),
         "compute_disks",
         True,
       )
@@ -290,7 +294,9 @@ class TestCrawler(unittest.TestCase):
     """Test compute image names."""
     self.assertTrue(
       verify(
-        crawl.get_compute_images_names(PROJECT_NAME, ClientFactory.get_client("compute").get_service(self.credentials)),
+        crawl.get_compute_images_names(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials)),
         "compute_images",
         True,
       )
@@ -300,7 +306,9 @@ class TestCrawler(unittest.TestCase):
     """Test machine images"""
     self.assertTrue(
       verify(
-        crawl.get_machine_images(PROJECT_NAME,  ClientFactory.get_client("compute").get_service(self.credentials)),
+        crawl.get_machine_images(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials)),
         "machine_images",
         True,
       )
@@ -310,7 +318,9 @@ class TestCrawler(unittest.TestCase):
     """Test static IPs."""
     self.assertTrue(
       verify(
-        crawl.get_static_ips(PROJECT_NAME,  ClientFactory.get_client("compute").get_service(self.credentials)),
+        crawl.get_static_ips(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials)),
         "static_ips",
         True,
       )
@@ -320,7 +330,9 @@ class TestCrawler(unittest.TestCase):
     """Test compute snapshot."""
     self.assertTrue(
       verify(
-        crawl.get_compute_snapshots(PROJECT_NAME,  ClientFactory.get_client("compute").get_service(self.credentials)),
+        crawl.get_compute_snapshots(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials)),
         "compute_snapshots",
         True,
       )
@@ -330,7 +342,9 @@ class TestCrawler(unittest.TestCase):
     """Test firewall rules."""
     self.assertTrue(
       verify(
-        crawl.get_firewall_rules(PROJECT_NAME,  ClientFactory.get_client("compute").get_service(self.credentials)),
+        crawl.get_firewall_rules(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials)),
         "firewall_rules",
       )
     )
@@ -339,7 +353,9 @@ class TestCrawler(unittest.TestCase):
     """Test subnets."""
     self.assertTrue(
       verify(
-        crawl.get_subnets(PROJECT_NAME,  ClientFactory.get_client("compute").get_service(self.credentials)),
+        crawl.get_subnets(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials)),
         "subnets",
         True,
       )
