@@ -428,7 +428,10 @@ class TestCrawler(unittest.TestCase):
     """Test SQL instances."""
     self.assertTrue(
       verify(
-        crawl.get_sql_instances(PROJECT_NAME, self.credentials),
+        crawl.get_sql_instances(
+          PROJECT_NAME,
+          ClientFactory.get_client("sqladmin").get_service(self.credentials),
+        ),
         "sql_instances",
         True,
       )
