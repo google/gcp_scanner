@@ -536,12 +536,12 @@ def get_bq_tables(project_id: str, dataset_id: str,
 
 
 def get_bq(project_id: str,
-           credentials: Credentials) -> Dict[str, List[Dict[str, Any]]]:
+           service: discovery.Resource) -> Dict[str, List[Dict[str, Any]]]:
   """Retrieve a list of BigQuery datasets available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Compute API.
 
   Returns:
     A dictionary of BigQuery dataset and corresponding tables.
@@ -550,9 +550,6 @@ def get_bq(project_id: str,
   logging.info("Retrieving BigQuery Datasets")
   bq_datasets = dict()
   try:
-    service = discovery.build(
-        "bigquery", "v2", credentials=credentials, cache_discovery=False)
-
     request = service.datasets().list(projectId=project_id)
     while request is not None:
       response = request.execute()
