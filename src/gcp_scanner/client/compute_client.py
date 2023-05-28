@@ -12,23 +12,28 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-import logging
 
-from gcp_scanner.client.compute_client import ComputeClient
-from gcp_scanner.client.dns_client import DNSClient
+from googleapiclient import discovery
+from httplib2 import Credentials
+
+from .interface_client import IClient
 
 
-class ClientFactory:
-  """Factory class for creating clients."""
+class ComputeClient(IClient):
+  """ComputeClient class."""
 
-  @classmethod
-  def get_client(cls, name):
-    """Returns the appropriate client."""
+  def get_service(self, credentials: Credentials) -> discovery.Resource:
+    """Get discovery service for Compute resource.
 
-    if name == 'dns':
-      return DNSClient()
-    if name == 'compute':
-      return ComputeClient()
+    Args:
+      credentials: An google.oauth2.credentials.Credentials object.
 
-    logging.error("Client not supported.")
-    return None
+    Returns:
+      An object of discovery.Resource
+    """
+    return discovery.build(
+      'compute',
+      'v1',
+      credentials=credentials,
+      cache_discovery=False,
+    )
