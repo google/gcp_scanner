@@ -15,6 +15,7 @@
 import logging
 
 from gcp_scanner.client.appengine_client import AppEngineClient
+from gcp_scanner.client.bigquery_client import BQClient
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
 from gcp_scanner.client.sql_client import SQLClient
@@ -38,6 +39,8 @@ class ClientFactory:
       return StorageClient()
     if name == 'sqladmin':
       return SQLClient()
+    if name == 'bigquery':
+      return BQClient()
 
     logging.error("Client not supported.")
     return None
