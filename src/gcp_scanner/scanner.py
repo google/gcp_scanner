@@ -284,7 +284,10 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get BigQuery databases and table names
       if is_set(scan_config, 'bq'):
-        project_result['bq'] = crawl.get_bq(project_id, credentials)
+        project_result['bq'] = crawl.get_bq(
+          project_id,
+          ClientFactory.get_client('bigquery').get_service(credentials),
+        )
 
       # Get PubSub Subscriptions
       if is_set(scan_config, 'pubsub_subs'):
