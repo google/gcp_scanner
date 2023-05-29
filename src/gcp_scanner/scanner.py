@@ -225,18 +225,19 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           obj = scan_config.get('storage_buckets', None)
           if obj is not None and obj.get('fetch_file_names', False) is True:
             dump_file_names = open(gcs_output_path, 'w', encoding='utf-8')
-        project_result['storage_buckets'] = crawl.get_bucket_names(project_id,
+          if obj is not None and obj.get('buckets_iam', False) is True:
+            buckets_iam_policy = dict()
+            bucket_names = crawl.get_bucket_names(project_id, credentials, dump_file_names)
+            for bucket_name in bucket_names:
+              buckets_iam_policy[bucket_name] = crawl.get_bucket_iam(bucket_name, credentials)
+            project_result['storage_buckets']['iam_policies'] = buckets_iam_policy
+        project_result['storage_buckets']['buckets'] = crawl.get_bucket_names(project_id,
                                                 credentials, dump_file_names)
         if dump_file_names is not None:
           dump_file_names.close()
 
-      # Get storage buckets IAM Policy
-      if is_set(scan_config, 'storage_buckets_iam'):
-        bucket_names = crawl.get_bucket_names(project_id, credentials, dump_file_names)
-        buckets_iam_policy = dict()
-        for bucket_name in bucket_names:
-          buckets_iam_policy[bucket_name] = crawl.get_bucket_iam(bucket_name, credentials)
-        project_result['storage_buckets_iam'] = buckets_iam_policy
+
+
 
       # Get DNS managed zones
       if is_set(scan_config, 'managed_zones'):
