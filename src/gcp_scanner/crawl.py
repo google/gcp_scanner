@@ -399,7 +399,7 @@ def get_managed_zones(project_name: str,
 
   Args:
     project_name: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
+    service: A resource object for interacting with the DNS API.
 
   Returns:
     A list of DNS zones in the project.
@@ -1028,7 +1028,7 @@ def list_dns_policies(project_id: str,
   """Retrieve a list of cloud DNS policies in the project.
   Args:
     project_id: An id of a project to query info about.
-    service: A resource object for interacting with the Compute API.
+    service: A resource object for interacting with the DNS API.
   Returns:
     A list of cloud DNS policies in the project.
   """
