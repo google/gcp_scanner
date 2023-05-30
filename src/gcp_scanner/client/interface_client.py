@@ -24,7 +24,7 @@ class IClient(metaclass=ABCMeta):
   @staticmethod
   @abstractmethod
   def get_service(credentials: Credentials) -> discovery.Resource:
-    """Create a client.
+    """Get a discovery resource for a client.
 
     Args:
       credentials: An google.oauth2.credentials.Credentials object.
@@ -33,4 +33,4 @@ class IClient(metaclass=ABCMeta):
       An object of discovery.Resource
     """
 
-    raise NotImplementedError("Child class must implement create_client")
+    raise NotImplementedError("Child class must implement get_service")
