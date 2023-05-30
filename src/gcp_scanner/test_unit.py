@@ -20,6 +20,7 @@ import datetime
 import difflib
 import filecmp
 import json
+import logging
 import os
 import shutil
 import sqlite3
@@ -33,6 +34,7 @@ from . import crawl
 from . import credsdb
 from . import scanner
 from .client.client_factory import ClientFactory
+from .client.dns_client import DNSClient
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -542,3 +544,19 @@ class TestCrawler(unittest.TestCase):
         "dns_policies",
       )
     )
+
+
+class TestClientFactory(unittest.TestCase):
+  """Unit tests for the ClientFactory class."""
+
+  def test_get_client_dns(self):
+    """Test get_client method with 'dns' name."""
+    client = ClientFactory.get_client("dns")
+    self.assertIsInstance(client, DNSClient)
+
+  def test_get_client_invalid(self):
+    """Test get_client method with invalid name."""
+    with self.assertLogs(level=logging.ERROR) as log:
+      client = ClientFactory.get_client("invalid")
+      self.assertIsNone(client)
+      self.assertEqual(log.output, ["ERROR:root:Client not supported."])
