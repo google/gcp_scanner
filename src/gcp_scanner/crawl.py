@@ -394,12 +394,12 @@ timeCreated)"
 
 
 def get_managed_zones(project_name: str,
-                      credentials: Credentials) -> List[Dict[str, Any]]:
+                      service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of DNS zones available in the project.
 
   Args:
     project_name: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the DNS API.
 
   Returns:
     A list of DNS zones in the project.
@@ -409,9 +409,6 @@ def get_managed_zones(project_name: str,
   zones_list = list()
 
   try:
-    service = discovery.build(
-        "dns", "v1", credentials=credentials, cache_discovery=False)
-
     request = service.managedZones().list(project=project_name)
     while request is not None:
       response = request.execute()
@@ -1026,18 +1023,18 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
   return list_of_repos
 
 
-def list_dns_policies(project_id: str, credentials: Credentials) -> List[Any]:
+def list_dns_policies(project_id: str,
+                      service: discovery.Resource) -> List[Any]:
   """Retrieve a list of cloud DNS policies in the project.
   Args:
     project_id: An id of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the DNS API.
   Returns:
     A list of cloud DNS policies in the project.
   """
 
   logging.info("Retrieving cloud DNS policies %s", project_id)
   list_of_policies = list()
-  service = discovery.build("dns", "v1", credentials=credentials)
 
   request = service.policies().list(
     project=project_id,

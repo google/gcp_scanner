@@ -20,6 +20,7 @@ import datetime
 import difflib
 import filecmp
 import json
+import logging
 import os
 import shutil
 import sqlite3
@@ -32,6 +33,8 @@ from google.oauth2 import credentials
 from . import crawl
 from . import credsdb
 from . import scanner
+from .client.client_factory import ClientFactory
+from .client.dns_client import DNSClient
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -362,7 +365,10 @@ class TestCrawler(unittest.TestCase):
     """Test managed zones."""
     self.assertTrue(
       verify(
-        crawl.get_managed_zones(PROJECT_NAME, credentials=self.credentials),
+        crawl.get_managed_zones(
+          PROJECT_NAME,
+          ClientFactory.get_client("dns").get_service(self.credentials),
+        ),
         "managed_zones",
         True,
       )
@@ -531,7 +537,26 @@ class TestCrawler(unittest.TestCase):
     """Test cloud DNS policies."""
     self.assertTrue(
       verify(
-        crawl.list_dns_policies(PROJECT_NAME, self.credentials),
+        crawl.list_dns_policies(
+          PROJECT_NAME,
+          ClientFactory.get_client("dns").get_service(self.credentials)
+        ),
         "dns_policies",
       )
     )
+
+
+class TestClientFactory(unittest.TestCase):
+  """Unit tests for the ClientFactory class."""
+
+  def test_get_client_dns(self):
+    """Test get_client method with 'dns' name."""
+    client = ClientFactory.get_client("dns")
+    self.assertIsInstance(client, DNSClient)
+
+  def test_get_client_invalid(self):
+    """Test get_client method with invalid name."""
+    with self.assertLogs(level=logging.ERROR) as log:
+      client = ClientFactory.get_client("invalid")
+      self.assertIsNone(client)
+      self.assertEqual(log.output, ["ERROR:root:Client not supported."])
