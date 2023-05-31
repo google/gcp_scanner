@@ -63,7 +63,6 @@ def is_set(config: Optional[dict], config_setting: str) -> Union[dict, bool]:
   obj = config.get(config_setting, {})
   return obj.get('fetch', False)
 
-
 def save_results(res_data: Dict, res_path: str, is_light: bool):
   """The function to save scan results on disk in json format.
 
@@ -198,7 +197,8 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'compute_images'):
         project_result['compute_images'] = crawl.get_compute_images_names(
           project_id,
-          compute_service)
+          compute_service,
+        )
       if is_set(scan_config, 'machine_images'):
         project_result['machine_images'] = crawl.get_machine_images(
           project_id,
@@ -207,14 +207,18 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'compute_disks'):
         project_result['compute_disks'] = crawl.get_compute_disks_names(
           project_id,
-          compute_service)
+          compute_service,
+        )
       if is_set(scan_config, 'static_ips'):
-        project_result['static_ips'] = crawl.get_static_ips(project_id,
-                                                            compute_service)
+        project_result['static_ips'] = crawl.get_static_ips(
+          project_id,
+          compute_service,
+        )
       if is_set(scan_config, 'compute_snapshots'):
         project_result['compute_snapshots'] = crawl.get_compute_snapshots(
           project_id,
-          compute_service)
+          compute_service,
+        )
       if is_set(scan_config, 'subnets'):
         project_result['subnets'] = crawl.get_subnets(
           project_id,
@@ -320,7 +324,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'sourcerepos'):
         project_result['sourcerepos'] = crawl.list_sourcerepo(
           project_id,
-          credentials
+          credentials,
         )
 
       if scan_config is not None:
