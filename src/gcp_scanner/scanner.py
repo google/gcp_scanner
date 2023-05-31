@@ -48,8 +48,8 @@ light_version_scan_schema = {
   'compute_disks': ['name', 'sizeGb', 'zone', 'status', 'sourceImage', 'users'],
   'compute_snapshots': ['name', 'status', 'sourceDisk', 'downloadBytes'],
   'managed_zones': ['name', 'dnsName', 'description', 'nameServers'],
-  'sql_instances': ['name', 'region', 'ipAddresses', 'databaseVersion'
-                                                     'state'],
+  'sql_instances': ['name', 'region', 'ipAddresses', 'databaseVersion',
+                    'state'],
   'cloud_functions': ['name', 'eventTrigger', 'status', 'entryPoint',
                       'serviceAccountEmail'],
   'kms': ['name', 'primary', 'purpose', 'createTime'],
@@ -62,6 +62,7 @@ def is_set(config: Optional[dict], config_setting: str) -> Union[dict, bool]:
     return True
   obj = config.get(config_setting, {})
   return obj.get('fetch', False)
+
 
 def save_results(res_data: Dict, res_path: str, is_light: bool):
   """The function to save scan results on disk in json format.
