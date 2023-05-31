@@ -790,7 +790,7 @@ def get_app_services(project_name: str,
 
   Args:
     project_name: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
+    service: A resource object for interacting with the AppEngine API.
 
   Returns:
     A dict representing default apps and services available in the project.
