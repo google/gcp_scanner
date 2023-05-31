@@ -392,13 +392,17 @@ timeCreated)"
 
   return buckets_dict
 
-def get_bucket_iam(bucket_name: str, credentials: Credentials
-                     ) -> List[Any]:
+def get_bucket_iam(bucket_name: str, credentials: Credentials,
+                   dump_fd: io.TextIOWrapper
+                   ) -> List[Any]:
   """Retrieve IAM policies in the bucket.
 
   Args:
     bucket_name: A name of bucket to query info about.
     credentials: An google.oauth2.credentials.Credentials object.
+    dump_fd: If set, the function will enumerate buckets IAM permissions and
+      save them in a file corresponding to provided file descriptor.
+      This is a very slow, noisy operation and should be used with caution.
   Returns:
     A list with bucket IAM policies.
   """
@@ -415,8 +419,13 @@ def get_bucket_iam(bucket_name: str, credentials: Credentials
     logging.info("Failed to IAM Policy in the %s", bucket_name)
     logging.info(sys.exc_info())
 
-  for bucket_iam_policy in response.get("bindings", []):
-    bucket_iam_policies.append(bucket_iam_policy)
+  if dump_fd is not None:
+    for bucket_iam_policy in response.get("bindings", []):
+      dump_fd.write(json.dumps(bucket_iam_policy, indent=2, sort_keys=False))
+  else:
+    for bucket_iam_policy in response.get("bindings", []):
+      bucket_iam_policies.append(bucket_iam_policy)
+
 
   return bucket_iam_policies
 

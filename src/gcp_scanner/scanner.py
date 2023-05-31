@@ -157,6 +157,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       output_file_name = f'{project_id}-{scan_time_suffix}.json'
       output_path = Path(out_dir, output_file_name)
       gcs_output_path = Path(out_dir, f'gcs-{output_file_name}')
+      gcs_iam_output_path = Path(out_dir, f'gcs-iam-{output_file_name}')
 
       try:
         with open(output_path, 'x', encoding='utf-8'):
@@ -221,15 +222,18 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Get storage buckets
       if is_set(scan_config, 'storage_buckets'):
         dump_file_names = None
+        dump_iam_file_names = None
         if scan_config is not None:
           obj = scan_config.get('storage_buckets', None)
           if obj is not None and obj.get('fetch_file_names', False) is True:
             dump_file_names = open(gcs_output_path, 'w', encoding='utf-8')
+          if obj is not None and obj.get('fetch_buckets_iam', False) is True: 
+            dump_iam_file_names = open(gcs_iam_output_path, 'w', encoding='utf-8')
           if obj is not None and obj.get('buckets_iam', False) is True:
             buckets_iam_policy = dict()
             bucket_names = crawl.get_bucket_names(project_id, credentials, dump_file_names)
             for bucket_name in bucket_names:
-              buckets_iam_policy[bucket_name] = crawl.get_bucket_iam(bucket_name, credentials)
+              buckets_iam_policy[bucket_name] = crawl.get_bucket_iam(bucket_name, credentials, dump_iam_file_names)
             project_result['storage_buckets']['iam_policies'] = buckets_iam_policy
         project_result['storage_buckets']['buckets'] = crawl.get_bucket_names(project_id,
                                                 credentials, dump_file_names)
