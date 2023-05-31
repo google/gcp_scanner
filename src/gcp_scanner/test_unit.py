@@ -34,6 +34,7 @@ from . import crawl
 from . import credsdb
 from . import scanner
 from .client.client_factory import ClientFactory
+from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
 from .credsdb import get_scopes_from_refresh_token
 
@@ -566,6 +567,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'dns' name."""
     client = ClientFactory.get_client("dns")
     self.assertIsInstance(client, DNSClient)
+
+  def test_get_client_compute(self):
+    """Test get_client method with 'compute' name."""
+    client = ClientFactory.get_client("compute")
+    self.assertIsInstance(client, ComputeClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
