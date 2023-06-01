@@ -16,6 +16,7 @@ import logging
 
 from gcp_scanner.client.appengine_client import AppEngineClient
 from gcp_scanner.client.bigquery_client import BQClient
+from gcp_scanner.client.bigtable_client import BigTableClient
 from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
@@ -47,6 +48,8 @@ class ClientFactory:
       return PubSubClient()
     if name == 'cloudfunctions':
       return CloudFunctionsClient()
+    if name == 'bigtableadmin':
+      return BigTableClient()
 
     logging.error("Client not supported.")
     return None
