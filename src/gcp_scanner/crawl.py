@@ -344,7 +344,7 @@ def get_bucket_names(project_name: str, service: discovery.Resource,
 
   Args:
     project_name: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
+    service: A resource object for interacting with the Storage API.
     dump_fd: If set, the function will enumerate files stored in buckets and
       save them in a file corresponding to provided file descriptor.
       This is a very slow, noisy operation and should be used with caution.
@@ -485,7 +485,7 @@ def get_sql_instances(project_name: str,
 
   Args:
     project_name: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
+    service: A resource object for interacting with the SQLAdmin API.
   Returns:
     A list of sql instances in the project.
   """
@@ -541,7 +541,7 @@ def get_bq(project_id: str,
 
   Args:
     project_id: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
+    service: A resource object for interacting with the BigQuery API.
 
   Returns:
     A dictionary of BigQuery dataset and corresponding tables.
@@ -574,7 +574,7 @@ def get_pubsub_subscriptions(
 
   Args:
     project_id: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
+    service: A resource object for interacting with the PubSub API.
 
   Returns:
     A list of PubSub subscriptions in the project.
