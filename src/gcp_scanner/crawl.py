@@ -684,13 +684,14 @@ def get_spanner_instances(project_id: str,
   return spanner_instances_list
 
 
-def get_filestore_instances(project_id: str,
-                            credentials: Credentials) -> List[Dict[str, Any]]:
+def get_filestore_instances(
+  project_id: str,
+  service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Filestore instances available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the File Store API.
 
   Returns:
     A list of Filestore instances in the project.
@@ -698,8 +699,6 @@ def get_filestore_instances(project_id: str,
 
   logging.info("Retrieving filestore instances")
   filestore_instances_list = list()
-  service = discovery.build(
-      "file", "v1", credentials=credentials, cache_discovery=False)
   try:
     request = service.projects().locations().instances().list(
         parent=f"projects/{project_id}/locations/-")
