@@ -34,9 +34,13 @@ from . import crawl
 from . import credsdb
 from . import scanner
 from .client.appengine_client import AppEngineClient
+from .client.bigquery_client import BQClient
 from .client.client_factory import ClientFactory
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
+from .client.pubsub_client import PubSubClient
+from .client.sql_client import SQLClient
+from .client.storage_client import StorageClient
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -369,7 +373,9 @@ class TestCrawler(unittest.TestCase):
       verify(
         crawl.get_bucket_names(
           PROJECT_NAME,
-          credentials=self.credentials,
+          service=ClientFactory.get_client("storage").get_service(
+            self.credentials,
+          ),
           dump_fd=None,
         ),
         "storage_buckets",
@@ -426,7 +432,10 @@ class TestCrawler(unittest.TestCase):
     """Test SQL instances."""
     self.assertTrue(
       verify(
-        crawl.get_sql_instances(PROJECT_NAME, self.credentials),
+        crawl.get_sql_instances(
+          PROJECT_NAME,
+          ClientFactory.get_client("sqladmin").get_service(self.credentials),
+        ),
         "sql_instances",
         True,
       )
@@ -436,7 +445,10 @@ class TestCrawler(unittest.TestCase):
     """Test BigQuery databases and table names."""
     self.assertTrue(
       verify(
-        crawl.get_bq(PROJECT_NAME, self.credentials),
+        crawl.get_bq(
+          PROJECT_NAME,
+          ClientFactory.get_client("bigquery").get_service(self.credentials),
+        ),
         "bq",
       )
     )
@@ -445,7 +457,10 @@ class TestCrawler(unittest.TestCase):
     """Test PubSub Subscriptions."""
     self.assertTrue(
       verify(
-        crawl.get_pubsub_subscriptions(PROJECT_NAME, self.credentials),
+        crawl.get_pubsub_subscriptions(
+          PROJECT_NAME,
+          ClientFactory.get_client("pubsub").get_service(self.credentials),
+        ),
         "pubsub_subs",
       )
     )
@@ -581,6 +596,26 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'appengine' name."""
     client = ClientFactory.get_client("appengine")
     self.assertIsInstance(client, AppEngineClient)
+
+  def test_get_client_storage(self):
+    """Test get_client method with 'storage' name."""
+    client = ClientFactory.get_client("storage")
+    self.assertIsInstance(client, StorageClient)
+
+  def test_get_client_sql(self):
+    """Test get_client method with 'sqladmin' name."""
+    client = ClientFactory.get_client("sqladmin")
+    self.assertIsInstance(client, SQLClient)
+
+  def test_get_client_bq(self):
+    """Test get_client method with 'bigquery' name."""
+    client = ClientFactory.get_client("bigquery")
+    self.assertIsInstance(client, BQClient)
+
+  def test_get_client_pubsub(self):
+    """Test get_client method with 'pubsub' name."""
+    client = ClientFactory.get_client("pubsub")
+    self.assertIsInstance(client, PubSubClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""

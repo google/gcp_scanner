@@ -247,7 +247,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             dump_file_names = open(gcs_output_path, 'w', encoding='utf-8')
         project_result['storage_buckets'] = crawl.get_bucket_names(
           project_id,
-          credentials,
+          ClientFactory.get_client('storage').get_service(credentials),
           dump_file_names,
         )
         if dump_file_names is not None:
@@ -277,17 +277,24 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get SQL instances
       if is_set(scan_config, 'sql_instances'):
-        project_result['sql_instances'] = crawl.get_sql_instances(project_id,
-                                                                  credentials)
+        project_result['sql_instances'] = crawl.get_sql_instances(
+          project_id,
+          ClientFactory.get_client('sqladmin').get_service(credentials),
+        )
 
       # Get BigQuery databases and table names
       if is_set(scan_config, 'bq'):
-        project_result['bq'] = crawl.get_bq(project_id, credentials)
+        project_result['bq'] = crawl.get_bq(
+          project_id,
+          ClientFactory.get_client('bigquery').get_service(credentials),
+        )
 
       # Get PubSub Subscriptions
       if is_set(scan_config, 'pubsub_subs'):
         project_result['pubsub_subs'] = crawl.get_pubsub_subscriptions(
-          project_id, credentials)
+          project_id,
+          ClientFactory.get_client('pubsub').get_service(credentials),
+        )
 
       # Get CloudFunctions list
       if is_set(scan_config, 'cloud_functions'):

@@ -337,14 +337,14 @@ def get_firewall_rules(
   return firewall_rules_list
 
 
-def get_bucket_names(project_name: str, credentials: Credentials,
+def get_bucket_names(project_name: str, service: discovery.Resource,
                      dump_fd: io.TextIOWrapper
                      ) -> Dict[str, Tuple[Any, List[Any]]]:
   """Retrieve a list of buckets available in the project.
 
   Args:
     project_name: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Storage API.
     dump_fd: If set, the function will enumerate files stored in buckets and
       save them in a file corresponding to provided file descriptor.
       This is a very slow, noisy operation and should be used with caution.
@@ -355,8 +355,6 @@ def get_bucket_names(project_name: str, credentials: Credentials,
 
   logging.info("Retrieving GCS Buckets")
   buckets_dict = dict()
-  service = discovery.build(
-      "storage", "v1", credentials=credentials, cache_discovery=False)
   # Make an authenticated API request
   request = service.buckets().list(project=project_name)
   while request is not None:
@@ -482,13 +480,12 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
 
 
 def get_sql_instances(project_name: str,
-                      credentials: Credentials) -> List[Dict[str, Any]]:
+                      service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of SQL instances available in the project.
 
   Args:
     project_name: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
-
+    service: A resource object for interacting with the SQLAdmin API.
   Returns:
     A list of sql instances in the project.
   """
@@ -496,9 +493,6 @@ def get_sql_instances(project_name: str,
   logging.info("Retrieving CloudSQL Instances")
   sql_instances_list = list()
   try:
-    service = discovery.build(
-        "sqladmin", "v1beta4", credentials=credentials, cache_discovery=False)
-
     request = service.instances().list(project=project_name)
     while request is not None:
       response = request.execute()
@@ -542,12 +536,12 @@ def get_bq_tables(project_id: str, dataset_id: str,
 
 
 def get_bq(project_id: str,
-           credentials: Credentials) -> Dict[str, List[Dict[str, Any]]]:
+           service: discovery.Resource) -> Dict[str, List[Dict[str, Any]]]:
   """Retrieve a list of BigQuery datasets available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the BigQuery API.
 
   Returns:
     A dictionary of BigQuery dataset and corresponding tables.
@@ -556,9 +550,6 @@ def get_bq(project_id: str,
   logging.info("Retrieving BigQuery Datasets")
   bq_datasets = dict()
   try:
-    service = discovery.build(
-        "bigquery", "v2", credentials=credentials, cache_discovery=False)
-
     request = service.datasets().list(projectId=project_id)
     while request is not None:
       response = request.execute()
@@ -575,13 +566,15 @@ def get_bq(project_id: str,
   return bq_datasets
 
 
-def get_pubsub_subscriptions(project_id: str,
-                             credentials: Credentials) -> List[Dict[str, Any]]:
+def get_pubsub_subscriptions(
+  project_id: str,
+  service: discovery.Resource
+) -> List[Dict[str, Any]]:
   """Retrieve a list of PubSub subscriptions available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the PubSub API.
 
   Returns:
     A list of PubSub subscriptions in the project.
@@ -590,8 +583,6 @@ def get_pubsub_subscriptions(project_id: str,
   logging.info("Retrieving PubSub Subscriptions")
   pubsubs_list = list()
   try:
-    service = discovery.build(
-        "pubsub", "v1", credentials=credentials, cache_discovery=False)
 
     request = service.projects().subscriptions().list(
         project=f"projects/{project_id}")
