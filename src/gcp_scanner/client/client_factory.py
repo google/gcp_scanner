@@ -21,6 +21,7 @@ from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
 from gcp_scanner.client.pubsub_client import PubSubClient
+from gcp_scanner.client.spanner_client import SpannerClient
 from gcp_scanner.client.sql_client import SQLClient
 from gcp_scanner.client.storage_client import StorageClient
 
@@ -36,20 +37,22 @@ class ClientFactory:
       return DNSClient()
     if name == "compute":
       return ComputeClient()
-    if name == 'appengine':
+    if name == "appengine":
       return AppEngineClient()
-    if name == 'storage':
+    if name == "storage":
       return StorageClient()
-    if name == 'sqladmin':
+    if name == "sqladmin":
       return SQLClient()
-    if name == 'bigquery':
+    if name == "bigquery":
       return BQClient()
-    if name == 'pubsub':
+    if name == "pubsub":
       return PubSubClient()
-    if name == 'cloudfunctions':
+    if name == "cloudfunctions":
       return CloudFunctionsClient()
-    if name == 'bigtableadmin':
+    if name == "bigtableadmin":
       return BigTableClient()
+    if name == "spanner":
+      return SpannerClient()
 
     logging.error("Client not supported.")
     return None
