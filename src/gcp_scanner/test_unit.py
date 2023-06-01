@@ -472,7 +472,9 @@ class TestCrawler(unittest.TestCase):
       verify(
         crawl.get_cloudfunctions(
           PROJECT_NAME,
-          ClientFactory.get_client('cloudfunctions').get_service(self.credentials),
+          ClientFactory.get_client("cloudfunctions").get_service(
+            self.credentials,
+          ),
         ),
         "cloud_functions",
       )
