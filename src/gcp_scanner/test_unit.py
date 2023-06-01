@@ -33,6 +33,7 @@ from google.oauth2 import credentials
 from . import crawl
 from . import credsdb
 from . import scanner
+from .client.appengine_client import AppEngineClient
 from .client.client_factory import ClientFactory
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
@@ -413,7 +414,10 @@ class TestCrawler(unittest.TestCase):
     """Test app services."""
     self.assertTrue(
       verify(
-        crawl.get_app_services(PROJECT_NAME, self.credentials),
+        crawl.get_app_services(
+          PROJECT_NAME,
+          ClientFactory.get_client("appengine").get_service(self.credentials),
+        ),
         "app_services",
       )
     )
@@ -572,6 +576,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'compute' name."""
     client = ClientFactory.get_client("compute")
     self.assertIsInstance(client, ComputeClient)
+
+  def test_get_client_appengine(self):
+    """Test get_client method with 'appengine' name."""
+    client = ClientFactory.get_client("appengine")
+    self.assertIsInstance(client, AppEngineClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
