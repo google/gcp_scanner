@@ -35,6 +35,7 @@ from . import credsdb
 from . import scanner
 from .client.appengine_client import AppEngineClient
 from .client.bigquery_client import BQClient
+from .client.bigtable_client import BigTableClient
 from .client.client_factory import ClientFactory
 from .client.cloud_functions_client import CloudFunctionsClient
 from .client.compute_client import ComputeClient
@@ -484,7 +485,10 @@ class TestCrawler(unittest.TestCase):
     """Test BigTable Instances."""
     self.assertTrue(
       verify(
-        crawl.get_bigtable_instances(PROJECT_NAME, self.credentials),
+        crawl.get_bigtable_instances(
+          PROJECT_NAME,
+          ClientFactory.get_client('bigtableadmin').get_service(self.credentials),
+        ),
         "bigtable_instances",
       )
     )
@@ -627,6 +631,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'cloudfunctions' name."""
     client = ClientFactory.get_client("cloudfunctions")
     self.assertIsInstance(client, CloudFunctionsClient)
+
+  def test_get_client_bigtable(self):
+    """Test get_client method with 'bigtableadmin' name."""
+    client = ClientFactory.get_client("bigtableadmin")
+    self.assertIsInstance(client, BigTableClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
