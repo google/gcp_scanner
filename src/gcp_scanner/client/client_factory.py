@@ -16,6 +16,7 @@ import logging
 
 from gcp_scanner.client.appengine_client import AppEngineClient
 from gcp_scanner.client.bigquery_client import BQClient
+from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
 from gcp_scanner.client.pubsub_client import PubSubClient
@@ -44,6 +45,8 @@ class ClientFactory:
       return BQClient()
     if name == 'pubsub':
       return PubSubClient()
+    if name == 'cloudfunctions':
+      return CloudFunctionsClient()
 
     logging.error("Client not supported.")
     return None
