@@ -598,12 +598,12 @@ def get_pubsub_subscriptions(
 
 
 def get_cloudfunctions(project_id: str,
-                       credentials: Credentials) -> List[Dict[str, Any]]:
+                       service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of CloudFunctions available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the CloudFunctions API.
 
   Returns:
     A list of CloudFunctions in the project.
@@ -611,8 +611,6 @@ def get_cloudfunctions(project_id: str,
 
   logging.info("Retrieving CloudFunctions")
   functions_list = list()
-  service = discovery.build(
-      "cloudfunctions", "v1", credentials=credentials, cache_discovery=False)
   try:
     request = service.projects().locations().functions().list(
         parent=f"projects/{project_id}/locations/-")

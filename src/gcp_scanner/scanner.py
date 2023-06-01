@@ -299,7 +299,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Get CloudFunctions list
       if is_set(scan_config, 'cloud_functions'):
         project_result['cloud_functions'] = crawl.get_cloudfunctions(
-          project_id, credentials)
+          project_id,
+          ClientFactory.get_client('cloudfunctions').get_service(credentials),
+        )
 
       # Get List of BigTable Instances
       if is_set(scan_config, 'bigtable_instances'):

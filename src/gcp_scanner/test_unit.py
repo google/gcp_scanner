@@ -36,6 +36,7 @@ from . import scanner
 from .client.appengine_client import AppEngineClient
 from .client.bigquery_client import BQClient
 from .client.client_factory import ClientFactory
+from .client.cloud_functions_client import CloudFunctionsClient
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
 from .client.pubsub_client import PubSubClient
@@ -469,7 +470,10 @@ class TestCrawler(unittest.TestCase):
     """Test CloudFunctions list."""
     self.assertTrue(
       verify(
-        crawl.get_cloudfunctions(PROJECT_NAME, self.credentials),
+        crawl.get_cloudfunctions(
+          PROJECT_NAME,
+          ClientFactory.get_client('cloudfunctions').get_service(self.credentials),
+        ),
         "cloud_functions",
       )
     )
@@ -616,6 +620,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'pubsub' name."""
     client = ClientFactory.get_client("pubsub")
     self.assertIsInstance(client, PubSubClient)
+
+  def test_get_client_cloudfunctions(self):
+    """Test get_client method with 'cloudfunctions' name."""
+    client = ClientFactory.get_client("cloudfunctions")
+    self.assertIsInstance(client, CloudFunctionsClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
