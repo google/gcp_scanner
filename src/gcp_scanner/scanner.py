@@ -313,7 +313,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Get Spanner Instances
       if is_set(scan_config, 'spanner_instances'):
         project_result['spanner_instances'] = crawl.get_spanner_instances(
-          project_id, credentials)
+          project_id,
+          ClientFactory.get_client('spanner').get_service(credentials),
+        )
 
       # Get FileStore Instances
       if is_set(scan_config, 'filestore_instances'):
