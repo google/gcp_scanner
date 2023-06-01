@@ -41,6 +41,7 @@ from .client.cloud_functions_client import CloudFunctionsClient
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
 from .client.pubsub_client import PubSubClient
+from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
 from .credsdb import get_scopes_from_refresh_token
@@ -499,7 +500,10 @@ class TestCrawler(unittest.TestCase):
     """Test Spanner Instances."""
     self.assertTrue(
       verify(
-        crawl.get_spanner_instances(PROJECT_NAME, self.credentials),
+        crawl.get_spanner_instances(
+          PROJECT_NAME,
+          ClientFactory.get_client("spanner").get_service(self.credentials),
+        ),
         "spanner_instances",
       )
     )
@@ -638,6 +642,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'bigtableadmin' name."""
     client = ClientFactory.get_client("bigtableadmin")
     self.assertIsInstance(client, BigTableClient)
+
+  def test_get_client_spanner(self):
+    """Test get_client method with 'spanner' name."""
+    client = ClientFactory.get_client("spanner")
+    self.assertIsInstance(client, SpannerClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
