@@ -487,7 +487,9 @@ class TestCrawler(unittest.TestCase):
       verify(
         crawl.get_bigtable_instances(
           PROJECT_NAME,
-          ClientFactory.get_client('bigtableadmin').get_service(self.credentials),
+          ClientFactory.get_client("bigtableadmin").get_service(
+            self.credentials,
+          ),
         ),
         "bigtable_instances",
       )
