@@ -714,12 +714,12 @@ def get_filestore_instances(
 
 
 def get_kms_keys(project_id: str,
-                 credentials: Credentials) -> List[Dict[str, Any]]:
+                 service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of KMS keys available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with KMS API.
 
   Returns:
     A list of KMS keys in the project.
@@ -728,9 +728,6 @@ def get_kms_keys(project_id: str,
   logging.info("Retrieving KMS keys")
   kms_keys_list = list()
   try:
-    service = discovery.build(
-        "cloudkms", "v1", credentials=credentials, cache_discovery=False)
-
     # list all possible locations
     locations_list = list()
     request = service.projects().locations().list(name=f"projects/{project_id}")
