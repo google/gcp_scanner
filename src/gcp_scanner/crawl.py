@@ -598,12 +598,12 @@ def get_pubsub_subscriptions(
 
 
 def get_cloudfunctions(project_id: str,
-                       credentials: Credentials) -> List[Dict[str, Any]]:
+                       service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of CloudFunctions available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the CloudFunctions API.
 
   Returns:
     A list of CloudFunctions in the project.
@@ -611,8 +611,6 @@ def get_cloudfunctions(project_id: str,
 
   logging.info("Retrieving CloudFunctions")
   functions_list = list()
-  service = discovery.build(
-      "cloudfunctions", "v1", credentials=credentials, cache_discovery=False)
   try:
     request = service.projects().locations().functions().list(
         parent=f"projects/{project_id}/locations/-")
@@ -629,12 +627,12 @@ def get_cloudfunctions(project_id: str,
 
 
 def get_bigtable_instances(project_id: str,
-                           credentials: Credentials) -> List[Dict[str, Any]]:
+                           service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of BigTable instances available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the BigTable API.
 
   Returns:
     A list of BigTable instances in the project.
@@ -643,9 +641,6 @@ def get_bigtable_instances(project_id: str,
   logging.info("Retrieving bigtable instances")
   bigtable_instances_list = list()
   try:
-    service = discovery.build(
-        "bigtableadmin", "v2", credentials=credentials, cache_discovery=False)
-
     request = service.projects().instances().list(
         parent=f"projects/{project_id}")
     while request is not None:
@@ -661,12 +656,12 @@ def get_bigtable_instances(project_id: str,
 
 
 def get_spanner_instances(project_id: str,
-                          credentials: Credentials) -> List[Dict[str, Any]]:
+                          service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Spanner instances available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Spanner API.
 
   Returns:
     A list of Spanner instances in the project.
@@ -675,9 +670,6 @@ def get_spanner_instances(project_id: str,
   logging.info("Retrieving spanner instances")
   spanner_instances_list = list()
   try:
-    service = discovery.build(
-        "spanner", "v1", credentials=credentials, cache_discovery=False)
-
     request = service.projects().instances().list(
         parent=f"projects/{project_id}")
     while request is not None:
@@ -692,13 +684,14 @@ def get_spanner_instances(project_id: str,
   return spanner_instances_list
 
 
-def get_filestore_instances(project_id: str,
-                            credentials: Credentials) -> List[Dict[str, Any]]:
+def get_filestore_instances(
+  project_id: str,
+  service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Filestore instances available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the File Store API.
 
   Returns:
     A list of Filestore instances in the project.
@@ -706,8 +699,6 @@ def get_filestore_instances(project_id: str,
 
   logging.info("Retrieving filestore instances")
   filestore_instances_list = list()
-  service = discovery.build(
-      "file", "v1", credentials=credentials, cache_discovery=False)
   try:
     request = service.projects().locations().instances().list(
         parent=f"projects/{project_id}/locations/-")

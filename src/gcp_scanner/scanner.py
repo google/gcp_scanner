@@ -299,22 +299,30 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Get CloudFunctions list
       if is_set(scan_config, 'cloud_functions'):
         project_result['cloud_functions'] = crawl.get_cloudfunctions(
-          project_id, credentials)
+          project_id,
+          ClientFactory.get_client('cloudfunctions').get_service(credentials),
+        )
 
       # Get List of BigTable Instances
       if is_set(scan_config, 'bigtable_instances'):
         project_result['bigtable_instances'] = crawl.get_bigtable_instances(
-          project_id, credentials)
+          project_id,
+          ClientFactory.get_client('bigtableadmin').get_service(credentials),
+        )
 
       # Get Spanner Instances
       if is_set(scan_config, 'spanner_instances'):
         project_result['spanner_instances'] = crawl.get_spanner_instances(
-          project_id, credentials)
+          project_id,
+          ClientFactory.get_client('spanner').get_service(credentials),
+        )
 
       # Get FileStore Instances
       if is_set(scan_config, 'filestore_instances'):
         project_result['filestore_instances'] = crawl.get_filestore_instances(
-          project_id, credentials)
+          project_id,
+          ClientFactory.get_client('file').get_service(credentials),
+        )
 
       # Get list of KMS keys
       if is_set(scan_config, 'kms'):
