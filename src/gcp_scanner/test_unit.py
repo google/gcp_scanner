@@ -41,6 +41,7 @@ from .client.cloud_functions_client import CloudFunctionsClient
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
 from .client.filestore_client import FilestoreClient
+from .client.kms_client import CloudKMSClient
 from .client.pubsub_client import PubSubClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
@@ -525,7 +526,10 @@ class TestCrawler(unittest.TestCase):
     """Test list of KMS keys."""
     self.assertTrue(
       verify(
-        crawl.get_kms_keys(PROJECT_NAME, self.credentials),
+        crawl.get_kms_keys(
+          PROJECT_NAME,
+          ClientFactory.get_client('cloudkms').get_service(self.credentials),
+        ),
         "kms",
         True,
       )
@@ -656,6 +660,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'spanner' name."""
     client = ClientFactory.get_client("file")
     self.assertIsInstance(client, FilestoreClient)
+
+  def test_get_client_filestore(self):
+    """Test get_client method with 'cloudkms' name."""
+    client = ClientFactory.get_client("cloudkms")
+    self.assertIsInstance(client, CloudKMSClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
