@@ -44,6 +44,7 @@ from .client.filestore_client import FilestoreClient
 from .client.kms_client import CloudKMSClient
 from .client.pubsub_client import PubSubClient
 from .client.service_management_client import ServiceManagementClient
+from .client.sourcerepo_client import SourceRepoClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
@@ -591,7 +592,10 @@ class TestCrawler(unittest.TestCase):
     """Test list of cloud source repositories in the project."""
     self.assertTrue(
       verify(
-        crawl.list_sourcerepo(PROJECT_NAME, self.credentials),
+        crawl.list_sourcerepo(
+          PROJECT_NAME,
+          ClientFactory.get_client("sourcerepo").get_service(self.credentials),
+        ),
         "sourcerepos",
       )
     )
@@ -676,6 +680,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'servicemanagement' name."""
     client = ClientFactory.get_client("servicemanagement")
     self.assertIsInstance(client, ServiceManagementClient)
+
+  def test_get_client_source_repo(self):
+    """Test get_client method with 'sourcerepo' name."""
+    client = ClientFactory.get_client("sourcerepo")
+    self.assertIsInstance(client, SourceRepoClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
