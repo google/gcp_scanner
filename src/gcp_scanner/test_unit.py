@@ -528,7 +528,7 @@ class TestCrawler(unittest.TestCase):
       verify(
         crawl.get_kms_keys(
           PROJECT_NAME,
-          ClientFactory.get_client('cloudkms').get_service(self.credentials),
+          ClientFactory.get_client("cloudkms").get_service(self.credentials),
         ),
         "kms",
         True,
@@ -661,7 +661,7 @@ class TestClientFactory(unittest.TestCase):
     client = ClientFactory.get_client("file")
     self.assertIsInstance(client, FilestoreClient)
 
-  def test_get_client_filestore(self):
+  def test_get_client_cloud_kms(self):
     """Test get_client method with 'cloudkms' name."""
     client = ClientFactory.get_client("cloudkms")
     self.assertIsInstance(client, CloudKMSClient)
