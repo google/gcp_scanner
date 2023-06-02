@@ -349,7 +349,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'sourcerepos'):
         project_result['sourcerepos'] = crawl.list_sourcerepo(
           project_id,
-          credentials,
+          ClientFactory.get_client('sourcerepo').get_service(credentials),
         )
 
       if scan_config is not None:

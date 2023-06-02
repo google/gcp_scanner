@@ -958,12 +958,13 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   return list_of_services
 
 
-def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
+def list_sourcerepo(project_id: str,
+                    service: discovery.Resource) -> List[Any]:
   """Retrieve a list of cloud source repositories enabled in the project.
 
   Args:
     project_id: An id of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Source Repo API.
 
   Returns:
     A list of cloud source repositories in the project.
@@ -971,7 +972,6 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
 
   logging.info("Retrieving cloud source repositories %s", project_id)
   list_of_repos = list()
-  service = discovery.build("sourcerepo", "v1", credentials=credentials)
 
   request = service.projects().repos().list(
     name="projects/" + project_id,
