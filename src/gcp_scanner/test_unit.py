@@ -568,7 +568,9 @@ class TestCrawler(unittest.TestCase):
       verify(
         crawl.get_iam_policy(
           PROJECT_NAME,
-          ClientFactory.get_client("cloudresourcemanager").get_service(self.credentials),
+          ClientFactory.get_client("cloudresourcemanager").get_service(
+            self.credentials,
+          ),
         ),
         "iam_policy",
       )
@@ -589,7 +591,9 @@ class TestCrawler(unittest.TestCase):
       verify(
         crawl.fetch_project_info(
           PROJECT_NAME,
-          ClientFactory.get_client("cloudresourcemanager").get_service(self.credentials),
+          ClientFactory.get_client("cloudresourcemanager").get_service(
+            self.credentials,
+          ),
         ),
         "project_info",
       )

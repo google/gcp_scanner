@@ -141,7 +141,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       for force_project_id in force_projects:
         res = crawl.fetch_project_info(
           force_project_id,
-          ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
+          ClientFactory.get_client('cloudresourcemanager').get_service(
+            credentials,
+          ),
         )
         if res:
           project_list.append(res)
@@ -179,7 +181,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         # Get IAM policy
         iam_policy = crawl.get_iam_policy(
           project_id,
-          ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
+          ClientFactory.get_client('cloudresourcemanager').get_service(
+            credentials,
+          ),
         )
         project_result['iam_policy'] = iam_policy
 
@@ -371,7 +375,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         if is_set(scan_config, 'iam_policy') is False:
           iam_policy = crawl.get_iam_policy(
             project_id,
-            ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
+            ClientFactory.get_client('cloudresourcemanager').get_service(
+              credentials,
+            ),
           )
 
         project_service_accounts = crawl.get_sas_for_impersonation(iam_policy)
