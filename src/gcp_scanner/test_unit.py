@@ -38,6 +38,7 @@ from .client.bigquery_client import BQClient
 from .client.bigtable_client import BigTableClient
 from .client.client_factory import ClientFactory
 from .client.cloud_functions_client import CloudFunctionsClient
+from .client.cloud_source_manager_client import CloudSourceManagerClient
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
 from .client.filestore_client import FilestoreClient
@@ -565,7 +566,10 @@ class TestCrawler(unittest.TestCase):
     """Test IAM policy."""
     self.assertTrue(
       verify(
-        crawl.get_iam_policy(PROJECT_NAME, self.credentials),
+        crawl.get_iam_policy(
+          PROJECT_NAME,
+          ClientFactory.get_client("cloudresourcemanager").get_service(self.credentials),
+        ),
         "iam_policy",
       )
     )
@@ -583,7 +587,10 @@ class TestCrawler(unittest.TestCase):
     """Test project info."""
     self.assertTrue(
       verify(
-        crawl.fetch_project_info(PROJECT_NAME, self.credentials),
+        crawl.fetch_project_info(
+          PROJECT_NAME,
+          ClientFactory.get_client("cloudresourcemanager").get_service(self.credentials),
+        ),
         "project_info",
       )
     )
@@ -685,6 +692,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'sourcerepo' name."""
     client = ClientFactory.get_client("sourcerepo")
     self.assertIsInstance(client, SourceRepoClient)
+
+  def test_get_client_cloud_resource_manager(self):
+    """Test get_client method with 'cloudresourcemanager' name."""
+    client = ClientFactory.get_client("cloudresourcemanager")
+    self.assertIsInstance(client, CloudSourceManagerClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
