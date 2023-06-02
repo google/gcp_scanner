@@ -42,12 +42,12 @@ def infinite_defaultdict():
 
 
 def fetch_project_info(project_name: str,
-                       credentials: Credentials) -> Dict[str, Any]:
+                       service: discovery.Resource) -> Dict[str, Any]:
   """Retrieve information about specific project.
 
   Args:
     project_name: Name of project to request info about
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Cloud Source API.
 
   Returns:
     Project info object or None.
@@ -56,11 +56,6 @@ def fetch_project_info(project_name: str,
   logging.info("Retrieving info about: %s", project_name)
 
   try:
-    service = googleapiclient.discovery.build(
-        "cloudresourcemanager",
-        "v1",
-        credentials=credentials,
-        cache_discovery=False)
     request = service.projects().get(projectId=project_name)
     response = request.execute()
     if "projectNumber" in response:
@@ -73,11 +68,11 @@ def fetch_project_info(project_name: str,
   return project_info
 
 
-def get_project_list(credentials: Credentials) -> List[Dict[str, Any]]:
+def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of projects accessible by credentials provided.
 
   Args:
-    credentials: An google.oauth2.credentials.Credentials object.
+     service: A resource object for interacting with the Cloud Source API.
 
   Returns:
     A list of Project objects from cloudresourcemanager RestAPI.
@@ -86,11 +81,6 @@ def get_project_list(credentials: Credentials) -> List[Dict[str, Any]]:
   logging.info("Retrieving projects list")
   project_list = list()
   try:
-    service = googleapiclient.discovery.build(
-        "cloudresourcemanager",
-        "v1",
-        credentials=credentials,
-        cache_discovery=False)
     request = service.projects().list()
     while request is not None:
       response = request.execute()
@@ -827,29 +817,21 @@ def get_endpoints(project_id: str,
 
 
 def get_iam_policy(project_name: str,
-                   credentials: Credentials) -> List[Dict[str, Any]]:
+                   service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve an IAM Policy in the project.
 
   Args:
     project_name: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the cloud source API.
 
   Returns:
     An IAM policy enforced for the project.
   """
 
   logging.info("Retrieving IAM policy for %s", project_name)
-  service = discovery.build(
-      "cloudresourcemanager",
-      "v1",
-      credentials=credentials,
-      cache_discovery=False)
 
   resource = project_name
 
-  get_policy_options = {
-      "requestedPolicyVersion": 3,
-  }
   get_policy_options = {"options": {"requestedPolicyVersion": 3}}
   try:
     request = service.projects().getIamPolicy(

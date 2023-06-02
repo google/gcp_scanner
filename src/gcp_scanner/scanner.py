@@ -131,13 +131,18 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
     # Add token scopes in the result
     sa_results['token_scopes'] = credentials.scopes
 
-    project_list = crawl.get_project_list(credentials)
+    project_list = crawl.get_project_list(
+      ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
+    )
     if len(project_list) <= 0:
       logging.info('Unable to list projects accessible from service account')
 
     if force_projects:
       for force_project_id in force_projects:
-        res = crawl.fetch_project_info(force_project_id, credentials)
+        res = crawl.fetch_project_info(
+          force_project_id,
+          ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
+        )
         if res:
           project_list.append(res)
         else:
@@ -172,7 +177,10 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       if is_set(scan_config, 'iam_policy'):
         # Get IAM policy
-        iam_policy = crawl.get_iam_policy(project_id, credentials)
+        iam_policy = crawl.get_iam_policy(
+          project_id,
+          ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
+        )
         project_result['iam_policy'] = iam_policy
 
       if is_set(scan_config, 'service_accounts'):
@@ -361,7 +369,10 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if impers is not None and impers.get('impersonate', False) is True:
         iam_client = iam_client_for_credentials(credentials)
         if is_set(scan_config, 'iam_policy') is False:
-          iam_policy = crawl.get_iam_policy(project_id, credentials)
+          iam_policy = crawl.get_iam_policy(
+            project_id,
+            ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
+          )
 
         project_service_accounts = crawl.get_sas_for_impersonation(iam_policy)
         for candidate_service_account in project_service_accounts:
