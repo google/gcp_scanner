@@ -24,6 +24,7 @@ from gcp_scanner.client.filestore_client import FilestoreClient
 from gcp_scanner.client.kms_client import CloudKMSClient
 from gcp_scanner.client.pubsub_client import PubSubClient
 from gcp_scanner.client.service_management_client import ServiceManagementClient
+from gcp_scanner.client.sourcerepo_client import SourceRepoClient
 from gcp_scanner.client.spanner_client import SpannerClient
 from gcp_scanner.client.sql_client import SQLClient
 from gcp_scanner.client.storage_client import StorageClient
@@ -62,6 +63,8 @@ class ClientFactory:
       return CloudKMSClient()
     if name == "servicemanagement":
       return ServiceManagementClient()
+    if name == "sourcerepo":
+      return SourceRepoClient()
 
     logging.error("Client not supported.")
     return None
