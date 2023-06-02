@@ -43,6 +43,7 @@ from .client.dns_client import DNSClient
 from .client.filestore_client import FilestoreClient
 from .client.kms_client import CloudKMSClient
 from .client.pubsub_client import PubSubClient
+from .client.service_management_client import ServiceManagementClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
@@ -539,7 +540,12 @@ class TestCrawler(unittest.TestCase):
     """Test endpoints' information."""
     self.assertTrue(
       verify(
-        crawl.get_endpoints(PROJECT_NAME, self.credentials),
+        crawl.get_endpoints(
+          PROJECT_NAME,
+          ClientFactory.get_client("servicemanagement").get_service(
+            self.credentials,
+          ),
+        ),
         "endpoints",
       )
     )
@@ -665,6 +671,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'cloudkms' name."""
     client = ClientFactory.get_client("cloudkms")
     self.assertIsInstance(client, CloudKMSClient)
+
+  def test_get_client_service_management(self):
+    """Test get_client method with 'servicemanagement' name."""
+    client = ClientFactory.get_client("servicemanagement")
+    self.assertIsInstance(client, ServiceManagementClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
