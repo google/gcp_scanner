@@ -21,6 +21,7 @@ from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
 from gcp_scanner.client.filestore_client import FilestoreClient
+from gcp_scanner.client.kms_client import CloudKMSClient
 from gcp_scanner.client.pubsub_client import PubSubClient
 from gcp_scanner.client.spanner_client import SpannerClient
 from gcp_scanner.client.sql_client import SQLClient
@@ -56,6 +57,8 @@ class ClientFactory:
       return SpannerClient()
     if name == "file":
       return FilestoreClient()
+    if name == "cloudkms":
+      return CloudKMSClient()
 
     logging.error("Client not supported.")
     return None
