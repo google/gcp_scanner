@@ -333,8 +333,12 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get information about Endpoints
       if is_set(scan_config, 'endpoints'):
-        project_result['endpoints'] = crawl.get_endpoints(project_id,
-                                                          credentials)
+        project_result['endpoints'] = crawl.get_endpoints(
+          project_id,
+          ClientFactory.get_client('servicemanagement').get_service(
+            credentials,
+          ),
+        )
 
       # Get list of API services enabled in the project
       if is_set(scan_config, 'services'):

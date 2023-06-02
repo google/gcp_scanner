@@ -800,12 +800,12 @@ def get_app_services(project_name: str,
 
 
 def get_endpoints(project_id: str,
-                  credentials: Credentials) -> List[Dict[str, Any]]:
+                  service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Endpoints available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the service management API.
 
   Returns:
     A list of Endpoints in the project.
@@ -814,12 +814,6 @@ def get_endpoints(project_id: str,
   logging.info("Retrieving info about endpoints")
   endpoints_list = list()
   try:
-    service = discovery.build(
-        "servicemanagement",
-        "v1",
-        credentials=credentials,
-        cache_discovery=False)
-
     request = service.services().list(producerProjectId=project_id)
     while request is not None:
       response = request.execute()
