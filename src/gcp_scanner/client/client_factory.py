@@ -38,36 +38,36 @@ class ClientFactory:
   def get_client(cls, name):
     """Returns the appropriate client."""
 
-    if name == "dns":
-      return DNSClient()
-    if name == "compute":
-      return ComputeClient()
     if name == "appengine":
       return AppEngineClient()
-    if name == "storage":
-      return StorageClient()
-    if name == "sqladmin":
-      return SQLClient()
     if name == "bigquery":
       return BQClient()
-    if name == "pubsub":
-      return PubSubClient()
-    if name == "cloudfunctions":
-      return CloudFunctionsClient()
     if name == "bigtableadmin":
       return BigTableClient()
-    if name == "spanner":
-      return SpannerClient()
-    if name == "file":
-      return FilestoreClient()
+    if name == "cloudfunctions":
+      return CloudFunctionsClient()
     if name == "cloudkms":
       return CloudKMSClient()
+    if name == "cloudresourcemanager":
+      return CloudSourceManagerClient()
+    if name == "compute":
+      return ComputeClient()
+    if name == "dns":
+      return DNSClient()
+    if name == "file":
+      return FilestoreClient()
+    if name == "pubsub":
+      return PubSubClient()
     if name == "servicemanagement":
       return ServiceManagementClient()
     if name == "sourcerepo":
       return SourceRepoClient()
-    if name == "cloudresourcemanager":
-      return CloudSourceManagerClient()
+    if name == "spanner":
+      return SpannerClient()
+    if name == "sqladmin":
+      return SQLClient()
+    if name == "storage":
+      return StorageClient()
 
     logging.error("Client not supported.")
     return None
