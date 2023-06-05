@@ -38,10 +38,14 @@ from .client.bigquery_client import BQClient
 from .client.bigtable_client import BigTableClient
 from .client.client_factory import ClientFactory
 from .client.cloud_functions_client import CloudFunctionsClient
+from .client.cloud_source_manager_client import CloudSourceManagerClient
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
 from .client.filestore_client import FilestoreClient
+from .client.kms_client import CloudKMSClient
 from .client.pubsub_client import PubSubClient
+from .client.service_management_client import ServiceManagementClient
+from .client.sourcerepo_client import SourceRepoClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
@@ -525,7 +529,10 @@ class TestCrawler(unittest.TestCase):
     """Test list of KMS keys."""
     self.assertTrue(
       verify(
-        crawl.get_kms_keys(PROJECT_NAME, self.credentials),
+        crawl.get_kms_keys(
+          PROJECT_NAME,
+          ClientFactory.get_client("cloudkms").get_service(self.credentials),
+        ),
         "kms",
         True,
       )
@@ -535,7 +542,12 @@ class TestCrawler(unittest.TestCase):
     """Test endpoints' information."""
     self.assertTrue(
       verify(
-        crawl.get_endpoints(PROJECT_NAME, self.credentials),
+        crawl.get_endpoints(
+          PROJECT_NAME,
+          ClientFactory.get_client("servicemanagement").get_service(
+            self.credentials,
+          ),
+        ),
         "endpoints",
       )
     )
@@ -554,7 +566,12 @@ class TestCrawler(unittest.TestCase):
     """Test IAM policy."""
     self.assertTrue(
       verify(
-        crawl.get_iam_policy(PROJECT_NAME, self.credentials),
+        crawl.get_iam_policy(
+          PROJECT_NAME,
+          ClientFactory.get_client("cloudresourcemanager").get_service(
+            self.credentials,
+          ),
+        ),
         "iam_policy",
       )
     )
@@ -572,7 +589,12 @@ class TestCrawler(unittest.TestCase):
     """Test project info."""
     self.assertTrue(
       verify(
-        crawl.fetch_project_info(PROJECT_NAME, self.credentials),
+        crawl.fetch_project_info(
+          PROJECT_NAME,
+          ClientFactory.get_client("cloudresourcemanager").get_service(
+            self.credentials,
+          ),
+        ),
         "project_info",
       )
     )
@@ -581,7 +603,10 @@ class TestCrawler(unittest.TestCase):
     """Test list of cloud source repositories in the project."""
     self.assertTrue(
       verify(
-        crawl.list_sourcerepo(PROJECT_NAME, self.credentials),
+        crawl.list_sourcerepo(
+          PROJECT_NAME,
+          ClientFactory.get_client("sourcerepo").get_service(self.credentials),
+        ),
         "sourcerepos",
       )
     )
@@ -656,6 +681,26 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'spanner' name."""
     client = ClientFactory.get_client("file")
     self.assertIsInstance(client, FilestoreClient)
+
+  def test_get_client_cloud_kms(self):
+    """Test get_client method with 'cloudkms' name."""
+    client = ClientFactory.get_client("cloudkms")
+    self.assertIsInstance(client, CloudKMSClient)
+
+  def test_get_client_service_management(self):
+    """Test get_client method with 'servicemanagement' name."""
+    client = ClientFactory.get_client("servicemanagement")
+    self.assertIsInstance(client, ServiceManagementClient)
+
+  def test_get_client_source_repo(self):
+    """Test get_client method with 'sourcerepo' name."""
+    client = ClientFactory.get_client("sourcerepo")
+    self.assertIsInstance(client, SourceRepoClient)
+
+  def test_get_client_cloud_resource_manager(self):
+    """Test get_client method with 'cloudresourcemanager' name."""
+    client = ClientFactory.get_client("cloudresourcemanager")
+    self.assertIsInstance(client, CloudSourceManagerClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""

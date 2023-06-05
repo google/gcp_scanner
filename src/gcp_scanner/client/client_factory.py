@@ -18,10 +18,14 @@ from gcp_scanner.client.appengine_client import AppEngineClient
 from gcp_scanner.client.bigquery_client import BQClient
 from gcp_scanner.client.bigtable_client import BigTableClient
 from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
+from gcp_scanner.client.cloud_source_manager_client import CloudSourceManagerClient
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
 from gcp_scanner.client.filestore_client import FilestoreClient
+from gcp_scanner.client.kms_client import CloudKMSClient
 from gcp_scanner.client.pubsub_client import PubSubClient
+from gcp_scanner.client.service_management_client import ServiceManagementClient
+from gcp_scanner.client.sourcerepo_client import SourceRepoClient
 from gcp_scanner.client.spanner_client import SpannerClient
 from gcp_scanner.client.sql_client import SQLClient
 from gcp_scanner.client.storage_client import StorageClient
@@ -34,28 +38,36 @@ class ClientFactory:
   def get_client(cls, name):
     """Returns the appropriate client."""
 
-    if name == "dns":
-      return DNSClient()
-    if name == "compute":
-      return ComputeClient()
     if name == "appengine":
       return AppEngineClient()
-    if name == "storage":
-      return StorageClient()
-    if name == "sqladmin":
-      return SQLClient()
     if name == "bigquery":
       return BQClient()
-    if name == "pubsub":
-      return PubSubClient()
-    if name == "cloudfunctions":
-      return CloudFunctionsClient()
     if name == "bigtableadmin":
       return BigTableClient()
-    if name == "spanner":
-      return SpannerClient()
+    if name == "cloudfunctions":
+      return CloudFunctionsClient()
+    if name == "cloudkms":
+      return CloudKMSClient()
+    if name == "cloudresourcemanager":
+      return CloudSourceManagerClient()
+    if name == "compute":
+      return ComputeClient()
+    if name == "dns":
+      return DNSClient()
     if name == "file":
       return FilestoreClient()
+    if name == "pubsub":
+      return PubSubClient()
+    if name == "servicemanagement":
+      return ServiceManagementClient()
+    if name == "sourcerepo":
+      return SourceRepoClient()
+    if name == "spanner":
+      return SpannerClient()
+    if name == "sqladmin":
+      return SQLClient()
+    if name == "storage":
+      return StorageClient()
 
     logging.error("Client not supported.")
     return None

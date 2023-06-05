@@ -42,12 +42,12 @@ def infinite_defaultdict():
 
 
 def fetch_project_info(project_name: str,
-                       credentials: Credentials) -> Dict[str, Any]:
+                       service: discovery.Resource) -> Dict[str, Any]:
   """Retrieve information about specific project.
 
   Args:
     project_name: Name of project to request info about
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Cloud Source API.
 
   Returns:
     Project info object or None.
@@ -56,11 +56,6 @@ def fetch_project_info(project_name: str,
   logging.info("Retrieving info about: %s", project_name)
 
   try:
-    service = googleapiclient.discovery.build(
-        "cloudresourcemanager",
-        "v1",
-        credentials=credentials,
-        cache_discovery=False)
     request = service.projects().get(projectId=project_name)
     response = request.execute()
     if "projectNumber" in response:
@@ -73,11 +68,11 @@ def fetch_project_info(project_name: str,
   return project_info
 
 
-def get_project_list(credentials: Credentials) -> List[Dict[str, Any]]:
+def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of projects accessible by credentials provided.
 
   Args:
-    credentials: An google.oauth2.credentials.Credentials object.
+     service: A resource object for interacting with the Cloud Source API.
 
   Returns:
     A list of Project objects from cloudresourcemanager RestAPI.
@@ -86,11 +81,6 @@ def get_project_list(credentials: Credentials) -> List[Dict[str, Any]]:
   logging.info("Retrieving projects list")
   project_list = list()
   try:
-    service = googleapiclient.discovery.build(
-        "cloudresourcemanager",
-        "v1",
-        credentials=credentials,
-        cache_discovery=False)
     request = service.projects().list()
     while request is not None:
       response = request.execute()
@@ -714,12 +704,12 @@ def get_filestore_instances(
 
 
 def get_kms_keys(project_id: str,
-                 credentials: Credentials) -> List[Dict[str, Any]]:
+                 service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of KMS keys available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with KMS API.
 
   Returns:
     A list of KMS keys in the project.
@@ -728,9 +718,6 @@ def get_kms_keys(project_id: str,
   logging.info("Retrieving KMS keys")
   kms_keys_list = list()
   try:
-    service = discovery.build(
-        "cloudkms", "v1", credentials=credentials, cache_discovery=False)
-
     # list all possible locations
     locations_list = list()
     request = service.projects().locations().list(name=f"projects/{project_id}")
@@ -803,12 +790,12 @@ def get_app_services(project_name: str,
 
 
 def get_endpoints(project_id: str,
-                  credentials: Credentials) -> List[Dict[str, Any]]:
+                  service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Endpoints available in the project.
 
   Args:
     project_id: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the service management API.
 
   Returns:
     A list of Endpoints in the project.
@@ -817,12 +804,6 @@ def get_endpoints(project_id: str,
   logging.info("Retrieving info about endpoints")
   endpoints_list = list()
   try:
-    service = discovery.build(
-        "servicemanagement",
-        "v1",
-        credentials=credentials,
-        cache_discovery=False)
-
     request = service.services().list(producerProjectId=project_id)
     while request is not None:
       response = request.execute()
@@ -836,29 +817,21 @@ def get_endpoints(project_id: str,
 
 
 def get_iam_policy(project_name: str,
-                   credentials: Credentials) -> List[Dict[str, Any]]:
+                   service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve an IAM Policy in the project.
 
   Args:
     project_name: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the cloud source API.
 
   Returns:
     An IAM policy enforced for the project.
   """
 
   logging.info("Retrieving IAM policy for %s", project_name)
-  service = discovery.build(
-      "cloudresourcemanager",
-      "v1",
-      credentials=credentials,
-      cache_discovery=False)
 
   resource = project_name
 
-  get_policy_options = {
-      "requestedPolicyVersion": 3,
-  }
   get_policy_options = {"options": {"requestedPolicyVersion": 3}}
   try:
     request = service.projects().getIamPolicy(
@@ -967,12 +940,13 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
   return list_of_services
 
 
-def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
+def list_sourcerepo(project_id: str,
+                    service: discovery.Resource) -> List[Any]:
   """Retrieve a list of cloud source repositories enabled in the project.
 
   Args:
     project_id: An id of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Source Repo API.
 
   Returns:
     A list of cloud source repositories in the project.
@@ -980,7 +954,6 @@ def list_sourcerepo(project_id: str, credentials: Credentials) -> List[Any]:
 
   logging.info("Retrieving cloud source repositories %s", project_id)
   list_of_repos = list()
-  service = discovery.build("sourcerepo", "v1", credentials=credentials)
 
   request = service.projects().repos().list(
     name="projects/" + project_id,
