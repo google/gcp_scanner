@@ -45,8 +45,8 @@ Please note that GCP offers [Policy Analyzer](https://cloud.google.com/policy-in
 To install the package, use `pip` (you must also have `git` installed):
 
 ```
-pip install https://github.com/google/gcp_scanner/archive/main.zip
-gcp-scanner --help
+pip install gcp_scanner
+python3 -m gcp_scanner --help
 ```
 
 Alternatively:
