@@ -22,9 +22,11 @@ from gcp_scanner.client.cloud_source_manager_client import CloudSourceManagerCli
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
 from gcp_scanner.client.filestore_client import FilestoreClient
+from gcp_scanner.client.iam_client import IAMClient
 from gcp_scanner.client.kms_client import CloudKMSClient
 from gcp_scanner.client.pubsub_client import PubSubClient
 from gcp_scanner.client.service_management_client import ServiceManagementClient
+from gcp_scanner.client.serviceusage_client import ServiceUsageClient
 from gcp_scanner.client.sourcerepo_client import SourceRepoClient
 from gcp_scanner.client.spanner_client import SpannerClient
 from gcp_scanner.client.sql_client import SQLClient
@@ -56,10 +58,14 @@ class ClientFactory:
       return DNSClient()
     if name == "file":
       return FilestoreClient()
+    if name == "iam":
+      return IAMClient()
     if name == "pubsub":
       return PubSubClient()
     if name == "servicemanagement":
       return ServiceManagementClient()
+    if name == "serviceusage":
+      return ServiceUsageClient()
     if name == "sourcerepo":
       return SourceRepoClient()
     if name == "spanner":
