@@ -26,5 +26,5 @@ end_perf_counter = perf_counter()
 end_process_time = process_time()
 elapsed_perf_counter = end_perf_counter - start_perf_counter
 elapsed_process_time = end_process_time - start_process_time
-logging.info("Elapsed time (CPU bound): %.6fs", elapsed_perf_counter)
-logging.info("Elapsed time (not CPU bound): %.6fs", elapsed_process_time)
+logging.info("Elapsed time since the program started: %.6fs", elapsed_perf_counter)
+logging.info("Elapsed time spent by the current process executing code: %.6fs", elapsed_process_time)
