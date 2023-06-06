@@ -190,7 +190,11 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'service_accounts'):
         # Get service accounts
         project_service_accounts = crawl.get_service_accounts(
-          project_number, credentials)
+          project_number,
+          ClientFactory.get_client('iam').get_service(
+            credentials,
+          ),
+        )
         project_result['service_accounts'] = project_service_accounts
 
       # Iterate over discovered service accounts by attempting impersonation
@@ -354,8 +358,12 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get list of API services enabled in the project
       if is_set(scan_config, 'services'):
-        project_result['services'] = crawl.list_services(project_id,
-                                                         credentials)
+        project_result['services'] = crawl.list_services(
+          project_id,
+          ClientFactory.get_client('serviceusage').get_service(
+            credentials,
+          ),
+        )
 
       # Get list of cloud source repositories enabled in the project
       if is_set(scan_config, 'sourcerepos'):
