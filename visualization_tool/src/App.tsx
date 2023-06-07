@@ -1,4 +1,4 @@
-import viteLogo from '/logo.png'
+import logo from '/logo.png'
 import './App.css'
 
 function App() {
@@ -6,8 +6,8 @@ function App() {
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
+        <a href="https://github.com/google/gcp_scanner" target="_blank">
+          <img src={logo} className="logo" alt="Vite logo" />
         </a>
       </div>
       <h1>Hello GCP Scanner!</h1>
