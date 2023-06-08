@@ -6,13 +6,13 @@ static files for the GUI.
 """
 
 from flask import Flask
-from flask import send_file, url_for
+from flask import send_from_directory
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-  return send_file(url_for("static/index.html"))
+  return send_from_directory("static", "index.html")
 
 def main():
   app.run(debug=False)
