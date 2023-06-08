@@ -16,18 +16,19 @@
 
 """
 
-from . import scanner
-import unittest.mock
-import os
 import json
+import os
+import unittest.mock
+
+from . import scanner
 
 RESOURCE_COUNT = 29
 RESULTS_JSON_COUNT = 1
 PROJECT_INFO_COUNT = 5
 IAM_POLICY_COUNT = 11
-COMPUTE_INSTANCES_COUNT = 1
+COMPUTE_INSTANCES_COUNT = 2
 COMPUTE_IMAGES_COUNT = 1
-COMPUTE_DISKS_COUNT = 1
+COMPUTE_DISKS_COUNT = 2
 STATIC_IPS_COUNT = 38
 COMPUTE_SNAPSHOTS_COUNT = 1
 SUBNETS_COUNT = 38
@@ -49,13 +50,15 @@ KMS_COUNT = 1
 SERVICES_COUNT = 37
 SERVICE_ACCOUNTS_COUNT = 2
 
-def check_obj_entry(res_dict, subojects_count, entry_name, volatile = False):
+
+def check_obj_entry(res_dict, subojects_count, entry_name, volatile=False):
   obj = res_dict.get(entry_name, None)
   if volatile is True:
-    assert obj is not None and (len(obj) == subojects_count or\
+    assert obj is not None and (len(obj) == subojects_count or \
                                 len(obj) == subojects_count - 1)
   else:
     assert obj is not None and len(obj) == subojects_count
+
 
 def validate_result():
   file_name = os.listdir("res/")[0]
@@ -66,7 +69,6 @@ def validate_result():
   project = res_data["projects"].get("test-gcp-scanner-2", None)
   assert project is not None
   assert len(project) == RESOURCE_COUNT
-
 
   check_obj_entry(project, PROJECT_INFO_COUNT, "project_info")
   check_obj_entry(project, IAM_POLICY_COUNT, "iam_policy")
@@ -87,7 +89,7 @@ def validate_result():
   check_obj_entry(project, STORAGE_BUCKETS_COUNT, "storage_buckets")
 
   check_obj_entry(project, GKE_CLUSTERS_COUNT, "gke_clusters")
-   # Volatile test. US zone sometimes appear and disappear.
+  # Volatile test. US zone sometimes appear and disappear.
   check_obj_entry(project, GKE_IMAGES_COUNT, "gke_images", True)
 
   check_obj_entry(project, SQL_INSTANCES_COUNT, "sql_instances")

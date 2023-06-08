@@ -42,9 +42,11 @@ from .client.cloud_source_manager_client import CloudSourceManagerClient
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
 from .client.filestore_client import FilestoreClient
+from .client.iam_client import IAMClient
 from .client.kms_client import CloudKMSClient
 from .client.pubsub_client import PubSubClient
 from .client.service_management_client import ServiceManagementClient
+from .client.serviceusage_client import ServiceUsageClient
 from .client.sourcerepo_client import SourceRepoClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
@@ -556,7 +558,12 @@ class TestCrawler(unittest.TestCase):
     """Test list of API services enabled in the project."""
     self.assertTrue(
       verify(
-        crawl.list_services(PROJECT_NAME, self.credentials),
+        crawl.list_services(
+          PROJECT_NAME,
+          ClientFactory.get_client("serviceusage").get_service(
+            self.credentials,
+          ),
+        ),
         "services",
         True
       )
@@ -580,7 +587,12 @@ class TestCrawler(unittest.TestCase):
     """Test service accounts."""
     self.assertTrue(
       verify(
-        crawl.get_service_accounts(PROJECT_NAME, self.credentials),
+        crawl.get_service_accounts(
+          PROJECT_NAME,
+          ClientFactory.get_client("iam").get_service(
+            self.credentials,
+          ),
+        ),
         "service_accounts",
       )
     )
@@ -701,6 +713,16 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'cloudresourcemanager' name."""
     client = ClientFactory.get_client("cloudresourcemanager")
     self.assertIsInstance(client, CloudSourceManagerClient)
+
+  def test_get_client_service_usage(self):
+    """Test get_client method with 'serviceusage' name."""
+    client = ClientFactory.get_client("serviceusage")
+    self.assertIsInstance(client, ServiceUsageClient)
+
+  def test_get_client_iam(self):
+    """Test get_client method with 'iam' name."""
+    client = ClientFactory.get_client("iam")
+    self.assertIsInstance(client, IAMClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""

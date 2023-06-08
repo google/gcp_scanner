@@ -27,7 +27,6 @@ from typing import List, Dict, Any, Tuple
 from google.cloud import container_v1
 import googleapiclient
 from googleapiclient import discovery
-from httplib2 import Credentials
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -874,12 +873,12 @@ def get_sas_for_impersonation(
 
 
 def get_service_accounts(project_name: str,
-                         credentials: Credentials) -> List[Tuple[str, str]]:
+                         service: discovery.Resource) -> List[Tuple[str, str]]:
   """Retrieve a list of service accounts managed in the project.
 
   Args:
     project_name: A name of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the IAM API.
 
   Returns:
     A list of service accounts managed in the project.
@@ -887,8 +886,6 @@ def get_service_accounts(project_name: str,
 
   logging.info("Retrieving SA list %s", project_name)
   service_accounts = []
-  service = discovery.build(
-      "iam", "v1", credentials=credentials, cache_discovery=False)
 
   name = f"projects/{project_name}"
 
@@ -909,12 +906,12 @@ def get_service_accounts(project_name: str,
   return service_accounts
 
 
-def list_services(project_id: str, credentials: Credentials) -> List[Any]:
+def list_services(project_id: str, service: discovery.Resource) -> List[Any]:
   """Retrieve a list of services enabled in the project.
 
   Args:
     project_id: An id of a project to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
+    service: A resource object for interacting with the Service Usage API.
 
   Returns:
     A list of service API objects enabled in the project.
@@ -922,16 +919,15 @@ def list_services(project_id: str, credentials: Credentials) -> List[Any]:
 
   logging.info("Retrieving services list %s", project_id)
   list_of_services = list()
-  serviceusage = discovery.build("serviceusage", "v1", credentials=credentials)
 
-  request = serviceusage.services().list(
+  request = service.services().list(
       parent="projects/" + project_id, pageSize=200, filter="state:ENABLED")
   try:
     while request is not None:
       response = request.execute()
       list_of_services.extend(response.get("services", []))
 
-      request = serviceusage.services().list_next(
+      request = service.services().list_next(
           previous_request=request, previous_response=response)
   except Exception:
     logging.info("Failed to retrieve services for project %s", project_id)
