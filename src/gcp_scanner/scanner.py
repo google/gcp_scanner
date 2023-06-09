@@ -35,6 +35,7 @@ from . import arguments
 from . import crawl
 from . import credsdb
 from .client.client_factory import ClientFactory
+from .crawler.crawler_factory import CrawlerFactory
 from .models import SpiderContext
 
 # We define the schema statically to make it easier for the user and avoid extra
@@ -207,7 +208,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       ).get_service(credentials)
 
       if is_set(scan_config, 'compute_instances'):
-        project_result['compute_instances'] = crawl.get_compute_instances_names(
+        project_result['compute_instances'] = CrawlerFactory.create_crawler(
+          'compute_instances',
+        ).crawl(
           project_id,
           compute_service,
         )
