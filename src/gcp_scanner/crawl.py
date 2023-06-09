@@ -92,37 +92,6 @@ def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
   return project_list
 
 
-def get_compute_disks_names(
-    project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of Compute disks available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
-
-  Returns:
-    A list of disk objects.
-  """
-
-  logging.info("Retrieving list of Compute Disk names")
-  disk_names_list = list()
-  try:
-    request = service.disks().aggregatedList(project=project_name)
-    while request is not None:
-      response = request.execute()
-      if response.get("items", None) is not None:
-        disk_names_list = [disk
-          for _, disks_scoped_list in response["items"].items()
-          for disk in disks_scoped_list.get("disks", [])]
-      request = service.disks().aggregatedList_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to enumerate compute disks in the %s", project_name)
-    logging.info(sys.exc_info())
-
-  return disk_names_list
-
-
 def get_static_ips(project_name: str,
                    service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of static IPs available in the project.
