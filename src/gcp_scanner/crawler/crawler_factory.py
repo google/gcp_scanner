@@ -15,6 +15,7 @@ import logging
 
 from gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
 from gcp_scanner.crawler.compute_instances_crawler import ComputeInstancesCrawler
+from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
 
 
 class CrawlerFactory:
@@ -28,6 +29,8 @@ class CrawlerFactory:
       return ComputeInstancesCrawler()
     if name == "compute_images":
       return ComputeImagesCrawler()
+    if name == "machine_images":
+      return ComputeMachineImagesCrawler()
 
     logging.error("Crawler not supported.")
     return None
