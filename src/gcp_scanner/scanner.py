@@ -229,7 +229,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           compute_service,
         )
       if is_set(scan_config, 'compute_disks'):
-        project_result['compute_disks'] = crawl.get_compute_disks_names(
+        project_result['compute_disks'] = CrawlerFactory.create_crawler(
+          'compute_disks',
+        ).crawl(
           project_id,
           compute_service,
         )
