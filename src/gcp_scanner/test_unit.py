@@ -54,6 +54,7 @@ from .client.storage_client import StorageClient
 from .crawler.compute_images_crawler import ComputeImagesCrawler
 from .crawler.compute_instances_crawler import ComputeInstancesCrawler
 from .crawler.crawler_factory import CrawlerFactory
+from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -331,9 +332,12 @@ class TestCrawler(unittest.TestCase):
     """Test machine images"""
     self.assertTrue(
       verify(
-        crawl.get_machine_images(
+        CrawlerFactory.create_crawler(
+          "machine_images",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "machine_images",
         True,
       )
@@ -748,10 +752,16 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'compute_instances' name."""
     crawler = CrawlerFactory.create_crawler("compute_instances")
     self.assertIsInstance(crawler, ComputeInstancesCrawler)
+
   def test_create_crawler_compute_images(self):
     """Test create_crawler method with 'compute_images' name."""
     crawler = CrawlerFactory.create_crawler("compute_images")
     self.assertIsInstance(crawler, ComputeImagesCrawler)
+
+  def test_create_crawler_compute_machine_images(self):
+    """Test create_crawler method with 'machine_images' name."""
+    crawler = CrawlerFactory.create_crawler("machine_images")
+    self.assertIsInstance(crawler, ComputeMachineImagesCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
