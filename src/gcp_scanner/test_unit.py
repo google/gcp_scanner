@@ -51,6 +51,7 @@ from .client.sourcerepo_client import SourceRepoClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
+from .crawler.compute_disks_crawler import ComputeDisksCrawler
 from .crawler.compute_images_crawler import ComputeImagesCrawler
 from .crawler.compute_instances_crawler import ComputeInstancesCrawler
 from .crawler.crawler_factory import CrawlerFactory
@@ -305,9 +306,12 @@ class TestCrawler(unittest.TestCase):
     """Test compute disk names."""
     self.assertTrue(
       verify(
-        crawl.get_compute_disks_names(
+        CrawlerFactory.create_crawler(
+          "compute_disks",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "compute_disks",
         True,
       )
@@ -762,6 +766,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'machine_images' name."""
     crawler = CrawlerFactory.create_crawler("machine_images")
     self.assertIsInstance(crawler, ComputeMachineImagesCrawler)
+
+  def test_create_crawler_compute_disks(self):
+    """Test create_crawler method with 'compute_disks' name."""
+    crawler = CrawlerFactory.create_crawler("compute_disks")
+    self.assertIsInstance(crawler, ComputeDisksCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
