@@ -222,7 +222,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           compute_service,
         )
       if is_set(scan_config, 'machine_images'):
-        project_result['machine_images'] = crawl.get_machine_images(
+        project_result['machine_images'] = CrawlerFactory.create_crawler(
+          'machine_images',
+        ).crawl(
           project_id,
           compute_service,
         )
