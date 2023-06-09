@@ -92,33 +92,6 @@ def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
   return project_list
 
 
-def get_compute_images_names(
-    project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of Compute images available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
-
-  Returns:
-    A list of image objects.
-  """
-
-  logging.info("Retrieving list of Compute Image names")
-  images_result = list()
-  try:
-    request = service.images().list(project=project_name)
-    while request is not None:
-      response = request.execute()
-      images_result = response.get("items", [])
-      request = service.images().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to enumerate compute images in the %s", project_name)
-    logging.info(sys.exc_info())
-  return images_result
-
-
 def get_machine_images(
     project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Machine Images Resources available in the project.
