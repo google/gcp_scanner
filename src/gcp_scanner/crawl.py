@@ -92,37 +92,6 @@ def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
   return project_list
 
 
-def get_compute_instances_names(
-    project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of Compute VMs available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
-
-  Returns:
-    A list of instance objects.
-  """
-
-  logging.info("Retrieving list of Compute Instances")
-  images_result = list()
-  try:
-    request = service.instances().aggregatedList(project=project_name)
-    while request is not None:
-      response = request.execute()
-      if response.get("items", None) is not None:
-        images_result = [instance
-          for _, instances_scoped_list in response["items"].items()
-          for instance in instances_scoped_list.get("instances",[])]
-      request = service.instances().aggregatedList_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to enumerate compute instances in the %s",
-                 project_name)
-    logging.info(sys.exc_info())
-  return images_result
-
-
 def get_compute_images_names(
     project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Compute images available in the project.
