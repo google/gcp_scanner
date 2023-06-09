@@ -13,6 +13,7 @@
 #   limitations under the License.
 import logging
 
+from gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
 from gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
 from gcp_scanner.crawler.compute_instances_crawler import ComputeInstancesCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
@@ -31,6 +32,8 @@ class CrawlerFactory:
       return ComputeImagesCrawler()
     if name == "machine_images":
       return ComputeMachineImagesCrawler()
+    if name == "compute_disks":
+      return ComputeDisksCrawler()
 
     logging.error("Crawler not supported.")
     return None
