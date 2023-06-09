@@ -51,6 +51,8 @@ from .client.sourcerepo_client import SourceRepoClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
+from .crawler.compute_instances_crawler import ComputeInstancesCrawler
+from .crawler.crawler_factory import CrawlerFactory
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -286,9 +288,12 @@ class TestCrawler(unittest.TestCase):
     """Test compute instance name."""
     self.assertTrue(
       verify(
-        crawl.get_compute_instances_names(
+        CrawlerFactory.create_crawler(
+          "compute_instances",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "compute_instances",
         True,
       )
@@ -730,3 +735,19 @@ class TestClientFactory(unittest.TestCase):
       client = ClientFactory.get_client("invalid")
       self.assertIsNone(client)
       self.assertEqual(log.output, ["ERROR:root:Client not supported."])
+
+
+class TestCrawlerFactory(unittest.TestCase):
+  """Unit tests for the CrawlerFactory class."""
+
+  def test_create_crawler_compute_instances(self):
+    """Test create_crawler method with 'compute_instances' name."""
+    crawler = CrawlerFactory.create_crawler("compute_instances")
+    self.assertIsInstance(crawler, ComputeInstancesCrawler)
+
+  def test_create_crawler_invalid(self):
+    """Test create_crawler method with invalid name."""
+    with self.assertLogs(level=logging.ERROR) as log:
+      crawler = CrawlerFactory.create_crawler("invalid")
+      self.assertIsNone(crawler)
+      self.assertEqual(log.output, ["ERROR:root:Crawler not supported."])
