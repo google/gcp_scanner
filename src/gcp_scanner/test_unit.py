@@ -54,6 +54,7 @@ from .client.storage_client import StorageClient
 from .crawler.compute_disks_crawler import ComputeDisksCrawler
 from .crawler.compute_images_crawler import ComputeImagesCrawler
 from .crawler.compute_instances_crawler import ComputeInstancesCrawler
+from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from .crawler.crawler_factory import CrawlerFactory
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .credsdb import get_scopes_from_refresh_token
@@ -351,9 +352,12 @@ class TestCrawler(unittest.TestCase):
     """Test static IPs."""
     self.assertTrue(
       verify(
-        crawl.get_static_ips(
+        CrawlerFactory.create_crawler(
+          "static_ips",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "static_ips",
         True,
       )
@@ -771,6 +775,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'compute_disks' name."""
     crawler = CrawlerFactory.create_crawler("compute_disks")
     self.assertIsInstance(crawler, ComputeDisksCrawler)
+
+  def test_create_crawler_compute_static_ips(self):
+    """Test create_crawler method with 'static_ips' name."""
+    crawler = CrawlerFactory.create_crawler("static_ips")
+    self.assertIsInstance(crawler, ComputeStaticIPsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
