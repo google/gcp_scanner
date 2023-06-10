@@ -243,7 +243,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           compute_service,
         )
       if is_set(scan_config, 'compute_snapshots'):
-        project_result['compute_snapshots'] = crawl.get_compute_snapshots(
+        project_result['compute_snapshots'] = CrawlerFactory.create_crawler(
+          'compute_snapshots',
+        ).crawl(
           project_id,
           compute_service,
         )
