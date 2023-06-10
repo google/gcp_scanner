@@ -257,7 +257,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           compute_service,
         )
       if is_set(scan_config, 'firewall_rules'):
-        project_result['firewall_rules'] = crawl.get_firewall_rules(
+        project_result['firewall_rules'] = CrawlerFactory.create_crawler(
+          'firewall_rules',
+        ).crawl(
           project_id,
           compute_service,
         )
