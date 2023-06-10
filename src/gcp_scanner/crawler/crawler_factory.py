@@ -16,6 +16,7 @@ import logging
 from gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
 from gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
 from gcp_scanner.crawler.compute_instances_crawler import ComputeInstancesCrawler
+from gcp_scanner.crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from gcp_scanner.crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
 
@@ -37,6 +38,8 @@ class CrawlerFactory:
       return ComputeDisksCrawler()
     if name == "static_ips":
       return ComputeStaticIPsCrawler()
+    if name == "compute_snapshots":
+      return ComputeSnapshotsCrawler()
 
     logging.error("Crawler not supported.")
     return None
