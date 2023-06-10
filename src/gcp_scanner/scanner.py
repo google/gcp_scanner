@@ -250,7 +250,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           compute_service,
         )
       if is_set(scan_config, 'subnets'):
-        project_result['subnets'] = crawl.get_subnets(
+        project_result['subnets'] = CrawlerFactory.create_crawler(
+          'subnets',
+        ).crawl(
           project_id,
           compute_service,
         )
