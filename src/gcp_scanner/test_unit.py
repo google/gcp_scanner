@@ -52,6 +52,7 @@ from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
 from .crawler.compute_disks_crawler import ComputeDisksCrawler
+from .crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from .crawler.compute_images_crawler import ComputeImagesCrawler
 from .crawler.compute_instances_crawler import ComputeInstancesCrawler
 from .crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
@@ -386,9 +387,14 @@ class TestCrawler(unittest.TestCase):
     """Test firewall rules."""
     self.assertTrue(
       verify(
-        crawl.get_firewall_rules(
+        CrawlerFactory.create_crawler(
+          "firewall_rules",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(
+            self.credentials,
+          ),
+        ),
         "firewall_rules",
       )
     )
@@ -800,6 +806,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'subnets' name."""
     crawler = CrawlerFactory.create_crawler("subnets")
     self.assertIsInstance(crawler, ComputeSubnetsCrawler)
+
+  def test_create_crawler_compute_firewall_rules(self):
+    """Test create_crawler method with 'firewall_rules' name."""
+    crawler = CrawlerFactory.create_crawler("firewall_rules")
+    self.assertIsInstance(crawler, ComputeFirewallRulesCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
