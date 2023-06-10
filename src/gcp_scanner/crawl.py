@@ -92,35 +92,6 @@ def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
   return project_list
 
 
-def get_firewall_rules(
-    project_name: str,
-    compute_client: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of firewall rules in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    compute_client: A resource object for interacting with the Compute API.
-
-  Returns:
-    A list of firewall rules in the project.
-  """
-
-  logging.info("Retrieving Firewall Rules")
-  firewall_rules_list = list()
-  try:
-    request = compute_client.firewalls().list(project=project_name)
-    while request is not None:
-      response = request.execute()
-      firewall_rules_list=[(firewall["name"],)
-        for firewall in response.get("items",[])]
-      request = compute_client.firewalls().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to get firewall rules in the %s", project_name)
-    logging.info(sys.exc_info())
-  return firewall_rules_list
-
-
 def get_bucket_names(project_name: str, service: discovery.Resource,
                      dump_fd: io.TextIOWrapper
                      ) -> Dict[str, Tuple[Any, List[Any]]]:
