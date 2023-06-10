@@ -18,6 +18,7 @@ from gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
 from gcp_scanner.crawler.compute_instances_crawler import ComputeInstancesCrawler
 from gcp_scanner.crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from gcp_scanner.crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
+from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
 
 
@@ -40,6 +41,8 @@ class CrawlerFactory:
       return ComputeStaticIPsCrawler()
     if name == "compute_snapshots":
       return ComputeSnapshotsCrawler()
+    if name == "subnets":
+      return ComputeSubnetsCrawler()
 
     logging.error("Crawler not supported.")
     return None
