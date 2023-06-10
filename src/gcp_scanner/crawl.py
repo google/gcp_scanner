@@ -92,34 +92,6 @@ def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
   return project_list
 
 
-def get_compute_snapshots(project_name: str,
-                          service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of Compute snapshots available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
-
-  Returns:
-    A list of snapshot objects.
-  """
-
-  logging.info("Retrieving Compute Snapshots")
-  snapshots_list = list()
-  try:
-    request = service.snapshots().list(project=project_name)
-    while request is not None:
-      response = request.execute()
-      snapshots_list = response.get("items", [])
-      request = service.snapshots().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to get compute snapshots in the %s", project_name)
-    logging.info(sys.exc_info())
-
-  return snapshots_list
-
-
 def get_subnets(project_name: str,
                 compute_client: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of subnets available in the project.
