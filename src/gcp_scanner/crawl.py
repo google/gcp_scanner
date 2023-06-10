@@ -92,37 +92,6 @@ def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
   return project_list
 
 
-def get_static_ips(project_name: str,
-                   service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of static IPs available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the Compute API.
-
-  Returns:
-    A list of static IPs in the project.
-  """
-
-  logging.info("Retrieving Static IPs")
-
-  ips_list = list()
-  try:
-    request = service.addresses().aggregatedList(project=project_name)
-    while request is not None:
-      response = request.execute()
-      ips_list = [{name: addresses_scoped_list}
-        for name, addresses_scoped_list in response["items"].items()
-        if addresses_scoped_list.get("addresses", None) is not None]
-      request = service.addresses().aggregatedList_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to get static IPs in the %s", project_name)
-    logging.info(sys.exc_info())
-
-  return ips_list
-
-
 def get_compute_snapshots(project_name: str,
                           service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Compute snapshots available in the project.
