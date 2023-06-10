@@ -92,35 +92,6 @@ def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
   return project_list
 
 
-def get_subnets(project_name: str,
-                compute_client: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of subnets available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    compute_client: A resource object for interacting with the Compute API.
-
-  Returns:
-    A list of subnets in the project.
-  """
-
-  logging.info("Retrieving Subnets")
-  subnets_list = list()
-  try:
-    request = compute_client.subnetworks().aggregatedList(project=project_name)
-    while request is not None:
-      response = request.execute()
-      if response.get("items", None) is not None:
-        subnets_list = list(response["items"].items())
-      request = compute_client.subnetworks().aggregatedList_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to get subnets in the %s", project_name)
-    logging.info(sys.exc_info())
-
-  return subnets_list
-
-
 def get_firewall_rules(
     project_name: str,
     compute_client: discovery.Resource) -> List[Dict[str, Any]]:
