@@ -372,7 +372,9 @@ class TestCrawler(unittest.TestCase):
           "static_ips",
         ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute_snapshots").get_service(self.credentials),
+          ClientFactory.get_client("compute_snapshots").get_service(
+            self.credentials,
+          ),
         ),
         "compute_snapshots",
         True,
