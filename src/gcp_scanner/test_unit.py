@@ -56,6 +56,7 @@ from .crawler.compute_images_crawler import ComputeImagesCrawler
 from .crawler.compute_instances_crawler import ComputeInstancesCrawler
 from .crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
+from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from .crawler.crawler_factory import CrawlerFactory
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .credsdb import get_scopes_from_refresh_token
@@ -369,10 +370,10 @@ class TestCrawler(unittest.TestCase):
     self.assertTrue(
       verify(
         CrawlerFactory.create_crawler(
-          "static_ips",
+          "compute_snapshots",
         ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute_snapshots").get_service(
+          ClientFactory.get_client("compute").get_service(
             self.credentials,
           ),
         ),
@@ -396,9 +397,12 @@ class TestCrawler(unittest.TestCase):
     """Test subnets."""
     self.assertTrue(
       verify(
-        crawl.get_subnets(
+        CrawlerFactory.create_crawler(
+          "subnets",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "subnets",
         True,
       )
@@ -791,6 +795,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'compute_snapshots' name."""
     crawler = CrawlerFactory.create_crawler("compute_snapshots")
     self.assertIsInstance(crawler, ComputeSnapshotsCrawler)
+
+  def test_create_crawler_compute_subnets(self):
+    """Test create_crawler method with 'subnets' name."""
+    crawler = CrawlerFactory.create_crawler("subnets")
+    self.assertIsInstance(crawler, ComputeSubnetsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
