@@ -54,6 +54,7 @@ from .client.storage_client import StorageClient
 from .crawler.compute_disks_crawler import ComputeDisksCrawler
 from .crawler.compute_images_crawler import ComputeImagesCrawler
 from .crawler.compute_instances_crawler import ComputeInstancesCrawler
+from .crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from .crawler.crawler_factory import CrawlerFactory
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
@@ -367,9 +368,12 @@ class TestCrawler(unittest.TestCase):
     """Test compute snapshot."""
     self.assertTrue(
       verify(
-        crawl.get_compute_snapshots(
+        CrawlerFactory.create_crawler(
+          "static_ips",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute_snapshots").get_service(self.credentials),
+        ),
         "compute_snapshots",
         True,
       )
@@ -780,6 +784,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'static_ips' name."""
     crawler = CrawlerFactory.create_crawler("static_ips")
     self.assertIsInstance(crawler, ComputeStaticIPsCrawler)
+
+  def test_create_crawler_compute_snapshots(self):
+    """Test create_crawler method with 'compute_snapshots' name."""
+    crawler = CrawlerFactory.create_crawler("compute_snapshots")
+    self.assertIsInstance(crawler, ComputeSnapshotsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
