@@ -14,6 +14,7 @@
 import logging
 
 from gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
+from gcp_scanner.crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
 from gcp_scanner.crawler.compute_instances_crawler import ComputeInstancesCrawler
 from gcp_scanner.crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
@@ -43,6 +44,8 @@ class CrawlerFactory:
       return ComputeSnapshotsCrawler()
     if name == "subnets":
       return ComputeSubnetsCrawler()
+    if name == "firewall_rules":
+      return ComputeFirewallRulesCrawler()
 
     logging.error("Crawler not supported.")
     return None
