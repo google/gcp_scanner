@@ -124,12 +124,6 @@ token_uri and client_secret stored in JSON format.'
       dest='log_file',
       help='Save logs to the path specified rather than displaying in\
  console')
-  parser.add_argument(
-    '-t',
-    '--time',
-    action='store_true',
-    help='Time taken for `gcp-scanner` to execute.'
-  )
 
   args: argparse.Namespace = parser.parse_args()
 
