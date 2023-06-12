@@ -29,23 +29,22 @@ class CrawlerFactory:
   @classmethod
   def create_crawler(cls, name):
     """Returns the appropriate crawler."""
-
-    if name == "compute_instances":
-      return ComputeInstancesCrawler()
-    if name == "compute_images":
-      return ComputeImagesCrawler()
-    if name == "machine_images":
-      return ComputeMachineImagesCrawler()
     if name == "compute_disks":
       return ComputeDisksCrawler()
-    if name == "static_ips":
-      return ComputeStaticIPsCrawler()
-    if name == "compute_snapshots":
-      return ComputeSnapshotsCrawler()
-    if name == "subnets":
-      return ComputeSubnetsCrawler()
     if name == "firewall_rules":
       return ComputeFirewallRulesCrawler()
+    if name == "compute_images":
+      return ComputeImagesCrawler()
+    if name == "compute_instances":
+      return ComputeInstancesCrawler()
+    if name == "machine_images":
+      return ComputeMachineImagesCrawler()
+    if name == "compute_snapshots":
+      return ComputeSnapshotsCrawler()
+    if name == "static_ips":
+      return ComputeStaticIPsCrawler()
+    if name == "subnets":
+      return ComputeSubnetsCrawler()
 
     logging.error("Crawler not supported.")
     return None
