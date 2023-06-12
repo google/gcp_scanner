@@ -18,7 +18,7 @@ from typing import List, Dict, Any
 
 from googleapiclient import discovery
 
-from src.gcp_scanner.crawler.interface_crawler import ICrawler
+from gcp_scanner.crawler.interface_crawler import ICrawler
 
 
 class AppServicesCrawler(ICrawler):
