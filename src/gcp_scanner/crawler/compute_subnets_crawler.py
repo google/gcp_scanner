@@ -17,7 +17,7 @@ from typing import List, Dict, Any
 
 from googleapiclient import discovery
 
-from gcp_scanner.crawler.interface_crawler import ICrawler
+from src.gcp_scanner.crawler.interface_crawler import ICrawler
 
 
 class ComputeSubnetsCrawler(ICrawler):

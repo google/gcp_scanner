@@ -14,23 +14,23 @@
 
 import logging
 
-from gcp_scanner.client.appengine_client import AppEngineClient
-from gcp_scanner.client.bigquery_client import BQClient
-from gcp_scanner.client.bigtable_client import BigTableClient
-from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
-from gcp_scanner.client.cloud_source_manager_client import CloudSourceManagerClient
-from gcp_scanner.client.compute_client import ComputeClient
-from gcp_scanner.client.dns_client import DNSClient
-from gcp_scanner.client.filestore_client import FilestoreClient
-from gcp_scanner.client.iam_client import IAMClient
-from gcp_scanner.client.kms_client import CloudKMSClient
-from gcp_scanner.client.pubsub_client import PubSubClient
-from gcp_scanner.client.service_management_client import ServiceManagementClient
-from gcp_scanner.client.serviceusage_client import ServiceUsageClient
-from gcp_scanner.client.sourcerepo_client import SourceRepoClient
-from gcp_scanner.client.spanner_client import SpannerClient
-from gcp_scanner.client.sql_client import SQLClient
-from gcp_scanner.client.storage_client import StorageClient
+from src.gcp_scanner.client.appengine_client import AppEngineClient
+from src.gcp_scanner.client.bigquery_client import BQClient
+from src.gcp_scanner.client.bigtable_client import BigTableClient
+from src.gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
+from src.gcp_scanner.client.cloud_source_manager_client import CloudSourceManagerClient
+from src.gcp_scanner.client.compute_client import ComputeClient
+from src.gcp_scanner.client.dns_client import DNSClient
+from src.gcp_scanner.client.filestore_client import FilestoreClient
+from src.gcp_scanner.client.iam_client import IAMClient
+from src.gcp_scanner.client.kms_client import CloudKMSClient
+from src.gcp_scanner.client.pubsub_client import PubSubClient
+from src.gcp_scanner.client.service_management_client import ServiceManagementClient
+from src.gcp_scanner.client.serviceusage_client import ServiceUsageClient
+from src.gcp_scanner.client.sourcerepo_client import SourceRepoClient
+from src.gcp_scanner.client.spanner_client import SpannerClient
+from src.gcp_scanner.client.sql_client import SQLClient
+from src.gcp_scanner.client.storage_client import StorageClient
 
 
 class ClientFactory:
