@@ -266,7 +266,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get GCP APP Resources
       if is_set(scan_config, 'app_services'):
-        project_result['app_services'] = crawl.get_app_services(
+        project_result['app_services'] = CrawlerFactory.create_crawler(
+          'app_services',
+        ).crawl(
           project_id,
           ClientFactory.get_client('appengine').get_service(credentials),
         )

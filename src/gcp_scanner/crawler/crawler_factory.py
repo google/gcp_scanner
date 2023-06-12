@@ -13,6 +13,7 @@
 #   limitations under the License.
 import logging
 
+from src.gcp_scanner.crawler.app_services_crawler import AppServicesCrawler
 from src.gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
 from src.gcp_scanner.crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from src.gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
@@ -46,6 +47,8 @@ class CrawlerFactory:
       return ComputeSubnetsCrawler()
     if name == "firewall_rules":
       return ComputeFirewallRulesCrawler()
+    if name == "app_services":
+      return AppServicesCrawler()
 
     logging.error("Crawler not supported.")
     return None
