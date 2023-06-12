@@ -35,6 +35,7 @@ from . import arguments
 from . import crawl
 from . import credsdb
 from .client.client_factory import ClientFactory
+from .crawler.crawler_factory import CrawlerFactory
 from .models import SpiderContext
 
 # We define the schema statically to make it easier for the user and avoid extra
@@ -207,42 +208,58 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       ).get_service(credentials)
 
       if is_set(scan_config, 'compute_instances'):
-        project_result['compute_instances'] = crawl.get_compute_instances_names(
+        project_result['compute_instances'] = CrawlerFactory.create_crawler(
+          'compute_instances',
+        ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'compute_images'):
-        project_result['compute_images'] = crawl.get_compute_images_names(
+        project_result['compute_images'] = CrawlerFactory.create_crawler(
+          'compute_images',
+        ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'machine_images'):
-        project_result['machine_images'] = crawl.get_machine_images(
+        project_result['machine_images'] = CrawlerFactory.create_crawler(
+          'machine_images',
+        ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'compute_disks'):
-        project_result['compute_disks'] = crawl.get_compute_disks_names(
+        project_result['compute_disks'] = CrawlerFactory.create_crawler(
+          'compute_disks',
+        ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'static_ips'):
-        project_result['static_ips'] = crawl.get_static_ips(
+        project_result['static_ips'] = CrawlerFactory.create_crawler(
+          'static_ips',
+        ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'compute_snapshots'):
-        project_result['compute_snapshots'] = crawl.get_compute_snapshots(
+        project_result['compute_snapshots'] = CrawlerFactory.create_crawler(
+          'compute_snapshots',
+        ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'subnets'):
-        project_result['subnets'] = crawl.get_subnets(
+        project_result['subnets'] = CrawlerFactory.create_crawler(
+          'subnets',
+        ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'firewall_rules'):
-        project_result['firewall_rules'] = crawl.get_firewall_rules(
+        project_result['firewall_rules'] = CrawlerFactory.create_crawler(
+          'firewall_rules',
+        ).crawl(
           project_id,
           compute_service,
         )

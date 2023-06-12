@@ -51,6 +51,15 @@ from .client.sourcerepo_client import SourceRepoClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
+from .crawler.compute_disks_crawler import ComputeDisksCrawler
+from .crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
+from .crawler.compute_images_crawler import ComputeImagesCrawler
+from .crawler.compute_instances_crawler import ComputeInstancesCrawler
+from .crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
+from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
+from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
+from .crawler.crawler_factory import CrawlerFactory
+from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -286,9 +295,12 @@ class TestCrawler(unittest.TestCase):
     """Test compute instance name."""
     self.assertTrue(
       verify(
-        crawl.get_compute_instances_names(
+        CrawlerFactory.create_crawler(
+          "compute_instances",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "compute_instances",
         True,
       )
@@ -298,9 +310,12 @@ class TestCrawler(unittest.TestCase):
     """Test compute disk names."""
     self.assertTrue(
       verify(
-        crawl.get_compute_disks_names(
+        CrawlerFactory.create_crawler(
+          "compute_disks",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "compute_disks",
         True,
       )
@@ -310,9 +325,12 @@ class TestCrawler(unittest.TestCase):
     """Test compute image names."""
     self.assertTrue(
       verify(
-        crawl.get_compute_images_names(
+        CrawlerFactory.create_crawler(
+          "compute_images",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "compute_images",
         True,
       )
@@ -322,9 +340,12 @@ class TestCrawler(unittest.TestCase):
     """Test machine images"""
     self.assertTrue(
       verify(
-        crawl.get_machine_images(
+        CrawlerFactory.create_crawler(
+          "machine_images",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "machine_images",
         True,
       )
@@ -334,9 +355,12 @@ class TestCrawler(unittest.TestCase):
     """Test static IPs."""
     self.assertTrue(
       verify(
-        crawl.get_static_ips(
+        CrawlerFactory.create_crawler(
+          "static_ips",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "static_ips",
         True,
       )
@@ -346,9 +370,14 @@ class TestCrawler(unittest.TestCase):
     """Test compute snapshot."""
     self.assertTrue(
       verify(
-        crawl.get_compute_snapshots(
+        CrawlerFactory.create_crawler(
+          "compute_snapshots",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(
+            self.credentials,
+          ),
+        ),
         "compute_snapshots",
         True,
       )
@@ -358,9 +387,14 @@ class TestCrawler(unittest.TestCase):
     """Test firewall rules."""
     self.assertTrue(
       verify(
-        crawl.get_firewall_rules(
+        CrawlerFactory.create_crawler(
+          "firewall_rules",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(
+            self.credentials,
+          ),
+        ),
         "firewall_rules",
       )
     )
@@ -369,9 +403,12 @@ class TestCrawler(unittest.TestCase):
     """Test subnets."""
     self.assertTrue(
       verify(
-        crawl.get_subnets(
+        CrawlerFactory.create_crawler(
+          "subnets",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("compute").get_service(self.credentials)),
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "subnets",
         True,
       )
@@ -730,3 +767,54 @@ class TestClientFactory(unittest.TestCase):
       client = ClientFactory.get_client("invalid")
       self.assertIsNone(client)
       self.assertEqual(log.output, ["ERROR:root:Client not supported."])
+
+
+class TestCrawlerFactory(unittest.TestCase):
+  """Unit tests for the CrawlerFactory class."""
+
+  def test_create_crawler_compute_instances(self):
+    """Test create_crawler method with 'compute_instances' name."""
+    crawler = CrawlerFactory.create_crawler("compute_instances")
+    self.assertIsInstance(crawler, ComputeInstancesCrawler)
+
+  def test_create_crawler_compute_images(self):
+    """Test create_crawler method with 'compute_images' name."""
+    crawler = CrawlerFactory.create_crawler("compute_images")
+    self.assertIsInstance(crawler, ComputeImagesCrawler)
+
+  def test_create_crawler_compute_machine_images(self):
+    """Test create_crawler method with 'machine_images' name."""
+    crawler = CrawlerFactory.create_crawler("machine_images")
+    self.assertIsInstance(crawler, ComputeMachineImagesCrawler)
+
+  def test_create_crawler_compute_disks(self):
+    """Test create_crawler method with 'compute_disks' name."""
+    crawler = CrawlerFactory.create_crawler("compute_disks")
+    self.assertIsInstance(crawler, ComputeDisksCrawler)
+
+  def test_create_crawler_compute_static_ips(self):
+    """Test create_crawler method with 'static_ips' name."""
+    crawler = CrawlerFactory.create_crawler("static_ips")
+    self.assertIsInstance(crawler, ComputeStaticIPsCrawler)
+
+  def test_create_crawler_compute_snapshots(self):
+    """Test create_crawler method with 'compute_snapshots' name."""
+    crawler = CrawlerFactory.create_crawler("compute_snapshots")
+    self.assertIsInstance(crawler, ComputeSnapshotsCrawler)
+
+  def test_create_crawler_compute_subnets(self):
+    """Test create_crawler method with 'subnets' name."""
+    crawler = CrawlerFactory.create_crawler("subnets")
+    self.assertIsInstance(crawler, ComputeSubnetsCrawler)
+
+  def test_create_crawler_compute_firewall_rules(self):
+    """Test create_crawler method with 'firewall_rules' name."""
+    crawler = CrawlerFactory.create_crawler("firewall_rules")
+    self.assertIsInstance(crawler, ComputeFirewallRulesCrawler)
+
+  def test_create_crawler_invalid(self):
+    """Test create_crawler method with invalid name."""
+    with self.assertLogs(level=logging.ERROR) as log:
+      crawler = CrawlerFactory.create_crawler("invalid")
+      self.assertIsNone(crawler)
+      self.assertEqual(log.output, ["ERROR:root:Crawler not supported."])
