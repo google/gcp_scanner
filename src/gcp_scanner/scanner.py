@@ -23,6 +23,7 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
+from time import perf_counter, process_time
 from typing import List, Tuple, Dict, Optional, Union
 
 from google.cloud import container_v1
@@ -453,6 +454,10 @@ def main():
 
   args = arguments.arg_parser()
 
+  # time taken to execute the loop
+  start_perf_counter = perf_counter()
+  start_process_time = process_time()
+
   force_projects_list = list()
   if args.force_projects:
     force_projects_list = args.force_projects.split(',')
@@ -533,4 +538,14 @@ def main():
 
   crawl_loop(sa_tuples, args.output, scan_config, args.light_scan,
              args.target_project, force_projects_list)
+
+  end_perf_counter = perf_counter()
+  end_process_time = process_time()
+  elapsed_perf_counter = end_perf_counter - start_perf_counter
+  elapsed_process_time = end_process_time - start_process_time
+  if args.time:
+    print(f'Elapsed time since the program started: {elapsed_perf_counter:.6f}')
+    print('Elapsed time spent by the current process executing code: '
+          + f'{elapsed_process_time:.6f}')
+
   return 0

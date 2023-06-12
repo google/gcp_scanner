@@ -14,5 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
+from time import perf_counter, process_time
+
 from src.gcp_scanner import scanner
+
 scanner.main()
