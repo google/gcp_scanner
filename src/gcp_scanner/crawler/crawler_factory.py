@@ -13,6 +13,7 @@
 #   limitations under the License.
 import logging
 
+from gcp_scanner.crawler.app_services_crawler import AppServicesCrawler
 from gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
 from gcp_scanner.crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
@@ -29,6 +30,8 @@ class CrawlerFactory:
   @classmethod
   def create_crawler(cls, name):
     """Returns the appropriate crawler."""
+    if name == "app_services":
+      return AppServicesCrawler()
     if name == "compute_disks":
       return ComputeDisksCrawler()
     if name == "firewall_rules":
