@@ -222,20 +222,16 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Get storage buckets
       if is_set(scan_config, 'storage_buckets'):
         dump_file_names = None
-        dump_iam_file_names = None
+        dump_iam_policies = False
         if scan_config is not None:
           obj = scan_config.get('storage_buckets', None)
           if obj is not None and obj.get('fetch_file_names', False) is True:
             dump_file_names = open(gcs_output_path, 'w', encoding='utf-8')
-          if obj is not None and obj.get('move_buckets_iam_to_files', False) is True: 
-            dump_iam_file_names = open(gcs_iam_output_path, 'w', encoding='utf-8')
-          bucket_names = crawl.get_bucket_names(project_id, credentials, dump_file_names)
+
           if obj is not None and obj.get('fetch_buckets_iam', False) is True:
-            buckets_iam_policy = dict()
-            for bucket_name in bucket_names:
-              buckets_iam_policy[bucket_name] = crawl.get_bucket_iam(bucket_name, credentials, dump_iam_file_names)
-            project_result['storage_buckets']['iam_policies'] = buckets_iam_policy
-        project_result['storage_buckets']['buckets'] = bucket_names
+            dump_iam_policies = True
+
+        project_result['storage_buckets']['buckets'] = crawl.get_bucket_names(project_id, credentials, dump_file_names, dump_iam_policies)
 
         if dump_file_names is not None:
           dump_file_names.close()

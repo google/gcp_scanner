@@ -338,7 +338,7 @@ def get_firewall_rules(
 
 
 def get_bucket_names(project_name: str, credentials: Credentials,
-                     dump_fd: io.TextIOWrapper
+                     dump_fd: io.TextIOWrapper, dump_iam_policies: bool
                      ) -> Dict[str, Tuple[Any, List[Any]]]:
   """Retrieve a list of buckets available in the project.
 
@@ -368,7 +368,12 @@ def get_bucket_names(project_name: str, credentials: Credentials,
       break
 
     for bucket in response.get("items", []):
-      buckets_dict[bucket["name"]] = bucket
+      if dump_iam_policies is True:
+         bucket_iam = get_bucket_iam(bucket["name"], service)
+      else:
+        bucket_iam = ""
+      buckets_dict[bucket["name"]] = bucket 
+      buckets_dict[bucket["name"]]["iam_policy"] = bucket_iam
       if dump_fd is not None:
         ret_fields = "nextPageToken,items(bucket,name,size,contentType,\
 timeCreated)"
@@ -392,8 +397,7 @@ timeCreated)"
 
   return buckets_dict
 
-def get_bucket_iam(bucket_name: str, credentials: Credentials,
-                   dump_fd: io.TextIOWrapper
+def get_bucket_iam(bucket_name: str, discovery_service: str
                    ) -> List[Any]:
   """Retrieve IAM policies in the bucket.
 
@@ -409,22 +413,16 @@ def get_bucket_iam(bucket_name: str, credentials: Credentials,
 
   logging.info("Retrieving GCS Bucket %s IAM Policy", bucket_name)
   bucket_iam_policies = list()
-  service = discovery.build(
-      "storage", "v1", credentials=credentials, cache_discovery=False)
-  # Make an authenticated API request
-  request = service.buckets().getIamPolicy(bucket=bucket_name)
+  request = discovery_service.buckets().getIamPolicy(bucket=bucket_name)
   try:
     response = request.execute()
   except googleapiclient.errors.HttpError:
     logging.info("Failed to IAM Policy in the %s", bucket_name)
     logging.info(sys.exc_info())
+    return []
 
-  if dump_fd is not None:
-    for bucket_iam_policy in response.get("bindings", []):
-      dump_fd.write(json.dumps(bucket_iam_policy, indent=2, sort_keys=False))
-  else:
-    for bucket_iam_policy in response.get("bindings", []):
-      bucket_iam_policies.append(bucket_iam_policy)
+  for bucket_iam_policy in response.get("bindings", []):
+    bucket_iam_policies.append(bucket_iam_policy)
 
 
   return bucket_iam_policies
