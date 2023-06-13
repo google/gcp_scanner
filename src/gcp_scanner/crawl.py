@@ -368,12 +368,9 @@ def get_bucket_names(project_name: str, credentials: Credentials,
       break
 
     for bucket in response.get("items", []):
-      if dump_iam_policies is True:
-         bucket_iam = get_bucket_iam(bucket["name"], service)
-      else:
-        bucket_iam = ""
       buckets_dict[bucket["name"]] = bucket 
-      buckets_dict[bucket["name"]]["iam_policy"] = bucket_iam
+      if dump_iam_policies is True:
+         buckets_dict[bucket["name"]]["iam_policy"] = get_bucket_iam(bucket["name"], service)
       if dump_fd is not None:
         ret_fields = "nextPageToken,items(bucket,name,size,contentType,\
 timeCreated)"
@@ -403,10 +400,7 @@ def get_bucket_iam(bucket_name: str, discovery_service: str
 
   Args:
     bucket_name: A name of bucket to query info about.
-    credentials: An google.oauth2.credentials.Credentials object.
-    dump_fd: If set, the function will enumerate buckets IAM permissions and
-      save them in a file corresponding to provided file descriptor.
-      This is a very slow, noisy operation and should be used with caution.
+    discovery_service: An authenticated API request.
   Returns:
     A list with bucket IAM policies.
   """

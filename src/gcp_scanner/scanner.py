@@ -157,7 +157,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       output_file_name = f'{project_id}-{scan_time_suffix}.json'
       output_path = Path(out_dir, output_file_name)
       gcs_output_path = Path(out_dir, f'gcs-{output_file_name}')
-      gcs_iam_output_path = Path(out_dir, f'gcs-iam-{output_file_name}')
 
       try:
         with open(output_path, 'x', encoding='utf-8'):
@@ -235,7 +234,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
         if dump_file_names is not None:
           dump_file_names.close()
-
 
 
 
