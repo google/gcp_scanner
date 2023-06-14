@@ -424,6 +424,7 @@ class TestCrawler(unittest.TestCase):
             self.credentials,
           ),
           dump_fd=None,
+          dump_iam_policies
         ),
         "storage_buckets",
       )

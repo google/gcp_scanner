@@ -121,9 +121,10 @@ def get_bucket_names(project_name: str, service: discovery.Resource,
       break
 
     for bucket in response.get("items", []):
-      buckets_dict[bucket["name"]] = bucket 
+      buckets_dict[bucket["name"]] = bucket
       if dump_iam_policies is True:
-         buckets_dict[bucket["name"]]["iam_policy"] = get_bucket_iam(bucket["name"], service)
+        buckets_dict[bucket["name"]]["iam_policy"] = \
+          get_bucket_iam(bucket["name"], service)
       if dump_fd is not None:
         ret_fields = "nextPageToken,items(bucket,name,size,contentType,\
 timeCreated)"
