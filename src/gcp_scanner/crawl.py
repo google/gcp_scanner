@@ -93,7 +93,7 @@ def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
 
 
 def get_bucket_names(project_name: str, service: discovery.Resource,
-                     dump_fd: io.TextIOWrapper
+                     dump_fd: io.TextIOWrapper, dump_iam_policies: bool
                      ) -> Dict[str, Tuple[Any, List[Any]]]:
   """Retrieve a list of buckets available in the project.
 

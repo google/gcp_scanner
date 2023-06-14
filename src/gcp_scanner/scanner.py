@@ -287,6 +287,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           project_id,
           ClientFactory.get_client('storage').get_service(credentials),
           dump_file_names,
+          dump_iam_policies
         )
         if dump_file_names is not None:
           dump_file_names.close()
