@@ -93,7 +93,7 @@ def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
 
 
 def get_bucket_names(project_name: str, service: discovery.Resource,
-                     dump_fd: io.TextIOWrapper
+                     dump_fd: io.TextIOWrapper, dump_iam_policies: bool
                      ) -> Dict[str, Tuple[Any, List[Any]]]:
   """Retrieve a list of buckets available in the project.
 
@@ -122,6 +122,9 @@ def get_bucket_names(project_name: str, service: discovery.Resource,
 
     for bucket in response.get("items", []):
       buckets_dict[bucket["name"]] = bucket
+      if dump_iam_policies is True:
+        buckets_dict[bucket["name"]]["iam_policy"] = \
+          get_bucket_iam(bucket["name"], service)
       if dump_fd is not None:
         ret_fields = "nextPageToken,items(bucket,name,size,contentType,\
 timeCreated)"
@@ -144,6 +147,33 @@ timeCreated)"
         previous_request=request, previous_response=response)
 
   return buckets_dict
+
+def get_bucket_iam(bucket_name: str, discovery_service: str
+                   ) -> List[Any]:
+  """Retrieve IAM policies in the bucket.
+
+  Args:
+    bucket_name: A name of bucket to query info about.
+    discovery_service: An authenticated API request.
+  Returns:
+    A list with bucket IAM policies.
+  """
+
+  logging.info("Retrieving GCS Bucket %s IAM Policy", bucket_name)
+  bucket_iam_policies = list()
+  request = discovery_service.buckets().getIamPolicy(bucket=bucket_name)
+  try:
+    response = request.execute()
+  except googleapiclient.errors.HttpError:
+    logging.info("Failed to IAM Policy in the %s", bucket_name)
+    logging.info(sys.exc_info())
+    return []
+
+  for bucket_iam_policy in response.get("bindings", []):
+    bucket_iam_policies.append(bucket_iam_policy)
+
+
+  return bucket_iam_policies
 
 
 def get_managed_zones(project_name: str,

@@ -274,17 +274,25 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Get storage buckets
       if is_set(scan_config, 'storage_buckets'):
         dump_file_names = None
+        dump_iam_policies = False
         if scan_config is not None:
           obj = scan_config.get('storage_buckets', None)
           if obj is not None and obj.get('fetch_file_names', False) is True:
             dump_file_names = open(gcs_output_path, 'w', encoding='utf-8')
+
+          if obj is not None and obj.get('fetch_buckets_iam', False) is True:
+            dump_iam_policies = True
+
         project_result['storage_buckets'] = crawl.get_bucket_names(
           project_id,
           ClientFactory.get_client('storage').get_service(credentials),
           dump_file_names,
+          dump_iam_policies
         )
         if dump_file_names is not None:
           dump_file_names.close()
+
+
 
       # Get DNS managed zones
       if is_set(scan_config, 'managed_zones'):
