@@ -26,15 +26,15 @@ from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawl
 
 
 service_crawler_map = {
-  "app_services": AppServicesCrawler(),
-  "compute_disks": ComputeDisksCrawler(),
-  "compute_images": ComputeImagesCrawler(),
-  "compute_instances": ComputeInstancesCrawler(),
-  "compute_snapshots": ComputeSnapshotsCrawler(),
-  "firewall_rules": ComputeFirewallRulesCrawler(),
-  "machine_images": ComputeMachineImagesCrawler(),
-  "static_ips": ComputeStaticIPsCrawler(),
-  "subnets": ComputeSubnetsCrawler(),
+  "app_services": AppServicesCrawler,
+  "compute_disks": ComputeDisksCrawler,
+  "compute_images": ComputeImagesCrawler,
+  "compute_instances": ComputeInstancesCrawler,
+  "compute_snapshots": ComputeSnapshotsCrawler,
+  "firewall_rules": ComputeFirewallRulesCrawler,
+  "machine_images": ComputeMachineImagesCrawler,
+  "static_ips": ComputeStaticIPsCrawler,
+  "subnets": ComputeSubnetsCrawler,
 }
 
 class CrawlerFactory:
@@ -44,7 +44,7 @@ class CrawlerFactory:
   def create_crawler(cls, name):
     """Returns the appropriate crawler."""
     if name in service_crawler_map:
-      return service_crawler_map[name]
+      return service_crawler_map[name]()
 
     logging.error("Crawler not supported.")
     return None
