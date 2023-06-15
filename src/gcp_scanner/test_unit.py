@@ -51,6 +51,7 @@ from .client.sourcerepo_client import SourceRepoClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
+from .crawler.app_services_crawler import AppServicesCrawler
 from .crawler.compute_disks_crawler import ComputeDisksCrawler
 from .crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from .crawler.compute_images_crawler import ComputeImagesCrawler
@@ -467,10 +468,12 @@ class TestCrawler(unittest.TestCase):
     """Test app services."""
     self.assertTrue(
       verify(
-        crawl.get_app_services(
-          PROJECT_NAME,
-          ClientFactory.get_client("appengine").get_service(self.credentials),
-        ),
+      CrawlerFactory.create_crawler(
+        "app_services",
+      ).crawl(
+        PROJECT_NAME,
+        ClientFactory.get_client("appengine").get_service(self.credentials),
+      ),
         "app_services",
       )
     )
@@ -771,6 +774,11 @@ class TestClientFactory(unittest.TestCase):
 
 class TestCrawlerFactory(unittest.TestCase):
   """Unit tests for the CrawlerFactory class."""
+
+  def test_create_crawler_app_services(self):
+    """Test create_crawler method with 'app_services' name."""
+    crawler = CrawlerFactory.create_crawler("app_services")
+    self.assertIsInstance(crawler, AppServicesCrawler)
 
   def test_create_crawler_compute_instances(self):
     """Test create_crawler method with 'compute_instances' name."""
