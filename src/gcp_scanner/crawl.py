@@ -411,34 +411,6 @@ def get_cloudfunctions(project_id: str,
   return functions_list
 
 
-def get_bigtable_instances(project_id: str,
-                           service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of BigTable instances available in the project.
-
-  Args:
-    project_id: A name of a project to query info about.
-    service: A resource object for interacting with the BigTable API.
-
-  Returns:
-    A list of BigTable instances in the project.
-  """
-
-  logging.info("Retrieving bigtable instances")
-  bigtable_instances_list = list()
-  try:
-    request = service.projects().instances().list(
-        parent=f"projects/{project_id}")
-    while request is not None:
-      response = request.execute()
-      bigtable_instances_list = response.get("instances", [])
-      request = service.projects().instances().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve BigTable instances for project %s",
-                 project_id)
-    logging.info(sys.exc_info())
-  return bigtable_instances_list
-
 
 def get_spanner_instances(project_id: str,
                           service: discovery.Resource) -> List[Dict[str, Any]]:
