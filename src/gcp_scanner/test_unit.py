@@ -470,12 +470,12 @@ class TestCrawler(unittest.TestCase):
     """Test app services."""
     self.assertTrue(
       verify(
-      CrawlerFactory.create_crawler(
-        "app_services",
-      ).crawl(
-        PROJECT_NAME,
-        ClientFactory.get_client("appengine").get_service(self.credentials),
-      ),
+        CrawlerFactory.create_crawler(
+          "app_services",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("appengine").get_service(self.credentials),
+        ),
         "app_services",
       )
     )
