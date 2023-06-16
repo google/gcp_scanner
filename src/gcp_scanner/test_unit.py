@@ -52,6 +52,7 @@ from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
 from .crawler.app_services_crawler import AppServicesCrawler
+from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
 from .crawler.compute_disks_crawler import ComputeDisksCrawler
 from .crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from .crawler.compute_images_crawler import ComputeImagesCrawler
@@ -534,11 +535,11 @@ class TestCrawler(unittest.TestCase):
     """Test BigTable Instances."""
     self.assertTrue(
       verify(
-        crawl.get_bigtable_instances(
+        CrawlerFactory.create_crawler(
+          "bigtable_instances",
+        ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client("bigtableadmin").get_service(
-            self.credentials,
-          ),
+          ClientFactory.get_client('bigtableadmin').get_service(self.credentials),
         ),
         "bigtable_instances",
       )
@@ -780,6 +781,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'app_services' name."""
     crawler = CrawlerFactory.create_crawler("app_services")
     self.assertIsInstance(crawler, AppServicesCrawler)
+
+  def test_create_crawler_bigtable_instances(self):
+    """Test create_crawler method with 'app_services' name."""
+    crawler = CrawlerFactory.create_crawler("bigtable_instances")
+    self.assertIsInstance(crawler, BigTableInstancesCrawler)
 
   def test_create_crawler_compute_instances(self):
     """Test create_crawler method with 'compute_instances' name."""
