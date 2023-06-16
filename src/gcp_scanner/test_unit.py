@@ -539,7 +539,9 @@ class TestCrawler(unittest.TestCase):
           "bigtable_instances",
         ).crawl(
           PROJECT_NAME,
-          ClientFactory.get_client('bigtableadmin').get_service(self.credentials),
+          ClientFactory.get_client("bigtableadmin").get_service(
+            self.credentials
+          ),
         ),
         "bigtable_instances",
       )
