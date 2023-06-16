@@ -411,7 +411,6 @@ def get_cloudfunctions(project_id: str,
   return functions_list
 
 
-
 def get_spanner_instances(project_id: str,
                           service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Spanner instances available in the project.
@@ -518,42 +517,6 @@ def get_kms_keys(project_id: str,
     logging.info("Failed to retrieve KMS keys for project %s", project_id)
     logging.info(sys.exc_info())
   return kms_keys_list
-
-
-def get_app_services(project_name: str,
-                     service: discovery.Resource) -> Dict[str, Any]:
-  """Retrieve a list of AppEngine instances available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the AppEngine API.
-
-  Returns:
-    A dict representing default apps and services available in the project.
-  """
-
-  logging.info("Retrieving app services")
-  app_services = dict()
-  try:
-    request = service.apps().get(appsId=project_name)
-    response = request.execute()
-    if response.get("name", None) is not None:
-      app_services["default_app"] = (response["name"],
-                                     response["defaultHostname"],
-                                     response["servingStatus"])
-
-    request = service.apps().services().list(appsId=project_name)
-
-    app_services["services"] = list()
-    while request is not None:
-      response = request.execute()
-      app_services["services"] = response.get("services", [])
-      request = service.apps().services().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve App services for project %s", project_name)
-    logging.info(sys.exc_info())
-  return app_services
 
 
 def get_endpoints(project_id: str,
