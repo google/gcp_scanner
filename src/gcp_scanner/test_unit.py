@@ -60,6 +60,7 @@ from .crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from .crawler.crawler_factory import CrawlerFactory
+from .crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .credsdb import get_scopes_from_refresh_token
 
@@ -560,7 +561,9 @@ class TestCrawler(unittest.TestCase):
     """Test FileStore Instances."""
     self.assertTrue(
       verify(
-        crawl.get_filestore_instances(
+        CrawlerFactory.create_crawler(
+          "filestore_instances",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("file").get_service(self.credentials),
         ),
@@ -820,6 +823,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'firewall_rules' name."""
     crawler = CrawlerFactory.create_crawler("firewall_rules")
     self.assertIsInstance(crawler, ComputeFirewallRulesCrawler)
+
+  def test_create_crawler_filestore_instances(self):
+    """Test create_crawler method with 'filestore_instances' name."""
+    crawler = CrawlerFactory.create_crawler("filestore_instances")
+    self.assertIsInstance(crawler, FilestoreInstancesCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
