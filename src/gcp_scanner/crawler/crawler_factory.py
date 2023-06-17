@@ -22,6 +22,7 @@ from gcp_scanner.crawler.compute_instances_crawler import ComputeInstancesCrawle
 from gcp_scanner.crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from gcp_scanner.crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
+from gcp_scanner.crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
 
 
@@ -31,6 +32,7 @@ service_crawler_map = {
   "compute_images": ComputeImagesCrawler,
   "compute_instances": ComputeInstancesCrawler,
   "compute_snapshots": ComputeSnapshotsCrawler,
+  "filestore_instances": FilestoreInstancesCrawler,
   "firewall_rules": ComputeFirewallRulesCrawler,
   "machine_images": ComputeMachineImagesCrawler,
   "static_ips": ComputeStaticIPsCrawler,
