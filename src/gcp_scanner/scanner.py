@@ -362,7 +362,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get FileStore Instances
       if is_set(scan_config, 'filestore_instances'):
-        project_result['filestore_instances'] = crawl.get_filestore_instances(
+        project_result['filestore_instances'] = CrawlerFactory.create_crawler(
+          'filestore_instances',
+        ).crawl(
           project_id,
           ClientFactory.get_client('file').get_service(credentials),
         )
