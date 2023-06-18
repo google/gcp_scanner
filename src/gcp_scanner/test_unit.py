@@ -61,6 +61,7 @@ from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from .crawler.crawler_factory import CrawlerFactory
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
+from .crawler.pubsubs_subs_crawler import PubSubSubscriptionsCrawler
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -508,7 +509,9 @@ class TestCrawler(unittest.TestCase):
     """Test PubSub Subscriptions."""
     self.assertTrue(
       verify(
-        crawl.get_pubsub_subscriptions(
+        CrawlerFactory.create_crawler(
+          "pubsub_subs",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("pubsub").get_service(self.credentials),
         ),
@@ -820,6 +823,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'firewall_rules' name."""
     crawler = CrawlerFactory.create_crawler("firewall_rules")
     self.assertIsInstance(crawler, ComputeFirewallRulesCrawler)
+
+  def test_create_crawler_pubsub_subscriptions(self):
+    """Test create_crawler method with 'pubsub_subs' name."""
+    crawler = CrawlerFactory.create_crawler("pubsub_subs")
+    self.assertIsInstance(crawler, PubSubSubscriptionsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
