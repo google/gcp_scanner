@@ -61,6 +61,7 @@ from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from .crawler.crawler_factory import CrawlerFactory
 from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
+from .crawler.dns_policies_crawler import DNSPoliciesCrawler
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .credsdb import get_scopes_from_refresh_token
 
@@ -437,7 +438,7 @@ class TestCrawler(unittest.TestCase):
     self.assertTrue(
       verify(
         CrawlerFactory.create_crawler(
-          'managed_zones',
+          "managed_zones",
         ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("dns").get_service(self.credentials),
@@ -671,7 +672,9 @@ class TestCrawler(unittest.TestCase):
     """Test cloud DNS policies."""
     self.assertTrue(
       verify(
-        crawl.list_dns_policies(
+        CrawlerFactory.create_crawler(
+          "dns_policies",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("dns").get_service(self.credentials)
         ),
@@ -828,6 +831,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'managed_zones' name."""
     crawler = CrawlerFactory.create_crawler("managed_zones")
     self.assertIsInstance(crawler, DNSManagedZonesCrawler)
+
+  def test_create_crawler_dns_policies(self):
+    """Test create_crawler method with 'dns_policies' name."""
+    crawler = CrawlerFactory.create_crawler("dns_policies")
+    self.assertIsInstance(crawler, DNSPoliciesCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
