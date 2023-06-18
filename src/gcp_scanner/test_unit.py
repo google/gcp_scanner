@@ -61,6 +61,7 @@ from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from .crawler.crawler_factory import CrawlerFactory
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
+from .crawler.sql_instances_crawler import SQLInstancesCrawler
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -483,7 +484,9 @@ class TestCrawler(unittest.TestCase):
     """Test SQL instances."""
     self.assertTrue(
       verify(
-        crawl.get_sql_instances(
+        CrawlerFactory.create_crawler(
+          "sql_instances",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("sqladmin").get_service(self.credentials),
         ),
@@ -820,6 +823,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'firewall_rules' name."""
     crawler = CrawlerFactory.create_crawler("firewall_rules")
     self.assertIsInstance(crawler, ComputeFirewallRulesCrawler)
+
+  def test_create_crawler_sql_instances(self):
+    """Test create_crawler method with 'sql_instances' name."""
+    crawler = CrawlerFactory.create_crawler("sql_instances")
+    self.assertIsInstance(crawler, SQLInstancesCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
