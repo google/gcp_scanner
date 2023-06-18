@@ -264,33 +264,6 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
   return images
 
 
-def get_sql_instances(project_name: str,
-                      service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of SQL instances available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the SQLAdmin API.
-  Returns:
-    A list of sql instances in the project.
-  """
-
-  logging.info("Retrieving CloudSQL Instances")
-  sql_instances_list = list()
-  try:
-    request = service.instances().list(project=project_name)
-    while request is not None:
-      response = request.execute()
-      sql_instances_list = response.get("items", [])
-      request = service.instances().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to get SQL instances for project %s", project_name)
-    logging.info(sys.exc_info())
-
-  return sql_instances_list
-
-
 def get_bq_tables(project_id: str, dataset_id: str,
                   bq_service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of BigQuery tables available in the dataset.
