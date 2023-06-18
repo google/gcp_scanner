@@ -341,7 +341,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get CloudFunctions list
       if is_set(scan_config, 'cloud_functions'):
-        project_result['cloud_functions'] = crawl.get_cloudfunctions(
+        project_result['cloud_functions'] = CrawlerFactory.create_crawler(
+          'cloud_functions',
+        ).crawl(
           project_id,
           ClientFactory.get_client('cloudfunctions').get_service(credentials),
         )
