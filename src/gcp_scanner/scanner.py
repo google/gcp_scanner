@@ -334,7 +334,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get PubSub Subscriptions
       if is_set(scan_config, 'pubsub_subs'):
-        project_result['pubsub_subs'] = crawl.get_pubsub_subscriptions(
+        project_result['pubsub_subs'] = CrawlerFactory.create_crawler(
+          'pubsub_subs',
+        ).crawl(
           project_id,
           ClientFactory.get_client('pubsub').get_service(credentials),
         )
