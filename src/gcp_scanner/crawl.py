@@ -351,37 +351,6 @@ def get_bq(project_id: str,
   return bq_datasets
 
 
-def get_pubsub_subscriptions(
-  project_id: str,
-  service: discovery.Resource
-) -> List[Dict[str, Any]]:
-  """Retrieve a list of PubSub subscriptions available in the project.
-
-  Args:
-    project_id: A name of a project to query info about.
-    service: A resource object for interacting with the PubSub API.
-
-  Returns:
-    A list of PubSub subscriptions in the project.
-  """
-
-  logging.info("Retrieving PubSub Subscriptions")
-  pubsubs_list = list()
-  try:
-
-    request = service.projects().subscriptions().list(
-        project=f"projects/{project_id}")
-    while request is not None:
-      response = request.execute()
-      pubsubs_list = response.get("subscriptions", [])
-      request = service.projects().subscriptions().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to get PubSubs for project %s", project_id)
-    logging.info(sys.exc_info())
-  return pubsubs_list
-
-
 def get_cloudfunctions(project_id: str,
                        service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of CloudFunctions available in the project.
