@@ -21,8 +21,8 @@ from googleapiclient import discovery
 from gcp_scanner.crawler.interface_crawler import ICrawler
 
 
-class PubSubsCrawler(ICrawler):
-  '''Handle crawling of PubSubs data.'''
+class PubSubSubscriptionsCrawler(ICrawler):
+  '''Handle crawling of PubSub Subscriptions data.'''
 
   def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
     '''Retrieve a list of PubSub subscriptions available in the project.
