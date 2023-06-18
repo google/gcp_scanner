@@ -298,7 +298,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get DNS managed zones
       if is_set(scan_config, 'managed_zones'):
-        project_result['managed_zones'] = crawl.get_managed_zones(
+        project_result['managed_zones'] = CrawlerFactory.create_crawler(
+          'managed_zones',
+        ).crawl(
           project_id,
           ClientFactory.get_client('dns').get_service(credentials),
         )
