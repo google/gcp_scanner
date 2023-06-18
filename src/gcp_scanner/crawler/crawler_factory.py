@@ -24,7 +24,6 @@ from gcp_scanner.crawler.compute_static_ips_crawler import ComputeStaticIPsCrawl
 from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
 
-
 service_crawler_map = {
   "app_services": AppServicesCrawler,
   "compute_disks": ComputeDisksCrawler,
@@ -36,6 +35,7 @@ service_crawler_map = {
   "static_ips": ComputeStaticIPsCrawler,
   "subnets": ComputeSubnetsCrawler,
 }
+
 
 class CrawlerFactory:
   """Factory class for creating crawlers."""
