@@ -701,39 +701,3 @@ def list_services(project_id: str, service: discovery.Resource) -> List[Any]:
     logging.info(sys.exc_info())
 
   return list_of_services
-
-
-
-def list_dns_policies(project_id: str,
-                      service: discovery.Resource) -> List[Any]:
-  """Retrieve a list of cloud DNS policies in the project.
-  Args:
-    project_id: An id of a project to query info about.
-    service: A resource object for interacting with the DNS API.
-  Returns:
-    A list of cloud DNS policies in the project.
-  """
-
-  logging.info("Retrieving cloud DNS policies %s", project_id)
-  list_of_policies = list()
-
-  request = service.policies().list(
-    project=project_id,
-    maxResults=500
-  )
-  try:
-    while request is not None:
-      response = request.execute()
-
-      list_of_policies.extend(response.get("policies", None))
-
-      request = service.policies().list_next(
-
-        previous_request=request,
-        previous_response=response
-      )
-  except Exception:
-    logging.info("Failed to retrieve DNS policies for project %s", project_id)
-    logging.info(sys.exc_info())
-
-  return list_of_policies
