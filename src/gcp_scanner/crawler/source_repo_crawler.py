@@ -42,17 +42,16 @@ class CloudSourceRepoCrawler(ICrawler):
         name="projects/" + project_id,
         pageSize=500
   )
-  try:
-    while request is not None:
-      response = request.execute()
-      list_of_repos.extend(response.get("repos", None))
+    try:
+        while request is not None:
+            response = request.execute()
+            list_of_repos.extend(response.get("repos", None))
 
-      request = service.projects().repos().list_next(
-        previous_request=request,
-        previous_response=response
+            request = service.projects().repos().list_next(
+            previous_request=request,
+            previous_response=response
       )
-  except Exception:
-    logging.info("Failed to retrieve source repos for project %s", project_id)
-    logging.info(sys.exc_info())
-
-  return list_of_repos
+    except Exception:
+        logging.info("Failed to retrieve source repos for project %s", project_id)
+        logging.info(sys.exc_info())
+    return list_of_repos
