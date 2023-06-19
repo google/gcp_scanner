@@ -62,6 +62,7 @@ from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from .crawler.crawler_factory import CrawlerFactory
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .credsdb import get_scopes_from_refresh_token
+from .crawler.source_repo_crawler import CloudSourceRepoCrawler
 
 PROJECT_NAME = "test-gcp-scanner-2"
 
@@ -656,7 +657,9 @@ class TestCrawler(unittest.TestCase):
     """Test list of cloud source repositories in the project."""
     self.assertTrue(
       verify(
-        crawl.list_sourcerepo(
+        CrawlerFactory.create_crawler(
+          "sourcerepos",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("sourcerepo").get_service(self.credentials),
         ),
@@ -810,6 +813,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'compute_snapshots' name."""
     crawler = CrawlerFactory.create_crawler("compute_snapshots")
     self.assertIsInstance(crawler, ComputeSnapshotsCrawler)
+
+  def test_create_crawler_source_repos(self):
+    """Test create_crawler method with 'sourcerepos' name."""
+    crawler = CrawlerFactory.create_crawler("sourcerepos")
+    self.assertIsInstance(crawler, CloudSourceRepoCrawler)
 
   def test_create_crawler_compute_subnets(self):
     """Test create_crawler method with 'subnets' name."""
