@@ -22,7 +22,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 
 
 class CloudSourceRepoCrawler(ICrawler):
-  '''Handle crawling of Cloud Functions data.'''
+  '''Handle crawling of Cloud Source Repo data.'''
 
   def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
     """Retrieve a list of cloud source repositories enabled in the project.
