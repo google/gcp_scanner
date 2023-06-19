@@ -176,35 +176,6 @@ def get_bucket_iam(bucket_name: str, discovery_service: str
   return bucket_iam_policies
 
 
-def get_managed_zones(project_name: str,
-                      service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of DNS zones available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the DNS API.
-
-  Returns:
-    A list of DNS zones in the project.
-  """
-
-  logging.info("Retrieving DNS Managed Zones")
-  zones_list = list()
-
-  try:
-    request = service.managedZones().list(project=project_name)
-    while request is not None:
-      response = request.execute()
-      zones_list = response.get("managedZones",[])
-      request = service.managedZones().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to enumerate DNS zones for project %s", project_name)
-    logging.info(sys.exc_info())
-
-  return zones_list
-
-
 def get_gke_clusters(
     project_name: str, gke_client: container_v1.services.cluster_manager.client
     .ClusterManagerClient
@@ -732,6 +703,7 @@ def list_services(project_id: str, service: discovery.Resource) -> List[Any]:
   return list_of_services
 
 
+
 def list_dns_policies(project_id: str,
                       service: discovery.Resource) -> List[Any]:
   """Retrieve a list of cloud DNS policies in the project.
@@ -752,9 +724,11 @@ def list_dns_policies(project_id: str,
   try:
     while request is not None:
       response = request.execute()
+
       list_of_policies.extend(response.get("policies", None))
 
       request = service.policies().list_next(
+
         previous_request=request,
         previous_response=response
       )
@@ -763,4 +737,3 @@ def list_dns_policies(project_id: str,
     logging.info(sys.exc_info())
 
   return list_of_policies
-
