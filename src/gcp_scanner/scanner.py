@@ -396,7 +396,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get list of cloud source repositories enabled in the project
       if is_set(scan_config, 'sourcerepos'):
-        project_result['sourcerepos'] = crawl.list_sourcerepo(
+        project_result['sourcerepos'] = CrawlerFactory.create_crawler(
+          'sourcerepos',
+        ).crawl(
           project_id,
           ClientFactory.get_client('sourcerepo').get_service(credentials),
         )
