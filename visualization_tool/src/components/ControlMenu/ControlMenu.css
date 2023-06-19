@@ -1,0 +1,24 @@
+.control-menu {
+  flex-basis: 350px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.search-bar {
+  background-color: #f4f4f4;
+  border: 0.5px solid #999999;
+  border-radius: 5px;
+  padding: 6px 15px;
+}
+
+#search-input {
+  background-color: #f4f4f4;
+  border: none;
+  font-size: 14px;
+}
+
+#search-input:focus {
+  outline: none;
+}
