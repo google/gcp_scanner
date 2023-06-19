@@ -23,6 +23,7 @@ from gcp_scanner.crawler.compute_snapshots_crawler import ComputeSnapshotsCrawle
 from gcp_scanner.crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
+from gcp_scanner.crawler.source_repo_crawler import CloudSourceRepoCrawler
 
 
 service_crawler_map = {
@@ -35,6 +36,7 @@ service_crawler_map = {
   "machine_images": ComputeMachineImagesCrawler,
   "static_ips": ComputeStaticIPsCrawler,
   "subnets": ComputeSubnetsCrawler,
+  "sourcerepos": CloudSourceRepoCrawler,
 }
 
 class CrawlerFactory:
