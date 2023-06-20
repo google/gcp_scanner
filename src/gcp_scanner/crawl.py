@@ -673,36 +673,6 @@ def get_service_accounts(project_name: str,
   return service_accounts
 
 
-def list_services(project_id: str, service: discovery.Resource) -> List[Any]:
-  """Retrieve a list of services enabled in the project.
-
-  Args:
-    project_id: An id of a project to query info about.
-    service: A resource object for interacting with the Service Usage API.
-
-  Returns:
-    A list of service API objects enabled in the project.
-  """
-
-  logging.info("Retrieving services list %s", project_id)
-  list_of_services = list()
-
-  request = service.services().list(
-      parent="projects/" + project_id, pageSize=200, filter="state:ENABLED")
-  try:
-    while request is not None:
-      response = request.execute()
-      list_of_services.extend(response.get("services", []))
-
-      request = service.services().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve services for project %s", project_id)
-    logging.info(sys.exc_info())
-
-  return list_of_services
-
-
 def list_sourcerepo(project_id: str,
                     service: discovery.Resource) -> List[Any]:
   """Retrieve a list of cloud source repositories enabled in the project.

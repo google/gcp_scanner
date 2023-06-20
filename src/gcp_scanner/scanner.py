@@ -387,7 +387,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get list of API services enabled in the project
       if is_set(scan_config, 'services'):
-        project_result['services'] = crawl.list_services(
+        project_result['services'] = CrawlerFactory.create_crawler(
+          'services',
+        ).crawl(
           project_id,
           ClientFactory.get_client('serviceusage').get_service(
             credentials,
