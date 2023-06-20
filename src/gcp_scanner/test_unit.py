@@ -69,6 +69,7 @@ from .crawler.dns_policies_crawler import DNSPoliciesCrawler
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .crawler.spanner_instances_crawler import SpannerInstancesCrawler
 from .crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
+from .crawler.service_usage_crawler import ServiceUsageCrawler
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -553,7 +554,7 @@ class TestCrawler(unittest.TestCase):
         ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("bigtableadmin").get_service(
-            self.credentials
+            self.credentials,
           ),
         ),
         "bigtable_instances",
@@ -619,7 +620,9 @@ class TestCrawler(unittest.TestCase):
     """Test list of API services enabled in the project."""
     self.assertTrue(
       verify(
-        crawl.list_services(
+        CrawlerFactory.create_crawler(
+          "services",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("serviceusage").get_service(
             self.credentials,
@@ -877,6 +880,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'dns_policies' name."""
     crawler = CrawlerFactory.create_crawler("dns_policies")
     self.assertIsInstance(crawler, DNSPoliciesCrawler)
+
+  def test_create_crawler_service_usage(self):
+    """Test create_crawler method with 'services' name."""
+    crawler = CrawlerFactory.create_crawler("services")
+    self.assertIsInstance(crawler, ServiceUsageCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""

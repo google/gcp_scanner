@@ -15,8 +15,8 @@
 import logging
 
 from gcp_scanner.crawler.app_services_crawler import AppServicesCrawler
-from gcp_scanner.crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from gcp_scanner.crawler.bigtable_instances_crawler import BigTableInstancesCrawler
+from gcp_scanner.crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
 from gcp_scanner.crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
@@ -24,12 +24,13 @@ from gcp_scanner.crawler.compute_instances_crawler import ComputeInstancesCrawle
 from gcp_scanner.crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from gcp_scanner.crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
-from gcp_scanner.crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from gcp_scanner.crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from gcp_scanner.crawler.dns_policies_crawler import DNSPoliciesCrawler
+from gcp_scanner.crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from gcp_scanner.crawler.spanner_instances_crawler import SpannerInstancesCrawler
 from gcp_scanner.crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
+from gcp_scanner.crawler.service_usage_crawler import ServiceUsageCrawler
 
 service_crawler_map = {
   "app_services": AppServicesCrawler,
@@ -46,6 +47,7 @@ service_crawler_map = {
   "spanner_instances": SpannerInstancesCrawler,
   "pubsub_subs": PubSubSubscriptionsCrawler,
   "managed_zones": DNSManagedZonesCrawler,
+  "services": ServiceUsageCrawler,
   "static_ips": ComputeStaticIPsCrawler,
   "subnets": ComputeSubnetsCrawler,
 }
