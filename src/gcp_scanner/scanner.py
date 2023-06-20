@@ -336,7 +336,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get PubSub Subscriptions
       if is_set(scan_config, 'pubsub_subs'):
-        project_result['pubsub_subs'] = crawl.get_pubsub_subscriptions(
+        project_result['pubsub_subs'] = CrawlerFactory.create_crawler(
+          'pubsub_subs',
+        ).crawl(
           project_id,
           ClientFactory.get_client('pubsub').get_service(credentials),
         )
@@ -350,7 +352,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get List of BigTable Instances
       if is_set(scan_config, 'bigtable_instances'):
-        project_result['bigtable_instances'] = crawl.get_bigtable_instances(
+        project_result['bigtable_instances'] = CrawlerFactory.create_crawler(
+          'bigtable_instances',
+        ).crawl(
           project_id,
           ClientFactory.get_client('bigtableadmin').get_service(credentials),
         )
