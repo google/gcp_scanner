@@ -22,9 +22,10 @@ from gcp_scanner.crawler.compute_instances_crawler import ComputeInstancesCrawle
 from gcp_scanner.crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from gcp_scanner.crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
+from gcp_scanner.crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
+from gcp_scanner.crawler.dns_policies_crawler import DNSPoliciesCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from gcp_scanner.crawler.sql_instances_crawler import SQLInstancesCrawler
-
 
 service_crawler_map = {
   "app_services": AppServicesCrawler,
@@ -32,12 +33,15 @@ service_crawler_map = {
   "compute_images": ComputeImagesCrawler,
   "compute_instances": ComputeInstancesCrawler,
   "compute_snapshots": ComputeSnapshotsCrawler,
+  "dns_policies": DNSPoliciesCrawler,
   "firewall_rules": ComputeFirewallRulesCrawler,
   "machine_images": ComputeMachineImagesCrawler,
   "sql_instances": SQLInstancesCrawler,
+  "managed_zones": DNSManagedZonesCrawler,
   "static_ips": ComputeStaticIPsCrawler,
   "subnets": ComputeSubnetsCrawler,
 }
+
 
 class CrawlerFactory:
   """Factory class for creating crawlers."""
