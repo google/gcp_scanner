@@ -322,35 +322,6 @@ def get_bq(project_id: str,
   return bq_datasets
 
 
-def get_cloudfunctions(project_id: str,
-                       service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of CloudFunctions available in the project.
-
-  Args:
-    project_id: A name of a project to query info about.
-    service: A resource object for interacting with the CloudFunctions API.
-
-  Returns:
-    A list of CloudFunctions in the project.
-  """
-
-  logging.info("Retrieving CloudFunctions")
-  functions_list = list()
-  try:
-    request = service.projects().locations().functions().list(
-        parent=f"projects/{project_id}/locations/-")
-    while request is not None:
-      response = request.execute()
-      functions_list = response.get("functions", [])
-      request = service.projects().locations().functions().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve CloudFunctions for project %s", project_id)
-    logging.info(sys.exc_info())
-
-  return functions_list
-
-
 def get_spanner_instances(project_id: str,
                           service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Spanner instances available in the project.

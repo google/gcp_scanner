@@ -52,6 +52,7 @@ from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
 from .crawler.app_services_crawler import AppServicesCrawler
+from .crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
 from .crawler.compute_disks_crawler import ComputeDisksCrawler
 from .crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
@@ -528,7 +529,9 @@ class TestCrawler(unittest.TestCase):
     """Test CloudFunctions list."""
     self.assertTrue(
       verify(
-        crawl.get_cloudfunctions(
+        CrawlerFactory.create_crawler(
+          "cloud_functions",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("cloudfunctions").get_service(
             self.credentials,
@@ -792,6 +795,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'app_services' name."""
     crawler = CrawlerFactory.create_crawler("app_services")
     self.assertIsInstance(crawler, AppServicesCrawler)
+
+  def test_create_crawler_cloud_functions(self):
+    """Test create_crawler method with 'cloud_functions' name."""
+    crawler = CrawlerFactory.create_crawler("cloud_functions")
+    self.assertIsInstance(crawler, CloudFunctionsCrawler)
 
   def test_create_crawler_bigtable_instances(self):
     """Test create_crawler method with 'app_services' name."""

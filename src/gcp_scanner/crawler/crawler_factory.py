@@ -15,6 +15,7 @@
 import logging
 
 from gcp_scanner.crawler.app_services_crawler import AppServicesCrawler
+from gcp_scanner.crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from gcp_scanner.crawler.bigtable_instances_crawler import BigTableInstancesCrawler
 from gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
 from gcp_scanner.crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
@@ -30,6 +31,7 @@ from gcp_scanner.crawler.pubsub_subscriptions_crawler import PubSubSubscriptions
 
 service_crawler_map = {
   "app_services": AppServicesCrawler,
+  "cloud_functions": CloudFunctionsCrawler,
   "bigtable_instances": BigTableInstancesCrawler,
   "compute_disks": ComputeDisksCrawler,
   "compute_images": ComputeImagesCrawler,
