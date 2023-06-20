@@ -351,35 +351,6 @@ def get_spanner_instances(project_id: str,
   return spanner_instances_list
 
 
-def get_filestore_instances(
-  project_id: str,
-  service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of Filestore instances available in the project.
-
-  Args:
-    project_id: A name of a project to query info about.
-    service: A resource object for interacting with the File Store API.
-
-  Returns:
-    A list of Filestore instances in the project.
-  """
-
-  logging.info("Retrieving filestore instances")
-  filestore_instances_list = list()
-  try:
-    request = service.projects().locations().instances().list(
-        parent=f"projects/{project_id}/locations/-")
-    while request is not None:
-      response = request.execute()
-      filestore_instances_list = response.get("instances", [])
-      request = service.projects().locations().instances().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to get filestore instances for project %s", project_id)
-    logging.info(sys.exc_info())
-  return filestore_instances_list
-
-
 def get_kms_keys(project_id: str,
                  service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of KMS keys available in the project.
