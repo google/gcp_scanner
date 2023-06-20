@@ -25,6 +25,7 @@ from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from gcp_scanner.crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from gcp_scanner.crawler.dns_policies_crawler import DNSPoliciesCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
+from gcp_scanner.crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
 
 service_crawler_map = {
   "app_services": AppServicesCrawler,
@@ -35,6 +36,7 @@ service_crawler_map = {
   "dns_policies": DNSPoliciesCrawler,
   "firewall_rules": ComputeFirewallRulesCrawler,
   "machine_images": ComputeMachineImagesCrawler,
+  "pubsub_subs": PubSubSubscriptionsCrawler,
   "managed_zones": DNSManagedZonesCrawler,
   "static_ips": ComputeStaticIPsCrawler,
   "subnets": ComputeSubnetsCrawler,

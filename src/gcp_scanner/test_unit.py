@@ -63,6 +63,7 @@ from .crawler.crawler_factory import CrawlerFactory
 from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from .crawler.dns_policies_crawler import DNSPoliciesCrawler
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
+from .crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -512,7 +513,9 @@ class TestCrawler(unittest.TestCase):
     """Test PubSub Subscriptions."""
     self.assertTrue(
       verify(
-        crawl.get_pubsub_subscriptions(
+        CrawlerFactory.create_crawler(
+          "pubsub_subs",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("pubsub").get_service(self.credentials),
         ),
@@ -826,6 +829,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'firewall_rules' name."""
     crawler = CrawlerFactory.create_crawler("firewall_rules")
     self.assertIsInstance(crawler, ComputeFirewallRulesCrawler)
+
+  def test_create_crawler_pubsub_subscriptions(self):
+    """Test create_crawler method with 'pubsub_subs' name."""
+    crawler = CrawlerFactory.create_crawler("pubsub_subs")
+    self.assertIsInstance(crawler, PubSubSubscriptionsCrawler)
 
   def test_create_crawler_dns_managed_zones(self):
     """Test create_crawler method with 'managed_zones' name."""
