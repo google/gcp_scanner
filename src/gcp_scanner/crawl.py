@@ -176,35 +176,6 @@ def get_bucket_iam(bucket_name: str, discovery_service: str
   return bucket_iam_policies
 
 
-def get_managed_zones(project_name: str,
-                      service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of DNS zones available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the DNS API.
-
-  Returns:
-    A list of DNS zones in the project.
-  """
-
-  logging.info("Retrieving DNS Managed Zones")
-  zones_list = list()
-
-  try:
-    request = service.managedZones().list(project=project_name)
-    while request is not None:
-      response = request.execute()
-      zones_list = response.get("managedZones",[])
-      request = service.managedZones().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to enumerate DNS zones for project %s", project_name)
-    logging.info(sys.exc_info())
-
-  return zones_list
-
-
 def get_gke_clusters(
     project_name: str, gke_client: container_v1.services.cluster_manager.client
     .ClusterManagerClient
@@ -351,66 +322,6 @@ def get_bq(project_id: str,
   return bq_datasets
 
 
-def get_pubsub_subscriptions(
-  project_id: str,
-  service: discovery.Resource
-) -> List[Dict[str, Any]]:
-  """Retrieve a list of PubSub subscriptions available in the project.
-
-  Args:
-    project_id: A name of a project to query info about.
-    service: A resource object for interacting with the PubSub API.
-
-  Returns:
-    A list of PubSub subscriptions in the project.
-  """
-
-  logging.info("Retrieving PubSub Subscriptions")
-  pubsubs_list = list()
-  try:
-
-    request = service.projects().subscriptions().list(
-        project=f"projects/{project_id}")
-    while request is not None:
-      response = request.execute()
-      pubsubs_list = response.get("subscriptions", [])
-      request = service.projects().subscriptions().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to get PubSubs for project %s", project_id)
-    logging.info(sys.exc_info())
-  return pubsubs_list
-
-
-def get_bigtable_instances(project_id: str,
-                           service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of BigTable instances available in the project.
-
-  Args:
-    project_id: A name of a project to query info about.
-    service: A resource object for interacting with the BigTable API.
-
-  Returns:
-    A list of BigTable instances in the project.
-  """
-
-  logging.info("Retrieving bigtable instances")
-  bigtable_instances_list = list()
-  try:
-    request = service.projects().instances().list(
-        parent=f"projects/{project_id}")
-    while request is not None:
-      response = request.execute()
-      bigtable_instances_list = response.get("instances", [])
-      request = service.projects().instances().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve BigTable instances for project %s",
-                 project_id)
-    logging.info(sys.exc_info())
-  return bigtable_instances_list
-
-
 def get_spanner_instances(project_id: str,
                           service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Spanner instances available in the project.
@@ -517,42 +428,6 @@ def get_kms_keys(project_id: str,
     logging.info("Failed to retrieve KMS keys for project %s", project_id)
     logging.info(sys.exc_info())
   return kms_keys_list
-
-
-def get_app_services(project_name: str,
-                     service: discovery.Resource) -> Dict[str, Any]:
-  """Retrieve a list of AppEngine instances available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the AppEngine API.
-
-  Returns:
-    A dict representing default apps and services available in the project.
-  """
-
-  logging.info("Retrieving app services")
-  app_services = dict()
-  try:
-    request = service.apps().get(appsId=project_name)
-    response = request.execute()
-    if response.get("name", None) is not None:
-      app_services["default_app"] = (response["name"],
-                                     response["defaultHostname"],
-                                     response["servingStatus"])
-
-    request = service.apps().services().list(appsId=project_name)
-
-    app_services["services"] = list()
-    while request is not None:
-      response = request.execute()
-      app_services["services"] = response.get("services", [])
-      request = service.apps().services().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve App services for project %s", project_name)
-    logging.info(sys.exc_info())
-  return app_services
 
 
 def get_endpoints(project_id: str,
@@ -736,37 +611,3 @@ def list_sourcerepo(project_id: str,
     logging.info(sys.exc_info())
 
   return list_of_repos
-
-
-def list_dns_policies(project_id: str,
-                      service: discovery.Resource) -> List[Any]:
-  """Retrieve a list of cloud DNS policies in the project.
-  Args:
-    project_id: An id of a project to query info about.
-    service: A resource object for interacting with the DNS API.
-  Returns:
-    A list of cloud DNS policies in the project.
-  """
-
-  logging.info("Retrieving cloud DNS policies %s", project_id)
-  list_of_policies = list()
-
-  request = service.policies().list(
-    project=project_id,
-    maxResults=500
-  )
-  try:
-    while request is not None:
-      response = request.execute()
-      list_of_policies.extend(response.get("policies", None))
-
-      request = service.policies().list_next(
-        previous_request=request,
-        previous_response=response
-      )
-  except Exception:
-    logging.info("Failed to retrieve DNS policies for project %s", project_id)
-    logging.info(sys.exc_info())
-
-  return list_of_policies
-
