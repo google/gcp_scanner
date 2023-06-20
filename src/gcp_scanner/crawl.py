@@ -461,38 +461,3 @@ def get_service_accounts(project_name: str,
     logging.info(sys.exc_info())
 
   return service_accounts
-
-
-def list_sourcerepo(project_id: str,
-                    service: discovery.Resource) -> List[Any]:
-  """Retrieve a list of cloud source repositories enabled in the project.
-
-  Args:
-    project_id: An id of a project to query info about.
-    service: A resource object for interacting with the Source Repo API.
-
-  Returns:
-    A list of cloud source repositories in the project.
-  """
-
-  logging.info("Retrieving cloud source repositories %s", project_id)
-  list_of_repos = list()
-
-  request = service.projects().repos().list(
-    name="projects/" + project_id,
-    pageSize=500
-  )
-  try:
-    while request is not None:
-      response = request.execute()
-      list_of_repos.extend(response.get("repos", None))
-
-      request = service.projects().repos().list_next(
-        previous_request=request,
-        previous_response=response
-      )
-  except Exception:
-    logging.info("Failed to retrieve source repos for project %s", project_id)
-    logging.info(sys.exc_info())
-
-  return list_of_repos
