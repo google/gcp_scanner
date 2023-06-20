@@ -322,7 +322,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get SQL instances
       if is_set(scan_config, 'sql_instances'):
-        project_result['sql_instances'] = crawl.get_sql_instances(
+        project_result['sql_instances'] = CrawlerFactory.create_crawler(
+          'sql_instances',
+        ).crawl(
           project_id,
           ClientFactory.get_client('sqladmin').get_service(credentials),
         )
