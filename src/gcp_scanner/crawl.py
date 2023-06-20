@@ -295,35 +295,6 @@ def get_bq(project_id: str,
   return bq_datasets
 
 
-def get_spanner_instances(project_id: str,
-                          service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of Spanner instances available in the project.
-
-  Args:
-    project_id: A name of a project to query info about.
-    service: A resource object for interacting with the Spanner API.
-
-  Returns:
-    A list of Spanner instances in the project.
-  """
-
-  logging.info("Retrieving spanner instances")
-  spanner_instances_list = list()
-  try:
-    request = service.projects().instances().list(
-        parent=f"projects/{project_id}")
-    while request is not None:
-      response = request.execute()
-      spanner_instances_list = response.get("instances", [])
-      request = service.projects().instances().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve Spanner instances for project %s",
-                 project_id)
-    logging.info(sys.exc_info())
-  return spanner_instances_list
-
-
 def get_kms_keys(project_id: str,
                  service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of KMS keys available in the project.

@@ -30,6 +30,7 @@ from unittest.mock import patch, Mock
 import requests
 from google.oauth2 import credentials
 
+
 from . import crawl
 from . import credsdb
 from . import scanner
@@ -67,6 +68,7 @@ from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from .crawler.dns_policies_crawler import DNSPoliciesCrawler
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .crawler.sql_instances_crawler import SQLInstancesCrawler
+from .crawler.spanner_instances_crawler import SpannerInstancesCrawler
 from .crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
 from .credsdb import get_scopes_from_refresh_token
 
@@ -565,7 +567,9 @@ class TestCrawler(unittest.TestCase):
     """Test Spanner Instances."""
     self.assertTrue(
       verify(
-        crawl.get_spanner_instances(
+        CrawlerFactory.create_crawler(
+          "spanner_instances",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("spanner").get_service(self.credentials),
         ),
@@ -856,6 +860,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'sql_instances' name."""
     crawler = CrawlerFactory.create_crawler("sql_instances")
     self.assertIsInstance(crawler, SQLInstancesCrawler)
+
+  def test_create_crawler_spanner_instances(self):
+    """Test create_crawler method with 'spanner_instances' name."""
+    crawler = CrawlerFactory.create_crawler("spanner_instances")
+    self.assertIsInstance(crawler, SpannerInstancesCrawler)
 
   def test_create_crawler_filestore_instances(self):
     """Test create_crawler method with 'filestore_instances' name."""
