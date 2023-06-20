@@ -15,6 +15,8 @@
 import logging
 
 from gcp_scanner.crawler.app_services_crawler import AppServicesCrawler
+from gcp_scanner.crawler.cloud_functions_crawler import CloudFunctionsCrawler
+from gcp_scanner.crawler.bigtable_instances_crawler import BigTableInstancesCrawler
 from gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
 from gcp_scanner.crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
@@ -22,21 +24,27 @@ from gcp_scanner.crawler.compute_instances_crawler import ComputeInstancesCrawle
 from gcp_scanner.crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from gcp_scanner.crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
+from gcp_scanner.crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from gcp_scanner.crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from gcp_scanner.crawler.dns_policies_crawler import DNSPoliciesCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from gcp_scanner.crawler.sql_instances_crawler import SQLInstancesCrawler
+from gcp_scanner.crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
 
 service_crawler_map = {
   "app_services": AppServicesCrawler,
+  "cloud_functions": CloudFunctionsCrawler,
+  "bigtable_instances": BigTableInstancesCrawler,
   "compute_disks": ComputeDisksCrawler,
   "compute_images": ComputeImagesCrawler,
   "compute_instances": ComputeInstancesCrawler,
   "compute_snapshots": ComputeSnapshotsCrawler,
+  "filestore_instances": FilestoreInstancesCrawler,
   "dns_policies": DNSPoliciesCrawler,
   "firewall_rules": ComputeFirewallRulesCrawler,
   "machine_images": ComputeMachineImagesCrawler,
   "sql_instances": SQLInstancesCrawler,
+  "pubsub_subs": PubSubSubscriptionsCrawler,
   "managed_zones": DNSManagedZonesCrawler,
   "static_ips": ComputeStaticIPsCrawler,
   "subnets": ComputeSubnetsCrawler,

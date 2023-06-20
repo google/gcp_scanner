@@ -338,21 +338,27 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get PubSub Subscriptions
       if is_set(scan_config, 'pubsub_subs'):
-        project_result['pubsub_subs'] = crawl.get_pubsub_subscriptions(
+        project_result['pubsub_subs'] = CrawlerFactory.create_crawler(
+          'pubsub_subs',
+        ).crawl(
           project_id,
           ClientFactory.get_client('pubsub').get_service(credentials),
         )
 
       # Get CloudFunctions list
       if is_set(scan_config, 'cloud_functions'):
-        project_result['cloud_functions'] = crawl.get_cloudfunctions(
+        project_result['cloud_functions'] = CrawlerFactory.create_crawler(
+          'cloud_functions',
+        ).crawl(
           project_id,
           ClientFactory.get_client('cloudfunctions').get_service(credentials),
         )
 
       # Get List of BigTable Instances
       if is_set(scan_config, 'bigtable_instances'):
-        project_result['bigtable_instances'] = crawl.get_bigtable_instances(
+        project_result['bigtable_instances'] = CrawlerFactory.create_crawler(
+          'bigtable_instances',
+        ).crawl(
           project_id,
           ClientFactory.get_client('bigtableadmin').get_service(credentials),
         )
@@ -366,7 +372,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get FileStore Instances
       if is_set(scan_config, 'filestore_instances'):
-        project_result['filestore_instances'] = crawl.get_filestore_instances(
+        project_result['filestore_instances'] = CrawlerFactory.create_crawler(
+          'filestore_instances',
+        ).crawl(
           project_id,
           ClientFactory.get_client('file').get_service(credentials),
         )
