@@ -52,6 +52,8 @@ from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
 from .crawler.app_services_crawler import AppServicesCrawler
+from .crawler.cloud_functions_crawler import CloudFunctionsCrawler
+from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
 from .crawler.compute_disks_crawler import ComputeDisksCrawler
 from .crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from .crawler.compute_images_crawler import ComputeImagesCrawler
@@ -60,9 +62,11 @@ from .crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from .crawler.crawler_factory import CrawlerFactory
+from .crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from .crawler.dns_policies_crawler import DNSPoliciesCrawler
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
+from .crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
 from .crawler.service_usage_crawler import ServiceUsageCrawler
 from .credsdb import get_scopes_from_refresh_token
 
@@ -513,7 +517,9 @@ class TestCrawler(unittest.TestCase):
     """Test PubSub Subscriptions."""
     self.assertTrue(
       verify(
-        crawl.get_pubsub_subscriptions(
+        CrawlerFactory.create_crawler(
+          "pubsub_subs",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("pubsub").get_service(self.credentials),
         ),
@@ -525,7 +531,9 @@ class TestCrawler(unittest.TestCase):
     """Test CloudFunctions list."""
     self.assertTrue(
       verify(
-        crawl.get_cloudfunctions(
+        CrawlerFactory.create_crawler(
+          "cloud_functions",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("cloudfunctions").get_service(
             self.credentials,
@@ -539,7 +547,9 @@ class TestCrawler(unittest.TestCase):
     """Test BigTable Instances."""
     self.assertTrue(
       verify(
-        crawl.get_bigtable_instances(
+        CrawlerFactory.create_crawler(
+          "bigtable_instances",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("bigtableadmin").get_service(
             self.credentials,
@@ -565,7 +575,9 @@ class TestCrawler(unittest.TestCase):
     """Test FileStore Instances."""
     self.assertTrue(
       verify(
-        crawl.get_filestore_instances(
+        CrawlerFactory.create_crawler(
+          "filestore_instances",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("file").get_service(self.credentials),
         ),
@@ -790,6 +802,16 @@ class TestCrawlerFactory(unittest.TestCase):
     crawler = CrawlerFactory.create_crawler("app_services")
     self.assertIsInstance(crawler, AppServicesCrawler)
 
+  def test_create_crawler_cloud_functions(self):
+    """Test create_crawler method with 'cloud_functions' name."""
+    crawler = CrawlerFactory.create_crawler("cloud_functions")
+    self.assertIsInstance(crawler, CloudFunctionsCrawler)
+
+  def test_create_crawler_bigtable_instances(self):
+    """Test create_crawler method with 'app_services' name."""
+    crawler = CrawlerFactory.create_crawler("bigtable_instances")
+    self.assertIsInstance(crawler, BigTableInstancesCrawler)
+
   def test_create_crawler_compute_instances(self):
     """Test create_crawler method with 'compute_instances' name."""
     crawler = CrawlerFactory.create_crawler("compute_instances")
@@ -829,6 +851,16 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'firewall_rules' name."""
     crawler = CrawlerFactory.create_crawler("firewall_rules")
     self.assertIsInstance(crawler, ComputeFirewallRulesCrawler)
+
+  def test_create_crawler_filestore_instances(self):
+    """Test create_crawler method with 'filestore_instances' name."""
+    crawler = CrawlerFactory.create_crawler("filestore_instances")
+    self.assertIsInstance(crawler, FilestoreInstancesCrawler)
+
+  def test_create_crawler_pubsub_subscriptions(self):
+    """Test create_crawler method with 'pubsub_subs' name."""
+    crawler = CrawlerFactory.create_crawler("pubsub_subs")
+    self.assertIsInstance(crawler, PubSubSubscriptionsCrawler)
 
   def test_create_crawler_dns_managed_zones(self):
     """Test create_crawler method with 'managed_zones' name."""
