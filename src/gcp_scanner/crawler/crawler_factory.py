@@ -17,6 +17,9 @@ import logging
 from gcp_scanner.crawler.app_services_crawler import AppServicesCrawler
 from gcp_scanner.crawler.bigtable_instances_crawler import BigTableInstancesCrawler
 from gcp_scanner.crawler.cloud_functions_crawler import CloudFunctionsCrawler
+from gcp_scanner.crawler.cloud_resource_manager_iam_policy_crawler import CloudResourceManagerIAMPolicyCrawler
+from gcp_scanner.crawler.cloud_resource_manager_project_info_crawler import CloudResourceManagerProjectInfoCrawler
+from gcp_scanner.crawler.cloud_resource_manager_project_list_crawler import CloudResourceManagerProjectListCrawler
 from gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
 from gcp_scanner.crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
@@ -55,6 +58,9 @@ service_crawler_map = {
   "static_ips": ComputeStaticIPsCrawler,
   "subnets": ComputeSubnetsCrawler,
   "sourcerepos": CloudSourceRepoCrawler,
+  "iam_policy": CloudResourceManagerIAMPolicyCrawler,
+  "project_info": CloudResourceManagerProjectInfoCrawler,
+  "project_list": CloudResourceManagerProjectListCrawler,
 }
 
 
