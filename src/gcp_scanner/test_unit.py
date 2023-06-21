@@ -67,6 +67,7 @@ from .crawler.crawler_factory import CrawlerFactory
 from .crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from .crawler.dns_policies_crawler import DNSPoliciesCrawler
+from .crawler.kms_keys_crawler import KMSKeysCrawler
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .crawler.sql_instances_crawler import SQLInstancesCrawler
 from .crawler.spanner_instances_crawler import SpannerInstancesCrawler
@@ -600,7 +601,9 @@ class TestCrawler(unittest.TestCase):
     """Test list of KMS keys."""
     self.assertTrue(
       verify(
-        crawl.get_kms_keys(
+        CrawlerFactory.create_crawler(
+          "kms"
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("cloudkms").get_service(self.credentials),
         ),
@@ -889,6 +892,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'filestore_instances' name."""
     crawler = CrawlerFactory.create_crawler("filestore_instances")
     self.assertIsInstance(crawler, FilestoreInstancesCrawler)
+
+  def test_create_crawler_kms_keys(self):
+    """Test create_crawler method with 'kms_keys' name."""
+    crawler = CrawlerFactory.create_crawler("kms")
+    self.assertIsInstance(crawler, KMSKeysCrawler)
 
   def test_create_crawler_pubsub_subscriptions(self):
     """Test create_crawler method with 'pubsub_subs' name."""
