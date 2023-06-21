@@ -53,6 +53,7 @@ from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
 from .crawler.app_services_crawler import AppServicesCrawler
+from .crawler.bigquery_crawler import BigQueryCrawler
 from .crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
 from .crawler.cloud_resource_manager_iam_policy_crawler import CloudResourceManagerIAMPolicyCrawler
@@ -514,7 +515,9 @@ class TestCrawler(unittest.TestCase):
     """Test BigQuery databases and table names."""
     self.assertTrue(
       verify(
-        crawl.get_bq(
+        CrawlerFactory.create_crawler(
+          "bq",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("bigquery").get_service(self.credentials),
         ),
@@ -818,6 +821,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'app_services' name."""
     crawler = CrawlerFactory.create_crawler("app_services")
     self.assertIsInstance(crawler, AppServicesCrawler)
+
+  def test_create_crawler_bigquery(self):
+    """Test create_crawler method with 'bigquery' name."""
+    crawler = CrawlerFactory.create_crawler("bq")
+    self.assertIsInstance(crawler, BigQueryCrawler)
 
   def test_create_crawler_cloud_functions(self):
     """Test create_crawler method with 'cloud_functions' name."""
