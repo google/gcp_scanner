@@ -383,7 +383,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get list of KMS keys
       if is_set(scan_config, 'kms'):
-        project_result['kms'] = crawl.get_kms_keys(
+        project_result['kms'] = CrawlerFactory.create_crawler(
+          'kms',
+        ).crawl(
           project_id,
           ClientFactory.get_client('cloudkms').get_service(credentials),
         )
