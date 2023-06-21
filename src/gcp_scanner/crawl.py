@@ -40,58 +40,6 @@ def infinite_defaultdict():
   return collections.defaultdict(infinite_defaultdict)
 
 
-def fetch_project_info(project_name: str,
-                       service: discovery.Resource) -> Dict[str, Any]:
-  """Retrieve information about specific project.
-
-  Args:
-    project_name: Name of project to request info about
-    service: A resource object for interacting with the Cloud Source API.
-
-  Returns:
-    Project info object or None.
-  """
-  project_info = None
-  logging.info("Retrieving info about: %s", project_name)
-
-  try:
-    request = service.projects().get(projectId=project_name)
-    response = request.execute()
-    if "projectNumber" in response:
-      project_info = response
-
-  except Exception:
-    logging.info("Failed to enumerate projects")
-    logging.info(sys.exc_info())
-
-  return project_info
-
-
-def get_project_list(service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of projects accessible by credentials provided.
-
-  Args:
-     service: A resource object for interacting with the Cloud Source API.
-
-  Returns:
-    A list of Project objects from cloudresourcemanager RestAPI.
-  """
-
-  logging.info("Retrieving projects list")
-  project_list = list()
-  try:
-    request = service.projects().list()
-    while request is not None:
-      response = request.execute()
-      project_list = response.get("projects",[])
-      request = service.projects().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to enumerate projects")
-    logging.info(sys.exc_info())
-  return project_list
-
-
 def get_bucket_names(project_name: str, service: discovery.Resource,
                      dump_fd: io.TextIOWrapper, dump_iam_policies: bool
                      ) -> Dict[str, Tuple[Any, List[Any]]]:
@@ -370,38 +318,6 @@ def get_endpoints(project_id: str,
     logging.info("Failed to retrieve endpoints list for project %s", project_id)
     logging.info(sys.exc_info())
   return endpoints_list
-
-
-def get_iam_policy(project_name: str,
-                   service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve an IAM Policy in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the cloud source API.
-
-  Returns:
-    An IAM policy enforced for the project.
-  """
-
-  logging.info("Retrieving IAM policy for %s", project_name)
-
-  resource = project_name
-
-  get_policy_options = {"options": {"requestedPolicyVersion": 3}}
-  try:
-    request = service.projects().getIamPolicy(
-        resource=resource, body=get_policy_options)
-    response = request.execute()
-  except Exception:
-    logging.info("Failed to get endpoints list for project %s", project_name)
-    logging.info(sys.exc_info())
-    return None
-
-  if response.get("bindings", None) is not None:
-    return response["bindings"]
-  else:
-    return None
 
 
 def get_sas_for_impersonation(
