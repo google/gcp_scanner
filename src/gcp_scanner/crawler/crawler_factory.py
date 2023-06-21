@@ -15,6 +15,7 @@
 import logging
 
 from gcp_scanner.crawler.app_services_crawler import AppServicesCrawler
+from gcp_scanner.crawler.bigquery_crawler import BigQueryCrawler
 from gcp_scanner.crawler.bigtable_instances_crawler import BigTableInstancesCrawler
 from gcp_scanner.crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
@@ -39,6 +40,7 @@ from gcp_scanner.crawler.service_usage_crawler import ServiceUsageCrawler
 service_crawler_map = {
   "app_services": AppServicesCrawler,
   "bigtable_instances": BigTableInstancesCrawler,
+  "bq": BigQueryCrawler,
   "cloud_functions": CloudFunctionsCrawler,
   "compute_disks": ComputeDisksCrawler,
   "compute_images": ComputeImagesCrawler,

@@ -235,66 +235,6 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
   return images
 
 
-def get_bq_tables(project_id: str, dataset_id: str,
-                  bq_service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of BigQuery tables available in the dataset.
-
-  Args:
-    project_id: A name of a project to query info about.
-    dataset_id: A name of dataset to query data from.
-    bq_service: I do not know.
-
-  Returns:
-    A list of BigQuery tables in the dataset.
-  """
-
-  logging.info("Retrieving BigQuery Tables for dataset %s", dataset_id)
-  list_of_tables = list()
-  try:
-    request = bq_service.tables().list(
-        projectId=project_id, datasetId=dataset_id)
-    while request is not None:
-      response = request.execute()
-      list_of_tables = response.get("tables", [])
-      request = bq_service.tables().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve BQ tables for dataset %s", dataset_id)
-    logging.info(sys.exc_info())
-  return list_of_tables
-
-
-def get_bq(project_id: str,
-           service: discovery.Resource) -> Dict[str, List[Dict[str, Any]]]:
-  """Retrieve a list of BigQuery datasets available in the project.
-
-  Args:
-    project_id: A name of a project to query info about.
-    service: A resource object for interacting with the BigQuery API.
-
-  Returns:
-    A dictionary of BigQuery dataset and corresponding tables.
-  """
-
-  logging.info("Retrieving BigQuery Datasets")
-  bq_datasets = dict()
-  try:
-    request = service.datasets().list(projectId=project_id)
-    while request is not None:
-      response = request.execute()
-
-      for dataset in response.get("datasets", []):
-        dataset_id = dataset["datasetReference"]["datasetId"]
-        bq_datasets[dataset_id] = get_bq_tables(project_id,dataset_id, service)
-
-      request = service.datasets().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve BQ datasets for project %s", project_id)
-    logging.info(sys.exc_info())
-  return bq_datasets
-
-
 def get_endpoints(project_id: str,
                   service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Endpoints available in the project.
