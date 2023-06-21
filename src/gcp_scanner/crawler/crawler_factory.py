@@ -38,25 +38,25 @@ from gcp_scanner.crawler.service_usage_crawler import ServiceUsageCrawler
 
 service_crawler_map = {
   "app_services": AppServicesCrawler,
-  "cloud_functions": CloudFunctionsCrawler,
   "bigtable_instances": BigTableInstancesCrawler,
+  "bq": BigQueryCrawler,
+  "cloud_functions": CloudFunctionsCrawler,
   "compute_disks": ComputeDisksCrawler,
   "compute_images": ComputeImagesCrawler,
   "compute_instances": ComputeInstancesCrawler,
   "compute_snapshots": ComputeSnapshotsCrawler,
-  "filestore_instances": FilestoreInstancesCrawler,
   "dns_policies": DNSPoliciesCrawler,
+  "filestore_instances": FilestoreInstancesCrawler,
   "firewall_rules": ComputeFirewallRulesCrawler,
   "machine_images": ComputeMachineImagesCrawler,
-  "sql_instances": SQLInstancesCrawler,
-  "spanner_instances": SpannerInstancesCrawler,
-  "pubsub_subs": PubSubSubscriptionsCrawler,
   "managed_zones": DNSManagedZonesCrawler,
+  "pubsub_subs": PubSubSubscriptionsCrawler,
   "services": ServiceUsageCrawler,
+  "sourcerepos": CloudSourceRepoCrawler,
+  "spanner_instances": SpannerInstancesCrawler,
+  "sql_instances": SQLInstancesCrawler,
   "static_ips": ComputeStaticIPsCrawler,
   "subnets": ComputeSubnetsCrawler,
-  "sourcerepos": CloudSourceRepoCrawler,
-  "bq": BigQueryCrawler,
 }
 
 
