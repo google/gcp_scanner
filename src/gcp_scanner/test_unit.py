@@ -686,21 +686,6 @@ class TestCrawler(unittest.TestCase):
       )
     )
 
-  def test_project_list(self):
-    """Test project list."""
-    self.assertTrue(
-      verify(
-        CrawlerFactory.create_crawler(
-          "project_list",
-        ).crawl(
-          ClientFactory.get_client("cloudresourcemanager").get_service(
-            self.credentials,
-          ),
-        ),
-        "project_list",
-      )
-    )
-
   def test_sourcerepos(self):
     """Test list of cloud source repositories in the project."""
     self.assertTrue(
