@@ -183,56 +183,6 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
   return images
 
 
-def get_kms_keys(project_id: str,
-                 service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of KMS keys available in the project.
-
-  Args:
-    project_id: A name of a project to query info about.
-    service: A resource object for interacting with KMS API.
-
-  Returns:
-    A list of KMS keys in the project.
-  """
-
-  logging.info("Retrieving KMS keys")
-  kms_keys_list = list()
-  try:
-    # list all possible locations
-    locations_list = list()
-    request = service.projects().locations().list(name=f"projects/{project_id}")
-    while request is not None:
-      response = request.execute()
-      for location in response.get("locations", []):
-        locations_list.append(location["locationId"])
-      request = service.projects().locations().list_next(
-          previous_request=request, previous_response=response)
-
-    for location_id in locations_list:
-      request_loc = service.projects().locations().keyRings().list(
-          parent=f"projects/{project_id}/locations/{location_id}")
-      while request_loc is not None:
-        response_loc = request_loc.execute()
-        for keyring in response_loc.get("keyRings", []):
-          request = service.projects().locations().keyRings().cryptoKeys().list(
-              parent=keyring["name"])
-          while request is not None:
-            response = request.execute()
-            for key in response.get("cryptoKeys", []):
-              kms_keys_list.append(key)
-
-            request = service.projects().locations().keyRings().cryptoKeys(
-            ).list_next(
-                previous_request=request, previous_response=response)
-
-        request_loc = service.projects().locations().keyRings().list_next(
-            previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve KMS keys for project %s", project_id)
-    logging.info(sys.exc_info())
-  return kms_keys_list
-
-
 def get_endpoints(project_id: str,
                   service: discovery.Resource) -> List[Dict[str, Any]]:
   """Retrieve a list of Endpoints available in the project.
