@@ -22,9 +22,11 @@ import logging
 import os
 import sys
 from datetime import datetime
+from json.decoder import JSONDecodeError
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional, Union
 
+from google.auth.exceptions import MalformedError
 from google.cloud import container_v1
 from google.cloud import iam_credentials
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
@@ -475,6 +477,31 @@ def gke_client_for_credentials(
     credentials=credentials)
 
 
+def get_sa_details_from_key_files(key_path):
+  malformed_keys = []
+  sa_details = []
+  for keyfile in os.listdir(key_path):
+    if not keyfile.endswith('.json'):
+      malformed_keys.append(keyfile)
+      continue
+
+    full_key_path = os.path.join(key_path, keyfile)
+    try:
+      account_name, credentials = credsdb.get_creds_from_file(full_key_path)
+      if credentials is None:
+        logging.error('Failed to retrieve credentials for %s', account_name)
+        continue
+
+      sa_details.append((account_name, credentials, []))
+    except (MalformedError, JSONDecodeError, Exception):
+      malformed_keys.append(keyfile)
+
+  if len(malformed_keys) > 0:
+    logging.error('Failed to parse keyfile(s): ', malformed_keys)
+
+  return sa_details
+
+
 def main():
   logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
   logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
@@ -493,15 +520,7 @@ def main():
   sa_tuples = []
   if args.key_path:
     # extracting SA keys from folder
-    for keyfile in os.listdir(args.key_path):
-      if not keyfile.endswith('.json'):
-        continue
-      full_key_path = os.path.join(args.key_path, keyfile)
-      account_name, credentials = credsdb.get_creds_from_file(full_key_path)
-      if credentials is None:
-        logging.error('Failed to retrieve credentials for %s', account_name)
-        continue
-      sa_tuples.append((account_name, credentials, []))
+    sa_tuples.extend(get_sa_details_from_key_files(args.key_path))
 
   if args.use_metadata:
     # extracting GCP credentials from instance metadata
