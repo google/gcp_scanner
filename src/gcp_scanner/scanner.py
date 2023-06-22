@@ -132,7 +132,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
     # Add token scopes in the result
     sa_results['token_scopes'] = credentials.scopes
 
-    project_list = crawl.get_project_list(
+    project_list = CrawlerFactory.create_crawler(
+      'project_list',
+    ).crawl(
       ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
     )
     if len(project_list) <= 0:
@@ -140,7 +142,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
     if force_projects:
       for force_project_id in force_projects:
-        res = crawl.fetch_project_info(
+        res = CrawlerFactory.create_crawler(
+          'project_info',
+        ).crawl(
           force_project_id,
           ClientFactory.get_client('cloudresourcemanager').get_service(
             credentials,
@@ -180,13 +184,14 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       if is_set(scan_config, 'iam_policy'):
         # Get IAM policy
-        iam_policy = crawl.get_iam_policy(
+        project_result['iam_policy'] = CrawlerFactory.create_crawler(
+          'iam_policy',
+        ).crawl(
           project_id,
           ClientFactory.get_client('cloudresourcemanager').get_service(
             credentials,
           ),
         )
-        project_result['iam_policy'] = iam_policy
 
       if is_set(scan_config, 'service_accounts'):
         # Get service accounts

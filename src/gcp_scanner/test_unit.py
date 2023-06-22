@@ -56,6 +56,9 @@ from .crawler.app_services_crawler import AppServicesCrawler
 from .crawler.bigquery_crawler import BigQueryCrawler
 from .crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
+from .crawler.cloud_resource_manager_iam_policy_crawler import CloudResourceManagerIAMPolicyCrawler
+from .crawler.cloud_resource_manager_project_info_crawler import CloudResourceManagerProjectInfoCrawler
+from .crawler.cloud_resource_manager_project_list_crawler import CloudResourceManagerProjectListCrawler
 from .crawler.compute_disks_crawler import ComputeDisksCrawler
 from .crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from .crawler.compute_images_crawler import ComputeImagesCrawler
@@ -647,7 +650,9 @@ class TestCrawler(unittest.TestCase):
     """Test IAM policy."""
     self.assertTrue(
       verify(
-        crawl.get_iam_policy(
+        CrawlerFactory.create_crawler(
+          "iam_policy",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("cloudresourcemanager").get_service(
             self.credentials,
@@ -675,7 +680,9 @@ class TestCrawler(unittest.TestCase):
     """Test project info."""
     self.assertTrue(
       verify(
-        crawl.fetch_project_info(
+        CrawlerFactory.create_crawler(
+          "project_info",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("cloudresourcemanager").get_service(
             self.credentials,
@@ -832,6 +839,21 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'app_services' name."""
     crawler = CrawlerFactory.create_crawler("bigtable_instances")
     self.assertIsInstance(crawler, BigTableInstancesCrawler)
+
+  def test_create_crawler_cloud_resource_manager_iam_policy(self):
+    """Test create_crawler method with 'iam_policy' name."""
+    crawler = CrawlerFactory.create_crawler("iam_policy")
+    self.assertIsInstance(crawler, CloudResourceManagerIAMPolicyCrawler)
+
+  def test_create_crawler_cloud_resource_manager_project_info(self):
+    """Test create_crawler method with 'project_info' name."""
+    crawler = CrawlerFactory.create_crawler("project_info")
+    self.assertIsInstance(crawler, CloudResourceManagerProjectInfoCrawler)
+
+  def test_create_crawler_cloud_resource_manager_project_list(self):
+    """Test create_crawler method with 'project_list' name."""
+    crawler = CrawlerFactory.create_crawler("project_list")
+    self.assertIsInstance(crawler, CloudResourceManagerProjectListCrawler)
 
   def test_create_crawler_compute_instances(self):
     """Test create_crawler method with 'compute_instances' name."""
