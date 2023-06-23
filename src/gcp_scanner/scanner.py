@@ -497,7 +497,8 @@ def get_sa_details_from_key_files(key_path):
       malformed_keys.append(keyfile)
 
   if len(malformed_keys) > 0:
-    logging.error('Failed to parse keyfile(s): ', malformed_keys)
+    for malformed_key in malformed_keys:
+      logging.error('Failed to parse keyfile: %s', malformed_key)
 
   return sa_details
 
