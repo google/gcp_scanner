@@ -24,6 +24,7 @@ import logging
 import os
 import shutil
 import sqlite3
+import tempfile
 import unittest
 from unittest.mock import patch, Mock
 
@@ -194,6 +195,63 @@ creds='test_data', token='ya.29c.TEST')]]"
 
   # impersonate_sa()
   shutil.rmtree("unit")
+
+class TestGetSADetailsFromKeyFiles(unittest.TestCase):
+  """Test fetching sa credentials from keyfiles."""
+  @patch("gcp_scanner.scanner.credsdb.get_creds_from_file")
+  def test_get_sa_details_from_key_files(self, mocked_get_creds):
+    # create temp directory and keyfiles
+    with tempfile.TemporaryDirectory() as key_path:
+      open(f"{key_path}/keyfile1.json", "w", encoding="utf-8").close()
+      open(f"{key_path}/keyfile2.json", "w", encoding="utf-8").close()
+      mocked_get_creds.side_effect = [
+        ("account_name1", "credentials1"),
+        ("account_name2", "credentials2"),
+      ]
+      expect = [
+        ("account_name1", "credentials1", []),
+        ("account_name2", "credentials2", [])
+      ]
+
+      actual = scanner.get_sa_details_from_key_files(key_path)
+
+      self.assertEqual(actual, expect)
+
+  @patch("gcp_scanner.scanner.credsdb.get_creds_from_file")
+  def test_get_sa_details_from_key_files_without_json_file(
+          self, mocked_get_creds
+  ):
+    # create temp directory and keyfiles
+    with tempfile.TemporaryDirectory() as key_path:
+      open(f"{key_path}/keyfile1.txt", "w", encoding="utf-8").close()
+      open(f"{key_path}/keyfile2.txt", "w", encoding="utf-8").close()
+      mocked_get_creds.side_effect = [
+        ("account_name1", "credentials1"),
+        ("account_name2", "credentials2"),
+      ]
+      expect = []
+
+      actual = scanner.get_sa_details_from_key_files(key_path)
+
+      self.assertEqual(actual, expect)
+
+  @patch("gcp_scanner.scanner.credsdb.get_creds_from_file")
+  def test_get_sa_details_from_key_files_with_invalid_and_valid_key_file(
+          self, mocked_get_creds
+  ):
+    # create temp directory and keyfiles
+    with tempfile.TemporaryDirectory() as key_path:
+      open(f"{key_path}/keyfile1.json", "w", encoding="utf-8").close()
+      open(f"{key_path}/keyfile2.json", "w", encoding="utf-8").close()
+      mocked_get_creds.side_effect = [
+        ("account_name1", "credentials1"),
+        Exception("Malformed keys")
+      ]
+      expect = [("account_name1", "credentials1", [])]
+
+      actual = scanner.get_sa_details_from_key_files(key_path)
+
+      self.assertEqual(actual, expect)
 
 
 class TestScopes(unittest.TestCase):
