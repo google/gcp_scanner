@@ -59,6 +59,33 @@ light_version_scan_schema = {
   'services': ['name'],
 }
 
+crawl_client_map = {
+  'app_services': 'appengine',
+  'bigtable_instances': 'bigtableadmin',
+  'bq': 'bigquery',
+  'cloud_functions': 'cloudfunctions',
+  'compute_disks': 'compute',
+  'compute_images': 'compute',
+  'compute_instances': 'compute',
+  'compute_snapshots': 'compute',
+  'dns_policies': 'dns',
+  'filestore_instances': 'file',
+  'firewall_rules': 'compute',
+  'iam_policy': 'cloudresourcemanager',
+  'kms': 'cloudkms',
+  'machine_images': 'compute',
+  'managed_zones': 'dns',
+  'project_info': 'cloudresourcemanager',
+  # 'project_list': 'cloudresourcemanager',
+  'pubsub_subs': 'pubsub',
+  'services': 'serviceusage',
+  'sourcerepos': 'sourcerepo',
+  'spanner_instances': 'spanner',
+  'sql_instances': 'sqladmin',
+  'static_ips': 'compute',
+  'subnets': 'compute',
+}
+
 
 def is_set(config: Optional[dict], config_setting: str) -> Union[dict, bool]:
   if config is None:
@@ -184,16 +211,12 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         logging.error('Try removing the %s file and restart the scanner.',
                       output_file_name)
 
-      if is_set(scan_config, 'iam_policy'):
-        # Get IAM policy
-        project_result['iam_policy'] = CrawlerFactory.create_crawler(
-          'iam_policy',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('cloudresourcemanager').get_service(
-            credentials,
-          ),
-        )
+      for crawler_name, client_name in crawl_client_map.items():
+        if is_set(scan_config, crawler_name):
+          project_result[crawler_name] = CrawlerFactory.create_crawler(crawler_name).crawl(
+            project_id,
+            ClientFactory.get_client(client_name).get_service(credentials),
+          )
 
       if is_set(scan_config, 'service_accounts'):
         # Get service accounts
@@ -208,77 +231,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Iterate over discovered service accounts by attempting impersonation
       project_result['service_account_edges'] = []
       updated_chain = chain_so_far + [sa_name]
-
-      # Get GCP Compute Resources
-      compute_service = ClientFactory.get_client(
-        'compute',
-      ).get_service(credentials)
-
-      if is_set(scan_config, 'compute_instances'):
-        project_result['compute_instances'] = CrawlerFactory.create_crawler(
-          'compute_instances',
-        ).crawl(
-          project_id,
-          compute_service,
-        )
-      if is_set(scan_config, 'compute_images'):
-        project_result['compute_images'] = CrawlerFactory.create_crawler(
-          'compute_images',
-        ).crawl(
-          project_id,
-          compute_service,
-        )
-      if is_set(scan_config, 'machine_images'):
-        project_result['machine_images'] = CrawlerFactory.create_crawler(
-          'machine_images',
-        ).crawl(
-          project_id,
-          compute_service,
-        )
-      if is_set(scan_config, 'compute_disks'):
-        project_result['compute_disks'] = CrawlerFactory.create_crawler(
-          'compute_disks',
-        ).crawl(
-          project_id,
-          compute_service,
-        )
-      if is_set(scan_config, 'static_ips'):
-        project_result['static_ips'] = CrawlerFactory.create_crawler(
-          'static_ips',
-        ).crawl(
-          project_id,
-          compute_service,
-        )
-      if is_set(scan_config, 'compute_snapshots'):
-        project_result['compute_snapshots'] = CrawlerFactory.create_crawler(
-          'compute_snapshots',
-        ).crawl(
-          project_id,
-          compute_service,
-        )
-      if is_set(scan_config, 'subnets'):
-        project_result['subnets'] = CrawlerFactory.create_crawler(
-          'subnets',
-        ).crawl(
-          project_id,
-          compute_service,
-        )
-      if is_set(scan_config, 'firewall_rules'):
-        project_result['firewall_rules'] = CrawlerFactory.create_crawler(
-          'firewall_rules',
-        ).crawl(
-          project_id,
-          compute_service,
-        )
-
-      # Get GCP APP Resources
-      if is_set(scan_config, 'app_services'):
-        project_result['app_services'] = CrawlerFactory.create_crawler(
-          'app_services',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('appengine').get_service(credentials),
-        )
 
       # Get storage buckets
       if is_set(scan_config, 'storage_buckets'):
@@ -301,23 +253,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         if dump_file_names is not None:
           dump_file_names.close()
 
-      # Get DNS managed zones
-      if is_set(scan_config, 'managed_zones'):
-        project_result['managed_zones'] = CrawlerFactory.create_crawler(
-          'managed_zones',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('dns').get_service(credentials),
-        )
-      # Get DNS policies
-      if is_set(scan_config, 'dns_policies'):
-        project_result['dns_policies'] = CrawlerFactory.create_crawler(
-          'dns_policies',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('dns').get_service(credentials),
-        )
-
       # Get GKE resources
       if is_set(scan_config, 'gke_clusters'):
         gke_client = gke_client_for_credentials(credentials)
@@ -327,78 +262,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         project_result['gke_images'] = crawl.get_gke_images(project_id,
                                                             credentials.token)
 
-      # Get SQL instances
-      if is_set(scan_config, 'sql_instances'):
-        project_result['sql_instances'] = CrawlerFactory.create_crawler(
-          'sql_instances',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('sqladmin').get_service(credentials),
-        )
-
-      # Get BigQuery databases and table names
-      if is_set(scan_config, 'bq'):
-        project_result['bq'] = CrawlerFactory.create_crawler(
-          'bq',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('bigquery').get_service(credentials),
-        )
-
-      # Get PubSub Subscriptions
-      if is_set(scan_config, 'pubsub_subs'):
-        project_result['pubsub_subs'] = CrawlerFactory.create_crawler(
-          'pubsub_subs',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('pubsub').get_service(credentials),
-        )
-
-      # Get CloudFunctions list
-      if is_set(scan_config, 'cloud_functions'):
-        project_result['cloud_functions'] = CrawlerFactory.create_crawler(
-          'cloud_functions',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('cloudfunctions').get_service(credentials),
-        )
-
-      # Get List of BigTable Instances
-      if is_set(scan_config, 'bigtable_instances'):
-        project_result['bigtable_instances'] = CrawlerFactory.create_crawler(
-          'bigtable_instances',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('bigtableadmin').get_service(credentials),
-        )
-
-      # Get Spanner Instances
-      if is_set(scan_config, 'spanner_instances'):
-        project_result['spanner_instances'] = CrawlerFactory.create_crawler(
-          'spanner_instances',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('spanner').get_service(credentials),
-        )
-
-      # Get FileStore Instances
-      if is_set(scan_config, 'filestore_instances'):
-        project_result['filestore_instances'] = CrawlerFactory.create_crawler(
-          'filestore_instances',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('file').get_service(credentials),
-        )
-
-      # Get list of KMS keys
-      if is_set(scan_config, 'kms'):
-        project_result['kms'] = CrawlerFactory.create_crawler(
-          'kms',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('cloudkms').get_service(credentials),
-        )
-
       # Get information about Endpoints
       if is_set(scan_config, 'endpoints'):
         project_result['endpoints'] = crawl.get_endpoints(
@@ -406,26 +269,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           ClientFactory.get_client('servicemanagement').get_service(
             credentials,
           ),
-        )
-
-      # Get list of API services enabled in the project
-      if is_set(scan_config, 'services'):
-        project_result['services'] = CrawlerFactory.create_crawler(
-          'services',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('serviceusage').get_service(
-            credentials,
-          ),
-        )
-
-      # Get list of cloud source repositories enabled in the project
-      if is_set(scan_config, 'sourcerepos'):
-        project_result['sourcerepos'] = CrawlerFactory.create_crawler(
-          'sourcerepos',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('sourcerepo').get_service(credentials),
         )
 
       if scan_config is not None:
@@ -437,7 +280,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if impers is not None and impers.get('impersonate', False) is True:
         iam_client = iam_client_for_credentials(credentials)
         if is_set(scan_config, 'iam_policy') is False:
-          iam_policy = crawl.get_iam_policy(
+          iam_policy = CrawlerFactory.create_crawler('iam_policy').crawl(
             project_id,
             ClientFactory.get_client('cloudresourcemanager').get_service(
               credentials,
