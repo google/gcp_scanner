@@ -213,7 +213,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       for crawler_name, client_name in crawl_client_map.items():
         if is_set(scan_config, crawler_name):
-          project_result[crawler_name] = CrawlerFactory.create_crawler(crawler_name).crawl(
+          project_result[crawler_name] = CrawlerFactory.create_crawler(
+            crawler_name
+          ).crawl(
             project_id,
             ClientFactory.get_client(client_name).get_service(credentials),
           )
