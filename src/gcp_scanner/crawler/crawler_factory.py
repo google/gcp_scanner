@@ -30,15 +30,15 @@ from gcp_scanner.crawler.compute_static_ips_crawler import ComputeStaticIPsCrawl
 from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from gcp_scanner.crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from gcp_scanner.crawler.dns_policies_crawler import DNSPoliciesCrawler
+from gcp_scanner.crawler.endpoints_crawler import EndpointsCrawler
 from gcp_scanner.crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from gcp_scanner.crawler.kms_keys_crawler import KMSKeysCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
-from gcp_scanner.crawler.source_repo_crawler import CloudSourceRepoCrawler
-from gcp_scanner.crawler.sql_instances_crawler import SQLInstancesCrawler
-from gcp_scanner.crawler.spanner_instances_crawler import SpannerInstancesCrawler
 from gcp_scanner.crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
 from gcp_scanner.crawler.service_usage_crawler import ServiceUsageCrawler
-
+from gcp_scanner.crawler.source_repo_crawler import CloudSourceRepoCrawler
+from gcp_scanner.crawler.spanner_instances_crawler import SpannerInstancesCrawler
+from gcp_scanner.crawler.sql_instances_crawler import SQLInstancesCrawler
 
 service_crawler_map = {
   "app_services": AppServicesCrawler,
@@ -50,6 +50,7 @@ service_crawler_map = {
   "compute_instances": ComputeInstancesCrawler,
   "compute_snapshots": ComputeSnapshotsCrawler,
   "dns_policies": DNSPoliciesCrawler,
+  "endpoints": EndpointsCrawler,
   "filestore_instances": FilestoreInstancesCrawler,
   "firewall_rules": ComputeFirewallRulesCrawler,
   "iam_policy": CloudResourceManagerIAMPolicyCrawler,
