@@ -183,33 +183,6 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
   return images
 
 
-def get_endpoints(project_id: str,
-                  service: discovery.Resource) -> List[Dict[str, Any]]:
-  """Retrieve a list of Endpoints available in the project.
-
-  Args:
-    project_id: A name of a project to query info about.
-    service: A resource object for interacting with the service management API.
-
-  Returns:
-    A list of Endpoints in the project.
-  """
-
-  logging.info("Retrieving info about endpoints")
-  endpoints_list = list()
-  try:
-    request = service.services().list(producerProjectId=project_id)
-    while request is not None:
-      response = request.execute()
-      endpoints_list = response.get("services", [])
-      request = service.services().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve endpoints list for project %s", project_id)
-    logging.info(sys.exc_info())
-  return endpoints_list
-
-
 def get_sas_for_impersonation(
     iam_policy: List[Dict[str, Any]]) -> List[str]:
   """Extract a list of unique SAs from IAM policy associated with project.

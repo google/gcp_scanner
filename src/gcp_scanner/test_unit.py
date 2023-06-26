@@ -31,7 +31,6 @@ from unittest.mock import patch, Mock
 import requests
 from google.oauth2 import credentials
 
-
 from . import crawl
 from . import credsdb
 from . import scanner
@@ -55,8 +54,8 @@ from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
 from .crawler.app_services_crawler import AppServicesCrawler
 from .crawler.bigquery_crawler import BigQueryCrawler
-from .crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
+from .crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from .crawler.cloud_resource_manager_iam_policy_crawler import CloudResourceManagerIAMPolicyCrawler
 from .crawler.cloud_resource_manager_project_info_crawler import CloudResourceManagerProjectInfoCrawler
 from .crawler.cloud_resource_manager_project_list_crawler import CloudResourceManagerProjectListCrawler
@@ -68,17 +67,18 @@ from .crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from .crawler.crawler_factory import CrawlerFactory
-from .crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from .crawler.dns_policies_crawler import DNSPoliciesCrawler
+from .crawler.endpoints_crawler import EndpointsCrawler
+from .crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from .crawler.kms_keys_crawler import KMSKeysCrawler
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
-from .crawler.sql_instances_crawler import SQLInstancesCrawler
-from .crawler.spanner_instances_crawler import SpannerInstancesCrawler
 from .crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
 from .crawler.service_usage_crawler import ServiceUsageCrawler
-from .credsdb import get_scopes_from_refresh_token
 from .crawler.source_repo_crawler import CloudSourceRepoCrawler
+from .crawler.spanner_instances_crawler import SpannerInstancesCrawler
+from .crawler.sql_instances_crawler import SQLInstancesCrawler
+from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
 
@@ -201,8 +201,10 @@ creds='test_data', token='ya.29c.TEST')]]"
   # impersonate_sa()
   shutil.rmtree("unit")
 
+
 class TestGetSADetailsFromKeyFiles(unittest.TestCase):
   """Test fetching sa credentials from keyfiles."""
+
   @patch("gcp_scanner.scanner.credsdb.get_creds_from_file")
   def test_get_sa_details_from_key_files(self, mocked_get_creds):
     # create temp directory and keyfiles
@@ -224,7 +226,7 @@ class TestGetSADetailsFromKeyFiles(unittest.TestCase):
 
   @patch("gcp_scanner.scanner.credsdb.get_creds_from_file")
   def test_get_sa_details_from_key_files_without_json_file(
-          self, mocked_get_creds
+    self, mocked_get_creds
   ):
     # create temp directory and keyfiles
     with tempfile.TemporaryDirectory() as key_path:
@@ -242,7 +244,7 @@ class TestGetSADetailsFromKeyFiles(unittest.TestCase):
 
   @patch("gcp_scanner.scanner.credsdb.get_creds_from_file")
   def test_get_sa_details_from_key_files_with_invalid_and_valid_key_file(
-          self, mocked_get_creds
+    self, mocked_get_creds
   ):
     # create temp directory and keyfiles
     with tempfile.TemporaryDirectory() as key_path:
@@ -677,7 +679,9 @@ class TestCrawler(unittest.TestCase):
     """Test endpoints' information."""
     self.assertTrue(
       verify(
-        crawl.get_endpoints(
+        CrawlerFactory.create_crawler(
+          "endpoints"
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("servicemanagement").get_service(
             self.credentials,
@@ -997,6 +1001,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'services' name."""
     crawler = CrawlerFactory.create_crawler("services")
     self.assertIsInstance(crawler, ServiceUsageCrawler)
+
+  def test_create_crawler_endpoints(self):
+    """Test create_crawler method with 'endpoints' name."""
+    crawler = CrawlerFactory.create_crawler("endpoints")
+    self.assertIsInstance(crawler, EndpointsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
