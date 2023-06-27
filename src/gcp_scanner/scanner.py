@@ -197,7 +197,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       if is_set(scan_config, 'service_accounts'):
         # Get service accounts
-        project_service_accounts = crawl.get_service_accounts(
+        project_service_accounts = CrawlerFactory.create_crawler(
+          'service_accounts',
+        ).crawl(
           project_number,
           ClientFactory.get_client('iam').get_service(
             credentials,

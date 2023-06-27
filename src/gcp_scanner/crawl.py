@@ -206,37 +206,3 @@ def get_sas_for_impersonation(
           list_of_sas.append(account_name)
 
   return list_of_sas
-
-
-def get_service_accounts(project_name: str,
-                         service: discovery.Resource) -> List[Tuple[str, str]]:
-  """Retrieve a list of service accounts managed in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the IAM API.
-
-  Returns:
-    A list of service accounts managed in the project.
-  """
-
-  logging.info("Retrieving SA list %s", project_name)
-  service_accounts = []
-
-  name = f"projects/{project_name}"
-
-  try:
-    request = service.projects().serviceAccounts().list(name=name)
-    while request is not None:
-      response = request.execute()
-      service_accounts = [(service_account["email"],
-        service_account.get("description",""))
-        for service_account in response.get("accounts",[])]
-
-      request = service.projects().serviceAccounts().list_next(
-          previous_request=request, previous_response=response)
-  except Exception:
-    logging.info("Failed to retrieve SA list for project %s", project_name)
-    logging.info(sys.exc_info())
-
-  return service_accounts
