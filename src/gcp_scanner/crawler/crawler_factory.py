@@ -35,6 +35,7 @@ from gcp_scanner.crawler.filestore_instances_crawler import FilestoreInstancesCr
 from gcp_scanner.crawler.kms_keys_crawler import KMSKeysCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from gcp_scanner.crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
+from gcp_scanner.crawler.service_accounts_crawler import ServiceAccountsCrawler
 from gcp_scanner.crawler.service_usage_crawler import ServiceUsageCrawler
 from gcp_scanner.crawler.source_repo_crawler import CloudSourceRepoCrawler
 from gcp_scanner.crawler.spanner_instances_crawler import SpannerInstancesCrawler
@@ -61,6 +62,7 @@ service_crawler_map = {
   "project_list": CloudResourceManagerProjectListCrawler,
   "pubsub_subs": PubSubSubscriptionsCrawler,
   "services": ServiceUsageCrawler,
+  "service_accounts": ServiceAccountsCrawler,
   "sourcerepos": CloudSourceRepoCrawler,
   "spanner_instances": SpannerInstancesCrawler,
   "sql_instances": SQLInstancesCrawler,
