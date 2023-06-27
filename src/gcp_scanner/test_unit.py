@@ -74,6 +74,7 @@ from .crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from .crawler.kms_keys_crawler import KMSKeysCrawler
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
+from .crawler.service_accounts_crawler import ServiceAccountsCrawler
 from .crawler.service_usage_crawler import ServiceUsageCrawler
 from .crawler.source_repo_crawler import CloudSourceRepoCrawler
 from .crawler.spanner_instances_crawler import SpannerInstancesCrawler
@@ -728,7 +729,9 @@ class TestCrawler(unittest.TestCase):
     """Test service accounts."""
     self.assertTrue(
       verify(
-        crawl.get_service_accounts(
+        CrawlerFactory.create_crawler(
+          "service_accounts",
+        ).crawl(
           PROJECT_NAME,
           ClientFactory.get_client("iam").get_service(
             self.credentials,
@@ -1006,6 +1009,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'endpoints' name."""
     crawler = CrawlerFactory.create_crawler("endpoints")
     self.assertIsInstance(crawler, EndpointsCrawler)
+
+  def test_create_crawler_service_accounts(self):
+    """Test create_crawler method with 'service_accounts' name."""
+    crawler = CrawlerFactory.create_crawler("service_accounts")
+    self.assertIsInstance(crawler, ServiceAccountsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
