@@ -69,6 +69,7 @@ crawl_client_map = {
   'compute_instances': 'compute',
   'compute_snapshots': 'compute',
   'dns_policies': 'dns',
+  'endpoints': 'servicemanagement',
   'filestore_instances': 'file',
   'firewall_rules': 'compute',
   'iam_policy': 'cloudresourcemanager',
@@ -76,9 +77,9 @@ crawl_client_map = {
   'machine_images': 'compute',
   'managed_zones': 'dns',
   'project_info': 'cloudresourcemanager',
-  # 'project_list': 'cloudresourcemanager',
   'pubsub_subs': 'pubsub',
   'services': 'serviceusage',
+  'service_accounts': 'iam',
   'sourcerepos': 'sourcerepo',
   'spanner_instances': 'spanner',
   'sql_instances': 'sqladmin',
@@ -220,18 +221,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             ClientFactory.get_client(client_name).get_service(credentials),
           )
 
-      if is_set(scan_config, 'service_accounts'):
-        # Get service accounts
-        project_service_accounts = CrawlerFactory.create_crawler(
-          'service_accounts',
-        ).crawl(
-          project_number,
-          ClientFactory.get_client('iam').get_service(
-            credentials,
-          ),
-        )
-        project_result['service_accounts'] = project_service_accounts
-
       # Iterate over discovered service accounts by attempting impersonation
       project_result['service_account_edges'] = []
       updated_chain = chain_so_far + [sa_name]
@@ -265,17 +254,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       if is_set(scan_config, 'gke_images'):
         project_result['gke_images'] = crawl.get_gke_images(project_id,
                                                             credentials.token)
-
-      # Get information about Endpoints
-      if is_set(scan_config, 'endpoints'):
-        project_result['endpoints'] = CrawlerFactory.create_crawler(
-          'endpoints',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('servicemanagement').get_service(
-            credentials,
-          ),
-        )
 
       if scan_config is not None:
         impers = scan_config.get('service_accounts', None)
