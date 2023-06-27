@@ -222,7 +222,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       if is_set(scan_config, 'service_accounts'):
         # Get service accounts
-        project_service_accounts = crawl.get_service_accounts(
+        project_service_accounts = CrawlerFactory.create_crawler(
+          'service_accounts',
+        ).crawl(
           project_number,
           ClientFactory.get_client('iam').get_service(
             credentials,
@@ -266,7 +268,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get information about Endpoints
       if is_set(scan_config, 'endpoints'):
-        project_result['endpoints'] = crawl.get_endpoints(
+        project_result['endpoints'] = CrawlerFactory.create_crawler(
+          'endpoints',
+        ).crawl(
           project_id,
           ClientFactory.get_client('servicemanagement').get_service(
             credentials,
