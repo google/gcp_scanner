@@ -40,6 +40,7 @@ from gcp_scanner.crawler.service_usage_crawler import ServiceUsageCrawler
 from gcp_scanner.crawler.source_repo_crawler import CloudSourceRepoCrawler
 from gcp_scanner.crawler.spanner_instances_crawler import SpannerInstancesCrawler
 from gcp_scanner.crawler.sql_instances_crawler import SQLInstancesCrawler
+from gcp_scanner.crawler.storage_buckets_crawler import StorageBucketsCrawler
 
 service_crawler_map = {
   "app_services": AppServicesCrawler,
@@ -67,6 +68,7 @@ service_crawler_map = {
   "spanner_instances": SpannerInstancesCrawler,
   "sql_instances": SQLInstancesCrawler,
   "static_ips": ComputeStaticIPsCrawler,
+  "storage_buckets": StorageBucketsCrawler,
   "subnets": ComputeSubnetsCrawler,
 }
 
