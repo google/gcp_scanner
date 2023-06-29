@@ -284,7 +284,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get storage buckets
       if is_set(scan_config, 'storage_buckets'):
-        storage_bucket_config = scan_config.get('storage_buckets', None)
+        storage_bucket_config = scan_config.get('storage_buckets', {})
         storage_bucket_config['gcs_output_path'] = gcs_output_path
 
         project_result['storage_buckets'] = CrawlerFactory.create_crawler(
