@@ -79,6 +79,7 @@ from .crawler.service_usage_crawler import ServiceUsageCrawler
 from .crawler.source_repo_crawler import CloudSourceRepoCrawler
 from .crawler.spanner_instances_crawler import SpannerInstancesCrawler
 from .crawler.sql_instances_crawler import SQLInstancesCrawler
+from .crawler.storage_buckets_crawler import StorageBucketsCrawler
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -494,15 +495,19 @@ class TestCrawler(unittest.TestCase):
 
   def test_storage_buckets(self):
     """Test storage bucket."""
+    config = {
+      "fetch_buckets_iam": True
+    }
     self.assertTrue(
       verify(
-        crawl.get_bucket_names(
+        CrawlerFactory.create_crawler(
+          "storage_buckets",
+        ).crawl(
           PROJECT_NAME,
           service=ClientFactory.get_client("storage").get_service(
             self.credentials,
           ),
-          dump_fd=None,
-          dump_iam_policies=True
+          config=config,
         ),
         "storage_buckets",
       )
@@ -1014,6 +1019,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'service_accounts' name."""
     crawler = CrawlerFactory.create_crawler("service_accounts")
     self.assertIsInstance(crawler, ServiceAccountsCrawler)
+
+  def test_create_crawler_storage_bucket(self):
+    """Test create_crawler method with 'service_accounts' name."""
+    crawler = CrawlerFactory.create_crawler("storage_buckets")
+    self.assertIsInstance(crawler, StorageBucketsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
