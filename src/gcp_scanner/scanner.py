@@ -26,6 +26,9 @@ from json.decoder import JSONDecodeError
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional, Union
 
+# Configure the logging module
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
+
 from google.auth.exceptions import MalformedError
 from google.cloud import container_v1
 from google.cloud import iam_credentials
@@ -166,7 +169,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       project_id = project['projectId']
       project_number = project['projectNumber']
-      print(f'Inspecting project {project_id}')
+      logging.info(f'Inspecting project {project_id}')
       project_result = sa_results['projects'][project_id]
 
       project_result['project_info'] = project
