@@ -14,7 +14,7 @@
 
 import logging
 import sys
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -24,12 +24,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class BigTableInstancesCrawler(ICrawler):
   '''Handle crawling of BigTable Instances data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  def crawl(self, project_id: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> List[Dict[str, Any]]:
     """Retrieve a list of BigTable instances available in the project.
 
     Args:
       project_id: A name of a project to query info about.
       service: A resource object for interacting with the BigTable API.
+      config: Configuration options for the crawler (Optional).
 
     Returns:
       A list of resource objects representing the crawled data.
@@ -39,14 +41,14 @@ class BigTableInstancesCrawler(ICrawler):
     bigtable_instances_list = list()
     try:
       request = service.projects().instances().list(
-          parent=f"projects/{project_id}")
+        parent=f"projects/{project_id}")
       while request is not None:
         response = request.execute()
         bigtable_instances_list = response.get("instances", [])
         request = service.projects().instances().list_next(
-            previous_request=request, previous_response=response)
+          previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to retrieve BigTable instances for project %s",
-                  project_id)
+                   project_id)
       logging.info(sys.exc_info())
     return bigtable_instances_list

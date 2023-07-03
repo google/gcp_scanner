@@ -14,7 +14,7 @@
 
 import logging
 import sys
-from typing import List, Dict, Any
+from typing import Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -24,12 +24,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class CloudFunctionsCrawler(ICrawler):
   '''Handle crawling of Cloud Functions data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
+  def crawl(self, project_id: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> Dict[str, Any]:
     '''Retrieve a list of Cloud Functions available in the project.
 
   Args:
     project_id: A name of a project to query info about.
     service: A resource object for interacting with the Cloud Functions API.
+    config: Configuration options for the crawler (Optional).
 
     Returns:
       A list of resource objects representing the crawled data.
@@ -39,12 +41,12 @@ class CloudFunctionsCrawler(ICrawler):
     functions_list = list()
     try:
       request = service.projects().locations().functions().list(
-          parent=f"projects/{project_id}/locations/-")
+        parent=f"projects/{project_id}/locations/-")
       while request is not None:
         response = request.execute()
         functions_list = response.get("functions", [])
         request = service.projects().locations().functions().list_next(
-            previous_request=request, previous_response=response)
+          previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to retrieve CloudFunctions for project %s", project_id)
       logging.info(sys.exc_info())

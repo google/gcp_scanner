@@ -14,7 +14,7 @@
 
 import logging
 import sys
-from typing import List, Dict, Any
+from typing import Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -24,12 +24,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class PubSubSubscriptionsCrawler(ICrawler):
   '''Handle crawling of PubSub Subscriptions data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
+  def crawl(self, project_id: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> Dict[str, Any]:
     '''Retrieve a list of PubSub subscriptions available in the project.
 
     Args:
       project_id: A name of a project to query info about.
       service: A resource object for interacting with the PubSub API.
+      config: Configuration options for the crawler (Optional).
 
     Returns:
       A list of resource objects representing the crawled data.
@@ -40,12 +42,12 @@ class PubSubSubscriptionsCrawler(ICrawler):
     try:
 
       request = service.projects().subscriptions().list(
-          project=f"projects/{project_id}")
+        project=f"projects/{project_id}")
       while request is not None:
         response = request.execute()
         pubsubs_list = response.get("subscriptions", [])
         request = service.projects().subscriptions().list_next(
-            previous_request=request, previous_response=response)
+          previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to get PubSubs for project %s", project_id)
       logging.info(sys.exc_info())

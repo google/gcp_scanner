@@ -14,7 +14,7 @@
 
 import logging
 import sys
-from typing import List, Dict, Any
+from typing import Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -24,12 +24,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class CloudSourceRepoCrawler(ICrawler):
   '''Handle crawling of Cloud Source Repo data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
+  def crawl(self, project_id: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> Dict[str, Any]:
     """Retrieve a list of cloud source repositories enabled in the project.
 
     Args:
     project_id: An id of a project to query info about.
     service: A resource object for interacting with the Source Repo API.
+    config: Configuration options for the crawler (Optional).
 
     Returns:
     A list of cloud source repositories in the project.
@@ -39,19 +41,19 @@ class CloudSourceRepoCrawler(ICrawler):
     list_of_repos = list()
 
     request = service.projects().repos().list(
-        name="projects/" + project_id,
-        pageSize=500
-  )
+      name="projects/" + project_id,
+      pageSize=500
+    )
     try:
-        while request is not None:
-            response = request.execute()
-            list_of_repos.extend(response.get("repos", None))
+      while request is not None:
+        response = request.execute()
+        list_of_repos.extend(response.get("repos", None))
 
-            request = service.projects().repos().list_next(
-            previous_request=request,
-            previous_response=response
-      )
+        request = service.projects().repos().list_next(
+          previous_request=request,
+          previous_response=response
+        )
     except Exception:
-        logging.info("Failed to retrieve source repos for project %s", project_id)
-        logging.info(sys.exc_info())
+      logging.info("Failed to retrieve source repos for project %s", project_id)
+      logging.info(sys.exc_info())
     return list_of_repos

@@ -14,7 +14,7 @@
 
 import logging
 import sys
-from typing import List, Dict, Any
+from typing import Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -24,12 +24,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class SQLInstancesCrawler(ICrawler):
   '''Handle crawling of SQL Instances data.'''
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> Dict[str, Any]:
+  def crawl(self, project_name: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> Dict[str, Any]:
     '''Retrieve a list of SQL instances available in the project.
 
     Args:
       project_name: A name of a project to query info about.
       service: A resource object for interacting with the SQLAdmin API.
+      config: Configuration options for the crawler (Optional).
 
     Returns:
       A list of resource objects representing the crawled data.
@@ -43,7 +45,7 @@ class SQLInstancesCrawler(ICrawler):
         response = request.execute()
         sql_instances_list = response.get("items", [])
         request = service.instances().list_next(
-            previous_request=request, previous_response=response)
+          previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to get SQL instances for project %s", project_name)
       logging.info(sys.exc_info())
