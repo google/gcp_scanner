@@ -13,7 +13,7 @@
 #   limitations under the License.
 
 from abc import ABCMeta, abstractmethod
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 from googleapiclient import discovery
 
@@ -28,7 +28,8 @@ class ICrawler(metaclass=ABCMeta):
 
   @staticmethod
   @abstractmethod
-  def crawl(project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  def crawl(project_name: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> List[Dict[str, Any]]:
     """Crawl resource data of the given project.
 
     This method retrieves resource data of the specified project using the provided GCP API service
@@ -37,6 +38,7 @@ class ICrawler(metaclass=ABCMeta):
     Args:
         project_name: The name of the project to query information about.
         service: A resource object for interacting with the GCP API.
+        config: Configuration options for the crawler (Optional).
 
     Returns:
         A list of resource objects representing the crawled data.
