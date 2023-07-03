@@ -1021,7 +1021,7 @@ class TestCrawlerFactory(unittest.TestCase):
     self.assertIsInstance(crawler, ServiceAccountsCrawler)
 
   def test_create_crawler_storage_bucket(self):
-    """Test create_crawler method with 'service_accounts' name."""
+    """Test create_crawler method with 'storage_buckets' name."""
     crawler = CrawlerFactory.create_crawler("storage_buckets")
     self.assertIsInstance(crawler, StorageBucketsCrawler)
 
