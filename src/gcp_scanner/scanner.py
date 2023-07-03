@@ -26,9 +26,6 @@ from json.decoder import JSONDecodeError
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional, Union
 
-# Configure the logging module
-logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
-
 from google.auth.exceptions import MalformedError
 from google.cloud import container_v1
 from google.cloud import iam_credentials
