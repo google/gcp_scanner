@@ -84,6 +84,7 @@ crawl_client_map = {
   'spanner_instances': 'spanner',
   'sql_instances': 'sqladmin',
   'static_ips': 'compute',
+  'storage_buckets': 'storage',
   'subnets': 'compute',
 }
 
@@ -213,31 +214,26 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       for crawler_name, client_name in crawl_client_map.items():
         if is_set(scan_config, crawler_name):
-          project_result[crawler_name] = CrawlerFactory.create_crawler(
-            crawler_name
-          ).crawl(
+          crawler_config = {}
+          if scan_config is not None:
+            crawler_config = scan_config.get(crawler_name)
+          # add gcs output path to the config.
+          # this path is used by the storage bucket crawler as of now.
+          crawler_config['gcs_output_path'] = gcs_output_path
+          # crawl the data
+          crawler = CrawlerFactory.create_crawler(crawler_name)
+          client = ClientFactory.get_client(client_name).get_service(
+            credentials,
+          )
+          project_result[crawler_name] = crawler.crawl(
             project_id,
-            ClientFactory.get_client(client_name).get_service(credentials),
+            client,
+            crawler_config,
           )
 
       # Iterate over discovered service accounts by attempting impersonation
       project_result['service_account_edges'] = []
       updated_chain = chain_so_far + [sa_name]
-
-      # Get storage buckets
-      if is_set(scan_config, 'storage_buckets'):
-        storage_bucket_config = {}
-        if scan_config is not None:
-          storage_bucket_config = scan_config.get('storage_buckets', {})
-        storage_bucket_config['gcs_output_path'] = gcs_output_path
-
-        project_result['storage_buckets'] = CrawlerFactory.create_crawler(
-          'storage_buckets',
-        ).crawl(
-          project_id,
-          ClientFactory.get_client('storage').get_service(credentials),
-          storage_bucket_config
-        )
 
       # Get GKE resources
       if is_set(scan_config, 'gke_clusters'):
