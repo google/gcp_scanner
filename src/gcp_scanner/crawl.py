@@ -18,15 +18,11 @@
 """
 
 import collections
-import json
 import logging
-import io
 import sys
 from typing import List, Dict, Any, Tuple
 
 from google.cloud import container_v1
-import googleapiclient
-from googleapiclient import discovery
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -40,93 +36,9 @@ def infinite_defaultdict():
   return collections.defaultdict(infinite_defaultdict)
 
 
-def get_bucket_names(project_name: str, service: discovery.Resource,
-                     dump_fd: io.TextIOWrapper, dump_iam_policies: bool
-                     ) -> Dict[str, Tuple[Any, List[Any]]]:
-  """Retrieve a list of buckets available in the project.
-
-  Args:
-    project_name: A name of a project to query info about.
-    service: A resource object for interacting with the Storage API.
-    dump_fd: If set, the function will enumerate files stored in buckets and
-      save them in a file corresponding to provided file descriptor.
-      This is a very slow, noisy operation and should be used with caution.
-
-  Returns:
-    A dictionary where key is bucket name and value is a bucket Object.
-  """
-
-  logging.info("Retrieving GCS Buckets")
-  buckets_dict = dict()
-  # Make an authenticated API request
-  request = service.buckets().list(project=project_name)
-  while request is not None:
-    try:
-      response = request.execute()
-    except googleapiclient.errors.HttpError:
-      logging.info("Failed to list buckets in the %s", project_name)
-      logging.info(sys.exc_info())
-      break
-
-    for bucket in response.get("items", []):
-      buckets_dict[bucket["name"]] = bucket
-      if dump_iam_policies is True:
-        buckets_dict[bucket["name"]]["iam_policy"] = \
-          get_bucket_iam(bucket["name"], service)
-      if dump_fd is not None:
-        ret_fields = "nextPageToken,items(bucket,name,size,contentType,\
-timeCreated)"
-
-        req = service.objects().list(bucket=bucket["name"], fields=ret_fields)
-
-        while req:
-          try:
-            resp = req.execute()
-            for item in resp.get("items", []):
-              dump_fd.write(json.dumps(item, indent=2, sort_keys=False))
-
-            req = service.objects().list_next(req, resp)
-          except googleapiclient.errors.HttpError:
-            logging.info("Failed to read the bucket %s", bucket["name"])
-            logging.info(sys.exc_info())
-            break
-
-    request = service.buckets().list_next(
-        previous_request=request, previous_response=response)
-
-  return buckets_dict
-
-def get_bucket_iam(bucket_name: str, discovery_service: str
-                   ) -> List[Any]:
-  """Retrieve IAM policies in the bucket.
-
-  Args:
-    bucket_name: A name of bucket to query info about.
-    discovery_service: An authenticated API request.
-  Returns:
-    A list with bucket IAM policies.
-  """
-
-  logging.info("Retrieving GCS Bucket %s IAM Policy", bucket_name)
-  bucket_iam_policies = list()
-  request = discovery_service.buckets().getIamPolicy(bucket=bucket_name)
-  try:
-    response = request.execute()
-  except googleapiclient.errors.HttpError:
-    logging.info("Failed to IAM Policy in the %s", bucket_name)
-    logging.info(sys.exc_info())
-    return []
-
-  for bucket_iam_policy in response.get("bindings", []):
-    bucket_iam_policies.append(bucket_iam_policy)
-
-
-  return bucket_iam_policies
-
-
 def get_gke_clusters(
-    project_name: str, gke_client: container_v1.services.cluster_manager.client
-    .ClusterManagerClient
+  project_name: str, gke_client: container_v1.services.cluster_manager.client
+  .ClusterManagerClient
 ) -> List[Tuple[str, str]]:
   """Retrieve a list of GKE clusters available in the project.
 
@@ -143,7 +55,7 @@ def get_gke_clusters(
   try:
     clusters = gke_client.list_clusters(parent=parent)
     return [(cluster.name, cluster.description)
-      for cluster in clusters.clusters]
+            for cluster in clusters.clusters]
   except Exception:
     logging.info("Failed to retrieve cluster list for project %s", project_name)
     logging.info(sys.exc_info())
@@ -169,8 +81,8 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
     gcr_url = f"https://{region}gcr.io/v2/{project_name}/tags/list"
     try:
       res = requests.get(
-          gcr_url, auth=HTTPBasicAuth("oauth2accesstoken", access_token),
-          timeout=120)
+        gcr_url, auth=HTTPBasicAuth("oauth2accesstoken", access_token),
+        timeout=120)
       if not res.ok:
         logging.info("Failed to retrieve gcr images list. Status code: %d",
                      res.status_code)
@@ -184,7 +96,7 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
 
 
 def get_sas_for_impersonation(
-    iam_policy: List[Dict[str, Any]]) -> List[str]:
+  iam_policy: List[Dict[str, Any]]) -> List[str]:
   """Extract a list of unique SAs from IAM policy associated with project.
 
   Args:
