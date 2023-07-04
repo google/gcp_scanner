@@ -93,28 +93,3 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
       logging.info(sys.exc_info())
 
   return images
-
-
-def get_sas_for_impersonation(
-  iam_policy: List[Dict[str, Any]]) -> List[str]:
-  """Extract a list of unique SAs from IAM policy associated with project.
-
-  Args:
-    iam_policy: An IAM policy provided by get_iam_policy function.
-
-  Returns:
-    A list of service accounts represented as string
-  """
-
-  if not iam_policy:
-    return []
-
-  list_of_sas = list()
-  for entry in iam_policy:
-    for sa_name in entry.get("members", []):
-      if sa_name.startswith("serviceAccount") and "@" in sa_name:
-        account_name = sa_name.split(":")[1]
-        if account_name not in list_of_sas:
-          list_of_sas.append(account_name)
-
-  return list_of_sas

@@ -24,7 +24,7 @@ import sys
 from datetime import datetime
 from json.decoder import JSONDecodeError
 from pathlib import Path
-from typing import List, Tuple, Dict, Optional, Union
+from typing import List, Tuple, Dict, Optional, Union, Any
 
 from google.auth.exceptions import MalformedError
 from google.cloud import container_v1
@@ -260,7 +260,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             ),
           )
 
-        project_service_accounts = crawl.get_sas_for_impersonation(iam_policy)
+        project_service_accounts = get_sas_for_impersonation(iam_policy)
         for candidate_service_account in project_service_accounts:
           try:
             logging.info('Trying %s', candidate_service_account)
@@ -326,6 +326,31 @@ def get_sa_details_from_key_files(key_path):
       logging.error('Failed to parse keyfile: %s', malformed_key)
 
   return sa_details
+
+
+def get_sas_for_impersonation(
+  iam_policy: List[Dict[str, Any]]) -> List[str]:
+  """Extract a list of unique SAs from IAM policy associated with project.
+
+  Args:
+    iam_policy: An IAM policy provided by get_iam_policy function.
+
+  Returns:
+    A list of service accounts represented as string
+  """
+
+  if not iam_policy:
+    return []
+
+  list_of_sas = list()
+  for entry in iam_policy:
+    for sa_name in entry.get('members', []):
+      if sa_name.startswith('serviceAccount') and '@' in sa_name:
+        account_name = sa_name.split(':')[1]
+        if account_name not in list_of_sas:
+          list_of_sas.append(account_name)
+
+  return list_of_sas
 
 
 def main():
