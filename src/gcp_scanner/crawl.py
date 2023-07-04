@@ -16,8 +16,6 @@
 """The module to query GCP resources via RestAPI.
 
 """
-
-import collections
 import logging
 import sys
 from typing import List, Dict, Any, Tuple
@@ -25,15 +23,6 @@ from typing import List, Dict, Any, Tuple
 from google.cloud import container_v1
 import requests
 from requests.auth import HTTPBasicAuth
-
-
-def infinite_defaultdict():
-  """Initialize infinite default.
-
-  Returns:
-    DefaultDict
-  """
-  return collections.defaultdict(infinite_defaultdict)
 
 
 def get_gke_clusters(

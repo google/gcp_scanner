@@ -16,7 +16,7 @@
 """The main module that initiates scanning of GCP resources.
 
 """
-
+import collections
 import json
 import logging
 import os
@@ -156,7 +156,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
     # Don't process this service account again
     processed_sas.add(sa_name)
     logging.info('>> current service account: %s', sa_name)
-    sa_results = crawl.infinite_defaultdict()
+    sa_results = infinite_defaultdict()
     # Log the chain we used to get here (even if we have no privs)
     sa_results['service_account_chain'] = chain_so_far
     sa_results['current_service_account'] = sa_name
@@ -351,6 +351,15 @@ def get_sas_for_impersonation(
           list_of_sas.append(account_name)
 
   return list_of_sas
+
+
+def infinite_defaultdict():
+  """Initialize infinite default.
+
+  Returns:
+    DefaultDict
+  """
+  return collections.defaultdict(infinite_defaultdict)
 
 
 def main():
