@@ -1,3 +1,6 @@
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+
 import ControlMenu from './components/ControlMenu/ControlMenu';
 import ResourcesList from './components/ResourcesList/ResourcesList';
 
@@ -12,10 +15,25 @@ function App() {
         <p>Scanner</p>
       </header>
       <div className="pages-nav">
-        <a className="active" href="">
-          Resources
-        </a>
-        <a href="">IAM Policy</a>
+        <div className="links">
+          <a className="active" href="">
+            Resources
+          </a>
+          <a href="">IAM Policy</a>
+        </div>
+        <div className="search-container">
+          <div className="search-bar">
+            <input
+              type="text"
+              name="search-input"
+              id="search-input"
+              placeholder="Resource Name"
+            />
+            <IconButton sx={{p: '0', color: '#3367D6'}} aria-label="search">
+              <SearchIcon />
+            </IconButton>
+          </div>
+        </div>
       </div>
       <main>
         <ControlMenu />

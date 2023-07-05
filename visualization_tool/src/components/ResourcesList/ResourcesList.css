@@ -1,5 +1,7 @@
 .resources-list {
-  flex-grow: 1;
+  padding-top: 30px;
+  padding-left: 35px;
+  margin-left: 350px;
 }
 
 .resources-list h1 {
