@@ -17,6 +17,7 @@
 
 """
 
+import asyncio
 import json
 import logging
 import os
@@ -97,7 +98,7 @@ def save_results(res_data: Dict, res_path: str, is_light: bool):
     outfile.write(sa_results_data)
 
 
-def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
+async def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                out_dir: str,
                scan_config: Dict,
                light_scan: bool,
@@ -186,7 +187,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       if is_set(scan_config, 'iam_policy'):
         # Get IAM policy
-        project_result['iam_policy'] = CrawlerFactory.create_crawler(
+        project_result['iam_policy'] = await CrawlerFactory.create_crawler(
           'iam_policy',
         ).crawl(
           project_id,
@@ -197,7 +198,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       if is_set(scan_config, 'service_accounts'):
         # Get service accounts
-        project_service_accounts = CrawlerFactory.create_crawler(
+        project_service_accounts = await CrawlerFactory.create_crawler(
           'service_accounts',
         ).crawl(
           project_number,
@@ -217,56 +218,56 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       ).get_service(credentials)
 
       if is_set(scan_config, 'compute_instances'):
-        project_result['compute_instances'] = CrawlerFactory.create_crawler(
+        project_result['compute_instances'] = await CrawlerFactory.create_crawler(
           'compute_instances',
         ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'compute_images'):
-        project_result['compute_images'] = CrawlerFactory.create_crawler(
+        project_result['compute_images'] = await CrawlerFactory.create_crawler(
           'compute_images',
         ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'machine_images'):
-        project_result['machine_images'] = CrawlerFactory.create_crawler(
+        project_result['machine_images'] = await CrawlerFactory.create_crawler(
           'machine_images',
         ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'compute_disks'):
-        project_result['compute_disks'] = CrawlerFactory.create_crawler(
+        project_result['compute_disks'] = await CrawlerFactory.create_crawler(
           'compute_disks',
         ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'static_ips'):
-        project_result['static_ips'] = CrawlerFactory.create_crawler(
+        project_result['static_ips'] = await CrawlerFactory.create_crawler(
           'static_ips',
         ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'compute_snapshots'):
-        project_result['compute_snapshots'] = CrawlerFactory.create_crawler(
+        project_result['compute_snapshots'] = await CrawlerFactory.create_crawler(
           'compute_snapshots',
         ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'subnets'):
-        project_result['subnets'] = CrawlerFactory.create_crawler(
+        project_result['subnets'] = await CrawlerFactory.create_crawler(
           'subnets',
         ).crawl(
           project_id,
           compute_service,
         )
       if is_set(scan_config, 'firewall_rules'):
-        project_result['firewall_rules'] = CrawlerFactory.create_crawler(
+        project_result['firewall_rules'] = await CrawlerFactory.create_crawler(
           'firewall_rules',
         ).crawl(
           project_id,
@@ -275,7 +276,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get GCP APP Resources
       if is_set(scan_config, 'app_services'):
-        project_result['app_services'] = CrawlerFactory.create_crawler(
+        project_result['app_services'] = await CrawlerFactory.create_crawler(
           'app_services',
         ).crawl(
           project_id,
@@ -289,7 +290,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           storage_bucket_config = scan_config.get('storage_buckets', {})
         storage_bucket_config['gcs_output_path'] = gcs_output_path
 
-        project_result['storage_buckets'] = CrawlerFactory.create_crawler(
+        project_result['storage_buckets'] = await CrawlerFactory.create_crawler(
           'storage_buckets',
         ).crawl(
           project_id,
@@ -299,7 +300,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get DNS managed zones
       if is_set(scan_config, 'managed_zones'):
-        project_result['managed_zones'] = CrawlerFactory.create_crawler(
+        project_result['managed_zones'] = await CrawlerFactory.create_crawler(
           'managed_zones',
         ).crawl(
           project_id,
@@ -307,7 +308,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         )
       # Get DNS policies
       if is_set(scan_config, 'dns_policies'):
-        project_result['dns_policies'] = CrawlerFactory.create_crawler(
+        project_result['dns_policies'] = await CrawlerFactory.create_crawler(
           'dns_policies',
         ).crawl(
           project_id,
@@ -325,7 +326,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get SQL instances
       if is_set(scan_config, 'sql_instances'):
-        project_result['sql_instances'] = CrawlerFactory.create_crawler(
+        project_result['sql_instances'] = await CrawlerFactory.create_crawler(
           'sql_instances',
         ).crawl(
           project_id,
@@ -334,7 +335,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get BigQuery databases and table names
       if is_set(scan_config, 'bq'):
-        project_result['bq'] = CrawlerFactory.create_crawler(
+        project_result['bq'] = await CrawlerFactory.create_crawler(
           'bq',
         ).crawl(
           project_id,
@@ -343,7 +344,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get PubSub Subscriptions
       if is_set(scan_config, 'pubsub_subs'):
-        project_result['pubsub_subs'] = CrawlerFactory.create_crawler(
+        project_result['pubsub_subs'] = await CrawlerFactory.create_crawler(
           'pubsub_subs',
         ).crawl(
           project_id,
@@ -352,7 +353,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get CloudFunctions list
       if is_set(scan_config, 'cloud_functions'):
-        project_result['cloud_functions'] = CrawlerFactory.create_crawler(
+        project_result['cloud_functions'] = await CrawlerFactory.create_crawler(
           'cloud_functions',
         ).crawl(
           project_id,
@@ -361,7 +362,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get List of BigTable Instances
       if is_set(scan_config, 'bigtable_instances'):
-        project_result['bigtable_instances'] = CrawlerFactory.create_crawler(
+        project_result['bigtable_instances'] = await CrawlerFactory.create_crawler(
           'bigtable_instances',
         ).crawl(
           project_id,
@@ -370,7 +371,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get Spanner Instances
       if is_set(scan_config, 'spanner_instances'):
-        project_result['spanner_instances'] = CrawlerFactory.create_crawler(
+        project_result['spanner_instances'] = await CrawlerFactory.create_crawler(
           'spanner_instances',
         ).crawl(
           project_id,
@@ -379,7 +380,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get FileStore Instances
       if is_set(scan_config, 'filestore_instances'):
-        project_result['filestore_instances'] = CrawlerFactory.create_crawler(
+        project_result['filestore_instances'] = await CrawlerFactory.create_crawler(
           'filestore_instances',
         ).crawl(
           project_id,
@@ -388,7 +389,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get list of KMS keys
       if is_set(scan_config, 'kms'):
-        project_result['kms'] = CrawlerFactory.create_crawler(
+        project_result['kms'] = await CrawlerFactory.create_crawler(
           'kms',
         ).crawl(
           project_id,
@@ -397,7 +398,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get information about Endpoints
       if is_set(scan_config, 'endpoints'):
-        project_result['endpoints'] = CrawlerFactory.create_crawler(
+        project_result['endpoints'] = await CrawlerFactory.create_crawler(
           'endpoints',
         ).crawl(
           project_id,
@@ -408,7 +409,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get list of API services enabled in the project
       if is_set(scan_config, 'services'):
-        project_result['services'] = CrawlerFactory.create_crawler(
+        project_result['services'] = await CrawlerFactory.create_crawler(
           'services',
         ).crawl(
           project_id,
@@ -419,7 +420,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
       # Get list of cloud source repositories enabled in the project
       if is_set(scan_config, 'sourcerepos'):
-        project_result['sourcerepos'] = CrawlerFactory.create_crawler(
+        project_result['sourcerepos'] = await CrawlerFactory.create_crawler(
           'sourcerepos',
         ).crawl(
           project_id,
@@ -586,6 +587,6 @@ def main():
     with open(args.config_path, 'r', encoding='utf-8') as f:
       scan_config = json.load(f)
 
-  crawl_loop(sa_tuples, args.output, scan_config, args.light_scan,
-             args.target_project, force_projects_list)
+  asyncio.run(crawl_loop(sa_tuples, args.output, scan_config, args.light_scan,
+             args.target_project, force_projects_list))
   return 0
