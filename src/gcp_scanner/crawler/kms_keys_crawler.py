@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class KMSKeysCrawler(ICrawler):
   '''Handle crawling of KMS Keys data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_id: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     '''Retrieve a list of KMS Keys available in the project.
 
     Args:
@@ -42,7 +42,7 @@ class KMSKeysCrawler(ICrawler):
       locations_list = list()
       request = service.projects().locations().list(name=f"projects/{project_id}")
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         for location in response.get("locations", []):
           locations_list.append(location["locationId"])
         request = service.projects().locations().list_next(

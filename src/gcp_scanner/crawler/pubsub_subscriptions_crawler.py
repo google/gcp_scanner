@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class PubSubSubscriptionsCrawler(ICrawler):
   '''Handle crawling of PubSub Subscriptions data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
+  async def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
     '''Retrieve a list of PubSub subscriptions available in the project.
 
     Args:
@@ -42,7 +42,7 @@ class PubSubSubscriptionsCrawler(ICrawler):
       request = service.projects().subscriptions().list(
           project=f"projects/{project_id}")
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         pubsubs_list = response.get("subscriptions", [])
         request = service.projects().subscriptions().list_next(
             previous_request=request, previous_response=response)

@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class CloudFunctionsCrawler(ICrawler):
   '''Handle crawling of Cloud Functions data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
+  async def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
     '''Retrieve a list of Cloud Functions available in the project.
 
   Args:
@@ -41,7 +41,7 @@ class CloudFunctionsCrawler(ICrawler):
       request = service.projects().locations().functions().list(
           parent=f"projects/{project_id}/locations/-")
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         functions_list = response.get("functions", [])
         request = service.projects().locations().functions().list_next(
             previous_request=request, previous_response=response)

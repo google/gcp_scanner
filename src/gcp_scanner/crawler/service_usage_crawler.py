@@ -23,7 +23,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class ServiceUsageCrawler(ICrawler):
   """Handle crawling of service usage data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of services enabled in the project.
 
      Args:
@@ -40,7 +40,7 @@ class ServiceUsageCrawler(ICrawler):
       parent="projects/" + project_name, pageSize=200, filter="state:ENABLED")
     try:
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         list_of_services.extend(response.get("services", []))
 
         request = service.services().list_next(

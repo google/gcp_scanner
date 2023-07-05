@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class StorageBucketsCrawler(ICrawler):
   """Handle crawling of bucket names data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource,
+  async def crawl(self, project_name: str, service: discovery.Resource,
             config: Dict[str, Union[bool, str]] = None) -> Dict[str, Tuple[Any, List[Any]]]:
     """Retrieve a list of buckets available in the project.
 
@@ -46,7 +46,7 @@ class StorageBucketsCrawler(ICrawler):
     request = service.buckets().list(project=project_name)
     while request is not None:
       try:
-        response = request.execute()
+        response = await request.execute()
       except errors.HttpError:
         logging.info("Failed to list buckets in the %s", project_name)
         logging.info(sys.exc_info())

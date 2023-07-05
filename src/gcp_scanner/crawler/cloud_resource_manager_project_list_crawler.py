@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class CloudResourceManagerProjectListCrawler(ICrawler):
   '''Handle crawling of Cloud Resource Manager Project List data.'''
 
-  def crawl(self, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, service: discovery.Resource) -> List[Dict[str, Any]]:
     '''Retrieve a list of projects accessible by credentials provided.
 
     Args:
@@ -39,7 +39,7 @@ class CloudResourceManagerProjectListCrawler(ICrawler):
     try:
       request = service.projects().list()
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         project_list = response.get("projects",[])
         request = service.projects().list_next(
             previous_request=request, previous_response=response)

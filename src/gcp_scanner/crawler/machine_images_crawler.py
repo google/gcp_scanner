@@ -23,7 +23,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class ComputeMachineImagesCrawler(ICrawler):
   """Handle crawling of machine images data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Machine Images Resources available in the project.
 
    Args:
@@ -38,7 +38,7 @@ class ComputeMachineImagesCrawler(ICrawler):
     try:
       request = service.machineImages().list(project=project_name)
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         machine_images_list = response.get("items", [])
         request = service.machineImages().list_next(
           previous_request=request, previous_response=response

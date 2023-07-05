@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class CloudSourceRepoCrawler(ICrawler):
   '''Handle crawling of Cloud Source Repo data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
+  async def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
     """Retrieve a list of cloud source repositories enabled in the project.
 
     Args:
@@ -44,7 +44,7 @@ class CloudSourceRepoCrawler(ICrawler):
   )
     try:
         while request is not None:
-            response = request.execute()
+            response = await request.execute()
             list_of_repos.extend(response.get("repos", None))
 
             request = service.projects().repos().list_next(

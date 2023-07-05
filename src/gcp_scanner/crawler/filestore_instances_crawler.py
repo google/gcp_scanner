@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class FilestoreInstancesCrawler(ICrawler):
   '''Handle crawling of Filestore Instances data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_id: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     '''Retrieve a list of Filestore instances available in the project.
 
     Args:
@@ -41,7 +41,7 @@ class FilestoreInstancesCrawler(ICrawler):
       request = service.projects().locations().instances().list(
           parent=f"projects/{project_id}/locations/-")
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         filestore_instances_list = response.get("instances", [])
         request = service.projects().locations().instances().list_next(
             previous_request=request, previous_response=response)

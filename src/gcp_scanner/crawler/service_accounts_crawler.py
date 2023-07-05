@@ -23,7 +23,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class ServiceAccountsCrawler(ICrawler):
   """Handle crawling of service accounts data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of service accounts in the project.
 
     Args:
@@ -41,7 +41,7 @@ class ServiceAccountsCrawler(ICrawler):
     try:
       request = service.projects().serviceAccounts().list(name=name)
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         service_accounts = [(service_account["email"],
                              service_account.get("description", ""))
                             for service_account in response.get("accounts", [])]

@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class AppServicesCrawler(ICrawler):
   '''Handle crawling of App Services data.'''
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> Dict[str, Any]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> Dict[str, Any]:
     '''Retrieve a list of AppEngine instances available in the project.
 
     Args:
@@ -39,7 +39,7 @@ class AppServicesCrawler(ICrawler):
     app_services = dict()
     try:
       request = service.apps().get(appsId=project_name)
-      response = request.execute()
+      response = await request.execute()
       if response.get("name", None) is not None:
         app_services["default_app"] = (response["name"],
                                       response["defaultHostname"],

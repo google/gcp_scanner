@@ -23,7 +23,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class ComputeDisksCrawler(ICrawler):
   """Handle crawling of compute disks data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Compute disks available in the project.
 
      Args:
@@ -38,7 +38,7 @@ class ComputeDisksCrawler(ICrawler):
     try:
       request = service.disks().aggregatedList(project=project_name)
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         if response.get("items", None) is not None:
           disk_names_list = [
             disk for _, disks_scoped_list in response["items"].items()

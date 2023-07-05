@@ -23,7 +23,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class DNSPoliciesCrawler(ICrawler):
   """Handle crawling of dns policies data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of cloud DNS policies in the project.
 
     Args:
@@ -42,7 +42,7 @@ class DNSPoliciesCrawler(ICrawler):
     )
     try:
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         list_of_policies.extend(response.get("policies", None))
 
         request = service.policies().list_next(

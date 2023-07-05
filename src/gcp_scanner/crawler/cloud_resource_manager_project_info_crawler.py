@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class CloudResourceManagerProjectInfoCrawler(ICrawler):
   '''Handle crawling of Cloud Resource Manager Project Info data.'''
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> Dict[str, Any]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> Dict[str, Any]:
     '''Retrieve information about specific project.
 
     Args:
@@ -40,7 +40,7 @@ class CloudResourceManagerProjectInfoCrawler(ICrawler):
 
     try:
       request = service.projects().get(projectId=project_name)
-      response = request.execute()
+      response = await request.execute()
       if "projectNumber" in response:
         project_info = response
 

@@ -23,7 +23,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class ComputeStaticIPsCrawler(ICrawler):
   """Handle crawling of static ips data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of static IPs available in the project.
 
     Args:
@@ -39,7 +39,7 @@ class ComputeStaticIPsCrawler(ICrawler):
     try:
       request = service.addresses().aggregatedList(project=project_name)
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         ips_list = [{name: addresses_scoped_list}
                     for name, addresses_scoped_list in response["items"].items()
                     if addresses_scoped_list.get("addresses", None) is not None]

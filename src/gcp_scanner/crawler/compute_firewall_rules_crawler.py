@@ -23,7 +23,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class ComputeFirewallRulesCrawler(ICrawler):
   """Handle crawling of compute firewall rules data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of firewall rules in the project.
 
      Args:
@@ -38,7 +38,7 @@ class ComputeFirewallRulesCrawler(ICrawler):
     try:
       request = service.firewalls().list(project=project_name)
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         firewall_rules_list = [(firewall["name"],)
                                for firewall in response.get("items", [])]
         request = service.firewalls().list_next(

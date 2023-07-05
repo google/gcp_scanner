@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class BigQueryCrawler(ICrawler):
   '''Handle crawling of BigQuery data.'''
 
-  def crawl(self, project_id: str,
+  async def crawl(self, project_id: str,
                   service: discovery.Resource) -> Dict[str, List[Dict[str, Any]]]:
     '''Retrieve a list of BigQuery datasets available in the project.
 
@@ -41,7 +41,7 @@ class BigQueryCrawler(ICrawler):
     try:
       request = service.datasets().list(projectId=project_id)
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
 
         for dataset in response.get("datasets", []):
           dataset_id = dataset["datasetReference"]["datasetId"]

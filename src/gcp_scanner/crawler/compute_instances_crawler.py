@@ -23,7 +23,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class ComputeInstancesCrawler(ICrawler):
   """Handle crawling of compute instances data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Compute VMs available in the project.
 
    Args:
@@ -38,7 +38,7 @@ class ComputeInstancesCrawler(ICrawler):
     try:
       request = service.instances().aggregatedList(project=project_name)
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         if response.get("items", None) is not None:
           images_result = [instance
                            for _, instances_scoped_list in response["items"].items()

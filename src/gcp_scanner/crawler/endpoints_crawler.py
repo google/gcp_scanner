@@ -23,7 +23,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class EndpointsCrawler(ICrawler):
   """Handle crawling of endpoints data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  async def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of Endpoints available in the project.
 
      Args:
@@ -38,7 +38,7 @@ class EndpointsCrawler(ICrawler):
     try:
       request = service.services().list(producerProjectId=project_name)
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         endpoints_list = response.get("services", [])
         request = service.services().list_next(
           previous_request=request, previous_response=response)

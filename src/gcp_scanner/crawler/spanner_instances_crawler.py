@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class SpannerInstancesCrawler(ICrawler):
   '''Handle crawling of Spanner Instances data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
+  async def crawl(self, project_id: str, service: discovery.Resource) -> Dict[str, Any]:
     '''Retrieve a list of Spanner instances available in the project.
 
     Args:
@@ -41,7 +41,7 @@ class SpannerInstancesCrawler(ICrawler):
       request = service.projects().instances().list(
           parent=f"projects/{project_id}")
       while request is not None:
-        response = request.execute()
+        response = await request.execute()
         spanner_instances_list = response.get("instances", [])
         request = service.projects().instances().list_next(
             previous_request=request, previous_response=response)
