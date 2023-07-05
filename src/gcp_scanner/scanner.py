@@ -34,9 +34,9 @@ from googleapiclient import discovery
 from httplib2 import Credentials
 
 from . import arguments
-from . import crawl
 from . import credsdb
 from .client.client_factory import ClientFactory
+from .crawler import misc_crawler
 from .crawler.crawler_factory import CrawlerFactory
 from .models import SpiderContext
 
@@ -238,11 +238,15 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
       # Get GKE resources
       if is_set(scan_config, 'gke_clusters'):
         gke_client = gke_client_for_credentials(credentials)
-        project_result['gke_clusters'] = crawl.get_gke_clusters(project_id,
-                                                                gke_client)
+        project_result['gke_clusters'] = misc_crawler.get_gke_clusters(
+          project_id,
+          gke_client,
+        )
       if is_set(scan_config, 'gke_images'):
-        project_result['gke_images'] = crawl.get_gke_images(project_id,
-                                                            credentials.token)
+        project_result['gke_images'] = misc_crawler.get_gke_images(
+          project_id,
+          credentials.token,
+        )
 
       if scan_config is not None:
         impers = scan_config.get('service_accounts', None)
