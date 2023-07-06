@@ -59,6 +59,9 @@ light_version_scan_schema = {
   'services': ['name'],
 }
 
+# The following map is used to establish the relationship between
+# crawlers and clients. It determines the appropriate crawler and
+# client to be selected from the respective factory classes.
 crawl_client_map = {
   'app_services': 'appengine',
   'bigtable_instances': 'bigtableadmin',
