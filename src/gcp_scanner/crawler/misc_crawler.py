@@ -11,6 +11,9 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+"""
+This module provides miscellaneous crawler methods to crawl GCP resources using REST API
+"""
 import logging
 import sys
 from typing import List, Dict, Any, Tuple
