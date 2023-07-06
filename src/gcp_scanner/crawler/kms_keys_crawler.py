@@ -14,7 +14,7 @@
 
 import logging
 import sys
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -24,12 +24,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class KMSKeysCrawler(ICrawler):
   '''Handle crawling of KMS Keys data.'''
 
-  def crawl(self, project_id: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  def crawl(self, project_id: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> List[Dict[str, Any]]:
     '''Retrieve a list of KMS Keys available in the project.
 
     Args:
       project_id: A name of a project to query info about.
       service: A resource object for interacting with KMS API.
+      config: Configuration options for the crawler (Optional).
 
     Returns:
       A list of resource objects representing the crawled data.
@@ -46,16 +48,16 @@ class KMSKeysCrawler(ICrawler):
         for location in response.get("locations", []):
           locations_list.append(location["locationId"])
         request = service.projects().locations().list_next(
-            previous_request=request, previous_response=response)
+          previous_request=request, previous_response=response)
 
       for location_id in locations_list:
         request_loc = service.projects().locations().keyRings().list(
-            parent=f"projects/{project_id}/locations/{location_id}")
+          parent=f"projects/{project_id}/locations/{location_id}")
         while request_loc is not None:
           response_loc = request_loc.execute()
           for keyring in response_loc.get("keyRings", []):
             request = service.projects().locations().keyRings().cryptoKeys().list(
-                parent=keyring["name"])
+              parent=keyring["name"])
             while request is not None:
               response = request.execute()
               for key in response.get("cryptoKeys", []):
@@ -63,10 +65,10 @@ class KMSKeysCrawler(ICrawler):
 
               request = service.projects().locations().keyRings().cryptoKeys(
               ).list_next(
-                  previous_request=request, previous_response=response)
+                previous_request=request, previous_response=response)
 
           request_loc = service.projects().locations().keyRings().list_next(
-              previous_request=request, previous_response=response)
+            previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to retrieve KMS keys for project %s", project_id)
       logging.info(sys.exc_info())

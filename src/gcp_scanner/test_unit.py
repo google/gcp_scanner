@@ -31,7 +31,6 @@ from unittest.mock import patch, Mock
 import requests
 from google.oauth2 import credentials
 
-from . import crawl
 from . import credsdb
 from . import scanner
 from .client.appengine_client import AppEngineClient
@@ -52,6 +51,7 @@ from .client.sourcerepo_client import SourceRepoClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
+from .crawler import misc_crawler
 from .crawler.app_services_crawler import AppServicesCrawler
 from .crawler.bigquery_crawler import BigQueryCrawler
 from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
@@ -535,7 +535,7 @@ class TestCrawler(unittest.TestCase):
     )
     self.assertTrue(
       verify(
-        crawl.get_gke_clusters(PROJECT_NAME, gke_client),
+        misc_crawler.get_gke_clusters(PROJECT_NAME, gke_client),
         "gke_clusters",
       )
     )
@@ -543,7 +543,7 @@ class TestCrawler(unittest.TestCase):
   def test_gke_images(self):
     self.assertTrue(
       verify(
-        crawl.get_gke_images(PROJECT_NAME, self.credentials.token),
+        misc_crawler.get_gke_images(PROJECT_NAME, self.credentials.token),
         "gke_images",
         True,
       )

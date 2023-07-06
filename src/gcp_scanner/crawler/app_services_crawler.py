@@ -14,7 +14,7 @@
 
 import logging
 import sys
-from typing import List, Dict, Any
+from typing import Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -24,12 +24,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class AppServicesCrawler(ICrawler):
   '''Handle crawling of App Services data.'''
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> Dict[str, Any]:
+  def crawl(self, project_name: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> Dict[str, Any]:
     '''Retrieve a list of AppEngine instances available in the project.
 
     Args:
       project_name: A name of a project to query info about.
       service: A resource object for interacting with the AppEngine API.
+      config: Configuration options for the crawler (Optional).
 
     Returns:
       A list of resource objects representing the crawled data.
@@ -42,8 +44,8 @@ class AppServicesCrawler(ICrawler):
       response = request.execute()
       if response.get("name", None) is not None:
         app_services["default_app"] = (response["name"],
-                                      response["defaultHostname"],
-                                      response["servingStatus"])
+                                       response["defaultHostname"],
+                                       response["servingStatus"])
 
       request = service.apps().services().list(appsId=project_name)
 
@@ -52,7 +54,7 @@ class AppServicesCrawler(ICrawler):
         response = request.execute()
         app_services["services"] = response.get("services", [])
         request = service.apps().services().list_next(
-            previous_request=request, previous_response=response)
+          previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to retrieve App services for project %s", project_name)
       logging.info(sys.exc_info())

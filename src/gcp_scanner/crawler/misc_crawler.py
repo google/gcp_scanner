@@ -1,39 +1,26 @@
-# Copyright 2022 Google LLC
+#  Copyright 2023 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#      https://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-
-"""The module to query GCP resources via RestAPI.
-
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
 """
-
-import collections
+This module provides miscellaneous crawler methods to crawl GCP resources using REST API
+"""
 import logging
 import sys
 from typing import List, Dict, Any, Tuple
 
-from google.cloud import container_v1
 import requests
+from google.cloud import container_v1
 from requests.auth import HTTPBasicAuth
-
-
-def infinite_defaultdict():
-  """Initialize infinite default.
-
-  Returns:
-    DefaultDict
-  """
-  return collections.defaultdict(infinite_defaultdict)
 
 
 def get_gke_clusters(
@@ -93,28 +80,3 @@ def get_gke_images(project_name: str, access_token: str) -> Dict[str, Any]:
       logging.info(sys.exc_info())
 
   return images
-
-
-def get_sas_for_impersonation(
-  iam_policy: List[Dict[str, Any]]) -> List[str]:
-  """Extract a list of unique SAs from IAM policy associated with project.
-
-  Args:
-    iam_policy: An IAM policy provided by get_iam_policy function.
-
-  Returns:
-    A list of service accounts represented as string
-  """
-
-  if not iam_policy:
-    return []
-
-  list_of_sas = list()
-  for entry in iam_policy:
-    for sa_name in entry.get("members", []):
-      if sa_name.startswith("serviceAccount") and "@" in sa_name:
-        account_name = sa_name.split(":")[1]
-        if account_name not in list_of_sas:
-          list_of_sas.append(account_name)
-
-  return list_of_sas
