@@ -234,11 +234,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             crawler_config,
           )
 
-      # Iterate over discovered service accounts by attempting impersonation
-      project_result['service_account_edges'] = []
-      updated_chain = chain_so_far + [sa_name]
-
-      # Get GKE resources
+      # Call other miscellaneous crawlers here
       if is_set(scan_config, 'gke_clusters'):
         gke_client = gke_client_for_credentials(credentials)
         project_result['gke_clusters'] = misc_crawler.get_gke_clusters(
@@ -250,6 +246,10 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
           project_id,
           credentials.token,
         )
+
+      # Iterate over discovered service accounts by attempting impersonation
+      project_result['service_account_edges'] = []
+      updated_chain = chain_so_far + [sa_name]
 
       if scan_config is not None:
         impers = scan_config.get('service_accounts', None)
