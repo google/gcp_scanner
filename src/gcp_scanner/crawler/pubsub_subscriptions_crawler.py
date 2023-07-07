@@ -42,11 +42,12 @@ class PubSubSubscriptionsCrawler(ICrawler):
       request = service.projects().subscriptions().list(
           project=f"projects/{project_id}")
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         pubsubs_list = response.get("subscriptions", [])
         request = service.projects().subscriptions().list_next(
             previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to get PubSubs for project %s", project_id)
       logging.info(sys.exc_info())
+    logging.info("Exiting PubSub Subscriptions")
     return pubsubs_list

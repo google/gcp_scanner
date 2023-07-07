@@ -41,7 +41,7 @@ class BigQueryCrawler(ICrawler):
     try:
       request = service.datasets().list(projectId=project_id)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
 
         for dataset in response.get("datasets", []):
           dataset_id = dataset["datasetReference"]["datasetId"]
@@ -52,6 +52,7 @@ class BigQueryCrawler(ICrawler):
     except Exception:
       logging.info("Failed to retrieve BQ datasets for project %s", project_id)
       logging.info(sys.exc_info())
+    logging.info("Exiting BigQuery Datasets")
     return bq_datasets
 
 

@@ -41,7 +41,7 @@ class ServiceAccountsCrawler(ICrawler):
     try:
       request = service.projects().serviceAccounts().list(name=name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         service_accounts = [(service_account["email"],
                              service_account.get("description", ""))
                             for service_account in response.get("accounts", [])]
@@ -51,5 +51,5 @@ class ServiceAccountsCrawler(ICrawler):
     except Exception:
       logging.info("Failed to retrieve SA list for project %s", project_name)
       logging.info(sys.exc_info())
-
+    logging.info("Exiting SA list %s", project_name)
     return service_accounts

@@ -40,12 +40,12 @@ class SQLInstancesCrawler(ICrawler):
     try:
       request = service.instances().list(project=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         sql_instances_list = response.get("items", [])
         request = service.instances().list_next(
             previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to get SQL instances for project %s", project_name)
       logging.info(sys.exc_info())
-
+    logging.info("Exiting CloudSQL Instances")
     return sql_instances_list

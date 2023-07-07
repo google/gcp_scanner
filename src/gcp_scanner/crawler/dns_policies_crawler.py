@@ -42,7 +42,7 @@ class DNSPoliciesCrawler(ICrawler):
     )
     try:
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         list_of_policies.extend(response.get("policies", None))
 
         request = service.policies().list_next(
@@ -52,5 +52,5 @@ class DNSPoliciesCrawler(ICrawler):
     except Exception:
       logging.info("Failed to retrieve DNS policies for project %s", project_name)
       logging.info(sys.exc_info())
-
+    logging.info("Exiting cloud DNS policies %s", project_name)
     return list_of_policies

@@ -24,7 +24,7 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class CloudResourceManagerProjectInfoCrawler(ICrawler):
   '''Handle crawling of Cloud Resource Manager Project Info data.'''
 
-  async def crawl(self, project_name: str, service: discovery.Resource) -> Dict[str, Any]:
+  def crawl(self, project_name: str, service: discovery.Resource) -> Dict[str, Any]:
     '''Retrieve information about specific project.
 
     Args:
@@ -40,12 +40,12 @@ class CloudResourceManagerProjectInfoCrawler(ICrawler):
 
     try:
       request = service.projects().get(projectId=project_name)
-      response = await request.execute()
+      response = request.execute()
       if "projectNumber" in response:
         project_info = response
 
     except Exception:
       logging.info("Failed to enumerate projects")
       logging.info(sys.exc_info())
-
+    logging.info("Exiting info about: %s", project_name)
     return project_info

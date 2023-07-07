@@ -40,7 +40,7 @@ class ServiceUsageCrawler(ICrawler):
       parent="projects/" + project_name, pageSize=200, filter="state:ENABLED")
     try:
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         list_of_services.extend(response.get("services", []))
 
         request = service.services().list_next(
@@ -48,5 +48,5 @@ class ServiceUsageCrawler(ICrawler):
     except Exception:
       logging.info("Failed to retrieve services for project %s", project_name)
       logging.info(sys.exc_info())
-
+    logging.info("Exiting services list %s", project_name)
     return list_of_services

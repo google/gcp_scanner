@@ -38,7 +38,7 @@ class ComputeMachineImagesCrawler(ICrawler):
     try:
       request = service.machineImages().list(project=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         machine_images_list = response.get("items", [])
         request = service.machineImages().list_next(
           previous_request=request, previous_response=response
@@ -46,4 +46,5 @@ class ComputeMachineImagesCrawler(ICrawler):
     except Exception:
       logging.info("Failed to enumerate machine images in the %s", project_name)
       logging.info(sys.exc_info())
+    logging.info("Exiting list of Machine Images Resources")
     return machine_images_list

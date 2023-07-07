@@ -41,12 +41,12 @@ class CloudFunctionsCrawler(ICrawler):
       request = service.projects().locations().functions().list(
           parent=f"projects/{project_id}/locations/-")
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         functions_list = response.get("functions", [])
         request = service.projects().locations().functions().list_next(
             previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to retrieve CloudFunctions for project %s", project_id)
       logging.info(sys.exc_info())
-
+    logging.info("Exiting CloudFunctions")
     return functions_list

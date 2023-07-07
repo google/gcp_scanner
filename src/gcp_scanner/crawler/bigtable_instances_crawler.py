@@ -41,7 +41,7 @@ class BigTableInstancesCrawler(ICrawler):
       request = service.projects().instances().list(
           parent=f"projects/{project_id}")
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         bigtable_instances_list = response.get("instances", [])
         request = service.projects().instances().list_next(
             previous_request=request, previous_response=response)
@@ -49,4 +49,5 @@ class BigTableInstancesCrawler(ICrawler):
       logging.info("Failed to retrieve BigTable instances for project %s",
                   project_id)
       logging.info(sys.exc_info())
+    logging.info("Exiting bigtable instances")
     return bigtable_instances_list

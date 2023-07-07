@@ -39,7 +39,7 @@ class AppServicesCrawler(ICrawler):
     app_services = dict()
     try:
       request = service.apps().get(appsId=project_name)
-      response = await request.execute()
+      response = request.execute()
       if response.get("name", None) is not None:
         app_services["default_app"] = (response["name"],
                                       response["defaultHostname"],
@@ -56,4 +56,5 @@ class AppServicesCrawler(ICrawler):
     except Exception:
       logging.info("Failed to retrieve App services for project %s", project_name)
       logging.info(sys.exc_info())
+    logging.info("Exiting app services")
     return app_services

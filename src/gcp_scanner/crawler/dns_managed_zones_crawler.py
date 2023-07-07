@@ -39,12 +39,12 @@ class DNSManagedZonesCrawler(ICrawler):
     try:
       request = service.managedZones().list(project=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         zones_list = response.get("managedZones", [])
         request = service.managedZones().list_next(
           previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to enumerate DNS zones for project %s", project_name)
       logging.info(sys.exc_info())
-
+    logging.info("Exiting DNS Managed Zones")
     return zones_list

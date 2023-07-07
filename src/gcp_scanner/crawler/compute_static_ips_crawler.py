@@ -39,7 +39,7 @@ class ComputeStaticIPsCrawler(ICrawler):
     try:
       request = service.addresses().aggregatedList(project=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         ips_list = [{name: addresses_scoped_list}
                     for name, addresses_scoped_list in response["items"].items()
                     if addresses_scoped_list.get("addresses", None) is not None]
@@ -48,5 +48,5 @@ class ComputeStaticIPsCrawler(ICrawler):
     except Exception:
       logging.info("Failed to get static IPs in the %s", project_name)
       logging.info(sys.exc_info())
-
+    logging.info("Exiting Static IPs")
     return ips_list

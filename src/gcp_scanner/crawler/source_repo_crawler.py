@@ -44,7 +44,7 @@ class CloudSourceRepoCrawler(ICrawler):
   )
     try:
         while request is not None:
-            response = await request.execute()
+            response = request.execute()
             list_of_repos.extend(response.get("repos", None))
 
             request = service.projects().repos().list_next(
@@ -54,4 +54,5 @@ class CloudSourceRepoCrawler(ICrawler):
     except Exception:
         logging.info("Failed to retrieve source repos for project %s", project_id)
         logging.info(sys.exc_info())
+    logging.info("Exiting cloud source repositories %s", project_id)
     return list_of_repos

@@ -38,7 +38,7 @@ class ComputeDisksCrawler(ICrawler):
     try:
       request = service.disks().aggregatedList(project=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         if response.get("items", None) is not None:
           disk_names_list = [
             disk for _, disks_scoped_list in response["items"].items()
@@ -49,5 +49,5 @@ class ComputeDisksCrawler(ICrawler):
     except Exception:
       logging.info("Failed to enumerate compute disks in the %s", project_name)
       logging.info(sys.exc_info())
-
+    logging.info("Exiting list of Compute Disk names")
     return disk_names_list

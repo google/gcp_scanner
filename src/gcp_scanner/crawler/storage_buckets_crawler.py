@@ -46,7 +46,7 @@ class StorageBucketsCrawler(ICrawler):
     request = service.buckets().list(project=project_name)
     while request is not None:
       try:
-        response = await request.execute()
+        response = request.execute()
       except errors.HttpError:
         logging.info("Failed to list buckets in the %s", project_name)
         logging.info(sys.exc_info())
@@ -76,6 +76,7 @@ class StorageBucketsCrawler(ICrawler):
         previous_request=request, previous_response=response)
     if dump_fd is not None:
       dump_fd.close()
+    logging.info("Exiting GCS Buckets")
     return buckets_dict
 
   @classmethod

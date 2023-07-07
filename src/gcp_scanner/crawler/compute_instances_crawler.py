@@ -38,7 +38,7 @@ class ComputeInstancesCrawler(ICrawler):
     try:
       request = service.instances().aggregatedList(project=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         if response.get("items", None) is not None:
           images_result = [instance
                            for _, instances_scoped_list in response["items"].items()
@@ -49,4 +49,5 @@ class ComputeInstancesCrawler(ICrawler):
       logging.info("Failed to enumerate compute instances in the %s",
                    project_name)
       logging.info(sys.exc_info())
+    logging.info("Exiting list of Compute Instances")
     return images_result

@@ -41,7 +41,7 @@ class SpannerInstancesCrawler(ICrawler):
       request = service.projects().instances().list(
           parent=f"projects/{project_id}")
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         spanner_instances_list = response.get("instances", [])
         request = service.projects().instances().list_next(
             previous_request=request, previous_response=response)
@@ -49,4 +49,5 @@ class SpannerInstancesCrawler(ICrawler):
       logging.info("Failed to retrieve Spanner instances for project %s",
                   project_id)
       logging.info(sys.exc_info())
+    logging.info("Exiting spanner instances")
     return spanner_instances_list

@@ -38,7 +38,7 @@ class ComputeFirewallRulesCrawler(ICrawler):
     try:
       request = service.firewalls().list(project=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         firewall_rules_list = [(firewall["name"],)
                                for firewall in response.get("items", [])]
         request = service.firewalls().list_next(
@@ -46,4 +46,5 @@ class ComputeFirewallRulesCrawler(ICrawler):
     except Exception:
       logging.info("Failed to get firewall rules in the %s", project_name)
       logging.info(sys.exc_info())
+    logging.info("Exiting Firewall Rules")
     return firewall_rules_list

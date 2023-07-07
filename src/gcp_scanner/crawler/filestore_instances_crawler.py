@@ -41,11 +41,12 @@ class FilestoreInstancesCrawler(ICrawler):
       request = service.projects().locations().instances().list(
           parent=f"projects/{project_id}/locations/-")
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         filestore_instances_list = response.get("instances", [])
         request = service.projects().locations().instances().list_next(
             previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to get filestore instances for project %s", project_id)
       logging.info(sys.exc_info())
+    logging.info("Exiting filestore instances")
     return filestore_instances_list   

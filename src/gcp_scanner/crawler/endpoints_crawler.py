@@ -38,11 +38,12 @@ class EndpointsCrawler(ICrawler):
     try:
       request = service.services().list(producerProjectId=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         endpoints_list = response.get("services", [])
         request = service.services().list_next(
           previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to retrieve endpoints list for project %s", project_name)
       logging.info(sys.exc_info())
+    logging.info("Exiting info about endpoints")
     return endpoints_list

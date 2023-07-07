@@ -39,11 +39,12 @@ class ComputeImagesCrawler(ICrawler):
     try:
       request = service.images().list(project=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         images_result = response.get("items", [])
         request = service.images().list_next(
           previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to enumerate compute images in the %s", project_name)
       logging.info(sys.exc_info())
+    logging.info("Exiting list of Compute Image names")
     return images_result

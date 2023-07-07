@@ -43,7 +43,7 @@ class CloudResourceManagerIAMPolicyCrawler(ICrawler):
     try:
       request = service.projects().getIamPolicy(
           resource=resource, body=get_policy_options)
-      response = await request.execute()
+      response = request.execute()
     except Exception:
       logging.info("Failed to get endpoints list for project %s", project_name)
       logging.info(sys.exc_info())

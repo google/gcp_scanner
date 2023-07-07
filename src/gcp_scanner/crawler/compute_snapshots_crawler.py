@@ -40,12 +40,12 @@ class ComputeSnapshotsCrawler(ICrawler):
     try:
       request = service.snapshots().list(project=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         snapshots_list = response.get("items", [])
         request = service.snapshots().list_next(
           previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to get compute snapshots in the %s", project_name)
       logging.info(sys.exc_info())
-
+    logging.info("Exiting Compute Snapshots")
     return snapshots_list

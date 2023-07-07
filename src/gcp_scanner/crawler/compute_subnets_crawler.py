@@ -38,7 +38,7 @@ class ComputeSubnetsCrawler(ICrawler):
     try:
       request = service.subnetworks().aggregatedList(project=project_name)
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         if response.get("items", None) is not None:
           subnets_list = list(response["items"].items())
         request = service.subnetworks().aggregatedList_next(
@@ -46,5 +46,5 @@ class ComputeSubnetsCrawler(ICrawler):
     except Exception:
       logging.info("Failed to get subnets in the %s", project_name)
       logging.info(sys.exc_info())
-
+    logging.info("Exiting Subnets")
     return subnets_list

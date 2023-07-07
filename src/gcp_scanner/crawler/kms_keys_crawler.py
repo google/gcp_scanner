@@ -42,7 +42,7 @@ class KMSKeysCrawler(ICrawler):
       locations_list = list()
       request = service.projects().locations().list(name=f"projects/{project_id}")
       while request is not None:
-        response = await request.execute()
+        response = request.execute()
         for location in response.get("locations", []):
           locations_list.append(location["locationId"])
         request = service.projects().locations().list_next(
@@ -70,4 +70,5 @@ class KMSKeysCrawler(ICrawler):
     except Exception:
       logging.info("Failed to retrieve KMS keys for project %s", project_id)
       logging.info(sys.exc_info())
+    logging.info("Exiting KMS keys")
     return kms_keys_list
