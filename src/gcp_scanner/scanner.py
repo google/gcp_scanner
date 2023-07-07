@@ -25,6 +25,7 @@ import sys
 from datetime import datetime
 from json.decoder import JSONDecodeError
 from pathlib import Path
+import time
 from typing import List, Tuple, Dict, Optional, Union
 
 from google.auth.exceptions import MalformedError
@@ -169,7 +170,7 @@ async def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]]
       project_number = project['projectNumber']
       print(f'Inspecting project {project_id}')
       project_result = sa_results['projects'][project_id]
-
+      project_tasks = dict()
       project_result['project_info'] = project
 
       # Fail with error if the output file already exists
@@ -187,26 +188,27 @@ async def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]]
 
       if is_set(scan_config, 'iam_policy'):
         # Get IAM policy
-        project_result['iam_policy'] = await CrawlerFactory.create_crawler(
+        iam_policy_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'iam_policy',
         ).crawl(
           project_id,
           ClientFactory.get_client('cloudresourcemanager').get_service(
             credentials,
           ),
-        )
+        ))
+        project_tasks['iam_policy'] = iam_policy_task
 
       if is_set(scan_config, 'service_accounts'):
         # Get service accounts
-        project_service_accounts = await CrawlerFactory.create_crawler(
+        service_accounts_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'service_accounts',
         ).crawl(
           project_number,
           ClientFactory.get_client('iam').get_service(
             credentials,
           ),
-        )
-        project_result['service_accounts'] = project_service_accounts
+        ))
+        project_tasks['service_accounts'] = service_accounts_task
 
       # Iterate over discovered service accounts by attempting impersonation
       project_result['service_account_edges'] = []
@@ -218,70 +220,86 @@ async def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]]
       ).get_service(credentials)
 
       if is_set(scan_config, 'compute_instances'):
-        project_result['compute_instances'] = await CrawlerFactory.create_crawler(
+        compute_instances_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'compute_instances',
         ).crawl(
           project_id,
           compute_service,
-        )
+        ))
+        project_tasks['compute_instances'] = compute_instances_task
+
       if is_set(scan_config, 'compute_images'):
-        project_result['compute_images'] = await CrawlerFactory.create_crawler(
+        compute_images_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'compute_images',
         ).crawl(
           project_id,
           compute_service,
-        )
+        ))
+        project_tasks['compute_images'] = compute_images_task
+
       if is_set(scan_config, 'machine_images'):
-        project_result['machine_images'] = await CrawlerFactory.create_crawler(
+        machine_images_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'machine_images',
         ).crawl(
           project_id,
           compute_service,
-        )
+        ))
+        project_tasks['machine_images'] = machine_images_task
+
       if is_set(scan_config, 'compute_disks'):
-        project_result['compute_disks'] = await CrawlerFactory.create_crawler(
+        compute_disks_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'compute_disks',
         ).crawl(
           project_id,
           compute_service,
-        )
+        ))
+        project_tasks['compute_disks'] = compute_disks_task
+
       if is_set(scan_config, 'static_ips'):
-        project_result['static_ips'] = await CrawlerFactory.create_crawler(
+        static_ips_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'static_ips',
         ).crawl(
           project_id,
           compute_service,
-        )
+        ))
+        project_tasks['static_ips'] = static_ips_task
+
       if is_set(scan_config, 'compute_snapshots'):
-        project_result['compute_snapshots'] = await CrawlerFactory.create_crawler(
+        compute_snapshots_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'compute_snapshots',
         ).crawl(
           project_id,
           compute_service,
-        )
+        ))
+        project_tasks['compute_snapshots'] = compute_snapshots_task
+
       if is_set(scan_config, 'subnets'):
-        project_result['subnets'] = await CrawlerFactory.create_crawler(
+        subnets_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'subnets',
         ).crawl(
           project_id,
           compute_service,
-        )
+        ))
+        project_tasks['subnets'] = subnets_task
+
       if is_set(scan_config, 'firewall_rules'):
-        project_result['firewall_rules'] = await CrawlerFactory.create_crawler(
+        firewall_rules_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'firewall_rules',
         ).crawl(
           project_id,
           compute_service,
-        )
+        ))
+        project_tasks['firewall_rules'] = firewall_rules_task
 
       # Get GCP APP Resources
       if is_set(scan_config, 'app_services'):
-        project_result['app_services'] = await CrawlerFactory.create_crawler(
+        app_services_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'app_services',
         ).crawl(
           project_id,
           ClientFactory.get_client('appengine').get_service(credentials),
-        )
+        ))
+        project_tasks['app_services'] = app_services_task
 
       # Get storage buckets
       if is_set(scan_config, 'storage_buckets'):
@@ -290,30 +308,34 @@ async def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]]
           storage_bucket_config = scan_config.get('storage_buckets', {})
         storage_bucket_config['gcs_output_path'] = gcs_output_path
 
-        project_result['storage_buckets'] = await CrawlerFactory.create_crawler(
+        storage_buckets_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'storage_buckets',
         ).crawl(
           project_id,
           ClientFactory.get_client('storage').get_service(credentials),
           storage_bucket_config
-        )
+        ))
+        project_tasks['storage_buckets'] = storage_buckets_task
 
       # Get DNS managed zones
       if is_set(scan_config, 'managed_zones'):
-        project_result['managed_zones'] = await CrawlerFactory.create_crawler(
+        managed_zones_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'managed_zones',
         ).crawl(
           project_id,
           ClientFactory.get_client('dns').get_service(credentials),
-        )
+        ))
+        project_tasks['managed_zones'] = managed_zones_task
+
       # Get DNS policies
       if is_set(scan_config, 'dns_policies'):
-        project_result['dns_policies'] = await CrawlerFactory.create_crawler(
+        dns_policies_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'dns_policies',
         ).crawl(
           project_id,
           ClientFactory.get_client('dns').get_service(credentials),
-        )
+        ))
+        project_tasks['dns_policies'] = dns_policies_task
 
       # Get GKE resources
       if is_set(scan_config, 'gke_clusters'):
@@ -326,106 +348,120 @@ async def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]]
 
       # Get SQL instances
       if is_set(scan_config, 'sql_instances'):
-        project_result['sql_instances'] = await CrawlerFactory.create_crawler(
+        sql_instances_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'sql_instances',
         ).crawl(
           project_id,
           ClientFactory.get_client('sqladmin').get_service(credentials),
-        )
+        ))
+        project_tasks['sql_instances'] = sql_instances_task
 
       # Get BigQuery databases and table names
       if is_set(scan_config, 'bq'):
-        project_result['bq'] = await CrawlerFactory.create_crawler(
+        bq_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'bq',
         ).crawl(
           project_id,
           ClientFactory.get_client('bigquery').get_service(credentials),
-        )
+        ))
+        project_tasks['bq'] = bq_task
 
       # Get PubSub Subscriptions
       if is_set(scan_config, 'pubsub_subs'):
-        project_result['pubsub_subs'] = await CrawlerFactory.create_crawler(
+        pubsub_subs_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'pubsub_subs',
         ).crawl(
           project_id,
           ClientFactory.get_client('pubsub').get_service(credentials),
-        )
+        ))
+        project_tasks['pubsub_subs'] = pubsub_subs_task
 
       # Get CloudFunctions list
       if is_set(scan_config, 'cloud_functions'):
-        project_result['cloud_functions'] = await CrawlerFactory.create_crawler(
+        cloud_functions_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'cloud_functions',
         ).crawl(
           project_id,
           ClientFactory.get_client('cloudfunctions').get_service(credentials),
-        )
+        ))
+        project_tasks['cloud_functions'] = cloud_functions_task
 
       # Get List of BigTable Instances
       if is_set(scan_config, 'bigtable_instances'):
-        project_result['bigtable_instances'] = await CrawlerFactory.create_crawler(
+        bigtable_instances_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'bigtable_instances',
         ).crawl(
           project_id,
           ClientFactory.get_client('bigtableadmin').get_service(credentials),
-        )
+        ))
+        project_tasks['bigtable_instances'] = bigtable_instances_task
 
       # Get Spanner Instances
       if is_set(scan_config, 'spanner_instances'):
-        project_result['spanner_instances'] = await CrawlerFactory.create_crawler(
+        spanner_instances_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'spanner_instances',
         ).crawl(
           project_id,
           ClientFactory.get_client('spanner').get_service(credentials),
-        )
+        ))
+        project_tasks['spanner_instances'] = spanner_instances_task
 
       # Get FileStore Instances
       if is_set(scan_config, 'filestore_instances'):
-        project_result['filestore_instances'] = await CrawlerFactory.create_crawler(
+        filestore_instances_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'filestore_instances',
         ).crawl(
           project_id,
           ClientFactory.get_client('file').get_service(credentials),
-        )
+        ))
+        project_tasks['filestore_instances'] = filestore_instances_task
 
       # Get list of KMS keys
       if is_set(scan_config, 'kms'):
-        project_result['kms'] = await CrawlerFactory.create_crawler(
+        kms_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'kms',
         ).crawl(
           project_id,
           ClientFactory.get_client('cloudkms').get_service(credentials),
-        )
+        ))
+        project_tasks['kms'] = kms_task
 
       # Get information about Endpoints
       if is_set(scan_config, 'endpoints'):
-        project_result['endpoints'] = await CrawlerFactory.create_crawler(
+        endpoints_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'endpoints',
         ).crawl(
           project_id,
           ClientFactory.get_client('servicemanagement').get_service(
             credentials,
           ),
-        )
+        ))
+        project_tasks['endpoints'] = endpoints_task
 
       # Get list of API services enabled in the project
       if is_set(scan_config, 'services'):
-        project_result['services'] = await CrawlerFactory.create_crawler(
+        services_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'services',
         ).crawl(
           project_id,
           ClientFactory.get_client('serviceusage').get_service(
             credentials,
           ),
-        )
+        ))
+        project_tasks['services'] = services_task
 
       # Get list of cloud source repositories enabled in the project
       if is_set(scan_config, 'sourcerepos'):
-        project_result['sourcerepos'] = await CrawlerFactory.create_crawler(
+        sourcerepos_task = asyncio.create_task(CrawlerFactory.create_crawler(
           'sourcerepos',
         ).crawl(
           project_id,
           ClientFactory.get_client('sourcerepo').get_service(credentials),
-        )
+        ))
+        project_tasks['sourcerepos'] = sourcerepos_task
+
+      for resource, task in project_tasks.items():
+        project_result[resource] = await task
 
       if scan_config is not None:
         impers = scan_config.get('service_accounts', None)
@@ -587,6 +623,8 @@ def main():
     with open(args.config_path, 'r', encoding='utf-8') as f:
       scan_config = json.load(f)
 
+  print(f"start blocking_io at {time.strftime('%X')}")
   asyncio.run(crawl_loop(sa_tuples, args.output, scan_config, args.light_scan,
              args.target_project, force_projects_list))
+  print(f"start blocking_io at {time.strftime('%X')}")
   return 0
