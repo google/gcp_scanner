@@ -14,7 +14,7 @@
 import json
 import logging
 import sys
-from typing import List, Dict, Any, Union, Tuple, TextIO
+from typing import List, Dict, Any, Union, Tuple, TextIO, Optional
 
 from googleapiclient import discovery, errors
 
@@ -105,7 +105,7 @@ class StorageBucketsCrawler(ICrawler):
     return bucket_iam_policies
 
   @classmethod
-  def _get_dump_file_dir(cls, config: Dict[str, Union[bool, str]]) -> TextIO | None:
+  def _get_dump_file_dir(cls, config: Dict[str, Union[bool, str]]) -> Optional[TextIO]:
     """Get the dump file directory based on the provided configuration.
 
     Args:
