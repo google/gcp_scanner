@@ -2,10 +2,79 @@
   background-color: #f8f9fc;
   position: fixed;
   height: 100%;
-  min-width: 350px;
-  padding-top: 30px;
+  width: 350px;
+  padding-block: 30px;
+  padding-inline: 20px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.menu-item {
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px 10px 50px 10px;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.menu-item h3 {
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.menu-item img {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.add-input::placeholder {
+  color: #505050;
+  border: none;
+}
+
+.add-button {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border: none;
+  background-color: white;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 100%;
+}
+
+.upload-form {
+  margin-bottom: 15px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #505050;
+  font-size: 15px;
+}
+
+.remove-button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.remove-button svg:hover {
+  color: #ff0000;
 }

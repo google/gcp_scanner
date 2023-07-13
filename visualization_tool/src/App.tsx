@@ -1,6 +1,10 @@
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 
+import {useState} from 'react';
+
+import {Resource} from './types/resources';
+
 import ControlMenu from './components/ControlMenu/ControlMenu';
 import ResourcesList from './components/ResourcesList/ResourcesList';
 
@@ -8,6 +12,7 @@ import logo from '/logo.png';
 import './App.css';
 
 function App() {
+  const [resources, setResources] = useState<Resource[]>([]);
   return (
     <>
       <header>
@@ -36,8 +41,8 @@ function App() {
         </div>
       </div>
       <main>
-        <ControlMenu />
-        <ResourcesList />
+        <ControlMenu setResources={setResources} />
+        <ResourcesList resources={resources} />
       </main>
     </>
   );
