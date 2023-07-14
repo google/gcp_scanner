@@ -16,6 +16,8 @@
 """The main module that initiates scanning of GCP resources.
 
 """
+
+import concurrent.futures
 import json
 import logging
 import os
@@ -72,6 +74,10 @@ crawl_client_map = {
   'storage_buckets': 'storage',
   'subnets': 'compute',
 }
+
+
+def get_crawl(crawler, project_id, client, crawler_config):
+  return crawler.crawl(project_id, client, crawler_config)
 
 
 def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
@@ -160,24 +166,25 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         logging.error('Try removing the %s file and restart the scanner.',
                       output_file_name)
 
-      for crawler_name, client_name in crawl_client_map.items():
-        if is_set(scan_config, crawler_name):
-          crawler_config = {}
-          if scan_config is not None:
-            crawler_config = scan_config.get(crawler_name)
-          # add gcs output path to the config.
-          # this path is used by the storage bucket crawler as of now.
-          crawler_config['gcs_output_path'] = gcs_output_path
-          # crawl the data
-          crawler = CrawlerFactory.create_crawler(crawler_name)
-          client = ClientFactory.get_client(client_name).get_service(
-            credentials,
-          )
-          project_result[crawler_name] = crawler.crawl(
-            project_id,
-            client,
-            crawler_config,
-          )
+      results_crawl = dict()
+      with concurrent.futures.ProcessPoolExecutor() as executor:
+        for crawler_name, client_name in crawl_client_map.items():
+          if is_set(scan_config, crawler_name):
+            crawler_config = {}
+            if scan_config is not None:
+              crawler_config = scan_config.get(crawler_name)
+            # add gcs output path to the config.
+            # this path is used by the storage bucket crawler as of now.
+            crawler_config['gcs_output_path'] = gcs_output_path
+            # crawl the data
+            crawler = CrawlerFactory.create_crawler(crawler_name)
+            client = ClientFactory.get_client(client_name).get_service(
+              credentials,
+            )
+            results_crawl[crawler_name] = executor.submit(get_crawl, crawler, project_id, client, crawler_config)
+            
+      for crawler_name, fobj in results_crawl.items():      
+        project_result[crawler_name] = fobj.result()
 
       # Call other miscellaneous crawlers here
       if is_set(scan_config, 'gke_clusters'):

@@ -14,11 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import concurrent.futures
-
 from src.gcp_scanner import scanner
 
 
 if __name__ == "__main__":
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        scanner.main()
+  scanner.main()
