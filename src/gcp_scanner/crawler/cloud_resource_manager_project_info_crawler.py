@@ -14,7 +14,7 @@
 
 import logging
 import sys
-from typing import Dict, Any
+from typing import Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -24,12 +24,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class CloudResourceManagerProjectInfoCrawler(ICrawler):
   '''Handle crawling of Cloud Resource Manager Project Info data.'''
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> Dict[str, Any]:
+  def crawl(self, project_name: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> Dict[str, Any]:
     '''Retrieve information about specific project.
 
     Args:
       project_name: Name of project to request info about
       service: A resource object for interacting with the Cloud Source API.
+      config: Configuration options for the crawler (Optional).
 
     Returns:
       A list of resource objects representing the crawled data.

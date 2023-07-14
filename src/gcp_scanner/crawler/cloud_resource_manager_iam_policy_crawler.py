@@ -14,7 +14,7 @@
 
 import logging
 import sys
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -24,12 +24,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class CloudResourceManagerIAMPolicyCrawler(ICrawler):
   '''Handle crawling of Cloud Resource Manager IAM Policy data.'''
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  def crawl(self, project_name: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> List[Dict[str, Any]]:
     '''Retrieve an IAM Policy in the project.
 
     Args:
       project_name: A name of a project to query info about.
       service: A resource object for interacting with the cloud source API.
+      config: Configuration options for the crawler (Optional).
 
     Returns:
       A list of resource objects representing the crawled data.
@@ -42,7 +44,7 @@ class CloudResourceManagerIAMPolicyCrawler(ICrawler):
     get_policy_options = {"options": {"requestedPolicyVersion": 3}}
     try:
       request = service.projects().getIamPolicy(
-          resource=resource, body=get_policy_options)
+        resource=resource, body=get_policy_options)
       response = request.execute()
     except Exception:
       logging.info("Failed to get endpoints list for project %s", project_name)

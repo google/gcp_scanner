@@ -13,7 +13,7 @@
 #   limitations under the License.
 import logging
 import sys
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -23,12 +23,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class ComputeInstancesCrawler(ICrawler):
   """Handle crawling of compute instances data."""
 
-  def crawl(self, project_name: str, service: discovery.Resource) -> List[Dict[str, Any]]:
+  def crawl(self, project_name: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> List[Dict[str, Any]]:
     """Retrieve a list of Compute VMs available in the project.
 
    Args:
        project_name: The name of the project to query information about.
        service: A resource object for interacting with the GCP API.
+       config: Configuration options for the crawler (Optional).
 
    Returns:
        A list of resource objects representing the crawled data.

@@ -31,7 +31,6 @@ from unittest.mock import patch, Mock
 import requests
 from google.oauth2 import credentials
 
-from . import crawl
 from . import credsdb
 from . import scanner
 from .client.appengine_client import AppEngineClient
@@ -52,6 +51,7 @@ from .client.sourcerepo_client import SourceRepoClient
 from .client.spanner_client import SpannerClient
 from .client.sql_client import SQLClient
 from .client.storage_client import StorageClient
+from .crawler import misc_crawler
 from .crawler.app_services_crawler import AppServicesCrawler
 from .crawler.bigquery_crawler import BigQueryCrawler
 from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
@@ -79,6 +79,7 @@ from .crawler.service_usage_crawler import ServiceUsageCrawler
 from .crawler.source_repo_crawler import CloudSourceRepoCrawler
 from .crawler.spanner_instances_crawler import SpannerInstancesCrawler
 from .crawler.sql_instances_crawler import SQLInstancesCrawler
+from .crawler.storage_buckets_crawler import StorageBucketsCrawler
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -494,15 +495,19 @@ class TestCrawler(unittest.TestCase):
 
   def test_storage_buckets(self):
     """Test storage bucket."""
+    config = {
+      "fetch_buckets_iam": True
+    }
     self.assertTrue(
       verify(
-        crawl.get_bucket_names(
+        CrawlerFactory.create_crawler(
+          "storage_buckets",
+        ).crawl(
           PROJECT_NAME,
           service=ClientFactory.get_client("storage").get_service(
             self.credentials,
           ),
-          dump_fd=None,
-          dump_iam_policies=True
+          config=config,
         ),
         "storage_buckets",
       )
@@ -530,7 +535,7 @@ class TestCrawler(unittest.TestCase):
     )
     self.assertTrue(
       verify(
-        crawl.get_gke_clusters(PROJECT_NAME, gke_client),
+        misc_crawler.get_gke_clusters(PROJECT_NAME, gke_client),
         "gke_clusters",
       )
     )
@@ -538,7 +543,7 @@ class TestCrawler(unittest.TestCase):
   def test_gke_images(self):
     self.assertTrue(
       verify(
-        crawl.get_gke_images(PROJECT_NAME, self.credentials.token),
+        misc_crawler.get_gke_images(PROJECT_NAME, self.credentials.token),
         "gke_images",
         True,
       )
@@ -1014,6 +1019,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'service_accounts' name."""
     crawler = CrawlerFactory.create_crawler("service_accounts")
     self.assertIsInstance(crawler, ServiceAccountsCrawler)
+
+  def test_create_crawler_storage_bucket(self):
+    """Test create_crawler method with 'storage_buckets' name."""
+    crawler = CrawlerFactory.create_crawler("storage_buckets")
+    self.assertIsInstance(crawler, StorageBucketsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""

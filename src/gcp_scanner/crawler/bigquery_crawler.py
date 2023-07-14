@@ -14,7 +14,7 @@
 
 import logging
 import sys
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
 
 from googleapiclient import discovery
 
@@ -24,13 +24,14 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class BigQueryCrawler(ICrawler):
   '''Handle crawling of BigQuery data.'''
 
-  def crawl(self, project_id: str,
-                  service: discovery.Resource) -> Dict[str, List[Dict[str, Any]]]:
+  def crawl(self, project_id: str, service: discovery.Resource,
+            config: Dict[str, Union[bool, str]] = None) -> Dict[str, List[Dict[str, Any]]]:
     '''Retrieve a list of BigQuery datasets available in the project.
 
     Args:
       project_id: A name of a project to query info about.
       service: A resource object for interacting with the BigQuery API.
+      config: Configuration options for the crawler (Optional).
 
     Returns:
       A list of resource objects representing the crawled data.
@@ -45,18 +46,17 @@ class BigQueryCrawler(ICrawler):
 
         for dataset in response.get("datasets", []):
           dataset_id = dataset["datasetReference"]["datasetId"]
-          bq_datasets[dataset_id] = self.get_bq_tables(project_id,dataset_id, service)
+          bq_datasets[dataset_id] = self.get_bq_tables(project_id, dataset_id, service)
 
         request = service.datasets().list_next(
-            previous_request=request, previous_response=response)
+          previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to retrieve BQ datasets for project %s", project_id)
       logging.info(sys.exc_info())
     return bq_datasets
 
-
   def get_bq_tables(self, project_id: str, dataset_id: str,
-                  bq_service: discovery.Resource) -> List[Dict[str, Any]]:
+                    bq_service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of BigQuery tables available in the dataset.
 
     Args:
@@ -72,12 +72,12 @@ class BigQueryCrawler(ICrawler):
     list_of_tables = list()
     try:
       request = bq_service.tables().list(
-          projectId=project_id, datasetId=dataset_id)
+        projectId=project_id, datasetId=dataset_id)
       while request is not None:
         response = request.execute()
         list_of_tables = response.get("tables", [])
         request = bq_service.tables().list_next(
-            previous_request=request, previous_response=response)
+          previous_request=request, previous_response=response)
     except Exception:
       logging.info("Failed to retrieve BQ tables for dataset %s", dataset_id)
       logging.info(sys.exc_info())
