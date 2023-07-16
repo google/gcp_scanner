@@ -15,7 +15,11 @@
 # limitations under the License.
 
 from src.gcp_scanner import scanner
+<<<<<<< HEAD
 
 
 if __name__ == "__main__":
   scanner.main()
+=======
+scanner.main()
+>>>>>>> parent of 5404ecd (refactor: transfer from scanner to utils)
