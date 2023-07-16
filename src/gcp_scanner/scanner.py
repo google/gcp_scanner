@@ -94,50 +94,6 @@ crawl_client_map = {
 }
 
 
-class GCPScanner:
-  """
-  TODO: description for GCP Scanner Class
-  """
-
-  def __init__(self) -> None:
-    pass
-
-  def crawl_loop(self):
-    pass
-
-  def is_set(self):
-    pass
-
-  def save_results(self):
-    pass
-
-  def iam_client_for_credentials(self, credentials):
-    pass
-
-  def compute_client_for_credentials(self, credentials):
-    pass
-
-  def gke_client_for_credentials(self, credentials):
-    pass
-
-  # could be separated as a separate class
-  # Since, it is a complete set of different Operations
-  def get_sas_for_impersonation(self, iam_policy):
-    pass
-
-  # separate this from main loop
-  # Since, this need to be called prior to crawling
-  def get_project_list(self):
-    pass
-
-  # context managers
-  def __enter__(self):
-    pass
-
-  def __exit__(self):
-    pass
-
-
 def get_crawl(crawler, project_id, client, crawler_config):
   return crawler.crawl(project_id, client, crawler_config)
 
@@ -182,6 +138,7 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                out_dir: str,
                scan_config: Dict,
                light_scan: bool,
+               cpu_count: int,
                target_project: Optional[str] = None,
                force_projects: Optional[str] = None):
   """The main loop function to crawl GCP resources.
@@ -264,8 +221,8 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         logging.error('Try removing the %s file and restart the scanner.',
                       output_file_name)
 
-      results_crawl = dict()
-      with concurrent.futures.ProcessPoolExecutor() as executor:
+      results_crawl_pool = dict()
+      with concurrent.futures.ProcessPoolExecutor(max_workers=cpu_count) as executor:
         for crawler_name, client_name in crawl_client_map.items():
           if is_set(scan_config, crawler_name):
             crawler_config = {}
@@ -279,10 +236,10 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             client = ClientFactory.get_client(client_name).get_service(
               credentials,
             )
-            results_crawl[crawler_name] = executor.submit(get_crawl, crawler, project_id, client, crawler_config)
+            results_crawl_pool[crawler_name] = executor.submit(get_crawl, crawler, project_id, client, crawler_config)
             
-      for crawler_name, fobj in results_crawl.items():      
-        project_result[crawler_name] = fobj.result()
+      for crawler_name, future_obj in results_crawl_pool.items():      
+        project_result[crawler_name] = future_obj.result()
 
       # Call other miscellaneous crawlers here
       if is_set(scan_config, 'gke_clusters'):
@@ -495,6 +452,13 @@ def main():
     with open(args.config_path, 'r', encoding='utf-8') as f:
       scan_config = json.load(f)
 
-  crawl_loop(sa_tuples, args.output, scan_config, args.light_scan,
-             args.target_project, force_projects_list)
+  crawl_loop(
+    initial_sa_tuples=sa_tuples, 
+    out_dir=args.output, 
+    scan_config=scan_config,
+    light_scan=args.light_scan,
+    cpu_count=min(int(args.cpu_count), os.cpu_count()),
+    target_project=args.target_project, 
+    force_projects=force_projects_list
+  )
   return 0
