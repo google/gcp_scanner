@@ -222,7 +222,9 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
                       output_file_name)
 
       results_crawl_pool = dict()
-      with concurrent.futures.ProcessPoolExecutor(max_workers=cpu_count) as executor:
+      with concurrent.futures.ProcessPoolExecutor(
+             max_workers=cpu_count
+           ) as executor:
         for crawler_name, client_name in crawl_client_map.items():
           if is_set(scan_config, crawler_name):
             crawler_config = {}
@@ -236,9 +238,10 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
             client = ClientFactory.get_client(client_name).get_service(
               credentials,
             )
-            results_crawl_pool[crawler_name] = executor.submit(get_crawl, crawler, project_id, client, crawler_config)
-            
-      for crawler_name, future_obj in results_crawl_pool.items():      
+            results_crawl_pool[crawler_name] = executor.submit(
+              get_crawl, crawler, project_id, client, crawler_config)
+
+      for crawler_name, future_obj in results_crawl_pool.items():
         project_result[crawler_name] = future_obj.result()
 
       # Call other miscellaneous crawlers here
@@ -453,12 +456,12 @@ def main():
       scan_config = json.load(f)
 
   crawl_loop(
-    initial_sa_tuples=sa_tuples, 
-    out_dir=args.output, 
+    initial_sa_tuples=sa_tuples,
+    out_dir=args.output,
     scan_config=scan_config,
     light_scan=args.light_scan,
     cpu_count=min(int(args.cpu_count), os.cpu_count()),
-    target_project=args.target_project, 
+    target_project=args.target_project,
     force_projects=force_projects_list
   )
   return 0
