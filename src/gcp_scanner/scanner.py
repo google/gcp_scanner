@@ -94,6 +94,50 @@ crawl_client_map = {
 }
 
 
+class GCPScanner:
+  """
+  TODO: description for GCP Scanner Class
+  """
+
+  def __init__(self) -> None:
+    pass
+
+  def crawl_loop(self):
+    pass
+
+  def is_set(self):
+    pass
+
+  def save_results(self):
+    pass
+
+  def iam_client_for_credentials(self, credentials):
+    pass
+
+  def compute_client_for_credentials(self, credentials):
+    pass
+
+  def gke_client_for_credentials(self, credentials):
+    pass
+
+  # could be separated as a separate class
+  # Since, it is a complete set of different Operations
+  def get_sas_for_impersonation(self, iam_policy):
+    pass
+
+  # separate this from main loop
+  # Since, this need to be called prior to crawling
+  def get_project_list(self):
+    pass
+
+  # context managers
+  def __enter__(self):
+    pass
+
+  def __exit__(self):
+    pass
+
+
 def get_crawl(crawler, project_id, client, crawler_config):
   return crawler.crawl(project_id, client, crawler_config)
 
@@ -314,7 +358,7 @@ def gke_client_for_credentials(
   return container_v1.services.cluster_manager.ClusterManagerClient(
     credentials=credentials)
 
-
+# Refactor to Utils
 def get_sa_details_from_key_files(key_path):
   malformed_keys = []
   sa_details = []
@@ -365,7 +409,7 @@ def get_sas_for_impersonation(
 
   return list_of_sas
 
-
+# Refactor to Utils
 def infinite_defaultdict():
   """Initialize infinite default.
 
