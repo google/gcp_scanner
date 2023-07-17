@@ -318,7 +318,7 @@ def gke_client_for_credentials(
   return container_v1.services.cluster_manager.ClusterManagerClient(
     credentials=credentials)
 
-# Refactor to Utils
+
 def get_sa_details_from_key_files(key_path):
   malformed_keys = []
   sa_details = []
@@ -369,7 +369,7 @@ def get_sas_for_impersonation(
 
   return list_of_sas
 
-# Refactor to Utils
+
 def infinite_defaultdict():
   """Initialize infinite default.
 
