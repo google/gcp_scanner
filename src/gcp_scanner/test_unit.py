@@ -38,7 +38,7 @@ from .client.bigquery_client import BQClient
 from .client.bigtable_client import BigTableClient
 from .client.client_factory import ClientFactory
 from .client.cloud_functions_client import CloudFunctionsClient
-from .client.cloud_source_manager_client import CloudSourceManagerClient
+from .client.cloud_resource_manager_client import CloudResourceManagerClient
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
 from .client.filestore_client import FilestoreClient
@@ -867,7 +867,7 @@ class TestClientFactory(unittest.TestCase):
   def test_get_client_cloud_resource_manager(self):
     """Test get_client method with 'cloudresourcemanager' name."""
     client = ClientFactory.get_client("cloudresourcemanager")
-    self.assertIsInstance(client, CloudSourceManagerClient)
+    self.assertIsInstance(client, CloudResourceManagerClient)
 
   def test_get_client_service_usage(self):
     """Test get_client method with 'serviceusage' name."""

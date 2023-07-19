@@ -18,7 +18,7 @@ from gcp_scanner.client.appengine_client import AppEngineClient
 from gcp_scanner.client.bigquery_client import BQClient
 from gcp_scanner.client.bigtable_client import BigTableClient
 from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
-from gcp_scanner.client.cloud_source_manager_client import CloudSourceManagerClient
+from gcp_scanner.client.cloud_resource_manager_client import CloudResourceManagerClient
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.dns_client import DNSClient
 from gcp_scanner.client.filestore_client import FilestoreClient
@@ -51,7 +51,7 @@ class ClientFactory:
     if name == "cloudkms":
       return CloudKMSClient()
     if name == "cloudresourcemanager":
-      return CloudSourceManagerClient()
+      return CloudResourceManagerClient()
     if name == "compute":
       return ComputeClient()
     if name == "dns":
