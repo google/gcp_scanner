@@ -1,4 +1,5 @@
 import {Resource} from '../../types/resources';
+import {imageToURL} from './utils';
 
 import './ResourcesList.css';
 
@@ -20,7 +21,7 @@ const ResourcesList = ({resources}: ResourcesListProps) => {
           .map(resource => {
             return (
               <div className="resources-list__table__card" key={resource.id}>
-                <img src={`./icons/resources/${resource.type}.png`} alt="" />
+                <img src={imageToURL(resource)} alt="" />
                 <p className="resource-name">{resource.name}</p>
                 <p className="resource-type">{resource.type}</p>
                 <p
