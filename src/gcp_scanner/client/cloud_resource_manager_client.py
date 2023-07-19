@@ -18,7 +18,7 @@ from httplib2 import Credentials
 from .interface_client import IClient
 
 
-class CloudSourceManagerClient(IClient):
+class CloudResourceManagerClient(IClient):
   """CloudSourceManagerClient class."""
 
   def get_service(self, credentials: Credentials) -> discovery.Resource:
