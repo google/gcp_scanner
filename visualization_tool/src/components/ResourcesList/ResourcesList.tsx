@@ -1,5 +1,5 @@
 import {Resource} from '../../types/resources';
-import {typeToImage} from './utils';
+import {typeToImage, statusToColor} from './utils';
 
 import './ResourcesList.css';
 
@@ -26,13 +26,9 @@ const ResourcesList = ({resources}: ResourcesListProps) => {
                 <p className="resource-type">{resource.type}</p>
                 <p
                   className="resource-status"
-                  style={
-                    resource.status === 'RUNNING'
-                      ? {color: 'green'}
-                      : resource.status === 'READY'
-                      ? {color: 'blue'}
-                      : {color: 'red'}
-                  }
+                  style={{
+                    color: statusToColor(resource.status),
+                  }}
                 >
                   {resource.status}
                 </p>

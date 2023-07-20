@@ -13,4 +13,17 @@ const typeToImage = (resource: Resource) => {
   }
 };
 
-export {typeToImage};
+const statusToColor = (status: string) => {
+  switch (status) {
+    case 'RUNNING':
+      return 'green';
+    case 'READY':
+      return 'blue';
+    case 'TERMINATED':
+      return 'red';
+    default:
+      return 'grey';
+  }
+};
+
+export {typeToImage, statusToColor};
