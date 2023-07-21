@@ -1,26 +1,26 @@
 type ResourceType = 'GCE' | 'GCS' | 'GKE' | 'App Engine';
+type ResourceStatus = 'READY' | 'RUNNING' | 'STOPPED' | 'DELETED';
 
 type Resource = {
+  projectId: string;
+  file: string;
   id: string;
   name: string;
   type: ResourceType;
   creationTimestamp: string;
-  status: 'RUNNING' | 'STOPPED' | 'DELETED';
+  status: ResourceStatus;
 };
 
 type ComputeEngine = Resource & {
   type: 'GCE';
   zone: string;
   machineType: string;
-  cpu: number;
-  memory: number;
 };
 
 type CloudStorage = Resource & {
   type: 'GCS';
-  bucket: string;
-  location: string;
-  size: number;
+  storageType: string;
+  sizeGb: number;
 };
 
 type KubernetesEngine = Resource & {
@@ -54,6 +54,8 @@ type OutputFile = {
 };
 
 export type {
+  ResourceType,
+  ResourceStatus,
   Resource,
   ComputeEngine,
   CloudStorage,

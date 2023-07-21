@@ -1,11 +1,14 @@
 /* Header Styling */
 
 header {
+  position: sticky;
+  top: 0;
   display: flex;
   align-items: center;
 
   padding: 8px 0;
   border-bottom: 2px solid #dadce0;
+  background-color: white;
 }
 
 header .logo {
@@ -21,9 +24,17 @@ header p {
 
 /* Pages Navbar*/
 .pages-nav {
+  position: sticky;
+  top: 50px;
   display: flex;
-  padding: 17px 0;
+  align-items: center;
+  padding: 10px 0;
   border-bottom: 2px solid #dadce0;
+  background-color: white;
+}
+
+.links {
+  display: flex;
 }
 
 .pages-nav a {
@@ -53,7 +64,19 @@ header p {
   background-color: #3367d6;
 }
 
-main {
-  margin-top: 55px;
-  display: flex;
+.search-bar {
+  background-color: #f4f4f4;
+  border: 0.5px solid #999999;
+  border-radius: 5px;
+  padding: 6px 15px;
+}
+
+#search-input {
+  background-color: #f4f4f4;
+  border: none;
+  font-size: 14px;
+}
+
+#search-input:focus {
+  outline: none;
 }
