@@ -296,12 +296,6 @@ def iam_client_for_credentials(
   return iam_credentials.IAMCredentialsClient(credentials=credentials)
 
 
-def compute_client_for_credentials(
-  credentials: Credentials) -> discovery.Resource:
-  return discovery.build(
-    'compute', 'v1', credentials=credentials, cache_discovery=False)
-
-
 def gke_client_for_credentials(
   credentials: Credentials
 ) -> container_v1.services.cluster_manager.client.ClusterManagerClient:
