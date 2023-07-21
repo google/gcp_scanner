@@ -1,0 +1,1 @@
+exclude src/gcp_scanner/test_*.py
