@@ -1,1 +1,8 @@
 exclude src/gcp_scanner/test_*.py
+exclude test
+exclude .idea
+exclude *.md
+exclude .github
+exclude .gitignore
+exclude Dockerfile
+exclude example_config
