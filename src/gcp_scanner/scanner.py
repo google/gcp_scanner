@@ -97,6 +97,123 @@ crawl_client_map = {
 def get_crawl(crawler, project_id, client, crawler_config):
   return crawler.crawl(project_id, client, crawler_config)
 
+
+def get_project(
+  out_dir,
+  scan_config,
+  light_scan,
+  target_project,
+  project,
+  sa_results,
+  scan_time_suffix,
+  cpu_count,
+  credentials,
+  context,
+  chain_so_far,
+  sa_name
+):
+  if target_project and target_project not in project['projectId']:
+    return
+
+  project_id = project['projectId']
+  print(f'Inspecting project {project_id}')
+  project_result = sa_results['projects'][project_id]
+
+  project_result['project_info'] = project
+
+  # Fail with error if the output file already exists
+  output_file_name = f'{project_id}-{scan_time_suffix}.json'
+  output_path = Path(out_dir, output_file_name)
+  gcs_output_path = Path(out_dir, f'gcs-{output_file_name}')
+
+  try:
+    with open(output_path, 'x', encoding='utf-8'):
+      pass
+
+  except FileExistsError:
+    logging.error('Try removing the %s file and restart the scanner.',
+                  output_file_name)
+
+  results_crawl_pool = dict()
+  with concurrent.futures.ProcessPoolExecutor(
+          max_workers=cpu_count
+        ) as executor:
+    for crawler_name, client_name in crawl_client_map.items():
+      if is_set(scan_config, crawler_name):
+        crawler_config = {}
+        if scan_config is not None:
+          crawler_config = scan_config.get(crawler_name)
+        # add gcs output path to the config.
+        # this path is used by the storage bucket crawler as of now.
+        crawler_config['gcs_output_path'] = gcs_output_path
+        # crawl the data
+        crawler = CrawlerFactory.create_crawler(crawler_name)
+        client = ClientFactory.get_client(client_name).get_service(
+          credentials,
+        )
+        results_crawl_pool[crawler_name] = executor.submit(
+          get_crawl, crawler, project_id, client, crawler_config)
+
+  for crawler_name, future_obj in results_crawl_pool.items():
+    project_result[crawler_name] = future_obj.result()
+
+  # Call other miscellaneous crawlers here
+  if is_set(scan_config, 'gke_clusters'):
+    gke_client = gke_client_for_credentials(credentials)
+    project_result['gke_clusters'] = misc_crawler.get_gke_clusters(
+      project_id,
+      gke_client,
+    )
+  if is_set(scan_config, 'gke_images'):
+    project_result['gke_images'] = misc_crawler.get_gke_images(
+      project_id,
+      credentials.token,
+    )
+
+  # Iterate over discovered service accounts by attempting impersonation
+  project_result['service_account_edges'] = []
+  updated_chain = chain_so_far + [sa_name]
+
+  if scan_config is not None:
+    impers = scan_config.get('service_accounts', None)
+  else:
+    impers = {'impersonate': False}  # do not impersonate by default
+
+  # trying to impersonate SAs within project
+  if impers is not None and impers.get('impersonate', False) is True:
+    iam_client = iam_client_for_credentials(credentials)
+    if is_set(scan_config, 'iam_policy') is False:
+      iam_policy = CrawlerFactory.create_crawler('iam_policy').crawl(
+        project_id,
+        ClientFactory.get_client('cloudresourcemanager').get_service(
+          credentials,
+        ),
+      )
+
+    project_service_accounts = get_sas_for_impersonation(iam_policy)
+    for candidate_service_account in project_service_accounts:
+      try:
+        logging.info('Trying %s', candidate_service_account)
+        creds_impersonated = credsdb.impersonate_sa(
+          iam_client, candidate_service_account)
+        context.service_account_queue.put(
+          (candidate_service_account, creds_impersonated, updated_chain))
+        project_result['service_account_edges'].append(
+          candidate_service_account)
+        logging.info('Successfully impersonated %s using %s',
+                      candidate_service_account, sa_name)
+      except Exception:
+        logging.error('Failed to get token for %s',
+                      candidate_service_account)
+        logging.error(sys.exc_info()[1])
+
+  logging.info('Saving results for %s into the file', project_id)
+
+  save_results(sa_results, output_path, light_scan)
+  # Clean memory to avoid leak for large amount projects.
+  sa_results.clear()
+
+
 def is_set(config: Optional[dict], config_setting: str) -> Union[dict, bool]:
   if config is None:
     return True
@@ -199,106 +316,28 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
     # Enumerate projects accessible by SA
     for project in project_list:
-      if target_project and target_project not in project['projectId']:
-        continue
-
-      project_id = project['projectId']
-      print(f'Inspecting project {project_id}')
-      project_result = sa_results['projects'][project_id]
-
-      project_result['project_info'] = project
-
-      # Fail with error if the output file already exists
-      output_file_name = f'{project_id}-{scan_time_suffix}.json'
-      output_path = Path(out_dir, output_file_name)
-      gcs_output_path = Path(out_dir, f'gcs-{output_file_name}')
-
-      try:
-        with open(output_path, 'x', encoding='utf-8'):
-          pass
-
-      except FileExistsError:
-        logging.error('Try removing the %s file and restart the scanner.',
-                      output_file_name)
-
-      results_crawl_pool = dict()
+      results_process_pool = list()
       with concurrent.futures.ProcessPoolExecutor(
-             max_workers=cpu_count
-           ) as executor:
-        for crawler_name, client_name in crawl_client_map.items():
-          if is_set(scan_config, crawler_name):
-            crawler_config = {}
-            if scan_config is not None:
-              crawler_config = scan_config.get(crawler_name)
-            # add gcs output path to the config.
-            # this path is used by the storage bucket crawler as of now.
-            crawler_config['gcs_output_path'] = gcs_output_path
-            # crawl the data
-            crawler = CrawlerFactory.create_crawler(crawler_name)
-            client = ClientFactory.get_client(client_name).get_service(
-              credentials,
-            )
-            results_crawl_pool[crawler_name] = executor.submit(
-              get_crawl, crawler, project_id, client, crawler_config)
-
-      for crawler_name, future_obj in results_crawl_pool.items():
-        project_result[crawler_name] = future_obj.result()
-
-      # Call other miscellaneous crawlers here
-      if is_set(scan_config, 'gke_clusters'):
-        gke_client = gke_client_for_credentials(credentials)
-        project_result['gke_clusters'] = misc_crawler.get_gke_clusters(
-          project_id,
-          gke_client,
-        )
-      if is_set(scan_config, 'gke_images'):
-        project_result['gke_images'] = misc_crawler.get_gke_images(
-          project_id,
-          credentials.token,
-        )
-
-      # Iterate over discovered service accounts by attempting impersonation
-      project_result['service_account_edges'] = []
-      updated_chain = chain_so_far + [sa_name]
-
-      if scan_config is not None:
-        impers = scan_config.get('service_accounts', None)
-      else:
-        impers = {'impersonate': False}  # do not impersonate by default
-
-      # trying to impersonate SAs within project
-      if impers is not None and impers.get('impersonate', False) is True:
-        iam_client = iam_client_for_credentials(credentials)
-        if is_set(scan_config, 'iam_policy') is False:
-          iam_policy = CrawlerFactory.create_crawler('iam_policy').crawl(
-            project_id,
-            ClientFactory.get_client('cloudresourcemanager').get_service(
-              credentials,
-            ),
-          )
-
-        project_service_accounts = get_sas_for_impersonation(iam_policy)
-        for candidate_service_account in project_service_accounts:
-          try:
-            logging.info('Trying %s', candidate_service_account)
-            creds_impersonated = credsdb.impersonate_sa(
-              iam_client, candidate_service_account)
-            context.service_account_queue.put(
-              (candidate_service_account, creds_impersonated, updated_chain))
-            project_result['service_account_edges'].append(
-              candidate_service_account)
-            logging.info('Successfully impersonated %s using %s',
-                         candidate_service_account, sa_name)
-          except Exception:
-            logging.error('Failed to get token for %s',
-                          candidate_service_account)
-            logging.error(sys.exc_info()[1])
-
-      logging.info('Saving results for %s into the file', project_id)
-
-      save_results(sa_results, output_path, light_scan)
-      # Clean memory to avoid leak for large amount projects.
-      sa_results.clear()
+        max_workers=cpu_count
+      ) as process_executor:
+        results_process_pool.append(process_executor.submit(
+          get_project, 
+          out_dir,
+          scan_config,
+          light_scan,
+          target_project,
+          project,
+          sa_results,
+          scan_time_suffix,
+          cpu_count,
+          credentials,
+          context,
+          chain_so_far,
+          sa_name
+        ))
+      
+      for process_future_obj in results_process_pool:
+        process_future_obj.result()
 
 
 def iam_client_for_credentials(
