@@ -30,15 +30,3 @@ Homepage = "https://github.com/google/gcp_scanner"
 
 [project.scripts]
 gcp-scanner = "gcp_scanner.scanner:main"
-
-[tool.hatch.build]
-exclude = [
-    "test",
-    ".idea",
-    "*.md",
-    "test_*.py",
-    ".github",
-    ".gitignore",
-    "Dockerfile",
-    "example_config",
-]
