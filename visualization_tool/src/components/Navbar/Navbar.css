@@ -79,6 +79,7 @@ header p {
   background-color: #f4f4f4;
   border: none;
   font-size: 14px;
+  flex-grow: 1;
 }
 
 #search-input:focus {

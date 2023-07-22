@@ -1,5 +1,6 @@
+import {useEffect} from 'react';
 import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
+import {KeyboardCommandKey} from '@mui/icons-material';
 
 import './Navbar.css';
 import logo from '/logo.png';
@@ -10,6 +11,25 @@ type NavbarProps = {
 };
 
 const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
+  useEffect(() => {
+    const searchInput = document.getElementById(
+      'search-input'
+    ) as HTMLInputElement;
+    // autofocus on search input
+    searchInput.focus();
+    // focus on search input with ctrl + f
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'f') {
+        e.preventDefault();
+        searchInput.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <>
       <header>
@@ -33,8 +53,12 @@ const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />
-            <IconButton sx={{p: '0', color: '#3367D6'}} aria-label="search">
-              <SearchIcon />
+
+            <IconButton
+              sx={{p: '0', color: '#3367D6', fontSize: '18px'}}
+              aria-label="search"
+            >
+              <KeyboardCommandKey />+ f
             </IconButton>
           </div>
         </div>
