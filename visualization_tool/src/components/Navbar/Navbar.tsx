@@ -4,7 +4,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import './Navbar.css';
 import logo from '/logo.png';
 
-const Navbar = () => {
+type NavbarProps = {
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
   return (
     <>
       <header>
@@ -25,6 +30,8 @@ const Navbar = () => {
               name="search-input"
               id="search-input"
               placeholder="Resource Name"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
             />
             <IconButton sx={{p: '0', color: '#3367D6'}} aria-label="search">
               <SearchIcon />

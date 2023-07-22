@@ -9,12 +9,13 @@ import './App.css';
 
 function App() {
   const [resources, setResources] = useState<Resource[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   return (
     <>
-      <Navbar />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <main>
         <ControlMenu setResources={setResources} />
-        <ResourcesList resources={resources} />
+        <ResourcesList resources={resources} searchQuery={searchQuery} />
       </main>
     </>
   );
