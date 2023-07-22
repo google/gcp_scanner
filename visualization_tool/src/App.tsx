@@ -5,8 +5,6 @@ import Navbar from './components/Navbar/Navbar';
 import ControlMenu from './components/ControlMenu/ControlMenu';
 import ResourcesList from './components/ResourcesList/ResourcesList';
 
-import './App.css';
-
 function App() {
   const [resources, setResources] = useState<Resource[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
