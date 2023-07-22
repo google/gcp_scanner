@@ -18,6 +18,7 @@
 """
 
 import queue
+import multiprocessing
 from typing import List, Tuple
 
 from httplib2 import Credentials
@@ -34,6 +35,6 @@ class SpiderContext:
       sa_tuples: [(sa_name, sa_object, chain_so_far)]
     """
 
-    self.service_account_queue = queue.Queue()
+    self.service_account_queue = multiprocessing.Queue()
     for sa_tuple in sa_tuples:
       self.service_account_queue.put(sa_tuple)

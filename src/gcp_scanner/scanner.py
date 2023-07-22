@@ -99,43 +99,18 @@ def get_crawl(crawler, project_id, client, crawler_config):
 
 
 def get_project(
-  out_dir,
   scan_config,
-  light_scan,
-  target_project,
-  project,
-  sa_results,
-  scan_time_suffix,
   cpu_count,
   credentials,
   context,
   chain_so_far,
-  sa_name
+  sa_name,
+  gcs_output_path,
+  project_id,
+  project_result
 ):
-  if target_project and target_project not in project['projectId']:
-    return
-
-  project_id = project['projectId']
-  print(f'Inspecting project {project_id}')
-  project_result = sa_results['projects'][project_id]
-
-  project_result['project_info'] = project
-
-  # Fail with error if the output file already exists
-  output_file_name = f'{project_id}-{scan_time_suffix}.json'
-  output_path = Path(out_dir, output_file_name)
-  gcs_output_path = Path(out_dir, f'gcs-{output_file_name}')
-
-  try:
-    with open(output_path, 'x', encoding='utf-8'):
-      pass
-
-  except FileExistsError:
-    logging.error('Try removing the %s file and restart the scanner.',
-                  output_file_name)
-
   results_crawl_pool = dict()
-  with concurrent.futures.ProcessPoolExecutor(
+  with concurrent.futures.ThreadPoolExecutor(
           max_workers=cpu_count
         ) as executor:
     for crawler_name, client_name in crawl_client_map.items():
@@ -206,12 +181,6 @@ def get_project(
         logging.error('Failed to get token for %s',
                       candidate_service_account)
         logging.error(sys.exc_info()[1])
-
-  logging.info('Saving results for %s into the file', project_id)
-
-  save_results(sa_results, output_path, light_scan)
-  # Clean memory to avoid leak for large amount projects.
-  sa_results.clear()
 
 
 def is_set(config: Optional[dict], config_setting: str) -> Union[dict, bool]:
@@ -316,6 +285,27 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 
     # Enumerate projects accessible by SA
     for project in project_list:
+      if target_project and target_project not in project['projectId']:
+        continue
+
+      project_id = project['projectId']
+      print(f'Inspecting project {project_id}')
+      project_result = sa_results['projects'][project_id]
+
+      project_result['project_info'] = project
+        
+      # Fail with error if the output file already exists
+      output_file_name = f'{project_id}-{scan_time_suffix}.json'
+      output_path = Path(out_dir, output_file_name)
+      gcs_output_path = Path(out_dir, f'gcs-{output_file_name}')
+
+      try:
+        with open(output_path, 'x', encoding='utf-8'):
+          pass
+      except FileExistsError:
+        logging.error('Try removing the %s file and restart the scanner.',
+                      output_file_name)
+
       results_process_pool = list()
       with concurrent.futures.ProcessPoolExecutor(
         max_workers=cpu_count
@@ -323,21 +313,24 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
         results_process_pool.append(process_executor.submit(
           get_project, 
           out_dir,
-          scan_config,
-          light_scan,
-          target_project,
-          project,
-          sa_results,
-          scan_time_suffix,
           cpu_count,
           credentials,
           context,
           chain_so_far,
-          sa_name
+          sa_name,
+          gcs_output_path,
+          project_id,
+          project_result
         ))
       
       for process_future_obj in results_process_pool:
         process_future_obj.result()
+
+      logging.info('Saving results for %s into the file', project_id)
+
+      save_results(sa_results, output_path, light_scan)
+      # Clean memory to avoid leak for large amount projects.
+      sa_results.clear()
 
 
 def iam_client_for_credentials(
