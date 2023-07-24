@@ -73,6 +73,7 @@ crawl_client_map = {
   'compute_snapshots': 'compute',
   'dns_policies': 'dns',
   'endpoints': 'servicemanagement',
+  'firestore_collections': 'firestore',
   'filestore_instances': 'file',
   'firewall_rules': 'compute',
   'iam_policy': 'cloudresourcemanager',
