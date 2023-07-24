@@ -897,7 +897,7 @@ class TestClientFactory(unittest.TestCase):
   def test_get_client_firestore(self):
     """Test get_client method with 'firestore' name."""
     client = ClientFactory.get_client("firestore")
-    self.assertIsInstance(client, IAMClient)
+    self.assertIsInstance(client, FilestoreClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
