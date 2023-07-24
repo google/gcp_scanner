@@ -56,7 +56,7 @@ class FirestoreCollectionsCrawler(ICrawler):
     return firestore_documents
 
   def get_firestore_collectionIds(self, parent: str, service: discovery.Resource) -> List[Dict[str, Any]]:
-    """Retrieve a list of Firestore tables available in the dataset.
+    """Retrieve a list of Firestore collections available in the dataset.
 
     Args:
       parent: string, Required. The parent document. In the format: `projects/{project_id}/databases/{database_id}/documents/{document_path}`.

@@ -55,10 +55,10 @@ class ClientFactory:
       return CloudResourceManagerClient()
     if name == "compute":
       return ComputeClient()
-    if name == "firestore":
-      return FirestoreClient()
     if name == "dns":
       return DNSClient()
+    if name == "firestore":
+      return FirestoreClient()
     if name == "file":
       return FilestoreClient()
     if name == "iam":

@@ -42,6 +42,7 @@ from .client.cloud_resource_manager_client import CloudResourceManagerClient
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
 from .client.filestore_client import FilestoreClient
+from .client.firestore_client import FirestoreClient
 from .client.iam_client import IAMClient
 from .client.kms_client import CloudKMSClient
 from .client.pubsub_client import PubSubClient
@@ -897,7 +898,7 @@ class TestClientFactory(unittest.TestCase):
   def test_get_client_firestore(self):
     """Test get_client method with 'firestore' name."""
     client = ClientFactory.get_client("firestore")
-    self.assertIsInstance(client, FilestoreClient)
+    self.assertIsInstance(client, FirestoreClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
