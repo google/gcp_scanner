@@ -86,5 +86,8 @@
   },
   "dns_policies": {
     "fetch": true
+  },
+  "firestore_collections": {
+    "fetch": true
   }
 }
