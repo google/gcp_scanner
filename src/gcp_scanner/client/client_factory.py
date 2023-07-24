@@ -20,6 +20,7 @@ from gcp_scanner.client.bigtable_client import BigTableClient
 from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
 from gcp_scanner.client.cloud_resource_manager_client import CloudResourceManagerClient
 from gcp_scanner.client.compute_client import ComputeClient
+from gcp_scanner.client.firestore_client import FirestoreClient
 from gcp_scanner.client.dns_client import DNSClient
 from gcp_scanner.client.filestore_client import FilestoreClient
 from gcp_scanner.client.iam_client import IAMClient
@@ -54,6 +55,8 @@ class ClientFactory:
       return CloudResourceManagerClient()
     if name == "compute":
       return ComputeClient()
+    if name == "firestore":
+      return FirestoreClient()
     if name == "dns":
       return DNSClient()
     if name == "file":
