@@ -806,6 +806,20 @@ class TestCrawler(unittest.TestCase):
       )
     )
 
+  def test_datastore_kinds(self):
+    """Test Datastore collection ids."""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+          "datastore_kinds",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("datastore").get_service(self.credentials),
+        ),
+        "datastore_kinds",
+      )
+    )
+
 
 class TestClientFactory(unittest.TestCase):
   """Unit tests for the ClientFactory class."""
