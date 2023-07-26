@@ -1,13 +1,13 @@
 import {Resource} from '../../types/resources';
-import GCE from '../../assets/resources/GCE.png';
-import GCS from '../../assets/resources/GCS.png';
+import ComputeInstance from '../../assets/resources/Compute Instance.png';
+import ComputeDisk from '../../assets/resources/Compute Disk.png';
 
 const typeToImage = (resource: Resource) => {
   switch (resource.type) {
-    case 'GCE':
-      return GCE;
-    case 'GCS':
-      return GCS;
+    case 'Compute Instance':
+      return ComputeInstance;
+    case 'Compute Disk':
+      return ComputeDisk;
     default:
       return '';
   }

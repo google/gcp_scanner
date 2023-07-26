@@ -1,4 +1,4 @@
-type ResourceType = 'GCE' | 'GCS' | 'GKE' | 'App Engine';
+type ResourceType = 'Compute Instance' | 'Compute Disk';
 type ResourceStatus = 'READY' | 'RUNNING' | 'STOPPED' | 'DELETED';
 
 type Resource = {
@@ -11,29 +11,16 @@ type Resource = {
   status: ResourceStatus;
 };
 
-type ComputeEngine = Resource & {
-  type: 'GCE';
+type ComputeInstance = Resource & {
+  type: 'Compute Instance';
   zone: string;
   machineType: string;
 };
 
-type CloudStorage = Resource & {
-  type: 'GCS';
+type ComputeDisk = Resource & {
+  type: 'Compute Disk';
   storageType: string;
   sizeGb: number;
-};
-
-type KubernetesEngine = Resource & {
-  type: 'GKE';
-  cluster: string;
-  location: string;
-  nodePools: string[];
-};
-
-type AppEngine = Resource & {
-  type: 'App Engine';
-  location: string;
-  services: string[];
 };
 
 type Project = {
@@ -41,10 +28,8 @@ type Project = {
     projectNumber: string;
     projectId: string;
   };
-  compute_instances: ComputeEngine[];
-  compute_disks: CloudStorage[];
-  gke_clusters: KubernetesEngine[];
-  app_engine_services: AppEngine[];
+  compute_instances: ComputeInstance[];
+  compute_disks: ComputeDisk[];
 };
 
 type OutputFile = {
@@ -57,10 +42,8 @@ export type {
   ResourceType,
   ResourceStatus,
   Resource,
-  ComputeEngine,
-  CloudStorage,
-  KubernetesEngine,
-  AppEngine,
+  ComputeInstance,
+  ComputeDisk,
   Project,
   OutputFile,
 };
