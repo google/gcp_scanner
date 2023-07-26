@@ -71,6 +71,7 @@ crawl_client_map = {
   'compute_images': 'compute',
   'compute_instances': 'compute',
   'compute_snapshots': 'compute',
+  'datastore_kinds': 'datastore',
   'dns_policies': 'dns',
   'endpoints': 'servicemanagement',
   'firestore_collections': 'firestore',
