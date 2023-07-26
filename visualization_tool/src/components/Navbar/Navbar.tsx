@@ -34,7 +34,7 @@ const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
     <>
       <header>
         <img src={logo} className="logo" alt="GCP Scanner logo" />
-        <p>Scanner</p>
+        <p>GCP Scanner</p>
       </header>
       <div className="pages-nav">
         <div className="links">
