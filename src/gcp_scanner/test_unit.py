@@ -42,6 +42,7 @@ from .client.cloud_resource_manager_client import CloudResourceManagerClient
 from .client.compute_client import ComputeClient
 from .client.dns_client import DNSClient
 from .client.filestore_client import FilestoreClient
+from .client.firestore_client import FirestoreClient
 from .client.iam_client import IAMClient
 from .client.kms_client import CloudKMSClient
 from .client.pubsub_client import PubSubClient
@@ -71,6 +72,7 @@ from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from .crawler.dns_policies_crawler import DNSPoliciesCrawler
 from .crawler.endpoints_crawler import EndpointsCrawler
 from .crawler.filestore_instances_crawler import FilestoreInstancesCrawler
+from .crawler.firestore_collections_crawler import FirestoreCollectionsCrawler
 from .crawler.kms_keys_crawler import KMSKeysCrawler
 from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from .crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
@@ -790,6 +792,20 @@ class TestCrawler(unittest.TestCase):
       )
     )
 
+  def test_firestore_collections(self):
+    """Test Firestore collection ids."""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+          "firestore_collections",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("firestore").get_service(self.credentials),
+        ),
+        "firestore_collections",
+      )
+    )
+
 
 class TestClientFactory(unittest.TestCase):
   """Unit tests for the ClientFactory class."""
@@ -878,6 +894,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'iam' name."""
     client = ClientFactory.get_client("iam")
     self.assertIsInstance(client, IAMClient)
+
+  def test_get_client_firestore(self):
+    """Test get_client method with 'firestore' name."""
+    client = ClientFactory.get_client("firestore")
+    self.assertIsInstance(client, FirestoreClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
@@ -1024,6 +1045,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'storage_buckets' name."""
     crawler = CrawlerFactory.create_crawler("storage_buckets")
     self.assertIsInstance(crawler, StorageBucketsCrawler)
+
+  def test_create_crawler_firestore_collections(self):
+    """Test create_crawler method with 'firestore_collections' name."""
+    crawler = CrawlerFactory.create_crawler("firestore_collections")
+    self.assertIsInstance(crawler, FirestoreCollectionsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""

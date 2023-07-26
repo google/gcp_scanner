@@ -32,6 +32,7 @@ from gcp_scanner.crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from gcp_scanner.crawler.dns_policies_crawler import DNSPoliciesCrawler
 from gcp_scanner.crawler.endpoints_crawler import EndpointsCrawler
 from gcp_scanner.crawler.filestore_instances_crawler import FilestoreInstancesCrawler
+from gcp_scanner.crawler.firestore_collections_crawler import FirestoreCollectionsCrawler
 from gcp_scanner.crawler.kms_keys_crawler import KMSKeysCrawler
 from gcp_scanner.crawler.machine_images_crawler import ComputeMachineImagesCrawler
 from gcp_scanner.crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
@@ -54,6 +55,7 @@ service_crawler_map = {
   "dns_policies": DNSPoliciesCrawler,
   "endpoints": EndpointsCrawler,
   "filestore_instances": FilestoreInstancesCrawler,
+  "firestore_collections": FirestoreCollectionsCrawler,
   "firewall_rules": ComputeFirewallRulesCrawler,
   "iam_policy": CloudResourceManagerIAMPolicyCrawler,
   "kms": KMSKeysCrawler,
