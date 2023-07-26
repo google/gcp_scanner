@@ -20,6 +20,7 @@ from gcp_scanner.client.bigtable_client import BigTableClient
 from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
 from gcp_scanner.client.cloud_resource_manager_client import CloudResourceManagerClient
 from gcp_scanner.client.compute_client import ComputeClient
+from gcp_scanner.client.datastore_client import DatastoreClient
 from gcp_scanner.client.dns_client import DNSClient
 from gcp_scanner.client.filestore_client import FilestoreClient
 from gcp_scanner.client.firestore_client import FirestoreClient
@@ -45,6 +46,7 @@ class ClientFactory:
     "cloudkms": CloudKMSClient,
     "cloudresourcemanager": CloudResourceManagerClient,
     "compute": ComputeClient,
+    "datastore": DatastoreClient,
     "dns": DNSClient,
     "firestore": FirestoreClient,
     "file": FilestoreClient,
