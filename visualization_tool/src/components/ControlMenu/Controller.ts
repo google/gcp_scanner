@@ -18,26 +18,28 @@ const getResourceData = (
 const parseData = (data: OutputFile, fileName: string) => {
   const resources = [];
   for (const [projectId, projectData] of Object.entries(data.projects)) {
-    const computeEngines = projectData.compute_instances?.map(computeEngine => {
+    const computeInstances = projectData.compute_instances?.map(
+      computeInstance => {
+        return {
+          ...getResourceData(computeInstance, projectId, fileName),
+          type: 'Compute Instance' as const,
+          zone: computeInstance.zone.split('/').at(-1) as string,
+          machineType: computeInstance.machineType.split('/').at(-1) as string,
+        };
+      }
+    );
+    resources.push(...computeInstances);
+
+    const computeDisks = projectData.compute_disks.map(computeDisk => {
       return {
-        ...getResourceData(computeEngine, projectId, fileName),
-        type: 'GCE' as const,
-        zone: computeEngine.zone.split('/').at(-1) as string,
-        machineType: computeEngine.machineType.split('/').at(-1) as string,
+        ...getResourceData(computeDisk, projectId, fileName),
+        type: 'Compute Disk' as const,
+        storageType: computeDisk.type.split('/').at(-1) as string,
+        sizeGb: computeDisk.sizeGb,
       };
     });
-    resources.push(...computeEngines);
 
-    const cloudStorages = projectData.compute_disks.map(cloudStorage => {
-      return {
-        ...getResourceData(cloudStorage, projectId, fileName),
-        type: 'GCS' as const,
-        storageType: cloudStorage.type.split('/').at(-1) as string,
-        sizeGb: cloudStorage.sizeGb,
-      };
-    });
-
-    resources.push(...cloudStorages);
+    resources.push(...computeDisks);
   }
 
   return resources;

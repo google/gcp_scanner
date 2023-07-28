@@ -31,6 +31,8 @@ header p {
   padding: 10px 0;
   border-bottom: 2px solid #dadce0;
   background-color: white;
+  display: grid;
+  grid-template-columns: 1fr 0.8fr 1fr;
 }
 
 .links {
@@ -69,12 +71,15 @@ header p {
   border: 0.5px solid #999999;
   border-radius: 5px;
   padding: 6px 15px;
+  display: flex;
+  justify-content: space-between;
 }
 
 #search-input {
   background-color: #f4f4f4;
   border: none;
   font-size: 14px;
+  flex-grow: 1;
 }
 
 #search-input:focus {
