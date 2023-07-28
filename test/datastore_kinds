@@ -9,6 +9,8 @@
     "__Stat_PropertyType_Kind__",
     "__Stat_PropertyType_PropertyName_Kind__",
     "__Stat_PropertyType__",
-    "__Stat_Total__"
+    "__Stat_Total__",
+    "gsoc-2023",
+    "test-collection-2"
   ]
 }
