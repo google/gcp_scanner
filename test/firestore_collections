@@ -1,5 +1,6 @@
 {
   "projects/test-gcp-scanner-2/databases/(default)": [
+    "Person",
     "gsoc-2023",
     "test-collection-2"
   ]
