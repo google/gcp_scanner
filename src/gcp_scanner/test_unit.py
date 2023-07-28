@@ -819,6 +819,7 @@ class TestCrawler(unittest.TestCase):
           ClientFactory.get_client("datastore").get_service(self.credentials),
         ),
         "datastore_kinds",
+        False,
       )
     )
 
