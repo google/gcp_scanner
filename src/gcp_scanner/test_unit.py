@@ -805,6 +805,7 @@ class TestCrawler(unittest.TestCase):
           ClientFactory.get_client("firestore").get_service(self.credentials),
         ),
         "firestore_collections",
+        False,
       )
     )
 
