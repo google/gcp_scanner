@@ -30,7 +30,6 @@ from google.auth.exceptions import MalformedError
 from google.cloud import container_v1
 from google.cloud import iam_credentials
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
-from googleapiclient import discovery
 from httplib2 import Credentials
 
 from . import arguments
@@ -296,12 +295,6 @@ def crawl_loop(initial_sa_tuples: List[Tuple[str, Credentials, List[str]]],
 def iam_client_for_credentials(
   credentials: Credentials) -> IAMCredentialsClient:
   return iam_credentials.IAMCredentialsClient(credentials=credentials)
-
-
-def compute_client_for_credentials(
-  credentials: Credentials) -> discovery.Resource:
-  return discovery.build(
-    'compute', 'v1', credentials=credentials, cache_discovery=False)
 
 
 def gke_client_for_credentials(
