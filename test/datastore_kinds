@@ -1,8 +1,8 @@
 {
   "kinds": [
-    "Person",
-    "Pet",
-    "Toy",
+    CHECK "Person",
+    CHECK "Pet",
+    CHECK "Toy",
     "__Stat_Kind_IsRootEntity__",
     "__Stat_Kind__",
     "__Stat_PropertyName_Kind__",
