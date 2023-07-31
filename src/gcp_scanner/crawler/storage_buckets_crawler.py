@@ -47,7 +47,7 @@ class StorageBucketsCrawler(ICrawler):
     while request is not None:
       try:
         response = request.execute()
-      except errors.HttpError:
+      except Exception:
         logging.info("Failed to list buckets in the %s", project_name)
         logging.info(sys.exc_info())
         break
@@ -94,7 +94,7 @@ class StorageBucketsCrawler(ICrawler):
     request = service.buckets().getIamPolicy(bucket=bucket_name)
     try:
       response = request.execute()
-    except errors.HttpError:
+    except Exception:
       logging.info("Failed to IAM Policy in the %s", bucket_name)
       logging.info(sys.exc_info())
       return []
