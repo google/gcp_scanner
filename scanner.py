@@ -15,10 +15,10 @@
 # limitations under the License.
 
 
-import datetime
 import json
 import logging
 import multiprocessing
+from datetime import datetime
 
 from src.gcp_scanner import arguments
 from src.gcp_scanner import models
