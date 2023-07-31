@@ -89,5 +89,8 @@
   },
   "firestore_collections": {
     "fetch": true
+  },
+  "datastore_kinds": {
+    "fetch": true
   }
 }

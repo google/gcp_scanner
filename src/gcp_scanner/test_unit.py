@@ -40,6 +40,7 @@ from .client.client_factory import ClientFactory
 from .client.cloud_functions_client import CloudFunctionsClient
 from .client.cloud_resource_manager_client import CloudResourceManagerClient
 from .client.compute_client import ComputeClient
+from .client.datastore_client import DatastoreClient
 from .client.dns_client import DNSClient
 from .client.filestore_client import FilestoreClient
 from .client.firestore_client import FirestoreClient
@@ -68,6 +69,7 @@ from .crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from .crawler.crawler_factory import CrawlerFactory
+from .crawler.datastore_crawler import DatastoreCrawler
 from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from .crawler.dns_policies_crawler import DNSPoliciesCrawler
 from .crawler.endpoints_crawler import EndpointsCrawler
@@ -803,6 +805,22 @@ class TestCrawler(unittest.TestCase):
           ClientFactory.get_client("firestore").get_service(self.credentials),
         ),
         "firestore_collections",
+        False,
+      )
+    )
+
+  def test_datastore_kinds(self):
+    """Test Datastore kinds."""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+          "datastore_kinds",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("datastore").get_service(self.credentials),
+        ),
+        "datastore_kinds",
+        False,
       )
     )
 
@@ -899,6 +917,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'firestore' name."""
     client = ClientFactory.get_client("firestore")
     self.assertIsInstance(client, FirestoreClient)
+
+  def test_get_client_datastore(self):
+    """Test get_client method with 'datastore' name."""
+    client = ClientFactory.get_client("datastore")
+    self.assertIsInstance(client, DatastoreClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
@@ -1050,6 +1073,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'firestore_collections' name."""
     crawler = CrawlerFactory.create_crawler("firestore_collections")
     self.assertIsInstance(crawler, FirestoreCollectionsCrawler)
+
+  def test_create_crawler_datastore_kinds(self):
+    """Test create_crawler method with 'datastore_kinds' name."""
+    crawler = CrawlerFactory.create_crawler("datastore_kinds")
+    self.assertIsInstance(crawler, DatastoreCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
