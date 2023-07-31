@@ -194,32 +194,32 @@ def get_resources(project):
     impers = {'impersonate': False}  # do not impersonate by default
 
   # trying to impersonate SAs within project
-  if impers is not None and impers.get('impersonate', False) is True:
-    iam_client = iam_client_for_credentials(project.credentials)
-    if is_set(project.scan_config, 'iam_policy') is False:
-      iam_policy = CrawlerFactory.create_crawler('iam_policy').crawl(
-        project_id,
-        ClientFactory.get_client('cloudresourcemanager').get_service(
-          project.credentials,
-        ),
-      )
+  # if impers is not None and impers.get('impersonate', False) is True:
+  #   iam_client = iam_client_for_credentials(project.credentials)
+  #   if is_set(project.scan_config, 'iam_policy') is False:
+  #     iam_policy = CrawlerFactory.create_crawler('iam_policy').crawl(
+  #       project_id,
+  #       ClientFactory.get_client('cloudresourcemanager').get_service(
+  #         project.credentials,
+  #       ),
+  #     )
 
-    project_service_accounts = get_sas_for_impersonation(iam_policy)
-    for candidate_service_account in project_service_accounts:
-      try:
-        logging.info('Trying %s', candidate_service_account)
-        creds_impersonated = credsdb.impersonate_sa(
-          iam_client, candidate_service_account)
-        project.context.service_account_queue.put(
-          (candidate_service_account, creds_impersonated, updated_chain))
-        project_result['service_account_edges'].append(
-          candidate_service_account)
-        logging.info('Successfully impersonated %s using %s',
-                      candidate_service_account, project.sa_name)
-      except Exception:
-        logging.error('Failed to get token for %s',
-                      candidate_service_account)
-        logging.error(sys.exc_info()[1])
+  #   project_service_accounts = get_sas_for_impersonation(iam_policy)
+  #   for candidate_service_account in project_service_accounts:
+  #     try:
+  #       logging.info('Trying %s', candidate_service_account)
+  #       creds_impersonated = credsdb.impersonate_sa(
+  #         iam_client, candidate_service_account)
+  #       project.context.service_account_queue.put(
+  #         (candidate_service_account, creds_impersonated, updated_chain))
+  #       project_result['service_account_edges'].append(
+  #         candidate_service_account)
+  #       logging.info('Successfully impersonated %s using %s',
+  #                     candidate_service_account, project.sa_name)
+  #     except Exception:
+  #       logging.error('Failed to get token for %s',
+  #                     candidate_service_account)
+  #       logging.error(sys.exc_info()[1])
 
   logging.info('Saving results for %s into the file', project_id)
 

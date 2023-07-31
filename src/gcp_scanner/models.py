@@ -52,7 +52,6 @@ class Project:
     target_project,
     scan_time_suffix,
     sa_name,
-    context,
     credentials,
     chain_so_far,
   ):
@@ -64,6 +63,5 @@ class Project:
     self.target_project = target_project
     self.scan_time_suffix = scan_time_suffix
     self.sa_name = sa_name
-    self.context = context
     self.credentials = credentials
     self.chain_so_far = chain_so_far

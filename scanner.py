@@ -109,7 +109,6 @@ if __name__ == "__main__":
         args.target_project,
         scan_time_suffix,
         sa_name,
-        context,
         credentials,
         chain_so_far
       )
