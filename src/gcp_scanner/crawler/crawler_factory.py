@@ -31,6 +31,7 @@ from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
 from gcp_scanner.crawler.datastore_crawler import DatastoreCrawler
 from gcp_scanner.crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from gcp_scanner.crawler.dns_policies_crawler import DNSPoliciesCrawler
+from gcp_scanner.crawler.domains_crawler import DomainsCrawler
 from gcp_scanner.crawler.endpoints_crawler import EndpointsCrawler
 from gcp_scanner.crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from gcp_scanner.crawler.firestore_collections_crawler import FirestoreCollectionsCrawler
@@ -66,6 +67,7 @@ service_crawler_map = {
   "project_info": CloudResourceManagerProjectInfoCrawler,
   "project_list": CloudResourceManagerProjectListCrawler,
   "pubsub_subs": PubSubSubscriptionsCrawler,
+  "registered_domains": DomainsCrawler,
   "services": ServiceUsageCrawler,
   "service_accounts": ServiceAccountsCrawler,
   "sourcerepos": CloudSourceRepoCrawler,

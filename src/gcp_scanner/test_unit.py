@@ -73,6 +73,7 @@ from .crawler.crawler_factory import CrawlerFactory
 from .crawler.datastore_crawler import DatastoreCrawler
 from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from .crawler.dns_policies_crawler import DNSPoliciesCrawler
+from .crawler.domains_crawler import DomainsCrawler
 from .crawler.endpoints_crawler import EndpointsCrawler
 from .crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from .crawler.firestore_collections_crawler import FirestoreCollectionsCrawler
@@ -821,7 +822,6 @@ class TestCrawler(unittest.TestCase):
           ClientFactory.get_client("datastore").get_service(self.credentials),
         ),
         "datastore_kinds",
-        False,
       )
     )
 
@@ -1084,6 +1084,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'datastore_kinds' name."""
     crawler = CrawlerFactory.create_crawler("datastore_kinds")
     self.assertIsInstance(crawler, DatastoreCrawler)
+
+  def test_create_crawler_registered_domains(self):
+    """Test create_crawler method with 'registered_domains' name."""
+    crawler = CrawlerFactory.create_crawler("registered_domains")
+    self.assertIsInstance(crawler, DomainsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""
