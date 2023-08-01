@@ -2,7 +2,12 @@ import {useEffect, useState} from 'react';
 import {Resource} from '../../types/resources';
 import {debounce} from '@mui/material';
 
-export const useFilter = (resources: Resource[], searchQuery: string) => {
+export const useFilter = (
+  resources: Resource[],
+  searchQuery: string,
+  sortAttribute: string,
+  allowedTypes: string[]
+) => {
   const [filteredResources, setFilteredResources] =
     useState<Resource[]>(resources);
 
@@ -11,21 +16,26 @@ export const useFilter = (resources: Resource[], searchQuery: string) => {
       setFilteredResources(
         resources
           .filter(resource => {
-            return resource.name
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase());
+            return (
+              allowedTypes.includes(resource.type) &&
+              resource.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
           })
           .sort((a, b) => {
-            return (
-              new Date(a.creationTimestamp).getTime() -
-              new Date(b.creationTimestamp).getTime()
-            );
+            if (sortAttribute === 'name') {
+              return a.name.localeCompare(b.name);
+            } else {
+              return (
+                new Date(a.creationTimestamp).getTime() -
+                new Date(b.creationTimestamp).getTime()
+              );
+            }
           })
       );
     };
 
     debounce(filterResources, 100)();
-  }, [resources, searchQuery]);
+  }, [resources, searchQuery, sortAttribute, allowedTypes]);
 
   return filteredResources;
 };

@@ -13,17 +13,29 @@
 
 .menu-item {
   width: 100%;
-  min-height: 180px;
+  min-height: 150px;
   background-color: white;
   border-radius: 5px;
   padding: 20px 10px 30px 10px;
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.15);
+  margin-bottom: 20px;
 }
 
 .menu-item__header {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+}
+
+.menu-item__content {
+  display: flex;
+  margin-top: 20px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-item__content label {
+  padding-left: 10px;
 }
 
 .menu-item h3 {
