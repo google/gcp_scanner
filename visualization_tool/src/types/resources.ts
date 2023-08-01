@@ -7,7 +7,7 @@ type ResourceType =
   | 'Managed Zone'
   | 'SQL Instance'
   | 'Cloud Function'
-  | 'Dns Policie'
+  | 'Dns Policy'
   | 'Pubsub Sub';
 
 const availableResourceTypes: ResourceType[] = [
@@ -19,7 +19,7 @@ const availableResourceTypes: ResourceType[] = [
   'Managed Zone',
   'SQL Instance',
   'Cloud Function',
-  'Dns Policie',
+  'Dns Policy',
   'Pubsub Sub',
 ];
 
@@ -35,9 +35,8 @@ type Resource = {
   status: ResourceStatus;
 };
 
-
 type Project = {
-  [key: string]: Resource [];
+  [key: string]: Resource[];
 };
 
 type OutputFile = {
@@ -46,12 +45,6 @@ type OutputFile = {
   };
 };
 
-export type {
-  ResourceType,
-  ResourceStatus,
-  Resource,
-  Project,
-  OutputFile,
-};
+export type {ResourceType, ResourceStatus, Resource, Project, OutputFile};
 
 export {availableResourceTypes};

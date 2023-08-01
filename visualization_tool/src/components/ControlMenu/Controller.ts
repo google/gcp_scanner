@@ -1,4 +1,9 @@
-import {OutputFile, Resource, ResourceType, availableResourceTypes} from '../../types/resources';
+import {
+  OutputFile,
+  Resource,
+  ResourceType,
+  availableResourceTypes,
+} from '../../types/resources';
 
 const titleCase = (str: string) => {
   return str
@@ -12,9 +17,12 @@ const parseData = (data: OutputFile, fileName: string) => {
   const resources = [];
   for (const [projectId, projectData] of Object.entries(data.projects)) {
     for (const [resourceType, resourceList] of Object.entries(projectData)) {
-      const type = titleCase(resourceType.slice(0, -1));
-      if (resourceList instanceof Array && availableResourceTypes.includes(type as ResourceType)) {
-
+      let type = titleCase(resourceType.slice(0, -1));
+      if (type === 'Dns Policie') type = 'Dns Policy';
+      if (
+        resourceList instanceof Array &&
+        availableResourceTypes.includes(type as ResourceType)
+      ) {
         const currentResources = [];
         for (const resource of resourceList) {
           const resourceData: Record<string, string | number> = {};
