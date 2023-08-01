@@ -20,11 +20,9 @@ import collections
 import json
 import logging
 import os
-import sys
-from datetime import datetime
 from json.decoder import JSONDecodeError
 from pathlib import Path
-from typing import List, Tuple, Dict, Optional, Union, Any
+from typing import List, Dict, Optional, Union, Any
 
 from google.auth.exceptions import MalformedError
 from google.cloud import container_v1
@@ -32,12 +30,10 @@ from google.cloud import iam_credentials
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from httplib2 import Credentials
 
-from . import arguments
 from . import credsdb
 from .client.client_factory import ClientFactory
 from .crawler import misc_crawler
 from .crawler.crawler_factory import CrawlerFactory
-from .models import SpiderContext, Project
 
 # We define the schema statically to make it easier for the user and avoid extra
 # config files.
