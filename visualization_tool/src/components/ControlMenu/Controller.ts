@@ -1,45 +1,62 @@
-import {OutputFile, Resource} from '../../types/resources';
+import {
+  OutputFile,
+  Resource,
+  ResourceType,
+  availableResourceTypes,
+} from '../../types/resources';
 
-const getResourceData = (
-  resource: Resource,
-  projectId: string,
-  fileName: string
-) => {
-  return {
-    projectId,
-    file: fileName,
-    id: resource.id,
-    name: resource.name,
-    creationTimestamp: resource.creationTimestamp,
-    status: resource?.status || 'READY',
-  };
+const titleCase = (str: string) => {
+  return str
+    .replace('_', ' ')
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 };
 
 const parseData = (data: OutputFile, fileName: string) => {
   const resources = [];
   for (const [projectId, projectData] of Object.entries(data.projects)) {
-    const computeInstances = projectData.compute_instances?.map(
-      computeInstance => {
-        return {
-          ...getResourceData(computeInstance, projectId, fileName),
-          type: 'Compute Instance' as const,
-          zone: computeInstance.zone.split('/').at(-1) as string,
-          machineType: computeInstance.machineType.split('/').at(-1) as string,
-        };
+    for (const [resourceType, resourceList] of Object.entries(projectData)) {
+      let type = titleCase(resourceType.slice(0, -1));
+      if (type === 'Dns Policie') type = 'Dns Policy';
+      if (
+        resourceList instanceof Array &&
+        availableResourceTypes.includes(type as ResourceType)
+      ) {
+        const currentResources = [];
+        for (const resource of resourceList) {
+          const resourceData: Record<string, string | number> = {};
+          resourceData['file'] = fileName;
+          resourceData['projectId'] = projectId;
+
+          for (const [key, value] of Object.entries(resource)) {
+            switch (typeof value) {
+              case 'string':
+                // if this attribute is a link, get the last part of the link
+                if (value.split('/').length > 1) {
+                  resourceData[key] = value.split('/').at(-1) || 'unknown';
+                } else {
+                  resourceData[key] = value;
+                }
+                break;
+              case 'number':
+                resourceData[key] = value;
+                break;
+              default:
+                break;
+            }
+          }
+
+          resourceData['name'] = resourceData['name'] || 'unknown';
+          resourceData['status'] = resourceData['status'] || 'READY';
+          resourceData['type'] = type;
+
+          currentResources.push(resourceData as Resource);
+        }
+
+        resources.push(...currentResources);
       }
-    );
-    resources.push(...computeInstances);
-
-    const computeDisks = projectData.compute_disks.map(computeDisk => {
-      return {
-        ...getResourceData(computeDisk, projectId, fileName),
-        type: 'Compute Disk' as const,
-        storageType: computeDisk.type.split('/').at(-1) as string,
-        sizeGb: computeDisk.sizeGb,
-      };
-    });
-
-    resources.push(...computeDisks);
+    }
   }
 
   return resources;

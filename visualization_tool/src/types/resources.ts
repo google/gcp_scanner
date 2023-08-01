@@ -1,5 +1,29 @@
-type ResourceType = 'Compute Instance' | 'Compute Disk';
-type ResourceStatus = 'READY' | 'RUNNING' | 'STOPPED' | 'DELETED';
+type ResourceType =
+  | 'Compute Instance'
+  | 'Compute Disk'
+  | 'Compute Image'
+  | 'Machine Image'
+  | 'Compute Snapshot'
+  | 'Managed Zone'
+  | 'SQL Instance'
+  | 'Cloud Function'
+  | 'Dns Policy'
+  | 'Pubsub Sub';
+
+const availableResourceTypes: ResourceType[] = [
+  'Compute Instance',
+  'Compute Disk',
+  'Compute Image',
+  'Machine Image',
+  'Compute Snapshot',
+  'Managed Zone',
+  'SQL Instance',
+  'Cloud Function',
+  'Dns Policy',
+  'Pubsub Sub',
+];
+
+type ResourceStatus = 'READY' | 'ACTIVE' | 'RUNNING' | 'STOPPED' | 'DELETED';
 
 type Resource = {
   projectId: string;
@@ -11,25 +35,8 @@ type Resource = {
   status: ResourceStatus;
 };
 
-type ComputeInstance = Resource & {
-  type: 'Compute Instance';
-  zone: string;
-  machineType: string;
-};
-
-type ComputeDisk = Resource & {
-  type: 'Compute Disk';
-  storageType: string;
-  sizeGb: number;
-};
-
 type Project = {
-  project_info: {
-    projectNumber: string;
-    projectId: string;
-  };
-  compute_instances: ComputeInstance[];
-  compute_disks: ComputeDisk[];
+  [key: string]: Resource[];
 };
 
 type OutputFile = {
@@ -38,12 +45,6 @@ type OutputFile = {
   };
 };
 
-export type {
-  ResourceType,
-  ResourceStatus,
-  Resource,
-  ComputeInstance,
-  ComputeDisk,
-  Project,
-  OutputFile,
-};
+export type {ResourceType, ResourceStatus, Resource, Project, OutputFile};
+
+export {availableResourceTypes};
