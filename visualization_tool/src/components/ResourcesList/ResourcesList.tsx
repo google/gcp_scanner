@@ -8,14 +8,21 @@ type ResourcesListProps = {
   resources: Resource[];
   searchQuery: string;
   sortAttribute: string;
+  allowedTypes: string[];
 };
 
 const ResourcesList = ({
   resources,
   searchQuery,
   sortAttribute,
+  allowedTypes,
 }: ResourcesListProps) => {
-  const filteredResources = useFilter(resources, searchQuery, sortAttribute);
+  const filteredResources = useFilter(
+    resources,
+    searchQuery,
+    sortAttribute,
+    allowedTypes
+  );
   return (
     <div className="resources-list">
       <h1>{resources.length > 0 ? 'Found Resources' : 'No Resources Found'}</h1>

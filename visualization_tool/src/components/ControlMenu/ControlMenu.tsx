@@ -1,9 +1,8 @@
 import {useState, useRef} from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-// validate schema with joi
 
-import {Resource} from '../../types/resources';
+import {Resource, availableResourceTypes} from '../../types/resources';
 
 import {parseData} from './Controller';
 
@@ -12,9 +11,14 @@ import './ControlMenu.css';
 type ControlMenuProps = {
   setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
   setSortAttribute: React.Dispatch<React.SetStateAction<string>>;
+  setAllowedTypes: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const ControlMenu = ({setResources, setSortAttribute}: ControlMenuProps) => {
+const ControlMenu = ({
+  setResources,
+  setSortAttribute,
+  setAllowedTypes,
+}: ControlMenuProps) => {
   const fileInput = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -152,6 +156,43 @@ const ControlMenu = ({setResources, setSortAttribute}: ControlMenuProps) => {
             <label htmlFor="sort-date">Creation Date</label>
           </div>
         </div>
+      </div>
+
+      <div className="menu-item">
+        <div className="menu-item__header">
+          <span>
+            <img src="./icons/filter.png" alt="" />
+          </span>
+          <h3>Resource Type</h3>
+        </div>
+        {availableResourceTypes.length > 0 && (
+          <div className="menu-item__content">
+            {availableResourceTypes.map(type => {
+              return (
+                <div key={type}>
+                  <input
+                    type="checkbox"
+                    name="resource-type"
+                    id={type}
+                    defaultChecked
+                    onChange={e => {
+                      if (e.target.checked) {
+                        setAllowedTypes(prevTypes => [...prevTypes, type]);
+                      } else {
+                        setAllowedTypes(prevTypes => {
+                          return prevTypes.filter(
+                            prevType => prevType !== type
+                          );
+                        });
+                      }
+                    }}
+                  />
+                  <label htmlFor={type}>{type}</label>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

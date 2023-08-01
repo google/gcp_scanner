@@ -5,7 +5,8 @@ import {debounce} from '@mui/material';
 export const useFilter = (
   resources: Resource[],
   searchQuery: string,
-  sortAttribute: string
+  sortAttribute: string,
+  allowedTypes: string[]
 ) => {
   const [filteredResources, setFilteredResources] =
     useState<Resource[]>(resources);
@@ -15,9 +16,10 @@ export const useFilter = (
       setFilteredResources(
         resources
           .filter(resource => {
-            return resource.name
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase());
+            return (
+              allowedTypes.includes(resource.type) &&
+              resource.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
           })
           .sort((a, b) => {
             if (sortAttribute === 'name') {
@@ -33,7 +35,7 @@ export const useFilter = (
     };
 
     debounce(filterResources, 100)();
-  }, [resources, searchQuery, sortAttribute]);
+  }, [resources, searchQuery, sortAttribute, allowedTypes]);
 
   return filteredResources;
 };
