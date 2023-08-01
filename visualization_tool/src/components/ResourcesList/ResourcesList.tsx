@@ -4,10 +4,18 @@ import {useFilter} from './useFilter';
 
 import './ResourcesList.css';
 
-type ResourcesListProps = {resources: Resource[]; searchQuery: string};
+type ResourcesListProps = {
+  resources: Resource[];
+  searchQuery: string;
+  sortAttribute: string;
+};
 
-const ResourcesList = ({resources, searchQuery}: ResourcesListProps) => {
-  const filteredResources = useFilter(resources, searchQuery);
+const ResourcesList = ({
+  resources,
+  searchQuery,
+  sortAttribute,
+}: ResourcesListProps) => {
+  const filteredResources = useFilter(resources, searchQuery, sortAttribute);
   return (
     <div className="resources-list">
       <h1>{resources.length > 0 ? 'Found Resources' : 'No Resources Found'}</h1>

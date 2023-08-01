@@ -8,12 +8,20 @@ import ResourcesList from './components/ResourcesList/ResourcesList';
 function App() {
   const [resources, setResources] = useState<Resource[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [sortAttribute, setSortAttribute] = useState<string>('date');
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <main>
-        <ControlMenu setResources={setResources} />
-        <ResourcesList resources={resources} searchQuery={searchQuery} />
+        <ControlMenu
+          setResources={setResources}
+          setSortAttribute={setSortAttribute}
+        />
+        <ResourcesList
+          resources={resources}
+          searchQuery={searchQuery}
+          sortAttribute={sortAttribute}
+        />
       </main>
     </>
   );
