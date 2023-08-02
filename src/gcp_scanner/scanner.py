@@ -37,7 +37,7 @@ from .crawler.crawler_factory import CrawlerFactory
 
 # We define the schema statically to make it easier for the user and avoid extra
 # config files.
-light_version_scan_schema = {
+LIGHT_VERSION_SCAN_SCHEMA = {
   'compute_instances': ['name', 'zone', 'machineType', 'networkInterfaces',
                         'status'],
   'compute_images': ['name', 'status', 'diskSizeGb', 'sourceDisk'],
@@ -57,7 +57,7 @@ light_version_scan_schema = {
 # The following map is used to establish the relationship between
 # crawlers and clients. It determines the appropriate crawler and
 # client to be selected from the respective factory classes.
-crawl_client_map = {
+CRAWL_CLIENT_MAP = {
   'app_services': 'appengine',
   'bigtable_instances': 'bigtableadmin',
   'bq': 'bigquery',
@@ -106,7 +106,7 @@ def save_results(res_data: Dict, res_path: str, is_light: bool):
 
   if is_light is True:
     # returning the light version of the scan based on predefined schema
-    for gcp_resource, schema in light_version_scan_schema.items():
+    for gcp_resource, schema in LIGHT_VERSION_SCAN_SCHEMA.items():
       projects = res_data.get('projects', {})
       for project_name, project_data in projects.items():
         scan_results = project_data.get(gcp_resource, {})
@@ -148,7 +148,7 @@ def get_resources(project):
     logging.error('Try removing the %s file and restart the scanner.',
                   output_file_name)
 
-  for crawler_name, client_name in crawl_client_map.items():
+  for crawler_name, client_name in CRAWL_CLIENT_MAP.items():
     if is_set(project.scan_config, crawler_name):
       crawler_config = {}
       if project.scan_config is not None:
