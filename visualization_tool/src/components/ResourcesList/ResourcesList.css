@@ -62,3 +62,24 @@
   padding: 6px 25px;
   cursor: pointer;
 }
+
+.resource-details {
+  padding: 30px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.resource-details__item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.resource-details__item__key {
+  color: #a3a3a3;
+  font-family: Inter;
+  font-weight: 400;
+  margin-right: 10px;
+  width: 210px;
+}
