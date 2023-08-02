@@ -38,14 +38,14 @@ class SpiderContext:
     for sa_tuple in sa_tuples:
       self.service_account_queue.put(sa_tuple)
 
-class Project:
+class ProjectInfo:
   """A simple class to crawl resources with the required information for crawl
   """
 
   def __init__(
-    self, 
-    project, 
-    sa_results, 
+    self,
+    project,
+    sa_results,
     out_dir,
     scan_config,
     light_scan,

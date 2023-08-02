@@ -18,6 +18,7 @@
 import json
 import logging
 import multiprocessing
+import os
 from datetime import datetime
 
 from src.gcp_scanner import arguments
@@ -100,7 +101,7 @@ if __name__ == "__main__":
           
     # Enumerate projects accessible by SA
     for project in project_list:
-      project_obj = models.Project(
+      project_obj = models.ProjectInfo(
         project,
         sa_results, 
         args.output,
@@ -114,7 +115,7 @@ if __name__ == "__main__":
       )
       project_queue.put(project_obj)
 
-  pool = multiprocessing.Pool() # TODO: define default number of workers
+  pool = multiprocessing.Pool(processes=min(int(args.worker_count), os.cpu_count()))
 
   while not project_queue.empty():
     pool.apply_async(scanner.get_resources, args=(project_queue.get(),))

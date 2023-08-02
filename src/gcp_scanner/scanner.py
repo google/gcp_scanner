@@ -126,7 +126,8 @@ def save_results(res_data: Dict, res_path: str, is_light: bool):
 
 
 def get_resources(project):
-  if project.target_project and project.target_project not in project.project['projectId']:
+  if project.target_project and \
+    project.target_project not in project.project['projectId']:
     return
 
   project_id = project.project['projectId']
@@ -181,13 +182,13 @@ def get_resources(project):
     )
 
   # Iterate over discovered service accounts by attempting impersonation
-  project_result['service_account_edges'] = []
-  updated_chain = project.chain_so_far + [project.sa_name]
+  # project_result['service_account_edges'] = []
+  # updated_chain = project.chain_so_far + [project.sa_name]
 
-  if project.scan_config is not None:
-    impers = project.scan_config.get('service_accounts', None)
-  else:
-    impers = {'impersonate': False}  # do not impersonate by default
+  # if project.scan_config is not None:
+  #   impers = project.scan_config.get('service_accounts', None)
+  # else:
+  #   impers = {'impersonate': False}  # do not impersonate by default
 
   # trying to impersonate SAs within project
   # if impers is not None and impers.get('impersonate', False) is True:
