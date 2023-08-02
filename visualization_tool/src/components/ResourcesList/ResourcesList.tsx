@@ -1,6 +1,8 @@
+import {useState} from 'react';
 import {Resource} from '../../types/resources';
 import {typeToImage, statusToColor} from './utils';
 import {useFilter} from './useFilter';
+import Details from './partials/Detalis';
 
 import './ResourcesList.css';
 
@@ -23,9 +25,18 @@ const ResourcesList = ({
     sortAttribute,
     allowedTypes
   );
+  const [selectedResource, setSelectedResource] = useState<Resource | null>(
+    null
+  );
+  const [openDetails, setOpenDetails] = useState<boolean>(false);
   return (
     <div className="resources-list">
       <h1>{resources.length > 0 ? 'Found Resources' : 'No Resources Found'}</h1>
+      <Details
+        selectedResource={selectedResource}
+        openDetails={openDetails}
+        setOpenDetails={setOpenDetails}
+      />
       <div className="resources-list__table">
         {filteredResources.map(resource => {
           return (
@@ -41,7 +52,14 @@ const ResourcesList = ({
               >
                 {resource.status}
               </p>
-              <button>Details</button>
+              <button
+                onClick={() => {
+                  setSelectedResource(resource);
+                  setOpenDetails(true);
+                }}
+              >
+                Details
+              </button>
             </div>
           );
         })}

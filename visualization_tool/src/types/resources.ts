@@ -5,7 +5,7 @@ type ResourceType =
   | 'Machine Image'
   | 'Compute Snapshot'
   | 'Managed Zone'
-  | 'SQL Instance'
+  | 'Sql Instance'
   | 'Cloud Function'
   | 'Dns Policy'
   | 'Pubsub Sub';
@@ -17,7 +17,7 @@ const availableResourceTypes: ResourceType[] = [
   'Machine Image',
   'Compute Snapshot',
   'Managed Zone',
-  'SQL Instance',
+  'Sql Instance',
   'Cloud Function',
   'Dns Policy',
   'Pubsub Sub',
