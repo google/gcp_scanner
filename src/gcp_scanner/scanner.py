@@ -19,15 +19,12 @@
 import collections
 import json
 import logging
-import os
-from json.decoder import JSONDecodeError
-from pathlib import Path
-from typing import List, Dict, Optional, Union, Any
-import json
-import logging
 import multiprocessing
 import os
 from datetime import datetime
+from json.decoder import JSONDecodeError
+from pathlib import Path
+from typing import List, Dict, Optional, Union, Any
 
 from google.auth.exceptions import MalformedError
 from google.cloud import container_v1
@@ -36,14 +33,12 @@ from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMC
 from httplib2 import Credentials
 
 from . import arguments
+from . import credsdb
 from . import models
 from . import scanner
 from .client.client_factory import ClientFactory
-from .crawler.crawler_factory import CrawlerFactory 
-from . import credsdb
-from .client.client_factory import ClientFactory
-from .crawler import misc_crawler
 from .crawler.crawler_factory import CrawlerFactory
+from .crawler import misc_crawler
 
 # We define the schema statically to make it easier for the user and avoid extra
 # config files.
@@ -437,12 +432,12 @@ def main():
           # force object creation anyway
           project_list.append({'projectId': force_project_id,
                                'projectNumber': 'N/A'})
-          
+
     # Enumerate projects accessible by SA
     for project in project_list:
       project_obj = models.ProjectInfo(
         project,
-        sa_results, 
+        sa_results,
         args.output,
         scan_config,
         args.light_scan,
@@ -454,7 +449,8 @@ def main():
       )
       project_queue.put(project_obj)
 
-  pool = multiprocessing.Pool(processes=min(int(args.worker_count), os.cpu_count()))
+  pool = multiprocessing.Pool(
+    processes=min(int(args.worker_count), os.cpu_count()))
 
   while not project_queue.empty():
     pool.apply_async(scanner.get_resources, args=(project_queue.get(),))
