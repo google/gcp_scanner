@@ -23,6 +23,11 @@ import os
 from json.decoder import JSONDecodeError
 from pathlib import Path
 from typing import List, Dict, Optional, Union, Any
+import json
+import logging
+import multiprocessing
+import os
+from datetime import datetime
 
 from google.auth.exceptions import MalformedError
 from google.cloud import container_v1
@@ -30,6 +35,11 @@ from google.cloud import iam_credentials
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import IAMCredentialsClient
 from httplib2 import Credentials
 
+from . import arguments
+from . import models
+from . import scanner
+from .client.client_factory import ClientFactory
+from .crawler.crawler_factory import CrawlerFactory 
 from . import credsdb
 from .client.client_factory import ClientFactory
 from .crawler import misc_crawler
@@ -355,3 +365,101 @@ def get_sa_tuples(args):
         sa_tuples.append((token_file_name, credentials, []))
 
   return sa_tuples
+
+def main():
+  logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
+  logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
+
+  args = arguments.arg_parser()
+
+  logging.basicConfig(level=getattr(logging, args.log_level.upper(), None),
+                      format='%(asctime)s - %(levelname)s - %(message)s',
+                      datefmt='%Y-%m-%d %H:%M:%S',
+                      filename=args.log_file, filemode='a')
+
+  force_projects_list = list()
+  if args.force_projects:
+    force_projects_list = args.force_projects.split(',')
+
+  sa_tuples = scanner.get_sa_tuples(args)
+
+  scan_config = None
+  if args.config_path is not None:
+    with open(args.config_path, 'r', encoding='utf-8') as f:
+      scan_config = json.load(f)
+
+  # Generate current timestamp to append to the filename
+  scan_time_suffix = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
+  context = models.SpiderContext(sa_tuples)
+
+  project_queue = multiprocessing.Queue()
+  processed_sas = set()
+  while not context.service_account_queue.empty():
+    # Get a new candidate service account / token
+    sa_name, credentials, chain_so_far = context.service_account_queue.get()
+    if sa_name in processed_sas:
+      continue
+
+    # Don't process this service account again
+    processed_sas.add(sa_name)
+
+    logging.info('>> current service account: %s', sa_name)
+    sa_results = scanner.infinite_defaultdict()
+    # Log the chain we used to get here (even if we have no privs)
+    sa_results['service_account_chain'] = chain_so_far
+    sa_results['current_service_account'] = sa_name
+    # Add token scopes in the result
+    sa_results['token_scopes'] = credentials.scopes
+
+    project_list = CrawlerFactory.create_crawler(
+      'project_list',
+    ).crawl(
+      ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
+    )
+
+    if len(project_list) <= 0:
+      logging.info('Unable to list projects accessible from service account')
+
+    if force_projects_list:
+      for force_project_id in force_projects_list:
+        res = CrawlerFactory.create_crawler(
+          'project_info',
+        ).crawl(
+          force_project_id,
+          ClientFactory.get_client('cloudresourcemanager').get_service(
+            credentials,
+          ),
+        )
+        if res:
+          project_list.append(res)
+        else:
+          # force object creation anyway
+          project_list.append({'projectId': force_project_id,
+                               'projectNumber': 'N/A'})
+          
+    # Enumerate projects accessible by SA
+    for project in project_list:
+      project_obj = models.ProjectInfo(
+        project,
+        sa_results, 
+        args.output,
+        scan_config,
+        args.light_scan,
+        args.target_project,
+        scan_time_suffix,
+        sa_name,
+        credentials,
+        chain_so_far
+      )
+      project_queue.put(project_obj)
+
+  pool = multiprocessing.Pool(processes=min(int(args.worker_count), os.cpu_count()))
+
+  while not project_queue.empty():
+    pool.apply_async(scanner.get_resources, args=(project_queue.get(),))
+
+  pool.close()
+  pool.join()
+
+  return 0
