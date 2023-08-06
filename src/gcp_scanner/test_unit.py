@@ -825,6 +825,20 @@ class TestCrawler(unittest.TestCase):
       )
     )
 
+  def test_cloud_domains(self):
+    """Test Cloud Domains."""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+          "registered_domains",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("domains").get_service(self.credentials),
+        ),
+        "registered_domains",
+      )
+    )
+
 
 class TestClientFactory(unittest.TestCase):
   """Unit tests for the ClientFactory class."""
