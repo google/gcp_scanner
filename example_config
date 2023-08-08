@@ -92,5 +92,8 @@
   },
   "datastore_kinds": {
     "fetch": true
+  },
+  "registered_domains": {
+    "fetch": true
   }
 }

@@ -22,6 +22,7 @@ from gcp_scanner.client.cloud_resource_manager_client import CloudResourceManage
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.datastore_client import DatastoreClient
 from gcp_scanner.client.dns_client import DNSClient
+from gcp_scanner.client.domains_client import DomainsClient
 from gcp_scanner.client.filestore_client import FilestoreClient
 from gcp_scanner.client.firestore_client import FirestoreClient
 from gcp_scanner.client.iam_client import IAMClient
@@ -47,6 +48,7 @@ class ClientFactory:
     "cloudresourcemanager": CloudResourceManagerClient,
     "compute": ComputeClient,
     "datastore": DatastoreClient,
+    "domains": DomainsClient,
     "dns": DNSClient,
     "firestore": FirestoreClient,
     "file": FilestoreClient,

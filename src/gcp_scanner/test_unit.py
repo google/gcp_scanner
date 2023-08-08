@@ -42,6 +42,7 @@ from .client.cloud_resource_manager_client import CloudResourceManagerClient
 from .client.compute_client import ComputeClient
 from .client.datastore_client import DatastoreClient
 from .client.dns_client import DNSClient
+from .client.domains_client import DomainsClient
 from .client.filestore_client import FilestoreClient
 from .client.firestore_client import FirestoreClient
 from .client.iam_client import IAMClient
@@ -72,6 +73,7 @@ from .crawler.crawler_factory import CrawlerFactory
 from .crawler.datastore_crawler import DatastoreCrawler
 from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
 from .crawler.dns_policies_crawler import DNSPoliciesCrawler
+from .crawler.domains_crawler import DomainsCrawler
 from .crawler.endpoints_crawler import EndpointsCrawler
 from .crawler.filestore_instances_crawler import FilestoreInstancesCrawler
 from .crawler.firestore_collections_crawler import FirestoreCollectionsCrawler
@@ -820,7 +822,20 @@ class TestCrawler(unittest.TestCase):
           ClientFactory.get_client("datastore").get_service(self.credentials),
         ),
         "datastore_kinds",
-        False,
+      )
+    )
+
+  def test_cloud_domains(self):
+    """Test Cloud Domains."""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+          "registered_domains",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("domains").get_service(self.credentials),
+        ),
+        "registered_domains",
       )
     )
 
@@ -922,6 +937,11 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'datastore' name."""
     client = ClientFactory.get_client("datastore")
     self.assertIsInstance(client, DatastoreClient)
+
+  def test_get_client_domains(self):
+    """Test get_client method with 'domains' name."""
+    client = ClientFactory.get_client("domains")
+    self.assertIsInstance(client, DomainsClient)
 
   def test_get_client_invalid(self):
     """Test get_client method with invalid name."""
@@ -1078,6 +1098,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'datastore_kinds' name."""
     crawler = CrawlerFactory.create_crawler("datastore_kinds")
     self.assertIsInstance(crawler, DatastoreCrawler)
+
+  def test_create_crawler_registered_domains(self):
+    """Test create_crawler method with 'registered_domains' name."""
+    crawler = CrawlerFactory.create_crawler("registered_domains")
+    self.assertIsInstance(crawler, DomainsCrawler)
 
   def test_create_crawler_invalid(self):
     """Test create_crawler method with invalid name."""

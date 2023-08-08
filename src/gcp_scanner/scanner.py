@@ -82,6 +82,7 @@ crawl_client_map = {
   'managed_zones': 'dns',
   'project_info': 'cloudresourcemanager',
   'pubsub_subs': 'pubsub',
+  'registered_domains': 'domains',
   'services': 'serviceusage',
   'service_accounts': 'iam',
   'sourcerepos': 'sourcerepo',
