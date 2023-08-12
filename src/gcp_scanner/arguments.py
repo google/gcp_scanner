@@ -129,7 +129,7 @@ token_uri and client_secret stored in JSON format.'
       '--worker-count',
       default=1,
       dest='worker_count',
-      help='Give Worker Count limit for parallelization of crawlers.')
+      help='Set limit for workers run in parallel.')
 
   args: argparse.Namespace = parser.parse_args()
 
