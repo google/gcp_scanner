@@ -130,7 +130,14 @@ def save_results(res_data: Dict, res_path: str, is_light: bool):
     outfile.write(sa_results_data)
 
 
-def get_resources(project):
+def get_resources(project: models.ProjectInfo):
+  """The function crawls the data for a project and stores the results in a 
+     dictionary.
+
+  Args: 
+    project: class to store project scan configration
+  """
+  
   if project.target_project and \
     project.target_project not in project.project['projectId']:
     return
