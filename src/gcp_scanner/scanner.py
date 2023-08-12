@@ -137,7 +137,7 @@ def get_resources(project: models.ProjectInfo):
   Args: 
     project: class to store project scan configration
   """
-  
+
   if project.target_project and \
     project.target_project not in project.project['projectId']:
     return
@@ -310,6 +310,10 @@ def infinite_defaultdict():
 
 
 def get_sa_tuples(args):
+  """The function extracts service account (SA) credentials from various 
+  sources and returns a list of tuples.
+  """
+
   sa_tuples = []
   if args.key_path:
     # extracting SA keys from folder
