@@ -39,7 +39,7 @@ class SpiderContext:
       self.service_account_queue.put(sa_tuple)
 
 class ProjectInfo:
-  """A simple class to crawl resources with the required information for crawl
+  """A simple class to store project scan configration.
   """
 
   def __init__(
