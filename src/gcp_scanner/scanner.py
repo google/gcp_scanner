@@ -17,7 +17,6 @@
 
 """
 import collections
-import copy
 import json
 import logging
 import multiprocessing
@@ -210,7 +209,8 @@ def impersonate_service_accounts(
   processed_sas = set()
 
   while not context_copy.service_account_queue.empty():
-    sa_name, credentials, chain_so_far = context_copy.service_account_queue.get()
+    sa_name, credentials, chain_so_far = \
+      context_copy.service_account_queue.get()
     if sa_name in processed_sas:
       continue
     processed_sas.add(sa_name)
