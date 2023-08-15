@@ -17,10 +17,12 @@
 
 """
 import collections
+import copy
 import json
 import logging
 import multiprocessing
 import os
+import sys
 from datetime import datetime
 from json.decoder import JSONDecodeError
 from pathlib import Path
@@ -193,49 +195,87 @@ def get_resources(project: models.ProjectInfo):
       project.credentials.token,
     )
 
-  # Iterate over discovered service accounts by attempting impersonation
-  # project_result['service_account_edges'] = []
-  # updated_chain = project.chain_so_far + [project.sa_name]
-
-  # if project.scan_config is not None:
-  #   impers = project.scan_config.get('service_accounts', None)
-  # else:
-  #   impers = {'impersonate': False}  # do not impersonate by default
-
-  # trying to impersonate SAs within project
-  # if impers is not None and impers.get('impersonate', False) is True:
-  #   iam_client = iam_client_for_credentials(project.credentials)
-  #   if is_set(project.scan_config, 'iam_policy') is False:
-  #     iam_policy = CrawlerFactory.create_crawler('iam_policy').crawl(
-  #       project_id,
-  #       ClientFactory.get_client('cloudresourcemanager').get_service(
-  #         project.credentials,
-  #       ),
-  #     )
-
-  #   project_service_accounts = get_sas_for_impersonation(iam_policy)
-  #   for candidate_service_account in project_service_accounts:
-  #     try:
-  #       logging.info('Trying %s', candidate_service_account)
-  #       creds_impersonated = credsdb.impersonate_sa(
-  #         iam_client, candidate_service_account)
-  #       project.context.service_account_queue.put(
-  #         (candidate_service_account, creds_impersonated, updated_chain))
-  #       project_result['service_account_edges'].append(
-  #         candidate_service_account)
-  #       logging.info('Successfully impersonated %s using %s',
-  #                     candidate_service_account, project.sa_name)
-  #     except Exception:
-  #       logging.error('Failed to get token for %s',
-  #                     candidate_service_account)
-  #       logging.error(sys.exc_info()[1])
-
   logging.info('Saving results for %s into the file', project_id)
 
   save_results(project.sa_results, output_path, project.light_scan)
   # Clean memory to avoid leak for large amount projects.
   project.sa_results.clear()
 
+
+def impersonate_service_accounts(
+  context,
+  context_copy,
+  scan_config
+):
+  processed_sas = set()
+
+  while not context_copy.service_account_queue.empty():
+    sa_name, credentials, chain_so_far = context_copy.service_account_queue.get()
+    if sa_name in processed_sas:
+      continue
+    processed_sas.add(sa_name)
+
+    logging.info('>> impersonation for service account: %s', sa_name)
+    sa_results = scanner.infinite_defaultdict()
+    # Log the chain we used to get here (even if we have no privs)
+    sa_results['service_account_chain'] = chain_so_far
+    sa_results['current_service_account'] = sa_name
+    # Add token scopes in the result
+    sa_results['token_scopes'] = credentials.scopes
+
+    project_list = CrawlerFactory.create_crawler(
+      'project_list',
+    ).crawl(
+      ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
+    )
+
+    if len(project_list) <= 0:
+      logging.info('Unable to list projects accessible from service account')
+
+    # Enumerate projects accessible by SA
+    for project in project_list:
+      project_id = project['projectId']
+      print(f'Inspecting project {project_id} for Impersonation')
+      project_result = sa_results['projects'][project_id]
+      project_result['project_info'] = project
+      # Iterate over discovered service accounts by attempting impersonation
+      project_result['service_account_edges'] = []
+      updated_chain = chain_so_far + [sa_name]
+
+      if scan_config is not None:
+        impers = scan_config.get('service_accounts', None)
+      else:
+        impers = {'impersonate': False}  # do not impersonate by default
+
+      # trying to impersonate SAs within project
+      if impers is not None and impers.get('impersonate', False) is True:
+        iam_client = iam_client_for_credentials(credentials)
+        if is_set(scan_config, 'iam_policy') is False:
+          iam_policy = CrawlerFactory.create_crawler('iam_policy').crawl(
+            project_id,
+            ClientFactory.get_client('cloudresourcemanager').get_service(
+              credentials,
+            ),
+          )
+
+        project_service_accounts = get_sas_for_impersonation(iam_policy)
+        for candidate_service_account in project_service_accounts:
+          try:
+            logging.info('Trying %s', candidate_service_account)
+            creds_impersonated = credsdb.impersonate_sa(
+              iam_client, candidate_service_account)
+            context.service_account_queue.put(
+              (candidate_service_account, creds_impersonated, updated_chain))
+            project_result['service_account_edges'].append(
+              candidate_service_account)
+            logging.info('Successfully impersonated %s using %s',
+                          candidate_service_account, sa_name)
+          except Exception:
+            logging.error('Failed to get token for %s',
+                          candidate_service_account)
+            logging.error(sys.exc_info()[1])
+
+  return context
 
 def iam_client_for_credentials(
   credentials: Credentials) -> IAMCredentialsClient:
@@ -398,9 +438,14 @@ def main():
   scan_time_suffix = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
   context = models.SpiderContext(sa_tuples)
+  context_copy = models.SpiderContext(sa_tuples)
 
   project_queue = multiprocessing.Queue()
   processed_sas = set()
+
+  # impersonate
+  context = impersonate_service_accounts(context, context_copy, scan_config)
+
   while not context.service_account_queue.empty():
     # Get a new candidate service account / token
     sa_name, credentials, chain_so_far = context.service_account_queue.get()
