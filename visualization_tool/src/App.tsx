@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {Routes, Route} from 'react-router-dom';
 
 import {Resource, availableResourceTypes} from './types/resources';
+import {IAMRole} from './types/IMAPolicy';
 import ControlMenuLayout from './layouts/ControlMenuLayout';
 import ControlMenu from './components/ControlMenu/ControlMenu';
 import ResourcesPage from './pages/ResourcesPage';
@@ -16,6 +17,7 @@ function App() {
   const [allowedTypes, setAllowedTypes] = useState<string[]>(
     availableResourceTypes
   );
+  const [roles, setRoles] = useState<IAMRole[]>([]);
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -24,6 +26,7 @@ function App() {
           setResources={setResources}
           setSortAttribute={setSortAttribute}
           setAllowedTypes={setAllowedTypes}
+          setRoles={setRoles}
         />
       </ControlMenuLayout>
       <Routes>
