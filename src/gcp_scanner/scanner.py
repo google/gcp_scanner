@@ -210,6 +210,9 @@ def impersonate_service_accounts(
   sa_name,
   credentials
 ):
+  """The function enumerates projects accessible by SA and impersonates them.
+  """
+  
   # Enumerate projects accessible by SA
   project_id = project['projectId']
   print(f'Inspecting project {project_id} for Impersonation')
@@ -389,6 +392,9 @@ def get_sa_tuples(args):
   return sa_tuples
 
 def main():
+  """The main scanner loop for GCP Scanner
+  """
+
   logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
   logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
 
