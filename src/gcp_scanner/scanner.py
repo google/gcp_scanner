@@ -212,7 +212,7 @@ def impersonate_service_accounts(
 ):
   """The function enumerates projects accessible by SA and impersonates them.
   """
-  
+
   # Enumerate projects accessible by SA
   project_id = project['projectId']
   print(f'Inspecting project {project_id} for Impersonation')
