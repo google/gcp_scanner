@@ -1,10 +1,10 @@
+import {useLocation} from 'react-router-dom';
+
 import UploadMenu from './partials/UploadMenu';
 import SortMenu from './partials/SortMenu';
 import FilterMenu from './partials/FilterMenu';
 
 import {Resource} from '../../types/resources';
-
-import './ControlMenu.css';
 
 type ControlMenuProps = {
   setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
@@ -17,11 +17,17 @@ const ControlMenu = ({
   setSortAttribute,
   setAllowedTypes,
 }: ControlMenuProps) => {
+  const location = useLocation();
+
   return (
-    <div className="control-menu">
+    <div>
       <UploadMenu setResources={setResources} />
-      <SortMenu setSortAttribute={setSortAttribute} />
-      <FilterMenu setAllowedTypes={setAllowedTypes} />
+      {location.pathname === '/static/' && (
+        <>
+          <SortMenu setSortAttribute={setSortAttribute} />
+          <FilterMenu setAllowedTypes={setAllowedTypes} />
+        </>
+      )}
     </div>
   );
 };

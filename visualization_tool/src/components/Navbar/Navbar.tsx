@@ -1,4 +1,5 @@
 import {useEffect} from 'react';
+import {Link, useLocation} from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import {KeyboardCommandKey} from '@mui/icons-material';
 
@@ -11,6 +12,7 @@ type NavbarProps = {
 };
 
 const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
+  const location = useLocation();
   useEffect(() => {
     const searchInput = document.getElementById(
       'search-input'
@@ -38,10 +40,26 @@ const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
       </header>
       <div className="pages-nav">
         <div className="links">
-          <a className="active" href="">
+          <Link
+            to="/static/"
+            className={location.pathname === '/static/' ? 'active' : ''}
+            onClick={() => {
+              setSearchQuery('');
+            }}
+          >
             Resources
-          </a>
-          <a href="">IAM Policy</a>
+          </Link>
+          <Link
+            to="/static/iam-policy"
+            className={
+              location.pathname === '/static/iam-policy' ? 'active' : ''
+            }
+            onClick={() => {
+              setSearchQuery('');
+            }}
+          >
+            IAM Policy
+          </Link>
         </div>
         <div className="search-container">
           <div className="search-bar">
@@ -49,7 +67,7 @@ const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
               type="text"
               name="search-input"
               id="search-input"
-              placeholder="Resource Name"
+              placeholder="Search"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />
