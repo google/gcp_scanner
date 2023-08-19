@@ -15,4 +15,7 @@
 # limitations under the License.
 
 from src.gcp_scanner import scanner
-scanner.main()
+
+
+if __name__ == "__main__":
+  scanner.main()

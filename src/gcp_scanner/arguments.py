@@ -124,6 +124,12 @@ token_uri and client_secret stored in JSON format.'
       dest='log_file',
       help='Save logs to the path specified rather than displaying in\
  console')
+  parser.add_argument(
+      '-wc',
+      '--worker-count',
+      default=1,
+      dest='worker_count',
+      help='Set limit for workers run in parallel.')
 
   args: argparse.Namespace = parser.parse_args()
 
