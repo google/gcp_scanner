@@ -191,7 +191,7 @@ def get_resources(project: models.ProjectInfo):
           client,
           crawler_config,
         )
-  
+
   for crawler_name, future_obj in results_crawl_pool.items():
     project_result[crawler_name] = future_obj.result()
 
