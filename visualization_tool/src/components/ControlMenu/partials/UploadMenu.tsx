@@ -53,7 +53,7 @@ const UploadMenu = ({setResources, setRoles}: UploadMenuProps) => {
                 ...resources,
               ]);
 
-              const roles = parseIAMData(data);
+              const roles = parseIAMData(data, file.name);
               setRoles((prevRoles: IAMRole[]) => [...prevRoles, ...roles]);
 
               setFiles([...files, file.name]);
@@ -97,6 +97,9 @@ const UploadMenu = ({setResources, setRoles}: UploadMenuProps) => {
                     return prevResources.filter(
                       prevResource => prevResource.file !== file
                     );
+                  });
+                  setRoles(prevRoles => {
+                    return prevRoles.filter(prevRole => prevRole.file !== file);
                   });
                 }}
               >

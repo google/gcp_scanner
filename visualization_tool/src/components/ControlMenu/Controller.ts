@@ -64,7 +64,7 @@ const parseData = (data: OutputFile, fileName: string) => {
   return resources;
 };
 
-const parseIAMData = (data: OutputFile) => {
+const parseIAMData = (data: OutputFile, fileName: string) => {
   const roles: IAMRole[] = [];
   for (const [projectId, projectData] of Object.entries(data.projects)) {
     const currentRoles = projectData?.iam_policy as IMAPolicyField[];
@@ -72,8 +72,9 @@ const parseIAMData = (data: OutputFile) => {
     if (roles instanceof Array) {
       for (const role of currentRoles) {
         roles.push({
+          file: fileName,
           projectId,
-          role: role.role.split('/')[1],
+          role: `${projectId}__${role.role.split('/')[1]}`,
           members: role.members.map(member => {
             return {
               memberType: member.split(':')[0],

@@ -7,6 +7,8 @@ import FilterMenu from './partials/FilterMenu';
 import {Resource} from '../../types/resources';
 import {IAMRole} from '../../types/IMAPolicy';
 
+import './ControlMenu.css';
+
 type ControlMenuProps = {
   setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
   setSortAttribute: React.Dispatch<React.SetStateAction<string>>;
@@ -23,7 +25,7 @@ const ControlMenu = ({
   const location = useLocation();
 
   return (
-    <div>
+    <div className="control-menu">
       <UploadMenu setResources={setResources} setRoles={setRoles} />
       {location.pathname === '/static/' && (
         <>

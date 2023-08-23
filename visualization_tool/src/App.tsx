@@ -4,7 +4,6 @@ import {Routes, Route} from 'react-router-dom';
 
 import {Resource, availableResourceTypes} from './types/resources';
 import {IAMRole} from './types/IMAPolicy';
-import ControlMenuLayout from './layouts/ControlMenuLayout';
 import ControlMenu from './components/ControlMenu/ControlMenu';
 import ResourcesPage from './pages/ResourcesPage';
 import IAMPolicyPage from './pages/IAMPolicyPage';
@@ -21,14 +20,12 @@ function App() {
   return (
     <>
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <ControlMenuLayout>
-        <ControlMenu
-          setResources={setResources}
-          setSortAttribute={setSortAttribute}
-          setAllowedTypes={setAllowedTypes}
-          setRoles={setRoles}
-        />
-      </ControlMenuLayout>
+      <ControlMenu
+        setResources={setResources}
+        setSortAttribute={setSortAttribute}
+        setAllowedTypes={setAllowedTypes}
+        setRoles={setRoles}
+      />
       <Routes>
         <Route
           path="/static/"
@@ -41,7 +38,10 @@ function App() {
             />
           }
         />
-        <Route path="/static/iam-policy" element={<IAMPolicyPage />} />
+        <Route
+          path="/static/iam-policy"
+          element={<IAMPolicyPage roles={roles} />}
+        />
       </Routes>
     </>
   );

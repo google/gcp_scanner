@@ -7,6 +7,7 @@ type IAMRole = {
   role: string;
   members: Member[];
   projectId: string;
+  file: string;
 };
 
 type IMAPolicyField = {

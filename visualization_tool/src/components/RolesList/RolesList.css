@@ -1,0 +1,14 @@
+.roles-list {
+  padding-top: 30px;
+  padding-left: 35px;
+  margin-left: 350px;
+}
+
+.roles-list h1 {
+  font-family: 'Inter';
+  font-weight: 200;
+  font-size: 38px;
+  line-height: 46px;
+  color: #000000;
+  margin-bottom: 30px;
+}
