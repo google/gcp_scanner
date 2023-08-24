@@ -1,3 +1,5 @@
+import {IMAPolicyField} from './IMAPolicy';
+
 type ResourceType =
   | 'Compute Instance'
   | 'Compute Disk'
@@ -36,7 +38,7 @@ type Resource = {
 };
 
 type Project = {
-  [key: string]: Resource[];
+  [key: string]: Resource[] | IMAPolicyField[];
 };
 
 type OutputFile = {

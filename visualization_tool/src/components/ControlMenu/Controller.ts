@@ -5,6 +5,8 @@ import {
   availableResourceTypes,
 } from '../../types/resources';
 
+import {IAMRole, IMAPolicyField} from '../../types/IMAPolicy';
+
 const titleCase = (str: string) => {
   return str
     .replace('_', ' ')
@@ -62,4 +64,29 @@ const parseData = (data: OutputFile, fileName: string) => {
   return resources;
 };
 
-export {parseData};
+const parseIAMData = (data: OutputFile, fileName: string) => {
+  const roles: IAMRole[] = [];
+  for (const [projectId, projectData] of Object.entries(data.projects)) {
+    const currentRoles = projectData?.iam_policy as IMAPolicyField[];
+
+    if (roles instanceof Array) {
+      for (const role of currentRoles) {
+        roles.push({
+          file: fileName,
+          projectId,
+          role: `${projectId}__${role.role.split('/')[1]}`,
+          members: role.members.map(member => {
+            return {
+              memberType: member.split(':')[0],
+              email: member.split(':')[1],
+            };
+          }),
+        });
+      }
+    }
+  }
+
+  // console.log(roles);
+  return roles;
+};
+export {parseData, parseIAMData};

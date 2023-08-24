@@ -3,13 +3,15 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
 import {Resource} from '../../../types/resources';
-import {parseData} from '../Controller';
+import {IAMRole} from '../../../types/IMAPolicy';
+import {parseData, parseIAMData} from '../Controller';
 
 type UploadMenuProps = {
   setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
+  setRoles: React.Dispatch<React.SetStateAction<IAMRole[]>>;
 };
 
-const UploadMenu = ({setResources}: UploadMenuProps) => {
+const UploadMenu = ({setResources, setRoles}: UploadMenuProps) => {
   const fileInput = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -50,6 +52,10 @@ const UploadMenu = ({setResources}: UploadMenuProps) => {
                 ...prevResources,
                 ...resources,
               ]);
+
+              const roles = parseIAMData(data, file.name);
+              setRoles((prevRoles: IAMRole[]) => [...prevRoles, ...roles]);
+
               setFiles([...files, file.name]);
             } catch (err) {
               setError('Invalid file');
@@ -91,6 +97,9 @@ const UploadMenu = ({setResources}: UploadMenuProps) => {
                     return prevResources.filter(
                       prevResource => prevResource.file !== file
                     );
+                  });
+                  setRoles(prevRoles => {
+                    return prevRoles.filter(prevRole => prevRole.file !== file);
                   });
                 }}
               >
