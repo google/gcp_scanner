@@ -20,6 +20,7 @@
 import argparse
 import logging
 import os
+import sys
 
 def arg_parser():
   """Creates an argument parser using the `argparse` module and defines
@@ -145,7 +146,7 @@ token_uri and client_secret stored in JSON format.'
  -k/--sa-key-path,-g/--gcloud-profile-path, -m, -rt, -at'
     )
   if not os.path.exists(args.output):
-    logging.error(f"{args.output} doesn't exists. Please enter a valid path.")
-    exit()
+    logging.error("%s doesn't exists. Please enter a valid path.", args.output)
+    sys.exit()
 
   return args
