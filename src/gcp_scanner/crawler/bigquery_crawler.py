@@ -55,8 +55,8 @@ class BigQueryCrawler(ICrawler):
       logging.info(sys.exc_info())
     return bq_datasets
 
-  def get_bq_tables(self, project_id: str, dataset_id: str,
-                    bq_service: discovery.Resource) -> List[Dict[str, Any]]:
+def get_bq_tables(self, project_id: str, dataset_id: str,
+                  bq_service: discovery.Resource) -> List[Dict[str, Any]]:
     """Retrieve a list of BigQuery tables available in the dataset.
 
     Args:
@@ -71,14 +71,14 @@ class BigQueryCrawler(ICrawler):
     logging.info("Retrieving BigQuery Tables for dataset %s", dataset_id)
     list_of_tables = list()
     try:
-      request = bq_service.tables().list(
-        projectId=project_id, datasetId=dataset_id)
-      while request is not None:
-        response = request.execute()
-        list_of_tables = response.get("tables", [])
-        request = bq_service.tables().list_next(
-          previous_request=request, previous_response=response)
+        request = bq_service.tables().list(
+            projectId=project_id, datasetId=dataset_id)
+        while request is not None:
+            response = request.execute()
+            list_of_tables.extend(response.get("tables", []))
+            request = bq_service.tables().list_next(
+                previous_request=request, previous_response=response)
     except Exception:
-      logging.info("Failed to retrieve BQ tables for dataset %s", dataset_id)
-      logging.info(sys.exc_info())
+        logging.info("Failed to retrieve BQ tables for dataset %s", dataset_id)
+        logging.info(sys.exc_info())
     return list_of_tables
