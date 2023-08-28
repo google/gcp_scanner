@@ -148,7 +148,10 @@ token_uri and client_secret stored in JSON format.'
  -k/--sa-key-path,-g/--gcloud-profile-path, -m, -rt, -at'
     )
   if not os.path.isdir(args.output):
-    logging.error("\"%s\" doesn't exists. Please enter a valid directory path.", args.output)
-    sys.exit(ERROR_CODES.get("InvalidDirError"))
+    logging.error(
+      '\"%s\" doesn\'t exists. Please enter a valid directory path.', 
+      args.output
+    )
+    sys.exit(ERROR_CODES.get('InvalidDirError'))
 
   return args
