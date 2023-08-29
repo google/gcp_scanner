@@ -170,7 +170,8 @@ def get_resources(project: models.ProjectInfo):
                   output_file_name)
 
   results_crawl_pool = dict()
-  with concurrent.futures.ThreadPoolExecutor(max_workers=int(project.worker_count) + 4) as executor:
+  with concurrent.futures.ThreadPoolExecutor(
+    max_workers=int(project.worker_count)) as executor:
     for crawler_name, client_name in CRAWL_CLIENT_MAP.items():
       if is_set(project.scan_config, crawler_name):
         crawler_config = {}
