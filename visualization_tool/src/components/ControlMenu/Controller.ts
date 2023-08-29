@@ -5,7 +5,7 @@ import {
   availableResourceTypes,
 } from '../../types/resources';
 
-import {IAMRole, IMAPolicyField} from '../../types/IMAPolicy';
+import {IAMRole, IMAPolicyField} from '../../types/IAMPolicy';
 
 const titleCase = (str: string) => {
   return str

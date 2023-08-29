@@ -26,13 +26,14 @@ header p {
 .pages-nav {
   position: sticky;
   top: 50px;
-  display: flex;
-  align-items: center;
   padding: 10px 0;
   border-bottom: 2px solid #dadce0;
   background-color: white;
+  width: 100%;
   display: grid;
+  scrollbar-gutter: stable both-edges;
   grid-template-columns: 1fr 0.8fr 1fr;
+  align-items: center;
 }
 
 .links {

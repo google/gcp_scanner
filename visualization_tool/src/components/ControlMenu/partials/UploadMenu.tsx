@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
 import {Resource} from '../../../types/resources';
-import {IAMRole} from '../../../types/IMAPolicy';
+import {IAMRole} from '../../../types/IAMPolicy';
 import {parseData, parseIAMData} from '../Controller';
 
 type UploadMenuProps = {

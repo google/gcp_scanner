@@ -6,19 +6,25 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Row from './partials/Row';
-import {IAMRole} from '../../types/IMAPolicy';
+
+import {IAMRole} from '../../types/IAMPolicy';
+import {useFilter} from './useFilter';
 
 import './RolesList.css';
 
 type RolesListProps = {
   roles: IAMRole[];
+  emailQuery: string;
 };
 
-const RolesList = ({roles}: RolesListProps) => {
+const RolesList = ({roles, emailQuery}: RolesListProps) => {
+  const filteredRoles = useFilter(roles, emailQuery);
+  // console.log(filteredRoles);
+
   return (
     <div className="roles-list">
       <h1>{roles.length > 0 ? 'Found Roles' : 'No Roles Found'}</h1>
-      {roles.length > 0 && (
+      {filteredRoles.length > 0 && (
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
             <TableHead>
@@ -40,7 +46,7 @@ const RolesList = ({roles}: RolesListProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {roles.map(role => (
+              {filteredRoles.map(role => (
                 <Row key={role.role} row={role} />
               ))}
             </TableBody>
