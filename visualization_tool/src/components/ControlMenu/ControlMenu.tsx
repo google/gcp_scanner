@@ -5,7 +5,7 @@ import SortMenu from './partials/SortMenu';
 import FilterMenu from './partials/FilterMenu';
 
 import {Resource} from '../../types/resources';
-import {IAMRole} from '../../types/IMAPolicy';
+import {IAMRole} from '../../types/IAMPolicy';
 
 import './ControlMenu.css';
 

@@ -3,7 +3,7 @@ import {useState} from 'react';
 import {Routes, Route} from 'react-router-dom';
 
 import {Resource, availableResourceTypes} from './types/resources';
-import {IAMRole} from './types/IMAPolicy';
+import {IAMRole} from './types/IAMPolicy';
 import ControlMenu from './components/ControlMenu/ControlMenu';
 import ResourcesPage from './pages/ResourcesPage';
 import IAMPolicyPage from './pages/IAMPolicyPage';
@@ -40,7 +40,7 @@ function App() {
         />
         <Route
           path="/static/iam-policy"
-          element={<IAMPolicyPage roles={roles} />}
+          element={<IAMPolicyPage roles={roles} emailQuery={searchQuery} />}
         />
       </Routes>
     </>

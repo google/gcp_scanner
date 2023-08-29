@@ -1,4 +1,4 @@
-import {IMAPolicyField} from './IMAPolicy';
+import {IMAPolicyField} from './IAMPolicy';
 
 type ResourceType =
   | 'Compute Instance'

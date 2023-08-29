@@ -67,7 +67,11 @@ const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
               type="text"
               name="search-input"
               id="search-input"
-              placeholder="Search"
+              placeholder={
+                location.pathname === '/static/iam-policy'
+                  ? 'Email'
+                  : 'Resources Name'
+              }
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
             />

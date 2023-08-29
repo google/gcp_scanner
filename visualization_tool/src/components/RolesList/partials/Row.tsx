@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import {IAMRole} from '../../../types/IMAPolicy';
+import {IAMRole} from '../../../types/IAMPolicy';
 
 type RowProps = {
   row: IAMRole;
