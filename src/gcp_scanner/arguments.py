@@ -149,7 +149,7 @@ token_uri and client_secret stored in JSON format.'
     )
   if not os.path.isdir(args.output):
     logging.error(
-      '\"%s\" doesn\'t exists. Please enter a valid directory path.', 
+      '\"%s\" doesn\'t exist. Please enter a valid directory path.', 
       args.output
     )
     sys.exit(ERROR_CODES.get('InvalidDirError'))
