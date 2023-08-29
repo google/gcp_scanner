@@ -17,6 +17,7 @@
 
 """
 import collections
+import concurrent
 import json
 import logging
 import multiprocessing
@@ -133,6 +134,10 @@ def save_results(res_data: Dict, res_path: str, is_light: bool):
     outfile.write(sa_results_data)
 
 
+def get_crawl(crawler, project_id, client, crawler_config):
+  return crawler.crawl(project_id, client, crawler_config)
+
+
 def get_resources(project: models.ProjectInfo):
   """The function crawls the data for a project and stores the results in a 
      dictionary.
@@ -164,24 +169,32 @@ def get_resources(project: models.ProjectInfo):
     logging.error('Try removing the %s file and restart the scanner.',
                   output_file_name)
 
-  for crawler_name, client_name in CRAWL_CLIENT_MAP.items():
-    if is_set(project.scan_config, crawler_name):
-      crawler_config = {}
-      if project.scan_config is not None:
-        crawler_config = project.scan_config.get(crawler_name)
-      # add gcs output path to the config.
-      # this path is used by the storage bucket crawler as of now.
-      crawler_config['gcs_output_path'] = gcs_output_path
-      # crawl the data
-      crawler = CrawlerFactory.create_crawler(crawler_name)
-      client = ClientFactory.get_client(client_name).get_service(
-        project.credentials,
-      )
-      project_result[crawler_name] = crawler.crawl(
-        project_id,
-        client,
-        crawler_config,
-      )
+  results_crawl_pool = dict()
+  with concurrent.futures.ThreadPoolExecutor(
+    max_workers=int(project.worker_count)) as executor:
+    for crawler_name, client_name in CRAWL_CLIENT_MAP.items():
+      if is_set(project.scan_config, crawler_name):
+        crawler_config = {}
+        if project.scan_config is not None:
+          crawler_config = project.scan_config.get(crawler_name)
+        # add gcs output path to the config.
+        # this path is used by the storage bucket crawler as of now.
+        crawler_config['gcs_output_path'] = gcs_output_path
+        # crawl the data
+        crawler = CrawlerFactory.create_crawler(crawler_name)
+        client = ClientFactory.get_client(client_name).get_service(
+          project.credentials,
+        )
+        results_crawl_pool[crawler_name] = executor.submit(
+          get_crawl,
+          crawler,
+          project_id,
+          client,
+          crawler_config,
+        )
+
+  for crawler_name, future_obj in results_crawl_pool.items():
+    project_result[crawler_name] = future_obj.result()
 
   # Call other miscellaneous crawlers here
   if is_set(project.scan_config, 'gke_clusters'):
@@ -481,7 +494,8 @@ def main():
         scan_time_suffix,
         sa_name,
         credentials,
-        chain_so_far
+        chain_so_far,
+        args.worker_count
       )
       project_queue.put(project_obj)
       impersonate_service_accounts(

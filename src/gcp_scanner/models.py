@@ -58,6 +58,7 @@ class ProjectInfo:
     sa_name,
     credentials,
     chain_so_far,
+    worker_count
   ):
     self.project = project
     self.sa_results = sa_results
@@ -69,3 +70,4 @@ class ProjectInfo:
     self.sa_name = sa_name
     self.credentials = credentials
     self.chain_so_far = chain_so_far
+    self.worker_count = worker_count
