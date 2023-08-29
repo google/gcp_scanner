@@ -170,7 +170,7 @@ def get_resources(project: models.ProjectInfo):
                   output_file_name)
 
   results_crawl_pool = dict()
-  with concurrent.futures.ThreadPoolExecutor() as executor:
+  with concurrent.futures.ThreadPoolExecutor(max_workers=int(project.worker_count) + 4) as executor:
     for crawler_name, client_name in CRAWL_CLIENT_MAP.items():
       if is_set(project.scan_config, crawler_name):
         crawler_config = {}
@@ -493,7 +493,8 @@ def main():
         scan_time_suffix,
         sa_name,
         credentials,
-        chain_so_far
+        chain_so_far,
+        args.worker_count
       )
       project_queue.put(project_obj)
       impersonate_service_accounts(
