@@ -6,7 +6,8 @@ export const useFilter = (
   resources: Resource[],
   searchQuery: string,
   sortAttribute: string,
-  allowedTypes: string[]
+  allowedTypes: string[],
+  allowedProjects: string[]
 ) => {
   const [filteredResources, setFilteredResources] =
     useState<Resource[]>(resources);
@@ -18,7 +19,8 @@ export const useFilter = (
           .filter(resource => {
             return (
               allowedTypes.includes(resource.type) &&
-              resource.name.toLowerCase().includes(searchQuery.toLowerCase())
+              resource.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+              allowedProjects.includes(resource.projectId)
             );
           })
           .sort((a, b) => {
@@ -35,7 +37,7 @@ export const useFilter = (
     };
 
     debounce(filterResources, 100)();
-  }, [resources, searchQuery, sortAttribute, allowedTypes]);
+  }, [resources, searchQuery, sortAttribute, allowedTypes, allowedProjects]);
 
   return filteredResources;
 };
