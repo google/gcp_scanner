@@ -13,6 +13,8 @@ function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortAttribute, setSortAttribute] = useState<string>('date');
   const [resources, setResources] = useState<Resource[]>([]);
+  const [projects, setProjects] = useState<string[]>([]);
+  const [allowedProjects, setAllowedProjects] = useState<string[]>(projects);
   const [allowedTypes, setAllowedTypes] = useState<string[]>(
     availableResourceTypes
   );
@@ -22,9 +24,12 @@ function App() {
       <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <ControlMenu
         setResources={setResources}
+        setProjects={setProjects}
         setSortAttribute={setSortAttribute}
         setAllowedTypes={setAllowedTypes}
         setRoles={setRoles}
+        projects={projects}
+        setAllowedProjects={setAllowedProjects}
       />
       <Routes>
         <Route

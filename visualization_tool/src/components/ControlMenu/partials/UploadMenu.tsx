@@ -9,11 +9,17 @@ import {parseData, parseIAMData} from '../Controller';
 type UploadMenuProps = {
   setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
   setRoles: React.Dispatch<React.SetStateAction<IAMRole[]>>;
+  setProjects: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const UploadMenu = ({setResources, setRoles}: UploadMenuProps) => {
+type File = {
+  name: string;
+  projects: string[];
+};
+
+const UploadMenu = ({setResources, setRoles, setProjects}: UploadMenuProps) => {
   const fileInput = useRef<HTMLInputElement>(null);
-  const [files, setFiles] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState<string | null>(null);
   return (
     <div className="menu-item">
@@ -35,7 +41,7 @@ const UploadMenu = ({setResources, setRoles}: UploadMenuProps) => {
             return;
           }
           // check if file is already uploaded
-          if (files.includes(file.name)) {
+          if (files.find(prevFile => prevFile.name === file.name)) {
             setError('File already uploaded');
             return;
           }
@@ -47,6 +53,10 @@ const UploadMenu = ({setResources, setRoles}: UploadMenuProps) => {
 
             try {
               const data = JSON.parse(result);
+              setProjects(prevProjects => [
+                ...prevProjects,
+                ...Object.keys(data.projects),
+              ]);
               const resources = parseData(data, file.name);
               setResources((prevResources: Resource[]) => [
                 ...prevResources,
@@ -56,7 +66,10 @@ const UploadMenu = ({setResources, setRoles}: UploadMenuProps) => {
               const roles = parseIAMData(data, file.name);
               setRoles((prevRoles: IAMRole[]) => [...prevRoles, ...roles]);
 
-              setFiles([...files, file.name]);
+              setFiles([
+                ...files,
+                {name: file.name, projects: Object.keys(data.projects)},
+              ]);
             } catch (err) {
               setError('Invalid file');
               return;
@@ -85,21 +98,32 @@ const UploadMenu = ({setResources, setRoles}: UploadMenuProps) => {
       {files.length > 0 && (
         <div className="files-list">
           {files.map(file => (
-            <div className="file-item" key={file}>
-              <p>{file}</p>
+            <div className="file-item" key={file.name}>
+              <p>{file.name}</p>
               <button
                 className="remove-button"
                 onClick={() => {
                   setFiles(prevFiles => {
-                    return prevFiles.filter(prevFile => prevFile !== file);
+                    return prevFiles.filter(
+                      prevFile => prevFile.name !== file.name
+                    );
                   });
+
+                  setProjects(prevProjects => {
+                    return prevProjects.filter(
+                      prevProject => !file.projects.includes(prevProject)
+                    );
+                  });
+
                   setResources(prevResources => {
                     return prevResources.filter(
-                      prevResource => prevResource.file !== file
+                      prevResource => prevResource.file !== file.name
                     );
                   });
                   setRoles(prevRoles => {
-                    return prevRoles.filter(prevRole => prevRole.file !== file);
+                    return prevRoles.filter(
+                      prevRole => prevRole.file !== file.name
+                    );
                   });
                 }}
               >
