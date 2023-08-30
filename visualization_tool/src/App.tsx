@@ -46,7 +46,13 @@ function App() {
         />
         <Route
           path="/static/iam-policy"
-          element={<IAMPolicyPage roles={roles} emailQuery={searchQuery} />}
+          element={
+            <IAMPolicyPage
+              roles={roles}
+              emailQuery={searchQuery}
+              allowedProjects={allowedProjects}
+            />
+          }
         />
       </Routes>
     </>

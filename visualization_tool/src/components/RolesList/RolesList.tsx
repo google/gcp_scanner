@@ -15,10 +15,11 @@ import './RolesList.css';
 type RolesListProps = {
   roles: IAMRole[];
   emailQuery: string;
+  allowedProjects: string[];
 };
 
-const RolesList = ({roles, emailQuery}: RolesListProps) => {
-  const filteredRoles = useFilter(roles, emailQuery);
+const RolesList = ({roles, emailQuery, allowedProjects}: RolesListProps) => {
+  const filteredRoles = useFilter(roles, emailQuery, allowedProjects);
   // console.log(filteredRoles);
 
   return (
