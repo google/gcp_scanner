@@ -11,6 +11,7 @@ type ResourcesListProps = {
   searchQuery: string;
   sortAttribute: string;
   allowedTypes: string[];
+  allowedProjects: string[];
 };
 
 const ResourcesList = ({
@@ -18,12 +19,14 @@ const ResourcesList = ({
   searchQuery,
   sortAttribute,
   allowedTypes,
+  allowedProjects,
 }: ResourcesListProps) => {
   const filteredResources = useFilter(
     resources,
     searchQuery,
     sortAttribute,
-    allowedTypes
+    allowedTypes,
+    allowedProjects
   );
   const [selectedResource, setSelectedResource] = useState<Resource | null>(
     null

@@ -40,6 +40,7 @@ function App() {
               searchQuery={searchQuery}
               sortAttribute={sortAttribute}
               allowedTypes={allowedTypes}
+              allowedProjects={allowedProjects}
             />
           }
         />

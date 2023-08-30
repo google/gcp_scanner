@@ -38,6 +38,7 @@ const ControlMenu = ({
           setResources={setResources}
           setRoles={setRoles}
           setProjects={setProjects}
+          setAllowedProjects={setAllowedProjects}
         />
         <FilterProjects
           projects={projects}

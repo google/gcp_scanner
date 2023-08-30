@@ -5,6 +5,7 @@ type ResourcesPageProps = {
   resources: Resource[];
   sortAttribute: string;
   allowedTypes: string[];
+  allowedProjects: string[];
   searchQuery: string;
 };
 
@@ -13,6 +14,7 @@ const ResourcesPage = ({
   searchQuery,
   sortAttribute,
   allowedTypes,
+  allowedProjects,
 }: ResourcesPageProps) => {
   return (
     <>
@@ -21,6 +23,7 @@ const ResourcesPage = ({
         searchQuery={searchQuery}
         sortAttribute={sortAttribute}
         allowedTypes={allowedTypes}
+        allowedProjects={allowedProjects}
       />
     </>
   );

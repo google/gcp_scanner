@@ -10,6 +10,7 @@ type UploadMenuProps = {
   setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
   setRoles: React.Dispatch<React.SetStateAction<IAMRole[]>>;
   setProjects: React.Dispatch<React.SetStateAction<string[]>>;
+  setAllowedProjects: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 type File = {
@@ -17,7 +18,12 @@ type File = {
   projects: string[];
 };
 
-const UploadMenu = ({setResources, setRoles, setProjects}: UploadMenuProps) => {
+const UploadMenu = ({
+  setResources,
+  setRoles,
+  setProjects,
+  setAllowedProjects,
+}: UploadMenuProps) => {
   const fileInput = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -54,6 +60,10 @@ const UploadMenu = ({setResources, setRoles, setProjects}: UploadMenuProps) => {
             try {
               const data = JSON.parse(result);
               setProjects(prevProjects => [
+                ...prevProjects,
+                ...Object.keys(data.projects),
+              ]);
+              setAllowedProjects(prevProjects => [
                 ...prevProjects,
                 ...Object.keys(data.projects),
               ]);
