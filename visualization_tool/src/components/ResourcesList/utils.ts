@@ -17,7 +17,7 @@ const typeToImage = (resource: Resource) => {
       return ComputeDisk;
     case 'Managed Zone':
       return ManagedZone;
-    case 'SQL Instance':
+    case 'Sql Instance':
       return SQLInstance;
     case 'Cloud Function':
       return CloudFunction;
