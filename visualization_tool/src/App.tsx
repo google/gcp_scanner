@@ -33,7 +33,7 @@ function App() {
       />
       <Routes>
         <Route
-          path="/static/"
+          path="/"
           element={
             <ResourcesPage
               resources={resources}
@@ -45,7 +45,7 @@ function App() {
           }
         />
         <Route
-          path="/static/iam-policy"
+          path="/iam-policy"
           element={
             <IAMPolicyPage
               roles={roles}
@@ -54,6 +54,8 @@ function App() {
             />
           }
         />
+
+        <Route path="*" element={<h1>404</h1>} />
       </Routes>
     </>
   );

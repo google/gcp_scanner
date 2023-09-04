@@ -44,7 +44,7 @@ const ControlMenu = ({
           projects={projects}
           setAllowedProjects={setAllowedProjects}
         />
-        {location.pathname === '/static/' && (
+        {location.pathname === '/' && (
           <>
             <SortMenu setSortAttribute={setSortAttribute} />
             <FilterMenu setAllowedTypes={setAllowedTypes} />

@@ -41,8 +41,8 @@ const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
       <div className="pages-nav">
         <div className="links">
           <Link
-            to="/static/"
-            className={location.pathname === '/static/' ? 'active' : ''}
+            to="/"
+            className={location.pathname === '/' ? 'active' : ''}
             onClick={() => {
               setSearchQuery('');
             }}
@@ -50,10 +50,8 @@ const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
             Resources
           </Link>
           <Link
-            to="/static/iam-policy"
-            className={
-              location.pathname === '/static/iam-policy' ? 'active' : ''
-            }
+            to="/iam-policy"
+            className={location.pathname === '/iam-policy' ? 'active' : ''}
             onClick={() => {
               setSearchQuery('');
             }}
@@ -68,9 +66,7 @@ const Navbar = ({searchQuery, setSearchQuery}: NavbarProps) => {
               name="search-input"
               id="search-input"
               placeholder={
-                location.pathname === '/static/iam-policy'
-                  ? 'Email'
-                  : 'Resources Name'
+                location.pathname === '/iam-policy' ? 'Email' : 'Resources Name'
               }
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
