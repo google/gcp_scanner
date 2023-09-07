@@ -20,18 +20,72 @@ import datetime
 import difflib
 import filecmp
 import json
+import logging
 import os
 import shutil
 import sqlite3
+import tempfile
 import unittest
 from unittest.mock import patch, Mock
 
 import requests
 from google.oauth2 import credentials
 
-from . import crawl
 from . import credsdb
 from . import scanner
+from .client.appengine_client import AppEngineClient
+from .client.bigquery_client import BQClient
+from .client.bigtable_client import BigTableClient
+from .client.client_factory import ClientFactory
+from .client.cloud_functions_client import CloudFunctionsClient
+from .client.cloud_resource_manager_client import CloudResourceManagerClient
+from .client.compute_client import ComputeClient
+from .client.datastore_client import DatastoreClient
+from .client.dns_client import DNSClient
+from .client.domains_client import DomainsClient
+from .client.filestore_client import FilestoreClient
+from .client.firestore_client import FirestoreClient
+from .client.iam_client import IAMClient
+from .client.kms_client import CloudKMSClient
+from .client.pubsub_client import PubSubClient
+from .client.service_management_client import ServiceManagementClient
+from .client.serviceusage_client import ServiceUsageClient
+from .client.sourcerepo_client import SourceRepoClient
+from .client.spanner_client import SpannerClient
+from .client.sql_client import SQLClient
+from .client.storage_client import StorageClient
+from .crawler import misc_crawler
+from .crawler.app_services_crawler import AppServicesCrawler
+from .crawler.bigquery_crawler import BigQueryCrawler
+from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
+from .crawler.cloud_functions_crawler import CloudFunctionsCrawler
+from .crawler.cloud_resource_manager_iam_policy_crawler import CloudResourceManagerIAMPolicyCrawler
+from .crawler.cloud_resource_manager_project_info_crawler import CloudResourceManagerProjectInfoCrawler
+from .crawler.cloud_resource_manager_project_list_crawler import CloudResourceManagerProjectListCrawler
+from .crawler.compute_disks_crawler import ComputeDisksCrawler
+from .crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
+from .crawler.compute_images_crawler import ComputeImagesCrawler
+from .crawler.compute_instances_crawler import ComputeInstancesCrawler
+from .crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
+from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
+from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
+from .crawler.crawler_factory import CrawlerFactory
+from .crawler.datastore_crawler import DatastoreCrawler
+from .crawler.dns_managed_zones_crawler import DNSManagedZonesCrawler
+from .crawler.dns_policies_crawler import DNSPoliciesCrawler
+from .crawler.domains_crawler import DomainsCrawler
+from .crawler.endpoints_crawler import EndpointsCrawler
+from .crawler.filestore_instances_crawler import FilestoreInstancesCrawler
+from .crawler.firestore_collections_crawler import FirestoreCollectionsCrawler
+from .crawler.kms_keys_crawler import KMSKeysCrawler
+from .crawler.machine_images_crawler import ComputeMachineImagesCrawler
+from .crawler.pubsub_subscriptions_crawler import PubSubSubscriptionsCrawler
+from .crawler.service_accounts_crawler import ServiceAccountsCrawler
+from .crawler.service_usage_crawler import ServiceUsageCrawler
+from .crawler.source_repo_crawler import CloudSourceRepoCrawler
+from .crawler.spanner_instances_crawler import SpannerInstancesCrawler
+from .crawler.sql_instances_crawler import SQLInstancesCrawler
+from .crawler.storage_buckets_crawler import StorageBucketsCrawler
 from .credsdb import get_scopes_from_refresh_token
 
 PROJECT_NAME = "test-gcp-scanner-2"
@@ -156,6 +210,65 @@ creds='test_data', token='ya.29c.TEST')]]"
   shutil.rmtree("unit")
 
 
+class TestGetSADetailsFromKeyFiles(unittest.TestCase):
+  """Test fetching sa credentials from keyfiles."""
+
+  @patch("gcp_scanner.scanner.credsdb.get_creds_from_file")
+  def test_get_sa_details_from_key_files(self, mocked_get_creds):
+    # create temp directory and keyfiles
+    with tempfile.TemporaryDirectory() as key_path:
+      open(f"{key_path}/keyfile1.json", "w", encoding="utf-8").close()
+      open(f"{key_path}/keyfile2.json", "w", encoding="utf-8").close()
+      mocked_get_creds.side_effect = [
+        ("account_name1", "credentials1"),
+        ("account_name2", "credentials2"),
+      ]
+      expect = [
+        ("account_name1", "credentials1", []),
+        ("account_name2", "credentials2", [])
+      ]
+
+      actual = scanner.get_sa_details_from_key_files(key_path)
+
+      self.assertEqual(actual, expect)
+
+  @patch("gcp_scanner.scanner.credsdb.get_creds_from_file")
+  def test_get_sa_details_from_key_files_without_json_file(
+    self, mocked_get_creds
+  ):
+    # create temp directory and keyfiles
+    with tempfile.TemporaryDirectory() as key_path:
+      open(f"{key_path}/keyfile1.txt", "w", encoding="utf-8").close()
+      open(f"{key_path}/keyfile2.txt", "w", encoding="utf-8").close()
+      mocked_get_creds.side_effect = [
+        ("account_name1", "credentials1"),
+        ("account_name2", "credentials2"),
+      ]
+      expect = []
+
+      actual = scanner.get_sa_details_from_key_files(key_path)
+
+      self.assertEqual(actual, expect)
+
+  @patch("gcp_scanner.scanner.credsdb.get_creds_from_file")
+  def test_get_sa_details_from_key_files_with_invalid_and_valid_key_file(
+    self, mocked_get_creds
+  ):
+    # create temp directory and keyfiles
+    with tempfile.TemporaryDirectory() as key_path:
+      open(f"{key_path}/keyfile1.json", "w", encoding="utf-8").close()
+      open(f"{key_path}/keyfile2.json", "w", encoding="utf-8").close()
+      mocked_get_creds.side_effect = [
+        ("account_name1", "credentials1"),
+        Exception("Malformed keys")
+      ]
+      expect = [("account_name1", "credentials1", [])]
+
+      actual = scanner.get_sa_details_from_key_files(key_path)
+
+      self.assertEqual(actual, expect)
+
+
 class TestScopes(unittest.TestCase):
   """Test fetching scopes from a refresh token."""
 
@@ -258,9 +371,6 @@ class TestCrawler(unittest.TestCase):
 
   def setUp(self):
     _, self.credentials = credsdb.get_creds_from_metadata()
-    self.compute_client = scanner.compute_client_for_credentials(
-      self.credentials,
-    )
 
   def test_credential(self):
     """Checks if credential is not none."""
@@ -270,7 +380,12 @@ class TestCrawler(unittest.TestCase):
     """Test compute instance name."""
     self.assertTrue(
       verify(
-        crawl.get_compute_instances_names(PROJECT_NAME, self.compute_client),
+        CrawlerFactory.create_crawler(
+          "compute_instances",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "compute_instances",
         True,
       )
@@ -280,7 +395,12 @@ class TestCrawler(unittest.TestCase):
     """Test compute disk names."""
     self.assertTrue(
       verify(
-        crawl.get_compute_disks_names(PROJECT_NAME, self.compute_client),
+        CrawlerFactory.create_crawler(
+          "compute_disks",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "compute_disks",
         True,
       )
@@ -290,7 +410,12 @@ class TestCrawler(unittest.TestCase):
     """Test compute image names."""
     self.assertTrue(
       verify(
-        crawl.get_compute_images_names(PROJECT_NAME, self.compute_client),
+        CrawlerFactory.create_crawler(
+          "compute_images",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "compute_images",
         True,
       )
@@ -300,7 +425,12 @@ class TestCrawler(unittest.TestCase):
     """Test machine images"""
     self.assertTrue(
       verify(
-        crawl.get_machine_images(PROJECT_NAME, self.compute_client),
+        CrawlerFactory.create_crawler(
+          "machine_images",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "machine_images",
         True,
       )
@@ -310,7 +440,12 @@ class TestCrawler(unittest.TestCase):
     """Test static IPs."""
     self.assertTrue(
       verify(
-        crawl.get_static_ips(PROJECT_NAME, self.compute_client),
+        CrawlerFactory.create_crawler(
+          "static_ips",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "static_ips",
         True,
       )
@@ -320,7 +455,14 @@ class TestCrawler(unittest.TestCase):
     """Test compute snapshot."""
     self.assertTrue(
       verify(
-        crawl.get_compute_snapshots(PROJECT_NAME, self.compute_client),
+        CrawlerFactory.create_crawler(
+          "compute_snapshots",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(
+            self.credentials,
+          ),
+        ),
         "compute_snapshots",
         True,
       )
@@ -330,7 +472,14 @@ class TestCrawler(unittest.TestCase):
     """Test firewall rules."""
     self.assertTrue(
       verify(
-        crawl.get_firewall_rules(PROJECT_NAME, self.compute_client),
+        CrawlerFactory.create_crawler(
+          "firewall_rules",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(
+            self.credentials,
+          ),
+        ),
         "firewall_rules",
       )
     )
@@ -339,7 +488,12 @@ class TestCrawler(unittest.TestCase):
     """Test subnets."""
     self.assertTrue(
       verify(
-        crawl.get_subnets(PROJECT_NAME, self.compute_client),
+        CrawlerFactory.create_crawler(
+          "subnets",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
         "subnets",
         True,
       )
@@ -347,12 +501,19 @@ class TestCrawler(unittest.TestCase):
 
   def test_storage_buckets(self):
     """Test storage bucket."""
+    config = {
+      "fetch_buckets_iam": True
+    }
     self.assertTrue(
       verify(
-        crawl.get_bucket_names(
+        CrawlerFactory.create_crawler(
+          "storage_buckets",
+        ).crawl(
           PROJECT_NAME,
-          credentials=self.credentials,
-          dump_fd=None,
+          service=ClientFactory.get_client("storage").get_service(
+            self.credentials,
+          ),
+          config=config,
         ),
         "storage_buckets",
       )
@@ -362,7 +523,12 @@ class TestCrawler(unittest.TestCase):
     """Test managed zones."""
     self.assertTrue(
       verify(
-        crawl.get_managed_zones(PROJECT_NAME, credentials=self.credentials),
+        CrawlerFactory.create_crawler(
+          "managed_zones",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("dns").get_service(self.credentials),
+        ),
         "managed_zones",
         True,
       )
@@ -375,7 +541,7 @@ class TestCrawler(unittest.TestCase):
     )
     self.assertTrue(
       verify(
-        crawl.get_gke_clusters(PROJECT_NAME, gke_client),
+        misc_crawler.get_gke_clusters(PROJECT_NAME, gke_client),
         "gke_clusters",
       )
     )
@@ -383,7 +549,7 @@ class TestCrawler(unittest.TestCase):
   def test_gke_images(self):
     self.assertTrue(
       verify(
-        crawl.get_gke_images(PROJECT_NAME, self.credentials.token),
+        misc_crawler.get_gke_images(PROJECT_NAME, self.credentials.token),
         "gke_images",
         True,
       )
@@ -393,7 +559,12 @@ class TestCrawler(unittest.TestCase):
     """Test app services."""
     self.assertTrue(
       verify(
-        crawl.get_app_services(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "app_services",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("appengine").get_service(self.credentials),
+        ),
         "app_services",
       )
     )
@@ -402,7 +573,12 @@ class TestCrawler(unittest.TestCase):
     """Test SQL instances."""
     self.assertTrue(
       verify(
-        crawl.get_sql_instances(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "sql_instances",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("sqladmin").get_service(self.credentials),
+        ),
         "sql_instances",
         True,
       )
@@ -412,7 +588,12 @@ class TestCrawler(unittest.TestCase):
     """Test BigQuery databases and table names."""
     self.assertTrue(
       verify(
-        crawl.get_bq(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "bq",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("bigquery").get_service(self.credentials),
+        ),
         "bq",
       )
     )
@@ -421,7 +602,12 @@ class TestCrawler(unittest.TestCase):
     """Test PubSub Subscriptions."""
     self.assertTrue(
       verify(
-        crawl.get_pubsub_subscriptions(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "pubsub_subs",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("pubsub").get_service(self.credentials),
+        ),
         "pubsub_subs",
       )
     )
@@ -430,7 +616,14 @@ class TestCrawler(unittest.TestCase):
     """Test CloudFunctions list."""
     self.assertTrue(
       verify(
-        crawl.get_cloudfunctions(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "cloud_functions",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("cloudfunctions").get_service(
+            self.credentials,
+          ),
+        ),
         "cloud_functions",
       )
     )
@@ -439,7 +632,14 @@ class TestCrawler(unittest.TestCase):
     """Test BigTable Instances."""
     self.assertTrue(
       verify(
-        crawl.get_bigtable_instances(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "bigtable_instances",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("bigtableadmin").get_service(
+            self.credentials,
+          ),
+        ),
         "bigtable_instances",
       )
     )
@@ -448,7 +648,12 @@ class TestCrawler(unittest.TestCase):
     """Test Spanner Instances."""
     self.assertTrue(
       verify(
-        crawl.get_spanner_instances(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "spanner_instances",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("spanner").get_service(self.credentials),
+        ),
         "spanner_instances",
       )
     )
@@ -457,7 +662,12 @@ class TestCrawler(unittest.TestCase):
     """Test FileStore Instances."""
     self.assertTrue(
       verify(
-        crawl.get_filestore_instances(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "filestore_instances",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("file").get_service(self.credentials),
+        ),
         "filestore_instances",
       )
     )
@@ -466,7 +676,12 @@ class TestCrawler(unittest.TestCase):
     """Test list of KMS keys."""
     self.assertTrue(
       verify(
-        crawl.get_kms_keys(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "kms"
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("cloudkms").get_service(self.credentials),
+        ),
         "kms",
         True,
       )
@@ -476,7 +691,14 @@ class TestCrawler(unittest.TestCase):
     """Test endpoints' information."""
     self.assertTrue(
       verify(
-        crawl.get_endpoints(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "endpoints"
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("servicemanagement").get_service(
+            self.credentials,
+          ),
+        ),
         "endpoints",
       )
     )
@@ -485,7 +707,14 @@ class TestCrawler(unittest.TestCase):
     """Test list of API services enabled in the project."""
     self.assertTrue(
       verify(
-        crawl.list_services(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "services",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("serviceusage").get_service(
+            self.credentials,
+          ),
+        ),
         "services",
         True
       )
@@ -495,7 +724,14 @@ class TestCrawler(unittest.TestCase):
     """Test IAM policy."""
     self.assertTrue(
       verify(
-        crawl.get_iam_policy(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "iam_policy",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("cloudresourcemanager").get_service(
+            self.credentials,
+          ),
+        ),
         "iam_policy",
       )
     )
@@ -504,7 +740,14 @@ class TestCrawler(unittest.TestCase):
     """Test service accounts."""
     self.assertTrue(
       verify(
-        crawl.get_service_accounts(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "service_accounts",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("iam").get_service(
+            self.credentials,
+          ),
+        ),
         "service_accounts",
       )
     )
@@ -513,7 +756,14 @@ class TestCrawler(unittest.TestCase):
     """Test project info."""
     self.assertTrue(
       verify(
-        crawl.fetch_project_info(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "project_info",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("cloudresourcemanager").get_service(
+            self.credentials,
+          ),
+        ),
         "project_info",
       )
     )
@@ -522,7 +772,12 @@ class TestCrawler(unittest.TestCase):
     """Test list of cloud source repositories in the project."""
     self.assertTrue(
       verify(
-        crawl.list_sourcerepo(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "sourcerepos",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("sourcerepo").get_service(self.credentials),
+        ),
         "sourcerepos",
       )
     )
@@ -531,7 +786,327 @@ class TestCrawler(unittest.TestCase):
     """Test cloud DNS policies."""
     self.assertTrue(
       verify(
-        crawl.list_dns_policies(PROJECT_NAME, self.credentials),
+        CrawlerFactory.create_crawler(
+          "dns_policies",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("dns").get_service(self.credentials)
+        ),
         "dns_policies",
       )
     )
+
+  def test_firestore_collections(self):
+    """Test Firestore collection ids."""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+          "firestore_collections",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("firestore").get_service(self.credentials),
+        ),
+        "firestore_collections",
+        False,
+      )
+    )
+
+  def test_datastore_kinds(self):
+    """Test Datastore kinds."""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+          "datastore_kinds",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("datastore").get_service(self.credentials),
+        ),
+        "datastore_kinds",
+      )
+    )
+
+  def test_cloud_domains(self):
+    """Test Cloud Domains."""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+          "registered_domains",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("domains").get_service(self.credentials),
+        ),
+        "registered_domains",
+      )
+    )
+
+
+class TestClientFactory(unittest.TestCase):
+  """Unit tests for the ClientFactory class."""
+
+  def test_get_client_dns(self):
+    """Test get_client method with 'dns' name."""
+    client = ClientFactory.get_client("dns")
+    self.assertIsInstance(client, DNSClient)
+
+  def test_get_client_compute(self):
+    """Test get_client method with 'compute' name."""
+    client = ClientFactory.get_client("compute")
+    self.assertIsInstance(client, ComputeClient)
+
+  def test_get_client_appengine(self):
+    """Test get_client method with 'appengine' name."""
+    client = ClientFactory.get_client("appengine")
+    self.assertIsInstance(client, AppEngineClient)
+
+  def test_get_client_storage(self):
+    """Test get_client method with 'storage' name."""
+    client = ClientFactory.get_client("storage")
+    self.assertIsInstance(client, StorageClient)
+
+  def test_get_client_sql(self):
+    """Test get_client method with 'sqladmin' name."""
+    client = ClientFactory.get_client("sqladmin")
+    self.assertIsInstance(client, SQLClient)
+
+  def test_get_client_bq(self):
+    """Test get_client method with 'bigquery' name."""
+    client = ClientFactory.get_client("bigquery")
+    self.assertIsInstance(client, BQClient)
+
+  def test_get_client_pubsub(self):
+    """Test get_client method with 'pubsub' name."""
+    client = ClientFactory.get_client("pubsub")
+    self.assertIsInstance(client, PubSubClient)
+
+  def test_get_client_cloudfunctions(self):
+    """Test get_client method with 'cloudfunctions' name."""
+    client = ClientFactory.get_client("cloudfunctions")
+    self.assertIsInstance(client, CloudFunctionsClient)
+
+  def test_get_client_bigtable(self):
+    """Test get_client method with 'bigtableadmin' name."""
+    client = ClientFactory.get_client("bigtableadmin")
+    self.assertIsInstance(client, BigTableClient)
+
+  def test_get_client_spanner(self):
+    """Test get_client method with 'spanner' name."""
+    client = ClientFactory.get_client("spanner")
+    self.assertIsInstance(client, SpannerClient)
+
+  def test_get_client_filestore(self):
+    """Test get_client method with 'spanner' name."""
+    client = ClientFactory.get_client("file")
+    self.assertIsInstance(client, FilestoreClient)
+
+  def test_get_client_cloud_kms(self):
+    """Test get_client method with 'cloudkms' name."""
+    client = ClientFactory.get_client("cloudkms")
+    self.assertIsInstance(client, CloudKMSClient)
+
+  def test_get_client_service_management(self):
+    """Test get_client method with 'servicemanagement' name."""
+    client = ClientFactory.get_client("servicemanagement")
+    self.assertIsInstance(client, ServiceManagementClient)
+
+  def test_get_client_source_repo(self):
+    """Test get_client method with 'sourcerepo' name."""
+    client = ClientFactory.get_client("sourcerepo")
+    self.assertIsInstance(client, SourceRepoClient)
+
+  def test_get_client_cloud_resource_manager(self):
+    """Test get_client method with 'cloudresourcemanager' name."""
+    client = ClientFactory.get_client("cloudresourcemanager")
+    self.assertIsInstance(client, CloudResourceManagerClient)
+
+  def test_get_client_service_usage(self):
+    """Test get_client method with 'serviceusage' name."""
+    client = ClientFactory.get_client("serviceusage")
+    self.assertIsInstance(client, ServiceUsageClient)
+
+  def test_get_client_iam(self):
+    """Test get_client method with 'iam' name."""
+    client = ClientFactory.get_client("iam")
+    self.assertIsInstance(client, IAMClient)
+
+  def test_get_client_firestore(self):
+    """Test get_client method with 'firestore' name."""
+    client = ClientFactory.get_client("firestore")
+    self.assertIsInstance(client, FirestoreClient)
+
+  def test_get_client_datastore(self):
+    """Test get_client method with 'datastore' name."""
+    client = ClientFactory.get_client("datastore")
+    self.assertIsInstance(client, DatastoreClient)
+
+  def test_get_client_domains(self):
+    """Test get_client method with 'domains' name."""
+    client = ClientFactory.get_client("domains")
+    self.assertIsInstance(client, DomainsClient)
+
+  def test_get_client_invalid(self):
+    """Test get_client method with invalid name."""
+    with self.assertLogs(level=logging.ERROR) as log:
+      client = ClientFactory.get_client("invalid")
+      self.assertIsNone(client)
+      self.assertEqual(log.output, ["ERROR:root:Client not supported."])
+
+
+class TestCrawlerFactory(unittest.TestCase):
+  """Unit tests for the CrawlerFactory class."""
+
+  def test_create_crawler_app_services(self):
+    """Test create_crawler method with 'app_services' name."""
+    crawler = CrawlerFactory.create_crawler("app_services")
+    self.assertIsInstance(crawler, AppServicesCrawler)
+
+  def test_create_crawler_bigquery(self):
+    """Test create_crawler method with 'bigquery' name."""
+    crawler = CrawlerFactory.create_crawler("bq")
+    self.assertIsInstance(crawler, BigQueryCrawler)
+
+  def test_create_crawler_cloud_functions(self):
+    """Test create_crawler method with 'cloud_functions' name."""
+    crawler = CrawlerFactory.create_crawler("cloud_functions")
+    self.assertIsInstance(crawler, CloudFunctionsCrawler)
+
+  def test_create_crawler_bigtable_instances(self):
+    """Test create_crawler method with 'app_services' name."""
+    crawler = CrawlerFactory.create_crawler("bigtable_instances")
+    self.assertIsInstance(crawler, BigTableInstancesCrawler)
+
+  def test_create_crawler_cloud_resource_manager_iam_policy(self):
+    """Test create_crawler method with 'iam_policy' name."""
+    crawler = CrawlerFactory.create_crawler("iam_policy")
+    self.assertIsInstance(crawler, CloudResourceManagerIAMPolicyCrawler)
+
+  def test_create_crawler_cloud_resource_manager_project_info(self):
+    """Test create_crawler method with 'project_info' name."""
+    crawler = CrawlerFactory.create_crawler("project_info")
+    self.assertIsInstance(crawler, CloudResourceManagerProjectInfoCrawler)
+
+  def test_create_crawler_cloud_resource_manager_project_list(self):
+    """Test create_crawler method with 'project_list' name."""
+    crawler = CrawlerFactory.create_crawler("project_list")
+    self.assertIsInstance(crawler, CloudResourceManagerProjectListCrawler)
+
+  def test_create_crawler_compute_instances(self):
+    """Test create_crawler method with 'compute_instances' name."""
+    crawler = CrawlerFactory.create_crawler("compute_instances")
+    self.assertIsInstance(crawler, ComputeInstancesCrawler)
+
+  def test_create_crawler_compute_images(self):
+    """Test create_crawler method with 'compute_images' name."""
+    crawler = CrawlerFactory.create_crawler("compute_images")
+    self.assertIsInstance(crawler, ComputeImagesCrawler)
+
+  def test_create_crawler_compute_machine_images(self):
+    """Test create_crawler method with 'machine_images' name."""
+    crawler = CrawlerFactory.create_crawler("machine_images")
+    self.assertIsInstance(crawler, ComputeMachineImagesCrawler)
+
+  def test_create_crawler_compute_disks(self):
+    """Test create_crawler method with 'compute_disks' name."""
+    crawler = CrawlerFactory.create_crawler("compute_disks")
+    self.assertIsInstance(crawler, ComputeDisksCrawler)
+
+  def test_create_crawler_compute_static_ips(self):
+    """Test create_crawler method with 'static_ips' name."""
+    crawler = CrawlerFactory.create_crawler("static_ips")
+    self.assertIsInstance(crawler, ComputeStaticIPsCrawler)
+
+  def test_create_crawler_compute_snapshots(self):
+    """Test create_crawler method with 'compute_snapshots' name."""
+    crawler = CrawlerFactory.create_crawler("compute_snapshots")
+    self.assertIsInstance(crawler, ComputeSnapshotsCrawler)
+
+  def test_create_crawler_source_repos(self):
+    """Test create_crawler method with 'sourcerepos' name."""
+    crawler = CrawlerFactory.create_crawler("sourcerepos")
+    self.assertIsInstance(crawler, CloudSourceRepoCrawler)
+
+  def test_create_crawler_compute_subnets(self):
+    """Test create_crawler method with 'subnets' name."""
+    crawler = CrawlerFactory.create_crawler("subnets")
+    self.assertIsInstance(crawler, ComputeSubnetsCrawler)
+
+  def test_create_crawler_compute_firewall_rules(self):
+    """Test create_crawler method with 'firewall_rules' name."""
+    crawler = CrawlerFactory.create_crawler("firewall_rules")
+    self.assertIsInstance(crawler, ComputeFirewallRulesCrawler)
+
+  def test_create_crawler_sql_instances(self):
+    """Test create_crawler method with 'sql_instances' name."""
+    crawler = CrawlerFactory.create_crawler("sql_instances")
+    self.assertIsInstance(crawler, SQLInstancesCrawler)
+
+  def test_create_crawler_spanner_instances(self):
+    """Test create_crawler method with 'spanner_instances' name."""
+    crawler = CrawlerFactory.create_crawler("spanner_instances")
+    self.assertIsInstance(crawler, SpannerInstancesCrawler)
+
+  def test_create_crawler_filestore_instances(self):
+    """Test create_crawler method with 'filestore_instances' name."""
+    crawler = CrawlerFactory.create_crawler("filestore_instances")
+    self.assertIsInstance(crawler, FilestoreInstancesCrawler)
+
+  def test_create_crawler_kms_keys(self):
+    """Test create_crawler method with 'kms_keys' name."""
+    crawler = CrawlerFactory.create_crawler("kms")
+    self.assertIsInstance(crawler, KMSKeysCrawler)
+
+  def test_create_crawler_pubsub_subscriptions(self):
+    """Test create_crawler method with 'pubsub_subs' name."""
+    crawler = CrawlerFactory.create_crawler("pubsub_subs")
+    self.assertIsInstance(crawler, PubSubSubscriptionsCrawler)
+
+  def test_create_crawler_dns_managed_zones(self):
+    """Test create_crawler method with 'managed_zones' name."""
+    crawler = CrawlerFactory.create_crawler("managed_zones")
+    self.assertIsInstance(crawler, DNSManagedZonesCrawler)
+
+  def test_create_crawler_dns_policies(self):
+    """Test create_crawler method with 'dns_policies' name."""
+    crawler = CrawlerFactory.create_crawler("dns_policies")
+    self.assertIsInstance(crawler, DNSPoliciesCrawler)
+
+  def test_create_crawler_service_usage(self):
+    """Test create_crawler method with 'services' name."""
+    crawler = CrawlerFactory.create_crawler("services")
+    self.assertIsInstance(crawler, ServiceUsageCrawler)
+
+  def test_create_crawler_endpoints(self):
+    """Test create_crawler method with 'endpoints' name."""
+    crawler = CrawlerFactory.create_crawler("endpoints")
+    self.assertIsInstance(crawler, EndpointsCrawler)
+
+  def test_create_crawler_service_accounts(self):
+    """Test create_crawler method with 'service_accounts' name."""
+    crawler = CrawlerFactory.create_crawler("service_accounts")
+    self.assertIsInstance(crawler, ServiceAccountsCrawler)
+
+  def test_create_crawler_storage_bucket(self):
+    """Test create_crawler method with 'storage_buckets' name."""
+    crawler = CrawlerFactory.create_crawler("storage_buckets")
+    self.assertIsInstance(crawler, StorageBucketsCrawler)
+
+  def test_create_crawler_firestore_collections(self):
+    """Test create_crawler method with 'firestore_collections' name."""
+    crawler = CrawlerFactory.create_crawler("firestore_collections")
+    self.assertIsInstance(crawler, FirestoreCollectionsCrawler)
+
+  def test_create_crawler_datastore_kinds(self):
+    """Test create_crawler method with 'datastore_kinds' name."""
+    crawler = CrawlerFactory.create_crawler("datastore_kinds")
+    self.assertIsInstance(crawler, DatastoreCrawler)
+
+  def test_create_crawler_registered_domains(self):
+    """Test create_crawler method with 'registered_domains' name."""
+    crawler = CrawlerFactory.create_crawler("registered_domains")
+    self.assertIsInstance(crawler, DomainsCrawler)
+
+  def test_create_crawler_invalid(self):
+    """Test create_crawler method with invalid name."""
+    with self.assertLogs(level=logging.ERROR) as log:
+      crawler = CrawlerFactory.create_crawler("invalid")
+      self.assertIsNone(crawler)
+      self.assertEqual(log.output, ["ERROR:root:Crawler not supported."])

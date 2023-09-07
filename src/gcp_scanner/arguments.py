@@ -19,6 +19,10 @@
 
 import argparse
 import logging
+import os
+import sys
+
+from .error_handler import ERROR_CODES
 
 def arg_parser():
   """Creates an argument parser using the `argparse` module and defines
@@ -124,6 +128,12 @@ token_uri and client_secret stored in JSON format.'
       dest='log_file',
       help='Save logs to the path specified rather than displaying in\
  console')
+  parser.add_argument(
+      '-wc',
+      '--worker-count',
+      default=1,
+      dest='worker_count',
+      help='Set limit for workers run in parallel.')
 
   args: argparse.Namespace = parser.parse_args()
 
@@ -137,5 +147,11 @@ token_uri and client_secret stored in JSON format.'
         'Please select at least one option to begin scan\
  -k/--sa-key-path,-g/--gcloud-profile-path, -m, -rt, -at'
     )
+  if not os.path.isdir(args.output):
+    logging.error(
+      '\"%s\" doesn\'t exist. Please enter a valid directory path.', 
+      args.output
+    )
+    sys.exit(ERROR_CODES.get('InvalidDirError'))
 
   return args

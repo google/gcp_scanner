@@ -28,7 +28,8 @@
   "storage_buckets": {
     "fetch": true,
     "comment": "Fetch GCS Buckets",
-    "fetch_file_names": false
+    "fetch_file_names": false,
+    "fetch_buckets_iam": true
   },
   "managed_zones": {
     "fetch": true
@@ -84,6 +85,15 @@
     "impersonate": false
   },
   "dns_policies": {
+    "fetch": true
+  },
+  "firestore_collections": {
+    "fetch": true
+  },
+  "datastore_kinds": {
+    "fetch": true
+  },
+  "registered_domains": {
     "fetch": true
   }
 }

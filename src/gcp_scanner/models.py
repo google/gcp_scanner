@@ -37,3 +37,37 @@ class SpiderContext:
     self.service_account_queue = queue.Queue()
     for sa_tuple in sa_tuples:
       self.service_account_queue.put(sa_tuple)
+
+  def __repr__(self) -> str:
+    return f"{list(self.service_account_queue.queue)}"
+
+
+class ProjectInfo:
+  """A simple class to store project scan configration.
+  """
+
+  def __init__(
+    self,
+    project,
+    sa_results,
+    out_dir,
+    scan_config,
+    light_scan,
+    target_project,
+    scan_time_suffix,
+    sa_name,
+    credentials,
+    chain_so_far,
+    worker_count
+  ):
+    self.project = project
+    self.sa_results = sa_results
+    self.out_dir = out_dir
+    self.scan_config = scan_config
+    self.light_scan = light_scan
+    self.target_project = target_project
+    self.scan_time_suffix = scan_time_suffix
+    self.sa_name = sa_name
+    self.credentials = credentials
+    self.chain_so_far = chain_so_far
+    self.worker_count = worker_count

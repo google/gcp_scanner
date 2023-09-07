@@ -1,0 +1,16 @@
+{
+  "kinds": [
+    CHECK "Person",
+    CHECK "Pet",
+    CHECK "Toy",
+    "__Stat_Kind_IsRootEntity__",
+    "__Stat_Kind__",
+    "__Stat_PropertyName_Kind__",
+    "__Stat_PropertyType_Kind__",
+    "__Stat_PropertyType_PropertyName_Kind__",
+    "__Stat_PropertyType__",
+    "__Stat_Total__",
+    "gsoc-2023",
+    "test-collection-2"
+  ]
+}

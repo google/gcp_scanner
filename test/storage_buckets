@@ -1,28 +1,45 @@
 {
 CHECK  "gcp-scanner-test-bucket
-    "kind": "storage#bucket",
-    "selfLink": "https://www.googleapis.com/storage/v1/b/gcp-scanner-test-bucket",
-CHECK    "id": "gcp-scanner-test-bucket
-CHECK    "name": "gcp-scanner-test-bucket
-    "projectNumber": "413204024550",
-    "metageneration": "1",
-    "location": "US",
-    "storageClass": "STANDARD",
-    "etag": "CAE=",
-    "timeCreated": "2022-06-07T02:54:46.416Z",
-    "updated": "2022-06-07T02:54:46.416Z",
-    "iamConfiguration": {
-      "bucketPolicyOnly": {
-        "enabled": true,
-        "lockedTime": "2022-09-05T02:54:46.416Z"
-      },
-      "uniformBucketLevelAccess": {
-        "enabled": true,
-        "lockedTime": "2022-09-05T02:54:46.416Z"
-      },
-      "publicAccessPrevention": "inherited"
+  "kind": "storage#bucket",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/gcp-scanner-test-bucket-tma0zfph",
+CHECK  "id": "gcp-scanner-test-bucket
+CHECK  "name": "gcp-scanner-test-bucket
+  "projectNumber": "1076721540910",
+  "metageneration": "2",
+  "location": "US-CENTRAL1",
+  "storageClass": "STANDARD",
+  "etag": "CAI=",
+  "timeCreated": "2023-04-26T18:40:16.345Z",
+  "updated": "2023-06-14T17:14:44.137Z",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
     },
-    "locationType": "multi-region",
-    "rpo": "DEFAULT"
-  ],
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited"
+  },
+  "locationType": "region",
+CHECK  "iam_policy": [
+    {
+      "role": "roles/storage.legacyBucketOwner",
+      "members": [
+        "projectEditor:test-gcp-scanner-2",
+        "projectOwner:test-gcp-scanner-2"
+      ]
+    },
+    {
+      "role": "roles/storage.legacyBucketReader",
+      "members": [
+        "projectViewer:test-gcp-scanner-2"
+      ]
+    },
+    {
+CHECK      "role": "roles/storage.objectViewer",
+CHECK      "members": [
+CHECK        "serviceAccount:1076721540910-compute@developer.gserviceaccount.com"
+      ]
+    }
+  ]
 }

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from src.gcp_scanner import scanner
 
+"""Error Handler 
 
-if __name__ == "__main__":
-  scanner.main()
+"""
+
+# Exit codes for Exception:
+# Error code 1 is reserved for all other kinds of errors
+# Error code 2 is reserved for command line errors
+ERROR_CODES = {
+  "InvalidDirError": 3
+}
