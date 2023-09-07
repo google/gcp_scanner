@@ -4,7 +4,7 @@ The GCP Scanner Visualizer is a web-based tool that can help you visualize the r
 
 ## Running the tool
 
-To run the tool, you can use the following command `gcc-scanner-visualizer`. The tool will start a web server on port 8080. You can change the port by using the `-p` option.
+To run the tool, you can use the following command `gcp-scanner-visualizer`. The tool will start a web server on port 8080. You can change the port by using the `-p` option.
 
 Then you can open your browser and navigate to `http://localhost:8080` to use the tool.
 
