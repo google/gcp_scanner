@@ -7,7 +7,6 @@ This project is not an official Google project. It is not supported by
 Google and Google specifically disclaims all warranties as to its quality,
 merchantability, or fitness for a particular purpose.
 
-
 ### GCP Scanner
 
 ![Logo](misc/gcp_scanner_logo.png?raw=true "Logo of GCP Scanner")
@@ -15,28 +14,30 @@ merchantability, or fitness for a particular purpose.
 This is a GCP resource scanner that can help determine what level of access certain credentials possess on GCP. The scanner is designed to help security engineers evaluate the impact of a certain VM/container compromise, GCP service account or OAuth2 token key leak.
 
 Currently, the scanner supports the following GCP resources:
-* GCE
-* GCS
-* GKE
-* App Engine
-* Cloud SQL
-* BigQuery
-* Spanner
-* Pub/Sub
-* Cloud Functions
-* BigTable
-* CloudStore
-* KMS
-* Cloud Services
-* The scanner supports SA [impersonation](https://cloud.google.com/iam/docs/impersonating-service-accounts)
+
+- GCE
+- GCS
+- GKE
+- App Engine
+- Cloud SQL
+- BigQuery
+- Spanner
+- Pub/Sub
+- Cloud Functions
+- BigTable
+- CloudStore
+- KMS
+- Cloud Services
+- The scanner supports SA [impersonation](https://cloud.google.com/iam/docs/impersonating-service-accounts)
 
 The scanner supports extracting and using the following types of credentials:
-* GCP VM instance metadata;
-* User credentials stored in gcloud profiles;
-* OAuth2 Refresh Token with cloud-platform scope granted;
-* GCP service account key in JSON format.
 
-The scanner does not rely on any third-party tool (e.g. gcloud). Thus, it can be compiled as a standalone tool and used on a machine with no GCP SDK installed (e.g. a Kubernetes pod). However, please keep in mind that the only OS that is currently supported is Linux. 
+- GCP VM instance metadata;
+- User credentials stored in gcloud profiles;
+- OAuth2 Refresh Token with cloud-platform scope granted;
+- GCP service account key in JSON format.
+
+The scanner does not rely on any third-party tool (e.g. gcloud). Thus, it can be compiled as a standalone tool and used on a machine with no GCP SDK installed (e.g. a Kubernetes pod). However, please keep in mind that the only OS that is currently supported is Linux.
 
 Please note that GCP offers [Policy Analyzer](https://cloud.google.com/policy-intelligence/docs/analyze-iam-policies) to find out which principals (users, service accounts, groups, and domains), have what access to which Google Cloud resources. However, it requires specific permissions on the GCP project and the Cloud Assets API needs to be enabled. If you just have a GCP SA key, access to a previously compromised VM, or an OAUth2 refresh token, gcp_scanner is the best option to use.
 
@@ -50,6 +51,7 @@ gcp-scanner --help
 ```
 
 Alternatively:
+
 ```
 git clone https://github.com/google/gcp_scanner
 cd gcp_scanner
@@ -99,17 +101,30 @@ Required parameters:
 
 Option `-f` requires an additional explanation. In some cases, the service account does not have permissions to explicitly list project names. However, it still might have access to underlying resources if we provide the correct project name. This option is specifically designed to handle such cases.
 
-
 ### Building a standalone binary with PyInstaller
 
 Please replace `google-api-python-client==2.80.0` with `google-api-python-client==1.8.0` in `pyproject.toml`. After that, navigate to the scanner source code directory and use pyinstaller to compile a standalone binary:
 
 `pyinstaller -F --add-data 'roots.pem:grpc/_cython/_credentials/' scanner.py`
 
-
 ### Working with results
 
-The GCP Scanner produces a standard JSON file that can be handled by any JSON Viewer or DB. If you just need a convenient way to grep JSON results, we can recommend [gron](https://github.com/tomnomnom/gron).
+The GCP Scanner produces a standard JSON file that can be handled by any JSON Viewer or DB. We are providing a web-based tool that can help you visualize the results.
+To run the tool, please use the following command:
+
+```
+usage: gcp-scanner-visualizer -p 8080
+
+GCP Scanner Visualizer
+
+options:
+  -h, --help            show this help message and exit
+  -p PORT, --port PORT  Port to listen on default 8080
+```
+
+To know more about how to use the tool, please visit [GCP Scanner Visualizer Usage Guide](./visualization_tool/USAGE.md) page.
+
+If you just need a convenient way to grep JSON results, we can recommend [gron](https://github.com/tomnomnom/gron).
 
 ### Contributing
 
