@@ -26,13 +26,13 @@ There are two main pages in the tool:
 
 ### Resources Page
 
-This main page and it shows the list of resources that were found in the result file. You can click on the `Details` button to see more details about the resource.
+This is the main page and it shows the list of resources that were found in the result file. You can click on the `Details` button to see more details about the resource.
 
 ![GCP Scanner Visualizer](../misc/visualization_tool_images/details.webp)
 
 #### Sorting and filtering resources
 
-You can sort the shown resources by their name or creation time. by default, the resources are sorted by their creation date in descending order and you can change the sorting type from the `Sort` Section on the left menu.
+You can sort the shown resources by their name or creation time. By default, the resources are sorted by their creation date in descending order and you can change the sorting type from the `Sort` Section on the left menu.
 
 ![GCP Scanner Visualizer](../misc/visualization_tool_images/sort.webp)
 
@@ -51,7 +51,7 @@ You can search for resources by their name in the search bar. The tool will show
 
 ### IAM Policy Page
 
-This page shows the list of IAM policies that were found in the result file. The policies are visualized in a table view, which each row represents a single role and the roles names prefixed with the project name.
+This page shows the list of IAM policies that were found in the result file. The policies are visualized in a table view with each row represents a single role and the roles names prefixed with the project name.
 
 ![GCP Scanner Visualizer](../misc/visualization_tool_images/iam_policies.webp)
 
