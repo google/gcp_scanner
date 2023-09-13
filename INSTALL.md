@@ -83,13 +83,22 @@ gcp-scanner --help
    pip install -r requirements.txt
    ```
 
-6. Install the tool in your local machine
+6. If you want to install the visualization tool (you should have node.js already installed) then run
+
+   ```bash
+   cd visualization_tool
+   npm install
+   npm run build
+   cd ..
+   ```
+
+7. Install the tool in your local machine
 
    ```bash
    pip install .
    ```
 
-7. Run to check if the tool was installed correctly
+8. Run to check if the tool was installed correctly
 
    ```bash
    gcp-scanner --help

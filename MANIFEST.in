@@ -6,3 +6,7 @@ exclude .github
 exclude .gitignore
 exclude Dockerfile
 exclude example_config
+
+include src/gcp_scanner/gui/static/*
+include src/gcp_scanner/gui/static/assets/*
+include src/gcp_scanner/gui/static/icons/*

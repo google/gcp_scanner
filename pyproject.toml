@@ -30,3 +30,4 @@ Homepage = "https://github.com/google/gcp_scanner"
 
 [project.scripts]
 gcp-scanner = "gcp_scanner.scanner:main"
+gcp-scanner-visualizer = "gcp_scanner.gui.app:main"
