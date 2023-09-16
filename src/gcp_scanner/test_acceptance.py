@@ -54,6 +54,10 @@ SERVICE_ACCOUNTS_COUNT = 2
 
 def check_obj_entry(res_dict, subojects_count, entry_name, volatile=False):
   obj = res_dict.get(entry_name, None)
+  if subojects_count == 0:
+    assert obj is None
+    return
+
   if volatile is True:
     assert obj is not None and (len(obj) == subojects_count or \
                                 len(obj) == subojects_count - 1)
