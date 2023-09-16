@@ -37,16 +37,17 @@ type Resource = {
   status: ResourceStatus;
 };
 
-type Project = {
-  [key: string]: Resource[] | IMAPolicyField[];
+type ProjectInfo = {
+  projectId: string;
+  name: string;
 };
 
 type OutputFile = {
-  projects: {
-    [key: string]: Project;
-  };
+  project_info: ProjectInfo;
+  iam_policy: IMAPolicyField[];
+  // [key: string]: Resource[] | IMAPolicyField[] | ProjectInfo;
 };
 
-export type {ResourceType, ResourceStatus, Resource, Project, OutputFile};
+export type {ResourceType, ResourceStatus, Resource, OutputFile};
 
 export {availableResourceTypes};

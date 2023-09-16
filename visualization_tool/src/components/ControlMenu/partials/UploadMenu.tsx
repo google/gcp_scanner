@@ -2,7 +2,7 @@ import {useState, useRef} from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
-import {Resource} from '../../../types/resources';
+import {Resource, OutputFile} from '../../../types/resources';
 import {IAMRole} from '../../../types/IAMPolicy';
 import {parseData, parseIAMData} from '../Controller';
 
@@ -58,14 +58,14 @@ const UploadMenu = ({
             const result = e.target?.result as string;
 
             try {
-              const data = JSON.parse(result);
+              const data = JSON.parse(result) as OutputFile;
               setProjects(prevProjects => [
                 ...prevProjects,
-                ...Object.keys(data.projects),
+                data.project_info.projectId,
               ]);
               setAllowedProjects(prevProjects => [
                 ...prevProjects,
-                ...Object.keys(data.projects),
+                data.project_info.projectId,
               ]);
               const resources = parseData(data, file.name);
               setResources((prevResources: Resource[]) => [
@@ -78,7 +78,7 @@ const UploadMenu = ({
 
               setFiles([
                 ...files,
-                {name: file.name, projects: Object.keys(data.projects)},
+                {name: file.name, projects: [data.project_info.projectId]},
               ]);
             } catch (err) {
               setError('Invalid file');
