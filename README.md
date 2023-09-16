@@ -65,20 +65,20 @@ There is a docker build file if you want to run the scanner from a container:
 ### Command-line options
 
 ```
-usage: gcp-scanner -o /folder_to_save_results/ -g -
+usage: python3 scanner.py -o folder_to_save_results -g -
 
 GCP Scanner
 
 options:
   -h, --help            show this help message and exit
+  -ls, --light-scan     Return only the most important GCP resource fields in the output.
   -k KEY_PATH, --sa-key-path KEY_PATH
                         Path to directory with SA keys in json format
   -g GCLOUD_PROFILE_PATH, --gcloud-profile-path GCLOUD_PROFILE_PATH
                         Path to directory with gcloud profile. Specify - to search for credentials in default gcloud config path
   -m, --use-metadata    Extract credentials from GCE instance metadata
   -at ACCESS_TOKEN_FILES, --access-token-files ACCESS_TOKEN_FILES
-                        A list of comma separated files with access token and OAuth scopes.TTL limited. A token and scopes should be stored in JSON
-                        format.
+                        A list of comma separated files with access token and OAuth scopes.TTL limited. A token and scopes should be stored in JSON format.
   -rt REFRESH_TOKEN_FILES, --refresh-token-files REFRESH_TOKEN_FILES
                         A list of comma separated files with refresh_token, client_id,token_uri and client_secret stored in JSON format.
   -s KEY_NAME, --service-account KEY_NAME
@@ -89,10 +89,14 @@ options:
                         Comma separated list of project names to include in the scan
   -c CONFIG_PATH, --config CONFIG_PATH
                         A path to config file with a set of specific resources to scan.
-  -l {INFO,WARNING,ERROR}, --logging {INFO,WARNING,ERROR}
+  -l {DEBUG,INFO,WARNING,ERROR,CRITICAL}, --logging {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Set logging level (INFO, WARNING, ERROR)
-  -lf LOG_DIRECTORY, --log-file LOG_DIRECTORY
+  -lf LOG_FILE, --log-file LOG_FILE
                         Save logs to the path specified rather than displaying in console
+  -pwc PROJECT_WORKER_COUNT, --project-worker-count PROJECT_WORKER_COUNT
+                        Set limit for project crawlers run in parallel.
+  -rwc RESOURCE_WORKER_COUNT, --resource-worker-count RESOURCE_WORKER_COUNT
+                        Set limit for resource crawlers run in parallel.
 
 Required parameters:
   -o OUTPUT, --output-dir OUTPUT
