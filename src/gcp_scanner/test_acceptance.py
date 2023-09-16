@@ -18,11 +18,12 @@
 
 import json
 import os
+import sys
 import unittest.mock
 
 from . import scanner
 
-RESOURCE_COUNT = 31
+RESOURCE_COUNT = 30
 RESULTS_JSON_COUNT = 1
 PROJECT_INFO_COUNT = 5
 IAM_POLICY_COUNT = 12
@@ -53,6 +54,10 @@ SERVICE_ACCOUNTS_COUNT = 2
 
 def check_obj_entry(res_dict, subojects_count, entry_name, volatile=False):
   obj = res_dict.get(entry_name, None)
+  if subojects_count == 0:
+    assert obj is None
+    return
+
   if volatile is True:
     assert obj is not None and (len(obj) == subojects_count or \
                                 len(obj) == subojects_count - 1)
@@ -63,12 +68,10 @@ def check_obj_entry(res_dict, subojects_count, entry_name, volatile=False):
 def validate_result():
   file_name = os.listdir("res/")[0]
   with open("res/" + file_name, "r", encoding="utf-8") as f:
-    res_data = json.load(f)
+    project = json.load(f)
 
-  # project
-  project = res_data["projects"].get("test-gcp-scanner-2", None)
+  json.dump(project, sys.stdout)
   assert project is not None
-  assert len(project) == RESOURCE_COUNT
 
   check_obj_entry(project, PROJECT_INFO_COUNT, "project_info")
   check_obj_entry(project, IAM_POLICY_COUNT, "iam_policy")
@@ -106,6 +109,7 @@ def validate_result():
 
   check_obj_entry(project, SERVICES_COUNT, "services")
 
+  assert len(project) == RESOURCE_COUNT
 
 def test_acceptance():
   os.mkdir("res")

@@ -13,20 +13,18 @@
 # limitations under the License.
 
 
-"""The main module that initiates scanning of GCP resources.
-
-"""
+"""The main module that initiates scanning of GCP resources."""
 import collections
-import concurrent
-import json
-import logging
-import multiprocessing
-import os
-import sys
 from datetime import datetime
+import json
 from json.decoder import JSONDecodeError
+import logging
+import os
 from pathlib import Path
-from typing import List, Dict, Optional, Union, Any
+import sys
+import threading
+import time
+from typing import Any, Dict, List, Optional, Union
 
 from google.auth.exceptions import MalformedError
 from google.cloud import container_v1
@@ -39,61 +37,88 @@ from . import credsdb
 from . import models
 from . import scanner
 from .client.client_factory import ClientFactory
-from .crawler.crawler_factory import CrawlerFactory
 from .crawler import misc_crawler
+from .crawler.crawler_factory import CrawlerFactory
 
 # We define the schema statically to make it easier for the user and avoid extra
 # config files.
 LIGHT_VERSION_SCAN_SCHEMA = {
-  'compute_instances': ['name', 'zone', 'machineType', 'networkInterfaces',
-                        'status'],
-  'compute_images': ['name', 'status', 'diskSizeGb', 'sourceDisk'],
-  'machine_images': ['name', 'description', 'status', 'sourceInstance',
-                     'totalStorageBytes', 'savedDisks'],
-  'compute_disks': ['name', 'sizeGb', 'zone', 'status', 'sourceImage', 'users'],
-  'compute_snapshots': ['name', 'status', 'sourceDisk', 'downloadBytes'],
-  'managed_zones': ['name', 'dnsName', 'description', 'nameServers'],
-  'sql_instances': ['name', 'region', 'ipAddresses', 'databaseVersion',
-                    'state'],
-  'cloud_functions': ['name', 'eventTrigger', 'status', 'entryPoint',
-                      'serviceAccountEmail'],
-  'kms': ['name', 'primary', 'purpose', 'createTime'],
-  'services': ['name'],
+    'compute_instances': [
+        'name',
+        'zone',
+        'machineType',
+        'networkInterfaces',
+        'status',
+    ],
+    'compute_images': ['name', 'status', 'diskSizeGb', 'sourceDisk'],
+    'machine_images': [
+        'name',
+        'description',
+        'status',
+        'sourceInstance',
+        'totalStorageBytes',
+        'savedDisks',
+    ],
+    'compute_disks': [
+        'name',
+        'sizeGb',
+        'zone',
+        'status',
+        'sourceImage',
+        'users',
+    ],
+    'compute_snapshots': ['name', 'status', 'sourceDisk', 'downloadBytes'],
+    'managed_zones': ['name', 'dnsName', 'description', 'nameServers'],
+    'sql_instances': [
+        'name',
+        'region',
+        'ipAddresses',
+        'databaseVersion',
+        'state',
+    ],
+    'cloud_functions': [
+        'name',
+        'eventTrigger',
+        'status',
+        'entryPoint',
+        'serviceAccountEmail',
+    ],
+    'kms': ['name', 'primary', 'purpose', 'createTime'],
+    'services': ['name'],
 }
 
 # The following map is used to establish the relationship between
 # crawlers and clients. It determines the appropriate crawler and
 # client to be selected from the respective factory classes.
 CRAWL_CLIENT_MAP = {
-  'app_services': 'appengine',
-  'bigtable_instances': 'bigtableadmin',
-  'bq': 'bigquery',
-  'cloud_functions': 'cloudfunctions',
-  'compute_disks': 'compute',
-  'compute_images': 'compute',
-  'compute_instances': 'compute',
-  'compute_snapshots': 'compute',
-  'datastore_kinds': 'datastore',
-  'dns_policies': 'dns',
-  'endpoints': 'servicemanagement',
-  'firestore_collections': 'firestore',
-  'filestore_instances': 'file',
-  'firewall_rules': 'compute',
-  'iam_policy': 'cloudresourcemanager',
-  'kms': 'cloudkms',
-  'machine_images': 'compute',
-  'managed_zones': 'dns',
-  'project_info': 'cloudresourcemanager',
-  'pubsub_subs': 'pubsub',
-  'registered_domains': 'domains',
-  'services': 'serviceusage',
-  'service_accounts': 'iam',
-  'sourcerepos': 'sourcerepo',
-  'spanner_instances': 'spanner',
-  'sql_instances': 'sqladmin',
-  'static_ips': 'compute',
-  'storage_buckets': 'storage',
-  'subnets': 'compute',
+    'app_services': 'appengine',
+    'bigtable_instances': 'bigtableadmin',
+    'bq': 'bigquery',
+    'cloud_functions': 'cloudfunctions',
+    'compute_disks': 'compute',
+    'compute_images': 'compute',
+    'compute_instances': 'compute',
+    'compute_snapshots': 'compute',
+    'datastore_kinds': 'datastore',
+    'dns_policies': 'dns',
+    'endpoints': 'servicemanagement',
+    'firestore_collections': 'firestore',
+    'filestore_instances': 'file',
+    'firewall_rules': 'compute',
+    'iam_policy': 'cloudresourcemanager',
+    'kms': 'cloudkms',
+    'machine_images': 'compute',
+    'managed_zones': 'dns',
+    'pubsub_subs': 'pubsub',
+    'registered_domains': 'domains',
+    'services': 'serviceusage',
+    'service_accounts': 'iam',
+    'sourcerepos': 'sourcerepo',
+    'spanner_instances': 'spanner',
+    'sql_instances': 'sqladmin',
+    'static_ips': 'compute',
+    'storage_buckets': 'storage',
+    'subnets': 'compute',
 }
 
 
@@ -134,27 +159,64 @@ def save_results(res_data: Dict, res_path: str, is_light: bool):
     outfile.write(sa_results_data)
 
 
-def get_crawl(crawler, project_id, client, crawler_config):
-  return crawler.crawl(project_id, client, crawler_config)
+def get_crawl(
+    crawler: Any,
+    project_id: str,
+    client: Any,
+    crawler_config: dict,
+    scan_results: dict,
+    crawler_name: str,
+):
+  """The function calls the crawler and returns result in dictionary
+
+  Args:
+    crawler: crawler method to start
+    project_id: id of a project to scan
+    client: appropriate client method
+    crawler_config: a dictionary containing specific parameters for a crawler
+    scan_results: a dictionary to save scanning results
+    crawler_name: name of a crawler
+
+  Returns:
+    scan_result: a dictionary with scanning results
+  """
+
+  res = crawler.crawl(project_id, client, crawler_config)
+  if res is not None and len(res) != 0:
+    scan_results[crawler_name] = res
+  return scan_results
 
 
 def get_resources(project: models.ProjectInfo):
-  """The function crawls the data for a project and stores the results in a 
+  """The function crawls the data for a project and stores the results in a
+
      dictionary.
 
-  Args: 
+  Args:
     project: class to store project scan configration
   """
 
-  if project.target_project and \
-    project.target_project not in project.project['projectId']:
+  if (
+      project.target_project
+      and project.target_project not in project.project['projectId']
+  ):
     return
 
   project_id = project.project['projectId']
   print(f'Inspecting project {project_id}')
-  project_result = project.sa_results['projects'][project_id]
+  project_result = dict()
 
   project_result['project_info'] = project.project
+  project_result['service_account_chain'] = project.sa_results[
+      'service_account_chain'
+  ]
+  project_result['current_service_account'] = project.sa_results[
+      'current_service_account'
+  ]
+  project_result['token_scopes'] = project.sa_results['token_scopes']
+  project_result['service_account_edges'] = project.sa_results[project_id][
+      'service_account_edges'
+  ]
 
   # Fail with error if the output file already exists
   output_file_name = f'{project_id}-{project.scan_time_suffix}.json'
@@ -166,71 +228,90 @@ def get_resources(project: models.ProjectInfo):
       pass
 
   except FileExistsError:
-    logging.error('Try removing the %s file and restart the scanner.',
-                  output_file_name)
+    logging.error(
+        'Try removing the %s file and restart the scanner.', output_file_name
+    )
 
-  results_crawl_pool = dict()
-  with concurrent.futures.ThreadPoolExecutor(
-    max_workers=int(project.worker_count)) as executor:
-    for crawler_name, client_name in CRAWL_CLIENT_MAP.items():
-      if is_set(project.scan_config, crawler_name):
-        crawler_config = {}
-        if project.scan_config is not None:
-          crawler_config = project.scan_config.get(crawler_name)
-        # add gcs output path to the config.
-        # this path is used by the storage bucket crawler as of now.
-        crawler_config['gcs_output_path'] = gcs_output_path
-        # crawl the data
-        crawler = CrawlerFactory.create_crawler(crawler_name)
-        client = ClientFactory.get_client(client_name).get_service(
+  threads_list = list()
+  for crawler_name, client_name in CRAWL_CLIENT_MAP.items():
+    if is_set(project.scan_config, crawler_name):
+      crawler_config = {}
+      if project.scan_config is not None:
+        crawler_config = project.scan_config.get(crawler_name)
+
+      # add gcs output path to the config.
+      # this path is used by the storage bucket crawler as of now.
+      crawler_config['gcs_output_path'] = gcs_output_path
+
+      # crawl the data
+      crawler = CrawlerFactory.create_crawler(crawler_name)
+      client = ClientFactory.get_client(client_name).get_service(
           project.credentials,
-        )
-        results_crawl_pool[crawler_name] = executor.submit(
-          get_crawl,
-          crawler,
-          project_id,
-          client,
-          crawler_config,
-        )
+      )
 
-  for crawler_name, future_obj in results_crawl_pool.items():
-    project_result[crawler_name] = future_obj.result()
+      t = threading.Thread(
+          target=get_crawl,
+          args=(
+              crawler,
+              project_id,
+              client,
+              crawler_config,
+              project_result,
+              crawler_name,
+          ),
+      )
+      t.daemon = True
+      t.start()
+      threads_list.append(t)
+
+      while True:
+        active_threads = 0
+        for t in threads_list:
+          if t.is_alive():
+            active_threads += 1
+        if active_threads >= project.resource_worker_count:
+          time.sleep(0.1)
+        else:
+          break
+
+  for t in threads_list:
+    t.join()
 
   # Call other miscellaneous crawlers here
   if is_set(project.scan_config, 'gke_clusters'):
     gke_client = gke_client_for_credentials(project.credentials)
-    project_result['gke_clusters'] = misc_crawler.get_gke_clusters(
-      project_id,
-      gke_client,
+    res = misc_crawler.get_gke_clusters(
+        project_id,
+        gke_client,
     )
+    if res is not None and len(res) != 0:
+      project_result['gke_clusters'] = res
   if is_set(project.scan_config, 'gke_images'):
-    project_result['gke_images'] = misc_crawler.get_gke_images(
-      project_id,
-      project.credentials.token,
+    res = misc_crawler.get_gke_images(
+        project_id,
+        project.credentials.token,
     )
+    if res is not None and len(res) != 0:
+      project_result['gke_images'] = res
 
   logging.info('Saving results for %s into the file', project_id)
-
-  save_results(project.sa_results, output_path, project.light_scan)
-  # Clean memory to avoid leak for large amount projects.
-  project.sa_results.clear()
+  save_results(project_result, output_path, project.light_scan)
 
 
 def impersonate_service_accounts(
-  context,
-  project,
-  scan_config,
-  sa_results,
-  chain_so_far,
-  sa_name,
-  credentials
+    context,
+    project,
+    scan_config,
+    sa_results,
+    chain_so_far,
+    sa_name,
+    credentials,
 ):
-  """The function enumerates projects accessible by SA and impersonates them.
-  """
+  """The function enumerates projects accessible by SA and impersonates them."""
 
   # Enumerate projects accessible by SA
   project_id = project['projectId']
-  print(f'Inspecting project {project_id} for Impersonation')
+  print(f'Looking for impersonation options in {project_id}')
   project_result = sa_results['projects'][project_id]
   project_result['project_info'] = project
   # Iterate over discovered service accounts by attempting impersonation
@@ -247,10 +328,10 @@ def impersonate_service_accounts(
     iam_client = iam_client_for_credentials(credentials)
     if is_set(scan_config, 'iam_policy') is False:
       iam_policy = CrawlerFactory.create_crawler('iam_policy').crawl(
-        project_id,
-        ClientFactory.get_client('cloudresourcemanager').get_service(
-          credentials,
-        ),
+          project_id,
+          ClientFactory.get_client('cloudresourcemanager').get_service(
+              credentials,
+          ),
       )
 
     project_service_accounts = get_sas_for_impersonation(iam_policy)
@@ -258,29 +339,36 @@ def impersonate_service_accounts(
       try:
         logging.info('Trying %s', candidate_service_account)
         creds_impersonated = credsdb.impersonate_sa(
-          iam_client, candidate_service_account)
+            iam_client, candidate_service_account
+        )
         context.service_account_queue.put(
-          (candidate_service_account, creds_impersonated, updated_chain))
+            (candidate_service_account, creds_impersonated, updated_chain)
+        )
         project_result['service_account_edges'].append(
-          candidate_service_account)
-        logging.info('Successfully impersonated %s using %s',
-                      candidate_service_account, sa_name)
+            candidate_service_account
+        )
+        logging.info(
+            'Successfully impersonated %s using %s',
+            candidate_service_account,
+            sa_name,
+        )
       except Exception:
-        logging.error('Failed to get token for %s',
-                      candidate_service_account)
+        logging.error('Failed to get token for %s', candidate_service_account)
         logging.error(sys.exc_info()[1])
 
 
 def iam_client_for_credentials(
-  credentials: Credentials) -> IAMCredentialsClient:
+    credentials: Credentials,
+) -> IAMCredentialsClient:
   return iam_credentials.IAMCredentialsClient(credentials=credentials)
 
 
 def gke_client_for_credentials(
-  credentials: Credentials
+    credentials: Credentials,
 ) -> container_v1.services.cluster_manager.client.ClusterManagerClient:
   return container_v1.services.cluster_manager.ClusterManagerClient(
-    credentials=credentials)
+      credentials=credentials
+  )
 
 
 def get_sa_details_from_key_files(key_path):
@@ -309,8 +397,7 @@ def get_sa_details_from_key_files(key_path):
   return sa_details
 
 
-def get_sas_for_impersonation(
-  iam_policy: List[Dict[str, Any]]) -> List[str]:
+def get_sas_for_impersonation(iam_policy: List[Dict[str, Any]]) -> List[str]:
   """Extract a list of unique SAs from IAM policy associated with project.
 
   Args:
@@ -344,7 +431,8 @@ def infinite_defaultdict():
 
 
 def get_sa_tuples(args):
-  """The function extracts service account (SA) credentials from various 
+  """The function extracts service account (SA) credentials from various
+
   sources and returns a list of tuples.
   """
 
@@ -376,8 +464,9 @@ def get_sa_tuples(args):
           continue
 
         logging.info('Retrieving credentials for %s', account_name)
-        credentials = credsdb.get_creds_from_data(access_token,
-                                                  json.loads(account_creds))
+        credentials = credsdb.get_creds_from_data(
+            access_token, json.loads(account_creds)
+        )
         if credentials is None:
           logging.error('Failed to retrieve access token for %s', account_name)
           continue
@@ -406,19 +495,22 @@ def get_sa_tuples(args):
 
   return sa_tuples
 
+
 def main():
-  """The main scanner loop for GCP Scanner
-  """
+  """The main scanner loop for GCP Scanner"""
 
   logging.getLogger('googleapiclient.discovery_cache').setLevel(logging.ERROR)
   logging.getLogger('googleapiclient.http').setLevel(logging.ERROR)
 
   args = arguments.arg_parser()
 
-  logging.basicConfig(level=getattr(logging, args.log_level.upper(), None),
-                      format='%(asctime)s - %(levelname)s - %(message)s',
-                      datefmt='%Y-%m-%d %H:%M:%S',
-                      filename=args.log_file, filemode='a')
+  logging.basicConfig(
+      level=getattr(logging, args.log_level.upper(), None),
+      format='%(asctime)s - %(levelname)s - %(message)s',
+      datefmt='%Y-%m-%d %H:%M:%S',
+      filename=args.log_file,
+      filemode='a',
+  )
 
   force_projects_list = list()
   if args.force_projects:
@@ -436,7 +528,7 @@ def main():
 
   context = models.SpiderContext(sa_tuples)
 
-  project_queue = multiprocessing.Queue()
+  project_queue = list()
   processed_sas = set()
 
   while not context.service_account_queue.empty():
@@ -457,9 +549,11 @@ def main():
     sa_results['token_scopes'] = credentials.scopes
 
     project_list = CrawlerFactory.create_crawler(
-      'project_list',
+        'project_list',
     ).crawl(
-      ClientFactory.get_client('cloudresourcemanager').get_service(credentials),
+        ClientFactory.get_client('cloudresourcemanager').get_service(
+            credentials
+        ),
     )
 
     if len(project_list) <= 0:
@@ -468,53 +562,70 @@ def main():
     if force_projects_list:
       for force_project_id in force_projects_list:
         res = CrawlerFactory.create_crawler(
-          'project_info',
+            'project_info',
         ).crawl(
-          force_project_id,
-          ClientFactory.get_client('cloudresourcemanager').get_service(
-            credentials,
-          ),
+            force_project_id,
+            ClientFactory.get_client('cloudresourcemanager').get_service(
+                credentials,
+            ),
         )
         if res:
           project_list.append(res)
         else:
           # force object creation anyway
-          project_list.append({'projectId': force_project_id,
-                               'projectNumber': 'N/A'})
+          project_list.append(
+              {'projectId': force_project_id, 'projectNumber': 'N/A'}
+          )
 
     # Enumerate projects accessible by SA
     for project in project_list:
       project_obj = models.ProjectInfo(
-        project,
-        sa_results,
-        args.output,
-        scan_config,
-        args.light_scan,
-        args.target_project,
-        scan_time_suffix,
-        sa_name,
-        credentials,
-        chain_so_far,
-        args.worker_count
+          project,
+          sa_results,
+          args.output,
+          scan_config,
+          args.light_scan,
+          args.target_project,
+          scan_time_suffix,
+          sa_name,
+          credentials,
+          chain_so_far,
+          int(args.resource_worker_count),
       )
-      project_queue.put(project_obj)
+      project_queue.append(project_obj)
       impersonate_service_accounts(
-        context,
-        project,
-        scan_config,
-        sa_results,
-        chain_so_far,
-        sa_name,
-        credentials
+          context,
+          project,
+          scan_config,
+          sa_results,
+          chain_so_far,
+          sa_name,
+          credentials,
       )
 
-  pool = multiprocessing.Pool(
-    processes=min(int(args.worker_count), os.cpu_count()))
+  all_thread_handles = list()
 
-  while not project_queue.empty():
-    pool.apply_async(scanner.get_resources, args=(project_queue.get(),))
+  # See i#267 on why we use the native threading approach here.
+  for i, project_obj in enumerate(project_queue):
+    print('Finished %d projects out of %d' % (i, len(project_queue) - 1))
+    sync_t = threading.Thread(target=scanner.get_resources, args=(project_obj,))
+    sync_t.daemon = True
+    sync_t.start()
+    all_thread_handles.append(sync_t)
 
-  pool.close()
-  pool.join()
+    while True:  # enforce explicit block on number of threads
+      active_threads = 0
+      for t in all_thread_handles:
+        if t.is_alive():
+          active_threads += 1
+
+      if active_threads >= int(args.project_worker_count):
+        time.sleep(0.1)
+      else:
+        break
+
+  # wait for any threads left to finish
+  for t in all_thread_handles:
+    t.join()
 
   return 0
