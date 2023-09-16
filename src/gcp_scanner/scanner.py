@@ -273,7 +273,7 @@ def get_resources(project: models.ProjectInfo):
         project.credentials.token,
     )
     if res is not None and len(res) != 0:
-      project_result['gke_clusters'] = res
+      project_result['gke_images'] = res
 
   logging.info('Saving results for %s into the file', project_id)
   save_results(project_result, output_path, project.light_scan)
