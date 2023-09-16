@@ -68,7 +68,6 @@ def validate_result():
 
   json.dump(project, sys.stdout)
   assert project is not None
-  assert len(project) == RESOURCE_COUNT
 
   check_obj_entry(project, PROJECT_INFO_COUNT, "project_info")
   check_obj_entry(project, IAM_POLICY_COUNT, "iam_policy")
@@ -106,6 +105,7 @@ def validate_result():
 
   check_obj_entry(project, SERVICES_COUNT, "services")
 
+  assert len(project) == RESOURCE_COUNT
 
 def test_acceptance():
   os.mkdir("res")
