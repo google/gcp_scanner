@@ -160,8 +160,27 @@ def save_results(res_data: Dict, res_path: str, is_light: bool):
 
 
 def get_crawl(
-    crawler, project_id, client, crawler_config, scan_results, crawler_name
+    crawler: Any,
+    project_id: str,
+    client: Any,
+    crawler_config: dict,
+    scan_results: dict,
+    crawler_name: str,
 ):
+  """The function calls the crawler and returns result in dictionary
+
+  Args:
+    crawler: crawler method to start
+    project_id: id of a project to scan
+    client: appropriate client method
+    crawler_config: a dictionary containing specific parameters for a crawler
+    scan_results: a dictionary to save scanning results
+    crawler_name: name of a crawler
+
+  Returns:
+    scan_result: a dictionary with scanning results
+  """
+
   res = crawler.crawl(project_id, client, crawler_config)
   if res is not None and len(res) != 0:
     scan_results[crawler_name] = res
