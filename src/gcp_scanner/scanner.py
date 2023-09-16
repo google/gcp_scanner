@@ -15,7 +15,6 @@
 
 """The main module that initiates scanning of GCP resources."""
 import collections
-import concurrent
 from datetime import datetime
 import json
 from json.decoder import JSONDecodeError
@@ -215,7 +214,7 @@ def get_resources(project: models.ProjectInfo):
     )
 
   threads_list = list()
-  for i, (crawler_name, client_name) in enumerate(CRAWL_CLIENT_MAP.items()):
+  for crawler_name, client_name in CRAWL_CLIENT_MAP.items():
     if is_set(project.scan_config, crawler_name):
       crawler_config = {}
       if project.scan_config is not None:
@@ -242,7 +241,7 @@ def get_resources(project: models.ProjectInfo):
               crawler_name,
           ),
       )
-      t.setDaemon(True)
+      t.daemon = True
       t.start()
       threads_list.append(t)
 
@@ -591,7 +590,7 @@ def main():
   for i, project_obj in enumerate(project_queue):
     print('Finished %d projects out of %d' % (i, len(project_queue) - 1))
     sync_t = threading.Thread(target=scanner.get_resources, args=(project_obj,))
-    sync_t.setDaemon(True)
+    sync_t.daemon = True
     sync_t.start()
     all_thread_handles.append(sync_t)
 
