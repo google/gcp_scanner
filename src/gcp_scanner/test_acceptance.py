@@ -65,6 +65,7 @@ def validate_result():
   with open("res/" + file_name, "r", encoding="utf-8") as f:
     project = json.load(f)
 
+  print(project)
   assert project is not None
   assert len(project) == RESOURCE_COUNT
 
