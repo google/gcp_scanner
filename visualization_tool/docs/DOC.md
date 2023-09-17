@@ -1,9 +1,5 @@
 # Technical Documentation For GCP Scanner Visualizer
 
-## Introduction
-
-This is a technical documentation for GCP Scanner Visualizer. This document will explain the architecture of the application, the design decisions, and the implementation details.
-
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -13,6 +9,10 @@ This is a technical documentation for GCP Scanner Visualizer. This document will
   - [Parsing Logic](#parsing)
   - [UI](#ui)
 - [Deployment](#deployment)
+
+## Introduction
+
+This document describes the architecture of the GCP Scanner Visualizer and how it integrates with the GCP scanner package.
 
 ## Architecture Overview
 
@@ -96,13 +96,13 @@ Same as the resources, looping through roles in the `iam_policy` key. For each r
 
 The UI of the application is built using React and Material-UI. It has three main components:
 
-- `Navbar`: The navbar component contains the navigation links for app different views and the search bar.
-- `Control Menu`: The left side menu that contains the upload menu that allows the user to upload GCP scanner output files and the filter and sort menus that allows the user to filter the resources and IAM policies based on their needs.
+- `Navbar`: The navbar component contains the navigation links for the app's different views and the search bar.
+- `Control Menu`: The left side menu contains the upload menu that allows the user to upload GCP scanner output files and the filter and sort menus that allow the user to filter the resources and IAM policies based on their needs.
 - `Content Area`: Main content of each view.
 
-Currently there are two views in the app:
+Currently, there are two views in the app:
 
-- `Resources View`: This view displays the resources as cards in a grid. Each card contains the resource name, type, and status. The user can see more details about the resource by clicking on the details button in the card. The user can also filter and sort the resources based on their needs.
+- `Resources View`: This view displays the resources as cards in a grid. Each card contains the resource name, type, and status. The user can see more details about the resource by clicking on the details button on the card. The user can also filter and sort the resources based on their needs.
 
 - `IAM Policies View`: This view displays the IAM policies in a table. The policies are grouped by the project ID. The user can see all members of a policy by clicking on the expand button in the policy row. The user can also filter the IAM policies based on their needs.
 
