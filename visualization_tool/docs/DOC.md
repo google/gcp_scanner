@@ -67,7 +67,7 @@ The `types/resources.ts` file also contains types related to the structure of th
 
 ### Parsing
 
-The logic for parsing and extracting the data from the GCP Scanner output files is defined in the `parser/parsing.ts` file. and it contains two main functions:
+The logic for parsing and extracting the data from the GCP Scanner output files is defined in the `components/ControlMenu/Controller.ts` file. and it contains two main functions:
 
 - `parseResources`: This function extracts the resources from the GCP scanner output file. It takes in the `OutputFile` object and returns an array of `Resource` objects.
 - `parseIAMRoles`: This function extracts the IAM policies from the GCP scanner output file. It takes in the `OutputFile` object and returns an array of `IAMPolicy` objects.
