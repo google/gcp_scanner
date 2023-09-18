@@ -28,9 +28,9 @@ We can divide the architecture of the application into three parts:
 
 ### Types Definition
 
-The types layer contains the types definitions that used across the app. It works as a middle layer between the parsing layer and the UI layer Where it defines what data shape is expected from the parsing logic.
+The types layer contains the types definitions that are used across the app. It works as a middle layer between the parsing layer and the UI layer where it defines what data shape is expected from the parsing logic.
 
-There are two main types of data that is extracted from the GCP Scanner:
+There are two main types of data that are extracted from the GCP Scanner:
 
 - `Resources`: The resources that the credentials have access to.
 - `IAM Policies`: The IAM policies roles that are attached to the projects found in the scan.
@@ -56,7 +56,7 @@ The IAM policies related types are defined in the `types/IAMPolicy.ts` file as f
   - `email`: The email of the member.
 
 - `IAMPolicy`: The IAM policy object that contains the fields that must exist in any IAM policy which are:
-  - `role`: The name of role for this policy.
+  - `role`: Role name for this policy.
   - `members`: The members of this policy.
   - `projectId`: The ID of the project that the IAM policy belongs to.
   - `file`: The file that the IAM policy was found in.
@@ -67,7 +67,7 @@ The `types/resources.ts` file also contains types related to the structure of th
 
 ### Parsing
 
-The logic for parsing and extracting the data from the GCP Scanner output files is defined in the `components/ControlMenu/Controller.ts` file. and it contains two main functions:
+The logic for parsing and extracting the data from the GCP Scanner output files is defined in the `components/ControlMenu/Controller.ts` file and it contains two main functions:
 
 - `parseResources`: This function extracts the resources from the GCP scanner output file. It takes in the `OutputFile` object and returns an array of `Resource` objects.
 - `parseIAMRoles`: This function extracts the IAM policies from the GCP scanner output file. It takes in the `OutputFile` object and returns an array of `IAMPolicy` objects.
@@ -84,7 +84,7 @@ for each key in the project keys:
 
 To extract the resources from the GCP scanner output file, We are looping through each key in the project keys. If the key is a resource, we are parsing the resource and adding it to the resources array.
 
-To check if the key is a resource, we are checking it is in the `availableResourceTypes` array that is defined in the `types/resources.ts` file. The `availableResourceTypes` array contains the types of resources that we want to extract from the GCP scanner output file. These are the types of resources that are well tested and supported by the visualizer.
+To check if the key is a resource, we are checking if it is in the `availableResourceTypes` array that is defined in the `types/resources.ts` file. The `availableResourceTypes` array contains the types of resources that we want to extract from the GCP scanner output file. These are the types of resources that are well tested and supported by the visualizer.
 
 For parsing the resources, we are extracting all fields of type `string` and `number` from the resource object and then adding them to the resource object. We are also adding the `projectId` and `file` fields to the resource object.
 
@@ -117,13 +117,13 @@ Currently, there are two views (pages) in the app:
 
 ## Deployment
 
-The visualizer is deployed as a static website that ships with the GCP scanner package and is served using the `http.server` module in Python. The `src/gui/app.py` python script is responsible for serving the visualizer static files that should be in the `src/gui/static` folder.
+The visualizer is deployed as a static website that ships with the GCP scanner package and is served using the `http.server` module in Python. The `src/gui/app.py` python script is responsible for serving the visualizer's static files that should be in the `src/gui/static` folder.
 
 ### Integration with GCP Scanner
 
-The `npm run build` command in configured in the `package.json` file to build the visualizer and output the static files in the `src/gui/static` folder and the `MANIFEST.in` file is configured to include the static files in the `src/gui/static` folder in the GCP scanner package.
+The `npm run build` command is configured in the `package.json` file to build the visualizer and output the static files in the `src/gui/static` folder. The `MANIFEST.in` file is configured to include the static files in the `src/gui/static` folder in the GCP scanner package.
 
-We also modified the `python-publish.yml` GitHub action workflow to build the visualizer and include the static files in the GCP scanner package when publishing to PyPI.
+We also modified the `python-publish.yml` GitHub action workflow to build the visualizer and include the static files to the GCP scanner package when publishing to PyPI.
 
 ### Running the visualizer
 
