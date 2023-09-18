@@ -126,7 +126,7 @@ options:
   -p PORT, --port PORT  Port to listen on default 8080
 ```
 
-To know more about how to use the tool, please visit [GCP Scanner Visualizer Usage Guide](./visualization_tool/USAGE.md) page.
+To know more about how to use the tool, please visit [GCP Scanner Visualizer Usage Guide](./visualization_tool/docs/USAGE.md) page.
 
 If you just need a convenient way to grep JSON results, we can recommend [gron](https://github.com/tomnomnom/gron).
 
