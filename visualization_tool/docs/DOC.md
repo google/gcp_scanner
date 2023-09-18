@@ -94,17 +94,26 @@ Same as the resources, looping through roles in the `iam_policy` key. For each r
 
 ### UI
 
-The UI of the application is built using React and Material-UI. It has three main components:
+The general UI hierarchy of the application is as follows:
+
+```
+App
+├── Navbar
+├── ControlMenu
+└── Router
+    ├── ResourcesPage
+    └── IAMPoliciesPage
+```
 
 - `Navbar`: The navbar component contains the navigation links for the app's different views and the search bar.
 - `Control Menu`: The left side menu contains the upload menu that allows the user to upload GCP scanner output files and the filter and sort menus that allow the user to filter the resources and IAM policies based on their needs.
-- `Content Area`: Main content of each view.
+- `Router`: The router component is responsible for routing the user to the correct view based on the URL path.
 
-Currently, there are two views in the app:
+Currently, there are two views (pages) in the app:
 
-- `Resources View`: This view displays the resources as cards in a grid. Each card contains the resource name, type, and status. The user can see more details about the resource by clicking on the details button on the card. The user can also filter and sort the resources based on their needs.
+- `Resources Page`: This view displays the resources as cards in a grid. Each card contains the resource name, type, and status. The user can see more details about the resource by clicking on the details button on the card. The user can also filter and sort the resources based on their needs.
 
-- `IAM Policies View`: This view displays the IAM policies in a table. The policies are grouped by the project ID. The user can see all members of a policy by clicking on the expand button in the policy row. The user can also filter the IAM policies based on their needs.
+- `IAM Policies Page`: This view displays the IAM policies in a table. The policies are grouped by the project ID. The user can see all members of a policy by clicking on the expand button in the policy row. The user can also filter the IAM policies based on their needs.
 
 ## Deployment
 
