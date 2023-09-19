@@ -1,91 +1,81 @@
-import {
-  OutputFile,
-  Resource,
-  ResourceType,
-  availableResourceTypes,
-} from '../../types/resources';
+import {Resource, OutputFile} from '../../types/resources';
+import {IAMRole} from '../../types/IAMPolicy';
 
-import {IAMRole, IMAPolicyField} from '../../types/IAMPolicy';
+import {parseResources, parseIAMRoles} from '../../parser/parser';
 
-const titleCase = (str: string) => {
-  return str
-    .replace('_', ' ')
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+type FileInfo = {
+  name: string;
+  projects: string[];
 };
 
-const parseData = (data: OutputFile, fileName: string) => {
-  const resources = [];
-  const projectId = data.project_info.projectId;
-  console.log(Object.entries(data));
-  for (const [resourceType, resourceList] of Object.entries(data)) {
-    console.log(resourceType);
-    let type = titleCase(resourceType.slice(0, -1));
-    if (type === 'Dns Policie') type = 'Dns Policy';
-    if (
-      resourceList instanceof Array &&
-      availableResourceTypes.includes(type as ResourceType)
-    ) {
-      const currentResources = [];
-      for (const resource of resourceList) {
-        const resourceData: Record<string, string | number> = {};
-        resourceData['file'] = fileName;
-        resourceData['projectId'] = projectId;
+const deleteFile = (
+  file: FileInfo,
+  setFiles: React.Dispatch<React.SetStateAction<FileInfo[]>>,
+  setResources: React.Dispatch<React.SetStateAction<Resource[]>>,
+  setRoles: React.Dispatch<React.SetStateAction<IAMRole[]>>,
+  setProjects: React.Dispatch<React.SetStateAction<string[]>>
+) => {
+  setFiles(prevFiles => {
+    return prevFiles.filter(prevFile => prevFile.name !== file.name);
+  });
 
-        for (const [key, value] of Object.entries(resource)) {
-          switch (typeof value) {
-            case 'string':
-              // if this attribute is a link, get the last part of the link
-              if (value.split('/').length > 1) {
-                resourceData[key] = value.split('/').at(-1) || 'unknown';
-              } else {
-                resourceData[key] = value;
-              }
-              break;
-            case 'number':
-              resourceData[key] = value;
-              break;
-            default:
-              break;
-          }
-        }
+  setProjects(prevProjects => {
+    return prevProjects.filter(
+      prevProject => !file.projects.includes(prevProject)
+    );
+  });
 
-        resourceData['name'] = resourceData['name'] || 'unknown';
-        resourceData['status'] = resourceData['status'] || 'READY';
-        resourceData['type'] = type;
+  setResources(prevResources => {
+    return prevResources.filter(
+      prevResource => prevResource.file !== file.name
+    );
+  });
+  setRoles(prevRoles => {
+    return prevRoles.filter(prevRole => prevRole.file !== file.name);
+  });
+};
 
-        currentResources.push(resourceData as Resource);
-      }
+const addFile = (
+  file: File,
+  setFiles: React.Dispatch<React.SetStateAction<FileInfo[]>>,
+  setResources: React.Dispatch<React.SetStateAction<Resource[]>>,
+  setRoles: React.Dispatch<React.SetStateAction<IAMRole[]>>,
+  setProjects: React.Dispatch<React.SetStateAction<string[]>>,
+  setAllowedProjects: React.Dispatch<React.SetStateAction<string[]>>,
+  setError: React.Dispatch<React.SetStateAction<string | null>>
+) => {
+  const reader = new FileReader();
+  reader.readAsText(file);
+  reader.onload = e => {
+    const result = e.target?.result as string;
 
-      resources.push(...currentResources);
+    try {
+      const data = JSON.parse(result) as OutputFile;
+      setProjects(prevProjects => [
+        ...prevProjects,
+        data.project_info.projectId,
+      ]);
+      setAllowedProjects(prevProjects => [
+        ...prevProjects,
+        data.project_info.projectId,
+      ]);
+      const resources = parseResources(data, file.name);
+      setResources(prevResources => [...prevResources, ...resources]);
+
+      const roles = parseIAMRoles(data, file.name);
+      setRoles(prevRoles => [...prevRoles, ...roles]);
+
+      setFiles(prevFiles => [
+        ...prevFiles,
+        {name: file.name, projects: [data.project_info.projectId]},
+      ]);
+    } catch (err) {
+      console.log(err);
+      console.log('Invalid file');
+      setError('Invalid file');
+      return;
     }
-  }
-
-  return resources;
+  };
 };
 
-const parseIAMData = (data: OutputFile, fileName: string) => {
-  const roles: IAMRole[] = [];
-  const projectId = data.project_info.projectId;
-  const currentRoles = data.iam_policy as IMAPolicyField[];
-
-  if (roles instanceof Array) {
-    for (const role of currentRoles) {
-      roles.push({
-        file: fileName,
-        projectId,
-        role: `${projectId}__${role.role.split('/')[1]}`,
-        members: role.members.map(member => {
-          return {
-            memberType: member.split(':')[0],
-            email: member.split(':')[1],
-          };
-        }),
-      });
-    }
-  }
-
-  return roles;
-};
-export {parseData, parseIAMData};
+export {deleteFile, addFile};

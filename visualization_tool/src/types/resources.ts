@@ -45,7 +45,6 @@ type ProjectInfo = {
 type OutputFile = {
   project_info: ProjectInfo;
   iam_policy: IMAPolicyField[];
-  // [key: string]: Resource[] | IMAPolicyField[] | ProjectInfo;
 };
 
 export type {ResourceType, ResourceStatus, Resource, OutputFile};
