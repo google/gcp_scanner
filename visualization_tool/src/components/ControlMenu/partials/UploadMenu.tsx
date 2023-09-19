@@ -1,10 +1,9 @@
 import {useState, useRef} from 'react';
-import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
-import {Resource, OutputFile} from '../../../types/resources';
+import {Resource} from '../../../types/resources';
 import {IAMRole} from '../../../types/IAMPolicy';
-import {parseData, parseIAMData} from '../Controller';
+import {addFile, deleteFile} from '../Controller';
 
 type UploadMenuProps = {
   setResources: React.Dispatch<React.SetStateAction<Resource[]>>;
@@ -13,7 +12,7 @@ type UploadMenuProps = {
   setAllowedProjects: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-type File = {
+type FileInfo = {
   name: string;
   projects: string[];
 };
@@ -25,7 +24,7 @@ const UploadMenu = ({
   setAllowedProjects,
 }: UploadMenuProps) => {
   const fileInput = useRef<HTMLInputElement>(null);
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<FileInfo[]>([]);
   const [error, setError] = useState<string | null>(null);
   return (
     <div className="menu-item">
@@ -40,69 +39,48 @@ const UploadMenu = ({
         onSubmit={e => {
           e.preventDefault();
           setError(null);
-          const file = fileInput.current?.files?.[0];
 
-          if (!file) {
+          if (!fileInput.current?.files) {
             setError('No file selected');
             return;
           }
-          // check if file is already uploaded
-          if (files.find(prevFile => prevFile.name === file.name)) {
-            setError('File already uploaded');
-            return;
-          }
 
-          const reader = new FileReader();
-          reader.readAsText(file);
-          reader.onload = e => {
-            const result = e.target?.result as string;
+          // loop throw files
+          for (let i = 0; i < fileInput.current?.files?.length; i++) {
+            const file = fileInput.current?.files?.[i];
 
-            try {
-              const data = JSON.parse(result) as OutputFile;
-              setProjects(prevProjects => [
-                ...prevProjects,
-                data.project_info.projectId,
-              ]);
-              setAllowedProjects(prevProjects => [
-                ...prevProjects,
-                data.project_info.projectId,
-              ]);
-              const resources = parseData(data, file.name);
-              setResources((prevResources: Resource[]) => [
-                ...prevResources,
-                ...resources,
-              ]);
-
-              const roles = parseIAMData(data, file.name);
-              setRoles((prevRoles: IAMRole[]) => [...prevRoles, ...roles]);
-
-              setFiles([
-                ...files,
-                {name: file.name, projects: [data.project_info.projectId]},
-              ]);
-            } catch (err) {
-              setError('Invalid file');
+            // check if file is already uploaded
+            if (files.find(prevFile => prevFile.name === file.name)) {
+              setError('File already uploaded');
               return;
             }
-          };
+
+            addFile(
+              file,
+              setFiles,
+              setResources,
+              setRoles,
+              setProjects,
+              setAllowedProjects,
+              setError
+            );
+          }
         }}
       >
         <input
           type="file"
-          name=""
-          id=""
           accept=".json"
+          multiple
           ref={fileInput}
+          onChange={() => {
+            setError(null);
+            // trigger submit
+            fileInput.current?.form?.dispatchEvent(
+              new Event('submit', {cancelable: true, bubbles: true})
+            );
+          }}
           className="add-input"
         />
-        <button type="submit" className="add-button">
-          <AddIcon
-            sx={{
-              fontSize: '2rem',
-              color: '#4285F4',
-            }}
-          />
-        </button>
       </form>
       {error && <p className="error">{error}</p>}
       {files.length > 0 && (
@@ -113,28 +91,13 @@ const UploadMenu = ({
               <button
                 className="remove-button"
                 onClick={() => {
-                  setFiles(prevFiles => {
-                    return prevFiles.filter(
-                      prevFile => prevFile.name !== file.name
-                    );
-                  });
-
-                  setProjects(prevProjects => {
-                    return prevProjects.filter(
-                      prevProject => !file.projects.includes(prevProject)
-                    );
-                  });
-
-                  setResources(prevResources => {
-                    return prevResources.filter(
-                      prevResource => prevResource.file !== file.name
-                    );
-                  });
-                  setRoles(prevRoles => {
-                    return prevRoles.filter(
-                      prevRole => prevRole.file !== file.name
-                    );
-                  });
+                  deleteFile(
+                    file,
+                    setFiles,
+                    setResources,
+                    setRoles,
+                    setProjects
+                  );
                 }}
               >
                 <CloseIcon
