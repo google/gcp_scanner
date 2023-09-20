@@ -33,14 +33,7 @@ const Row = ({row}: RowProps) => {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell
-          component="th"
-          scope="row"
-          sx={{
-            padding: '0px',
-            margin: '0px',
-          }}
-        >
+        <TableCell component="th" scope="row">
           {row.role}
         </TableCell>
       </TableRow>

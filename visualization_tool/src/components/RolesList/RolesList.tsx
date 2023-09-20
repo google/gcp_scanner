@@ -20,14 +20,14 @@ type RolesListProps = {
 
 const RolesList = ({roles, emailQuery, allowedProjects}: RolesListProps) => {
   const filteredRoles = useFilter(roles, emailQuery, allowedProjects);
-  // console.log(filteredRoles);
+  const projects = [...new Set(roles.map(role => role.projectId))];
 
   return (
     <div className="roles-list">
       <h1>{roles.length > 0 ? 'Found Roles' : 'No Roles Found'}</h1>
       {filteredRoles.length > 0 && (
         <TableContainer component={Paper}>
-          <Table aria-label="collapsible table">
+          <Table aria-label="collapsible table" size="small">
             <TableHead>
               <TableRow>
                 <TableCell
@@ -39,7 +39,7 @@ const RolesList = ({roles, emailQuery, allowedProjects}: RolesListProps) => {
                 <TableCell
                   sx={{
                     fontWeight: 'bold',
-                    fontSize: '1rem',
+                    fontSize: '1.1rem',
                   }}
                 >
                   Role
@@ -47,9 +47,46 @@ const RolesList = ({roles, emailQuery, allowedProjects}: RolesListProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredRoles.map(role => (
-                <Row key={role.role} row={role} />
-              ))}
+              {
+                // create a outer cell for each project
+                projects.map(project => {
+                  // filter roles by project
+                  const projectRoles = filteredRoles.filter(
+                    role => role.projectId === project
+                  );
+                  return (
+                    <>
+                      <TableRow
+                        sx={{
+                          backgroundColor: '#f5f5f5',
+                        }}
+                        key={project}
+                      >
+                        <TableCell
+                          sx={{
+                            width: '10px',
+                            padding: '0px',
+                          }}
+                        />
+                        <TableCell
+                          sx={{
+                            fontWeight: 'bold',
+                            fontSize: '1.05rem',
+                          }}
+                        >
+                          {project}
+                        </TableCell>
+                      </TableRow>
+                      {
+                        // create a row for each role
+                        projectRoles.map(role => (
+                          <Row key={`${role.role}__${project}`} row={role} />
+                        ))
+                      }
+                    </>
+                  );
+                })
+              }
             </TableBody>
           </Table>
         </TableContainer>
