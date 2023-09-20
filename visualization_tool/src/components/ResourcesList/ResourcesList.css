@@ -16,18 +16,13 @@
 .resources-list__table {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 15px;
 }
 
 .resources-list__table__card {
   width: 210px;
-  padding: 10px 12px 30px 12px;
+  padding: 20px 15px 25px 15px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.25);
-}
-
-.resources-list__table__card img {
-  width: 55px;
-  margin-bottom: 10px;
 }
 
 .resource-name {
@@ -42,12 +37,22 @@
   overflow: hidden;
 }
 
+.resources-image {
+  width: 40px;
+}
+
 .resource-type {
   color: #a3a3a3;
   font-family: Inter;
   font-size: 16px;
   font-weight: 400;
-  margin-bottom: 20px;
+}
+
+.resource-type_container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-block: 10px;
 }
 
 .resource-status {

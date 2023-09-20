@@ -44,9 +44,11 @@ const ResourcesList = ({
         {filteredResources.map(resource => {
           return (
             <div className="resources-list__table__card" key={resource.id}>
-              <img src={typeToImage(resource)} alt="" />
               <p className="resource-name">{resource.name}</p>
-              <p className="resource-type">{resource.type}</p>
+              <div className="resource-type_container">
+                <img src={typeToImage(resource)} className="resources-image" />
+                <p className="resource-type">{resource.type}</p>
+              </div>
               <p
                 className="resource-status"
                 style={{

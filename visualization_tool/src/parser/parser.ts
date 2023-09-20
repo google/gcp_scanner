@@ -73,7 +73,7 @@ const parseIAMRoles = (data: OutputFile, fileName: string) => {
       roles.push({
         file: fileName,
         projectId,
-        role: `${projectId}__${role.role.split('/')[1]}`,
+        role: `${role.role.split('/')[1]}`,
         members: role.members.map(member => {
           return {
             memberType: member.split(':')[0],
