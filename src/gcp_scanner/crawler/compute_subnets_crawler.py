@@ -42,7 +42,7 @@ class ComputeSubnetsCrawler(ICrawler):
       while request is not None:
         response = request.execute()
         if response.get("items", None) is not None:
-          subnets_list = list(response["items"].items())
+          subnets_list.extend(list(response["items"].items()))
         request = service.subnetworks().aggregatedList_next(
           previous_request=request, previous_response=response)
     except Exception:

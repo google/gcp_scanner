@@ -43,7 +43,7 @@ class ComputeSnapshotsCrawler(ICrawler):
       request = service.snapshots().list(project=project_name)
       while request is not None:
         response = request.execute()
-        snapshots_list = response.get("items", [])
+        snapshots_list.extend(response.get("items", []))
         request = service.snapshots().list_next(
           previous_request=request, previous_response=response)
     except Exception:

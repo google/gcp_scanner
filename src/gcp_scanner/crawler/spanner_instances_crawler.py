@@ -44,7 +44,7 @@ class SpannerInstancesCrawler(ICrawler):
         parent=f"projects/{project_id}")
       while request is not None:
         response = request.execute()
-        spanner_instances_list = response.get("instances", [])
+        spanner_instances_list.extend(response.get("instances", []))
         request = service.projects().instances().list_next(
           previous_request=request, previous_response=response)
     except Exception:

@@ -52,7 +52,7 @@ class AppServicesCrawler(ICrawler):
       app_services["services"] = list()
       while request is not None:
         response = request.execute()
-        app_services["services"] = response.get("services", [])
+        app_services["services"].extend(response.get("services", []))
         request = service.apps().services().list_next(
           previous_request=request, previous_response=response)
     except Exception:

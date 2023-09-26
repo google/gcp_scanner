@@ -44,7 +44,7 @@ class FilestoreInstancesCrawler(ICrawler):
         parent=f"projects/{project_id}/locations/-")
       while request is not None:
         response = request.execute()
-        filestore_instances_list = response.get("instances", [])
+        filestore_instances_list.extend(response.get("instances", []))
         request = service.projects().locations().instances().list_next(
           previous_request=request, previous_response=response)
     except Exception:

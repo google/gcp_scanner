@@ -42,10 +42,10 @@ class ComputeDisksCrawler(ICrawler):
       while request is not None:
         response = request.execute()
         if response.get("items", None) is not None:
-          disk_names_list = [
+          disk_names_list.extend([
             disk for _, disks_scoped_list in response["items"].items()
             for disk in disks_scoped_list.get("disks", [])
-          ]
+          ])
         request = service.disks().aggregatedList_next(
           previous_request=request, previous_response=response)
     except Exception:

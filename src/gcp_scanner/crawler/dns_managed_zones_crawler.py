@@ -42,7 +42,7 @@ class DNSManagedZonesCrawler(ICrawler):
       request = service.managedZones().list(project=project_name)
       while request is not None:
         response = request.execute()
-        zones_list = response.get("managedZones", [])
+        zones_list.extend(response.get("managedZones", []))
         request = service.managedZones().list_next(
           previous_request=request, previous_response=response)
     except Exception:

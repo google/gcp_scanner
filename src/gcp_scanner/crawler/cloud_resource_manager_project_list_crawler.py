@@ -40,7 +40,7 @@ class CloudResourceManagerProjectListCrawler(ICrawler):
       request = service.projects().list()
       while request is not None:
         response = request.execute()
-        project_list = response.get("projects",[])
+        project_list.extend(response.get("projects",[]))
         request = service.projects().list_next(
             previous_request=request, previous_response=response)
     except Exception:

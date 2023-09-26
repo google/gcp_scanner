@@ -44,7 +44,7 @@ class BigTableInstancesCrawler(ICrawler):
         parent=f"projects/{project_id}")
       while request is not None:
         response = request.execute()
-        bigtable_instances_list = response.get("instances", [])
+        bigtable_instances_list.extend(response.get("instances", []))
         request = service.projects().instances().list_next(
           previous_request=request, previous_response=response)
     except Exception:

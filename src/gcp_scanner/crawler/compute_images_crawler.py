@@ -42,7 +42,7 @@ class ComputeImagesCrawler(ICrawler):
       request = service.images().list(project=project_name)
       while request is not None:
         response = request.execute()
-        images_result = response.get("items", [])
+        images_result.extend(response.get("items", []))
         request = service.images().list_next(
           previous_request=request, previous_response=response)
     except Exception:
