@@ -65,23 +65,24 @@ const parseResources = (data: OutputFile, fileName: string) => {
 
 const parseIAMRoles = (data: OutputFile, fileName: string) => {
   const roles: IAMRole[] = [];
+
+  if (!data.iam_policy) return roles;
+
   const projectId = data.project_info.projectId;
   const currentRoles = data.iam_policy as IMAPolicyField[];
 
-  if (roles instanceof Array) {
-    for (const role of currentRoles) {
-      roles.push({
-        file: fileName,
-        projectId,
-        role: `${role.role.split('/')[1]}`,
-        members: role.members.map(member => {
-          return {
-            memberType: member.split(':')[0],
-            email: member.split(':')[1],
-          };
-        }),
-      });
-    }
+  for (const role of currentRoles) {
+    roles.push({
+      file: fileName,
+      projectId,
+      role: `${role.role.split('/')[1]}`,
+      members: role.members.map(member => {
+        return {
+          memberType: member.split(':')[0],
+          email: member.split(':')[1],
+        };
+      }),
+    });
   }
 
   return roles;
