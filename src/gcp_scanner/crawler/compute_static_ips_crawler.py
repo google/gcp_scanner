@@ -42,9 +42,9 @@ class ComputeStaticIPsCrawler(ICrawler):
       request = service.addresses().aggregatedList(project=project_name)
       while request is not None:
         response = request.execute()
-        ips_list = [{name: addresses_scoped_list}
+        ips_list.extend([{name: addresses_scoped_list}
                     for name, addresses_scoped_list in response["items"].items()
-                    if addresses_scoped_list.get("addresses", None) is not None]
+                    if addresses_scoped_list.get("addresses", None) is not None])
         request = service.addresses().aggregatedList_next(
           previous_request=request, previous_response=response)
     except Exception:

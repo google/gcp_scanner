@@ -45,7 +45,7 @@ class PubSubSubscriptionsCrawler(ICrawler):
         project=f"projects/{project_id}")
       while request is not None:
         response = request.execute()
-        pubsubs_list = response.get("subscriptions", [])
+        pubsubs_list.extend(response.get("subscriptions", []))
         request = service.projects().subscriptions().list_next(
           previous_request=request, previous_response=response)
     except Exception:

@@ -41,8 +41,8 @@ class ComputeFirewallRulesCrawler(ICrawler):
       request = service.firewalls().list(project=project_name)
       while request is not None:
         response = request.execute()
-        firewall_rules_list = [(firewall["name"],)
-                               for firewall in response.get("items", [])]
+        firewall_rules_list.extend([(firewall["name"],)
+                               for firewall in response.get("items", [])])
         request = service.firewalls().list_next(
           previous_request=request, previous_response=response)
     except Exception:

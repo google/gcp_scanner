@@ -42,9 +42,9 @@ class ComputeInstancesCrawler(ICrawler):
       while request is not None:
         response = request.execute()
         if response.get("items", None) is not None:
-          images_result = [instance
+          images_result.extend([instance
                            for _, instances_scoped_list in response["items"].items()
-                           for instance in instances_scoped_list.get("instances", [])]
+                           for instance in instances_scoped_list.get("instances", [])])
         request = service.instances().aggregatedList_next(
           previous_request=request, previous_response=response)
     except Exception:

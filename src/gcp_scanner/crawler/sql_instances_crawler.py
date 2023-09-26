@@ -43,7 +43,7 @@ class SQLInstancesCrawler(ICrawler):
       request = service.instances().list(project=project_name)
       while request is not None:
         response = request.execute()
-        sql_instances_list = response.get("items", [])
+        sql_instances_list.extend(response.get("items", []))
         request = service.instances().list_next(
           previous_request=request, previous_response=response)
     except Exception:

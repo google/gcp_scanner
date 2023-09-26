@@ -75,7 +75,7 @@ class BigQueryCrawler(ICrawler):
         projectId=project_id, datasetId=dataset_id)
       while request is not None:
         response = request.execute()
-        list_of_tables = response.get("tables", [])
+        list_of_tables.extend(response.get("tables", []))
         request = bq_service.tables().list_next(
           previous_request=request, previous_response=response)
     except Exception:

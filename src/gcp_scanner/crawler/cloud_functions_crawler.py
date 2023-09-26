@@ -44,7 +44,7 @@ class CloudFunctionsCrawler(ICrawler):
         parent=f"projects/{project_id}/locations/-")
       while request is not None:
         response = request.execute()
-        functions_list = response.get("functions", [])
+        functions_list.extend(response.get("functions", []))
         request = service.projects().locations().functions().list_next(
           previous_request=request, previous_response=response)
     except Exception:

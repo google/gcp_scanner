@@ -41,7 +41,7 @@ class EndpointsCrawler(ICrawler):
       request = service.services().list(producerProjectId=project_name)
       while request is not None:
         response = request.execute()
-        endpoints_list = response.get("services", [])
+        endpoints_list.extend(response.get("services", []))
         request = service.services().list_next(
           previous_request=request, previous_response=response)
     except Exception:

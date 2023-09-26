@@ -41,7 +41,7 @@ class ComputeMachineImagesCrawler(ICrawler):
       request = service.machineImages().list(project=project_name)
       while request is not None:
         response = request.execute()
-        machine_images_list = response.get("items", [])
+        machine_images_list.extend(response.get("items", []))
         request = service.machineImages().list_next(
           previous_request=request, previous_response=response
         )
