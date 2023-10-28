@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   build:
-
+    
     strategy:
       matrix:
         os: [self-hosted, windows-latest, macos-latest]
@@ -31,6 +31,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      shell: bash
     - name: Lint with pylint
       run: |
         # stop the build if there are Python syntax errors or undefined names
