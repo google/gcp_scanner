@@ -130,6 +130,10 @@ To know more about how to use the tool, please visit [GCP Scanner Visualizer Usa
 
 If you just need a convenient way to grep JSON results, we can recommend [gron](https://github.com/tomnomnom/gron).
 
+### Testing
+
+The GCP Scanner is tested across multiple operating systems including Linux, Windows, and MacOS to ensure its functionality and reliability. The testing is automated via GitHub Actions, which triggers the test suite on push and pull requests to the main branch.
+
 ### Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
