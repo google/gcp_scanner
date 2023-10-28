@@ -15,7 +15,10 @@ permissions:
 jobs:
   build:
 
-    runs-on: self-hosted
+    strategy:
+      matrix:
+        os: [self-hosted, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
