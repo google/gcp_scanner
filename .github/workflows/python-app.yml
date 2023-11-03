@@ -59,6 +59,7 @@ jobs:
       with:
         path: |
           ~/.cache/pip
+          **/__pycache__
         key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
         enableCrossOsArchive: true
     - name: Install dependencies
