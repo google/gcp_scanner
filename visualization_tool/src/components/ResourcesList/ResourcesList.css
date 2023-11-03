@@ -10,7 +10,6 @@
   font-size: 38px;
   line-height: 46px;
   color: #000000;
-  margin-bottom: 30px;
 }
 
 .resources-list__table {
@@ -87,4 +86,68 @@
   font-weight: 400;
   margin-right: 10px;
   width: 220px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between; /* Aligns content to the far right */
+  align-items: center;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header-text {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+  margin-right: 40px;
+}
+
+.button-container button {
+  background-color: transparent;
+  border: 1px solid #333;
+  padding: 10px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button.active {
+  background-color: #ccc;
+}
+
+.icon {
+  margin-right: 5px;
+  font-size: 20px;
+  width: 20px; /* Adjust the desired width */
+  height: 20px; /* Adjust the desired height */
+}
+
+tr {
+  height: 10px;
+}
+
+tr td {
+   height: auto !important;
+   padding: 5px !important;
+}
+
+tr th {
+  height: auto !important;
+  padding: 5px !important;
+}
+
+.table-button button {
+  border: none;
+  border-radius: 5px;
+  background: #4285f4;
+  color: white;
+  padding: 6px 25px;
+  cursor: pointer;
 }
