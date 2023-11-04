@@ -24,12 +24,20 @@ jobs:
       with:
         python-version: "3.10"
     - name: Cache dependencies
+      id: cache
       uses: actions/cache@v3
       with:
         path: |
           ~/.cache/pip
+          **/__pycache__
         key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
         enableCrossOsArchive: true
+    - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true' 
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -55,6 +63,7 @@ jobs:
       with:
         python-version: "3.10"
     - name: Cache dependencies
+      id: cache
       uses: actions/cache@v3
       with:
         path: |
@@ -63,6 +72,7 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
         enableCrossOsArchive: true
     - name: Install dependencies
+      if: steps.cache.outputs.cache-hit != 'true' 
       run: |
         python -m pip install --upgrade pip
         pip install pytest
