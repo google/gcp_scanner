@@ -45,9 +45,19 @@ The tool provides several options to filter the resources. You can filter the re
 
 #### Searching for resources
 
+We have two convenient methods to search for resources:
+
+- Normal Search
+
 You can search for resources by their name in the search bar. The tool will show the resources that contain the search term in their name.
 
 ![GCP Scanner Visualizer](../../misc/visualization_tool_images/search_resources.webp)
+
+- Regular Expression Search
+
+You can search for resources by providing a valid regular expression of the resource name in the search bar. The tool will show the resources that matches the expression.
+
+![GCP Scanner Visualizer](../../misc/visualization_tool_images/search_regex_resources.webp)
 
 ### IAM Policy Page
 
@@ -61,6 +71,16 @@ To see the members of a role, you can click on the icon next to the role name to
 
 #### Searching for IAM policies
 
+We have two convenient methods to search for member in IAM policies:
+
+- Normal Search
+
 You can search for a member in the IAM policies by using the search bar. The tool will show the policies that contain the email address of the member in the search bar.
 
 ![GCP Scanner Visualizer](../../misc/visualization_tool_images/search_role.webp)
+
+- Regular Expression Search
+
+You can search for resources by providing a valid regular expression of the member email in the search bar. The tool will show the policies that matches the expression.
+
+![GCP Scanner Visualizer](../../misc/visualization_tool_images/search_regex_role.webp)
