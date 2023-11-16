@@ -59,6 +59,8 @@ You can search for resources by providing a valid regular expression of the reso
 
 ![GCP Scanner Visualizer](../../misc/visualization_tool_images/search_regex_resources.webp)
 
+For more information on crafting Regex expressions, refer to the [Regex Reference](https://docs.pexip.com/admin/regex_reference.htm).
+
 ### IAM Policy Page
 
 This page shows the list of IAM policies that were found in the result file. The policies are visualized in a table view with each row represents a single role. The roles are grouped by the project that they belong to.
@@ -84,3 +86,5 @@ You can search for a member in the IAM policies by using the search bar. The too
 You can search for resources by providing a valid regular expression of the member email in the search bar. The tool will show the policies that matches the expression.
 
 ![GCP Scanner Visualizer](../../misc/visualization_tool_images/search_regex_role.webp)
+
+For more information on crafting Regex expressions, refer to the [Regex Reference](https://docs.pexip.com/admin/regex_reference.htm).
