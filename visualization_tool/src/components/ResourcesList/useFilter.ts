@@ -14,26 +14,37 @@ export const useFilter = (
 
   useEffect(() => {
     const filterResources = () => {
-      setFilteredResources(
-        resources
-          .filter(resource => {
-            return (
-              allowedTypes.includes(resource.type) &&
-              resource.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-              allowedProjects.includes(resource.projectId)
-            );
-          })
-          .sort((a, b) => {
-            if (sortAttribute === 'name') {
-              return a.name.localeCompare(b.name);
-            } else {
-              return (
-                new Date(a.creationTimestamp).getTime() -
-                new Date(b.creationTimestamp).getTime()
-              );
-            }
-          })
-      );
+      let filtered = resources.filter(resource => {
+        return (
+          allowedTypes.includes(resource.type) &&
+          allowedProjects.includes(resource.projectId)
+        );
+      });
+
+      if (searchQuery.trim() !== '') {
+        try {
+          const regex = new RegExp(searchQuery, 'i');
+          filtered = filtered.filter(resource => regex.test(resource.name));
+        } catch (error) {
+          // If the RegExp constructor throws an error, do a normal search
+          filtered = filtered.filter(resource =>
+            resource.name.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        }
+      }
+
+      filtered.sort((a, b) => {
+        if (sortAttribute === 'name') {
+          return a.name.localeCompare(b.name);
+        } else {
+          return (
+            new Date(a.creationTimestamp).getTime() -
+            new Date(b.creationTimestamp).getTime()
+          );
+        }
+      });
+
+      setFilteredResources(filtered);
     };
 
     debounce(filterResources, 100)();
