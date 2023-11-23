@@ -26,6 +26,12 @@ class ICrawler(metaclass=ABCMeta):
 
   """
 
+  """Variable to identify if config file is needed
+
+  Access Type: Private
+  """
+  _config_depndency = False
+
   @staticmethod
   @abstractmethod
   def crawl(project_name: str, service: discovery.Resource,
@@ -49,3 +55,12 @@ class ICrawler(metaclass=ABCMeta):
     """
 
     raise NotImplementedError("Child class must implement the crawl() method.")
+  
+  @property
+  def crawler_config(self) -> bool:
+    """Checks if the class needs a config file
+
+    Returns:
+        bool: Returns config_depndency private variable which is False by default.
+    """
+    return self._config_depndency
