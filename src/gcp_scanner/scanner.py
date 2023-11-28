@@ -94,6 +94,7 @@ CRAWL_CLIENT_MAP = {
     'app_services': 'appengine',
     'bigtable_instances': 'bigtableadmin',
     'bq': 'bigquery',
+    'cloud_assets': 'cloudasset',
     'cloud_functions': 'cloudfunctions',
     'compute_disks': 'compute',
     'compute_images': 'compute',

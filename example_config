@@ -52,6 +52,9 @@
   "pubsub_subs": {
     "fetch": true
   },
+  "cloud_assets":{
+    "fetch": true
+  },
   "cloud_functions": {
     "fetch": true
   },

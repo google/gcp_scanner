@@ -37,6 +37,7 @@ from .client.appengine_client import AppEngineClient
 from .client.bigquery_client import BQClient
 from .client.bigtable_client import BigTableClient
 from .client.client_factory import ClientFactory
+from .client.cloudasset_client import CloudAssetClient
 from .client.cloud_functions_client import CloudFunctionsClient
 from .client.cloud_resource_manager_client import CloudResourceManagerClient
 from .client.compute_client import ComputeClient
@@ -58,6 +59,7 @@ from .crawler import misc_crawler
 from .crawler.app_services_crawler import AppServicesCrawler
 from .crawler.bigquery_crawler import BigQueryCrawler
 from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
+from .crawler.cloud_asset_crawler import CloudAssetCrawler
 from .crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from .crawler.cloud_resource_manager_iam_policy_crawler import CloudResourceManagerIAMPolicyCrawler
 from .crawler.cloud_resource_manager_project_info_crawler import CloudResourceManagerProjectInfoCrawler
@@ -612,6 +614,22 @@ class TestCrawler(unittest.TestCase):
       )
     )
 
+  def test_cloud_assets(self):
+    """Test CloudAsset list"""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+          "cloud_assets",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("cloudasset").get_service(
+            self.credentials
+          ),
+        ),
+        "cloud_assets",
+      )
+    )
+
   def test_cloud_functions(self):
     """Test CloudFunctions list."""
     self.assertTrue(
@@ -878,6 +896,11 @@ class TestClientFactory(unittest.TestCase):
     client = ClientFactory.get_client("pubsub")
     self.assertIsInstance(client, PubSubClient)
 
+  def test_get_client_cloudasset(self):
+    """Test get_client method with 'cloudasset' name."""
+    client = ClientFactory.get_client("cloudasset")
+    self.assertIsInstance(client, CloudAssetClient)
+
   def test_get_client_cloudfunctions(self):
     """Test get_client method with 'cloudfunctions' name."""
     client = ClientFactory.get_client("cloudfunctions")
@@ -963,6 +986,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'bigquery' name."""
     crawler = CrawlerFactory.create_crawler("bq")
     self.assertIsInstance(crawler, BigQueryCrawler)
+
+  def test_create_crawler_cloud_assets(self):
+    """Test create_crawler method with 'cloud_assets' name."""
+    crawler = CrawlerFactory.create_crawler("cloud_assets")
+    self.assertIsInstance(crawler, CloudAssetCrawler)
 
   def test_create_crawler_cloud_functions(self):
     """Test create_crawler method with 'cloud_functions' name."""
