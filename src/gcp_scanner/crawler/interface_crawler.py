@@ -30,7 +30,7 @@ class ICrawler(metaclass=ABCMeta):
 
   Access Type: Private
   """
-  _config_depndency = False
+  _config_dependency = False
 
   @staticmethod
   @abstractmethod
@@ -61,6 +61,6 @@ class ICrawler(metaclass=ABCMeta):
     """Checks if the class needs a config file
 
     Returns:
-        bool: Returns config_depndency private variable which is False by default.
+        bool: Returns config_dependency private variable which is False by default.
     """
-    return self._config_depndency
+    return self._config_dependency
