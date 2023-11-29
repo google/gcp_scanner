@@ -81,7 +81,7 @@ class StorageBucketsCrawler(ICrawler):
     return buckets_dict
   
   @property
-  def crawler_config(self) -> bool:
+  def has_config_dependency(self) -> bool:
     """Checks if the class needs a config file
 
     Returns:
