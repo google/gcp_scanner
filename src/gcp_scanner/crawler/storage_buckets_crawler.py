@@ -24,6 +24,8 @@ from gcp_scanner.crawler.interface_crawler import ICrawler
 class StorageBucketsCrawler(ICrawler):
   """Handle crawling of bucket names data."""
 
+  _config_dependency = True # Define that config file is needed
+
   def crawl(self, project_name: str, service: discovery.Resource,
             config: Dict[str, Union[bool, str]] = None) -> Dict[str, Tuple[Any, List[Any]]]:
     """Retrieve a list of buckets available in the project.
@@ -77,6 +79,15 @@ class StorageBucketsCrawler(ICrawler):
     if dump_fd is not None:
       dump_fd.close()
     return buckets_dict
+  
+  @property
+  def has_config_dependency(self) -> bool:
+    """Checks if the class needs a config file
+
+    Returns:
+        bool: Returns config_dependency private variable which is False by default.
+    """
+    return self._config_dependency
 
   @classmethod
   def _get_bucket_iam(cls, bucket_name: str, service: discovery.Resource) -> List[Any]:

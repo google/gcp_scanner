@@ -180,8 +180,10 @@ def get_crawl(
   Returns:
     scan_result: a dictionary with scanning results
   """
-
-  res = crawler.crawl(project_id, client, crawler_config)
+  if crawler.has_config_dependency:
+    res = crawler.crawl(project_id, client, crawler_config)
+  else:
+    res = crawler.crawl(project_id, client)
   if res is not None and len(res) != 0:
     scan_results[crawler_name] = res
   return scan_results
