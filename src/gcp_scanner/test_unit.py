@@ -134,7 +134,9 @@ def compare_volatile(f1, f2):
       res = False
 
   if res is False:
-    print(file_1_text)
+    print("----Received----")
+    print(json.dumps(file_1_text))
+    print("----Expected----")
   return res
 
 
