@@ -95,6 +95,7 @@ CRAWL_CLIENT_MAP = {
     'bigtable_instances': 'bigtableadmin',
     'bq': 'bigquery',
     'cloud_functions': 'cloudfunctions',
+    'cloud_traces': 'cloudtrace',
     'compute_disks': 'compute',
     'compute_images': 'compute',
     'compute_instances': 'compute',

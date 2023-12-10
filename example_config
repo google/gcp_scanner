@@ -55,6 +55,9 @@
   "cloud_functions": {
     "fetch": true
   },
+  "cloud_traces":{
+    "fetch": true
+  },
   "bigtable_instances": {
     "fetch": true
   },
