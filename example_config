@@ -7,6 +7,9 @@
     "fetch": true,
     "comment": "Fetch metadata about GCE disks"
   },
+  "compute_security_policies": {
+    "fetch": true
+  },
   "compute_images": {
     "fetch": true
   },

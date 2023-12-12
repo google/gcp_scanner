@@ -98,6 +98,7 @@ CRAWL_CLIENT_MAP = {
     'compute_disks': 'compute',
     'compute_images': 'compute',
     'compute_instances': 'compute',
+    'compute_security_policies':'compute',
     'compute_snapshots': 'compute',
     'datastore_kinds': 'datastore',
     'dns_policies': 'dns',

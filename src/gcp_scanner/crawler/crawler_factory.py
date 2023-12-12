@@ -25,6 +25,7 @@ from gcp_scanner.crawler.compute_disks_crawler import ComputeDisksCrawler
 from gcp_scanner.crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from gcp_scanner.crawler.compute_images_crawler import ComputeImagesCrawler
 from gcp_scanner.crawler.compute_instances_crawler import ComputeInstancesCrawler
+from gcp_scanner.crawler.compute_security_policies_crawler import ComputeSecurityPoliciesCrawler
 from gcp_scanner.crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from gcp_scanner.crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from gcp_scanner.crawler.compute_subnets_crawler import ComputeSubnetsCrawler
@@ -53,6 +54,7 @@ service_crawler_map = {
   "compute_disks": ComputeDisksCrawler,
   "compute_images": ComputeImagesCrawler,
   "compute_instances": ComputeInstancesCrawler,
+  "compute_security_policies": ComputeSecurityPoliciesCrawler,
   "compute_snapshots": ComputeSnapshotsCrawler,
   "datastore_kinds": DatastoreCrawler,
   "dns_policies": DNSPoliciesCrawler,
