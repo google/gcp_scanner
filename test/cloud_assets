@@ -1,5 +1,4 @@
-{ 
-CHECK "cloud_assets": [
+[
      {
 CHECK      "name": "//cloudbilling.googleapis.com/projects/
 CHECK      "assetType": "cloudbilling.googleapis.com/ProjectBillingInfo",
@@ -65,4 +64,3 @@ CHECK      "assetType": "cloudresourcemanager.googleapis.com/Project
       "updateTime": "2023-11-27T13:04:03.814827Z"
     }
 ]
-}
