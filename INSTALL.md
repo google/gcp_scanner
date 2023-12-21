@@ -68,7 +68,7 @@ gcp-scanner --help
    - **on windows:**
 
    ```bash
-   .\venv\Scripts\activate.bat
+   .\venv\Scripts\activate
    ```
 
    - **on MacOS:**
