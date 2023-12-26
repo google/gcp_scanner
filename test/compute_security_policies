@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "kind": "compute#securityPolicy",
+    "id": "1127822762545978383",
+    "creationTimestamp": "2023-12-26T01:54:40.411-08:00",
+    "name": "test-security-policy",
+    "description": "policy for external users",
+    "rules": [
+      {
+        "kind": "compute#securityPolicyRule",
+        "description": "default rule",
+        "priority": 2147483647,
+        "match": {
+          "versionedExpr": "SRC_IPS_V1",
+          "config": {
+            "srcIpRanges": [
+              "*"
+            ]
+          }
+        },
+        "action": "deny(404)",
+        "preview": false
+      }
+    ],
+    "fingerprint": "Hl4XzYCKyRI=",
+    "selfLink": "https://www.googleapis.com/compute/v1/projects/circular-fusion-406401/global/securityPolicies/test-security-policy",
+    "type": "CLOUD_ARMOR",
+    "labelFingerprint": "42WmSpB8rSM="
+  }
+]
