@@ -106,10 +106,15 @@ def print_diff(f1, f2):
     res += line
 
 
-def save_to_test_file(res):
+def save_to_test_file(res, resource_type=None):
   res = json.dumps(res, indent=2, sort_keys=False)
-  with open("test_res", "w", encoding="utf-8") as outfile:
-    outfile.write(res)
+
+  if not resource_type:
+    with open(f"test_res", "w", encoding="utf-8") as outfile:
+      outfile.write(res)
+  else:
+    with open(f"test_res_{resource_type}", "w", encoding="utf-8") as outfile:
+      outfile.write(res)
 
 
 def compare_volatile(f1, f2):
@@ -136,8 +141,11 @@ def compare_volatile(f1, f2):
   return res
 
 
-def verify(res_to_verify, resource_type, volatile=True):
-  save_to_test_file(res_to_verify)
+def verify(res_to_verify, resource_type, volatile=True, store_results=False):
+  if not store_results:
+    save_to_test_file(res_to_verify)
+  else:
+    save_to_test_file(res_to_verify, resource_type)
   f1 = "test_res"
   f2 = f"test/{resource_type}"
 
@@ -387,6 +395,7 @@ class TestCrawler(unittest.TestCase):
           ClientFactory.get_client("compute").get_service(self.credentials),
         ),
         "compute_instances",
+        True,
         True,
       )
     )
@@ -716,7 +725,8 @@ class TestCrawler(unittest.TestCase):
           ),
         ),
         "services",
-        True
+        True,
+        True,
       )
     )
 
