@@ -23,7 +23,7 @@ import unittest.mock
 
 from . import scanner
 
-RESOURCE_COUNT = 30
+RESOURCE_COUNT = 31
 RESULTS_JSON_COUNT = 1
 PROJECT_INFO_COUNT = 5
 IAM_POLICY_COUNT = 12
