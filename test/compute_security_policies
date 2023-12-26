@@ -1,9 +1,9 @@
 [
   {
-    "kind": "compute#securityPolicy",
+CHECK    "kind": "compute#securityPolicy",
     "id": "1127822762545978383",
     "creationTimestamp": "2023-12-26T01:54:40.411-08:00",
-    "name": "test-security-policy",
+CHECK    "name": "test-security-policy",
     "description": "policy for external users",
     "rules": [
       {
@@ -13,12 +13,12 @@
         "match": {
           "versionedExpr": "SRC_IPS_V1",
           "config": {
-            "srcIpRanges": [
+CHECK            "srcIpRanges": [
               "*"
             ]
           }
         },
-        "action": "deny(404)",
+CHECK       "action": "deny(404)",
         "preview": false
       }
     ],
