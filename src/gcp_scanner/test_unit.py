@@ -109,7 +109,7 @@ def print_diff(f1, f2):
 def save_to_test_file(res, resource_type=None):
   res = json.dumps(res, indent=2, sort_keys=False)
 
-  if not resource_type:
+  if resource_type is None:
     with open(f"test_res", "w", encoding="utf-8") as outfile:
       outfile.write(res)
   else:
@@ -142,7 +142,7 @@ def compare_volatile(f1, f2):
 
 
 def verify(res_to_verify, resource_type, volatile=True, store_results=False):
-  if not store_results:
+  if store_results is False:
     save_to_test_file(res_to_verify)
   else:
     save_to_test_file(res_to_verify, resource_type)
