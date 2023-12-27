@@ -66,6 +66,7 @@ from .crawler.compute_disks_crawler import ComputeDisksCrawler
 from .crawler.compute_firewall_rules_crawler import ComputeFirewallRulesCrawler
 from .crawler.compute_images_crawler import ComputeImagesCrawler
 from .crawler.compute_instances_crawler import ComputeInstancesCrawler
+from .crawler.compute_security_policies_crawler import ComputeSecurityPoliciesCrawler
 from .crawler.compute_snapshots_crawler import ComputeSnapshotsCrawler
 from .crawler.compute_static_ips_crawler import ComputeStaticIPsCrawler
 from .crawler.compute_subnets_crawler import ComputeSubnetsCrawler
@@ -387,6 +388,21 @@ class TestCrawler(unittest.TestCase):
           ClientFactory.get_client("compute").get_service(self.credentials),
         ),
         "compute_instances",
+        True,
+      )
+    )
+
+  def test_compute_security_policies(self):
+    """Test compute security policies"""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+          "compute_security_policies",
+        ).crawl(
+          PROJECT_NAME,
+          ClientFactory.get_client("compute").get_service(self.credentials),
+        ),
+        "compute_security_policies",
         True,
       )
     )
@@ -993,6 +1009,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'compute_instances' name."""
     crawler = CrawlerFactory.create_crawler("compute_instances")
     self.assertIsInstance(crawler, ComputeInstancesCrawler)
+
+  def test_create_crawler_compute_security_policies(self):
+    """Test create_crawler method with 'compute_security_policies' name."""
+    crawler = CrawlerFactory.create_crawler("compute_security_policies")
+    self.assertIsInstance(crawler, ComputeSecurityPoliciesCrawler)
 
   def test_create_crawler_compute_images(self):
     """Test create_crawler method with 'compute_images' name."""
