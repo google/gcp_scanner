@@ -10,3 +10,4 @@ gcloud compute security-policies create test-security-policy \
 gcloud compute security-policies rules update 2147483647 \
     --security-policy test-security-policy \
     --action "deny-404"
+    

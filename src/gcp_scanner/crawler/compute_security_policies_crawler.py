@@ -48,3 +48,4 @@ class ComputeSecurityPoliciesCrawler(ICrawler):
       logging.info("Failed to enumerate compute security policies in the %s", project_name)
       logging.info(sys.exc_info())
     return security_policies_list
+  
