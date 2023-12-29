@@ -62,6 +62,30 @@ gcp-scanner --help
 There is a docker build file if you want to run the scanner from a container:
 `docker build -f Dockerfile -t sa_scanner .`
 
+### Setup of tool(gcp_scanner)
+
+From the above process(installation) you only get gcp_scanner dicrectory , but you cannot use the tool normally.  
+To use the tool follow the below instructions:  
+
+* Open the Terminal(__linux__) & Clone the project using `git clone https://github.com/google/gcp_scanner.git`  
+* Then, `cd gcp_scanner`   
+* Create a Virtual Environment to install all your dependencies with `python3 -m venv venv`  
+* Activate the Virtual Environment with `source venv/bin/activate`  
+* Install all dependencies using `pip install -r requirements.txt`  
+* Install the tool in your local machine by using the command  `pip install .`  
+* Run to check if the tool was installed correctly `gcp-scanner --help`  
+* That's the basic things you need to setup for gcp-scanner to develop in local environment.  
+* If you still get doubt or any issue in installing tool , feel free to ask in discussion section.  
+
+Some other things to keep in mind before any PR:  
+
+Check for linting using PyLint:
+for first time do - 'wget https://google.github.io/styleguide/pylintrc'  
+and then 'pylint --rcfile pylintrc --disable=W0703,R1734,R1735,C0209,C0103,R1732 src/gcp_scanner/*.py'  
+Ensure that the tests are successful  
+If any new features have been added, then check with GCP to ensure they work as expected.  
+P.S. You are required to have a GCP account for development (As of now)
+
 ### Command-line options
 
 ```
