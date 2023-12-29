@@ -43,7 +43,7 @@ class CloudTraceCrawler(ICrawler):
       request = service.projects().traces().list(projectId=project_id)
       while request is not None:
         response = request.execute()
-        trace_list.extend(response.get("functions", []))
+        trace_list.extend(response.get("traces", []))
         request = service.projects().traces().list_next(
           previous_request=request, previous_response=response)
     except Exception:

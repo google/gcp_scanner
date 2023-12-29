@@ -1,1 +1,6 @@
-[]
+[
+  {
+CHECK    "projectId": "cloud-trace-api",
+CHECK    "traceId": "1a6942a2b3cb71dc20e3dbb7dc07c21f"
+  }
+]
