@@ -39,7 +39,7 @@ The scanner supports extracting and using the following types of credentials:
 
 The scanner does not rely on any third-party tool (e.g., gcloud). Thus, it can be compiled as a standalone tool and used on a machine with no GCP SDK installed (e.g. a Kubernetes pod). However, please keep in mind that the only OS that is currently supported is Linux.
 
-Please note that GCP offers a [Policy Analyzer](https://cloud.google.com/policy-intelligence/docs/analyze-iam-policies) to find out which principals (users, service accounts, groups, and domains), have what access to which Google Cloud resources. However, it requires specific permissions on the GCP project and the Cloud Assets API needs to be enabled. If you just have a GCP SA key, access to a previously compromised VM, or an OAUth2 refresh token, gcp_scanner is the best option to use.
+Please note that GCP offers [Policy Analyzer](https://cloud.google.com/policy-intelligence/docs/analyze-iam-policies) to find out which principals (users, service accounts, groups, and domains), have what access to which Google Cloud resources. However, it requires specific permissions on the GCP project and the Cloud Assets API needs to be enabled. If you just have a GCP SA key, access to a previously compromised VM, or an OAUth2 refresh token, gcp_scanner is the best option to use.
 
 ### Installation
 
