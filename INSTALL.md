@@ -2,7 +2,7 @@
 
 ## Install basic dependencies
 
-**Linux** is the preferred operating system to use while contributing to GCP Scanner. If you're using Windows, we recommend setting up [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+**Linux** is the preferred operating system to use while contributing to the GCP Scanner. If you're using Windows, we recommend setting up [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 - Have `python` installed on your system. Check out this [link](https://www.python.org/downloads/) to download.
 - have `git` installed on your system.
