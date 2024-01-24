@@ -189,7 +189,7 @@ def find_creds(explicit_path: Optional[str] = None) -> List[str]:
         search_paths.append(full_path)
 
   for dir_path in search_paths:
-    logging.info(f"Scanning {dir_path} for credentials.db")
+    logging.info("Scanning %s for credentials.db", dir_path)
     full_path = os.path.join(dir_path, "credentials.db")
     if os.path.exists(full_path) and os.access(full_path, os.R_OK):
       print(f"Identified accessible gcloud config profile {full_path}")
