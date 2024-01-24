@@ -55,6 +55,9 @@
   "pubsub_subs": {
     "fetch": true
   },
+  "cloud_billing_account": {
+    "fetch": true
+  },
   "cloud_functions": {
     "fetch": true
   },

@@ -17,6 +17,7 @@ import logging
 from gcp_scanner.crawler.app_services_crawler import AppServicesCrawler
 from gcp_scanner.crawler.bigquery_crawler import BigQueryCrawler
 from gcp_scanner.crawler.bigtable_instances_crawler import BigTableInstancesCrawler
+from gcp_scanner.crawler.cloud_billing_account_crawler import CloudBillingAccountCrawler
 from gcp_scanner.crawler.cloud_functions_crawler import CloudFunctionsCrawler
 from gcp_scanner.crawler.cloud_resource_manager_iam_policy_crawler import CloudResourceManagerIAMPolicyCrawler
 from gcp_scanner.crawler.cloud_resource_manager_project_info_crawler import CloudResourceManagerProjectInfoCrawler
@@ -50,6 +51,7 @@ service_crawler_map = {
   "app_services": AppServicesCrawler,
   "bigtable_instances": BigTableInstancesCrawler,
   "bq": BigQueryCrawler,
+  "cloud_billing_account": CloudBillingAccountCrawler,
   "cloud_functions": CloudFunctionsCrawler,
   "compute_disks": ComputeDisksCrawler,
   "compute_images": ComputeImagesCrawler,

@@ -1,0 +1,8 @@
+[
+  {
+    "name": "projects/test-gcp-scanner-2/billingInfo",
+    "projectId": "test-gcp-scanner-2",
+    "billingAccountName": "billingAccounts/0145DD-EDAD5A-6F2373",
+    "billingEnabled": true
+  }
+]

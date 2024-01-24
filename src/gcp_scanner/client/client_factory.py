@@ -17,6 +17,7 @@ import logging
 from gcp_scanner.client.appengine_client import AppEngineClient
 from gcp_scanner.client.bigquery_client import BQClient
 from gcp_scanner.client.bigtable_client import BigTableClient
+from gcp_scanner.client.cloud_billing_client import CloudBillingClient
 from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
 from gcp_scanner.client.cloud_resource_manager_client import CloudResourceManagerClient
 from gcp_scanner.client.compute_client import ComputeClient
@@ -43,6 +44,7 @@ class ClientFactory:
     "appengine": AppEngineClient,
     "bigquery": BQClient,
     "bigtableadmin": BigTableClient,
+    "cloudbilling": CloudBillingClient,
     "cloudfunctions": CloudFunctionsClient,
     "cloudkms": CloudKMSClient,
     "cloudresourcemanager": CloudResourceManagerClient,
