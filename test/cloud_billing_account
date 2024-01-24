@@ -1,8 +1,8 @@
 [
   {
-    "name": "projects/circular-fusion-406401/billingInfo",
-    "projectId": "circular-fusion-406401",
-    "billingAccountName": "billingAccounts/010CB1-5F7926-2E0A3E",
+    "name": "projects/test-gcp-scanner-2/billingInfo",
+    "projectId": "test-gcp-scanner-2",
+    "billingAccountName": "billingAccounts/0145DD-EDAD5A-6F2373",
     "billingEnabled": true
   }
 ]
