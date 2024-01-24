@@ -315,7 +315,6 @@ def impersonate_service_accounts(
 
   # Enumerate projects accessible by SA
   project_id = project['projectId']
-  print(f'Looking for impersonation options in {project_id}')
   project_result = sa_results['projects'][project_id]
   project_result['project_info'] = project
   # Iterate over discovered service accounts by attempting impersonation
@@ -329,6 +328,7 @@ def impersonate_service_accounts(
 
   # trying to impersonate SAs within project
   if impers is not None and impers.get('impersonate', False) is True:
+    logging.info(f'Looking for impersonation options in {project_id}')
     iam_client = iam_client_for_credentials(credentials)
     if is_set(scan_config, 'iam_policy') is False:
       iam_policy = CrawlerFactory.create_crawler('iam_policy').crawl(
@@ -565,6 +565,19 @@ def main():
 
     if force_projects_list:
       for force_project_id in force_projects_list:
+        if (
+            next(
+                (
+                    item
+                    for item in project_list
+                    if item["projectId"] == force_project_id
+                ),
+                None,
+            )
+            is not None
+        ):
+          logging.info(f"The project {force_project_id} is already in the list")
+          continue
         res = CrawlerFactory.create_crawler(
             'project_info',
         ).crawl(
@@ -611,7 +624,7 @@ def main():
 
   # See i#267 on why we use the native threading approach here.
   for i, project_obj in enumerate(project_queue):
-    print('Finished %d projects out of %d' % (i, len(project_queue) - 1))
+    logging.info('Finished %d projects out of %d' % (i, len(project_queue) - 1))
     sync_t = threading.Thread(target=scanner.get_resources, args=(project_obj,))
     sync_t.daemon = True
     sync_t.start()
