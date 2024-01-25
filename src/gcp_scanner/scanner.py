@@ -96,6 +96,7 @@ CRAWL_CLIENT_MAP = {
     'bq': 'bigquery',
     'cloud_billing_account': 'cloudbilling',
     'cloud_functions': 'cloudfunctions',
+    'cloud_traces': 'cloudtrace',
     'compute_disks': 'compute',
     'compute_images': 'compute',
     'compute_instances': 'compute',
