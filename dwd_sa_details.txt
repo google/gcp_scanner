@@ -1,0 +1,16 @@
+# GCP Service Account DWD Detector
+
+This repository contains a script for detecting Google Cloud Platform (GCP) Service Accounts (SA) with Domain-Wide Delegation (DWD) permissions.
+
+## Changes Made
+
+- Added a Python script `dwd_sa_detector.py` that checks for DWD permissions in GCP SAs and flags any that are found. This script uses the `google-auth` and `google-auth-httplib2` libraries to authenticate and create a service client. It then lists all the service accounts in the project and checks if they have the `roles/iam.serviceAccountTokenCreator` role, which is one of the roles that enables DWD.
+
+- The script logs the details of the service accounts with DWD permissions into a file named `dwd_sa_details.txt`. This could be useful for auditing or further analysis.
+
+## Installation
+
+You need to install the necessary libraries using pip:
+
+```bash
+pip install --upgrade google-auth google-auth-httplib2 google-auth-oauthlib google-api-python-client
