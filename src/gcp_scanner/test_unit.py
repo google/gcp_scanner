@@ -39,6 +39,7 @@ from .client.bigtable_client import BigTableClient
 from .client.client_factory import ClientFactory
 from .client.client_factory import CloudBillingClient
 from .client.cloud_functions_client import CloudFunctionsClient
+from .client.cloud_trace_client import CloudTraceClient
 from .client.cloud_resource_manager_client import CloudResourceManagerClient
 from .client.compute_client import ComputeClient
 from .client.datastore_client import DatastoreClient
@@ -61,6 +62,7 @@ from .crawler.bigquery_crawler import BigQueryCrawler
 from .crawler.bigtable_instances_crawler import BigTableInstancesCrawler
 from .crawler.cloud_billing_account_crawler import CloudBillingAccountCrawler
 from .crawler.cloud_functions_crawler import CloudFunctionsCrawler
+from .crawler.cloud_trace_crawler import CloudTraceCrawler
 from .crawler.cloud_resource_manager_iam_policy_crawler import CloudResourceManagerIAMPolicyCrawler
 from .crawler.cloud_resource_manager_project_info_crawler import CloudResourceManagerProjectInfoCrawler
 from .crawler.cloud_resource_manager_project_list_crawler import CloudResourceManagerProjectListCrawler
@@ -662,6 +664,22 @@ class TestCrawler(unittest.TestCase):
       )
     )
 
+  def test_cloud_traces(self):
+    """Test Cloudtrace list"""
+    self.assertTrue(
+      verify(
+        CrawlerFactory.create_crawler(
+        "cloud_traces",
+      ).crawl(
+        PROJECT_NAME,
+        ClientFactory.get_client("cloudtrace").get_service(
+          self.credentials
+        ),
+      ),
+      "cloud_traces",
+    )
+  )
+
   def test_bigtable_instances(self):
     """Test BigTable Instances."""
     self.assertTrue(
@@ -922,6 +940,11 @@ class TestClientFactory(unittest.TestCase):
     client = ClientFactory.get_client("cloudfunctions")
     self.assertIsInstance(client, CloudFunctionsClient)
 
+  def test_get_client_cloudtrace(self):
+    """Test get_client method with 'cloudtrace' name."""
+    client = ClientFactory.get_client("cloudtrace")
+    self.assertIsInstance(client, CloudTraceClient)
+
   def test_get_client_bigtable(self):
     """Test get_client method with 'bigtableadmin' name."""
     client = ClientFactory.get_client("bigtableadmin")
@@ -1012,6 +1035,11 @@ class TestCrawlerFactory(unittest.TestCase):
     """Test create_crawler method with 'cloud_functions' name."""
     crawler = CrawlerFactory.create_crawler("cloud_functions")
     self.assertIsInstance(crawler, CloudFunctionsCrawler)
+
+  def test_create_crawler_cloud_traces(self):
+    """Test create_crawler method with 'cloud_traces' name."""
+    crawler = CrawlerFactory.create_crawler("cloud_traces")
+    self.assertIsInstance(crawler, CloudTraceCrawler)
 
   def test_create_crawler_bigtable_instances(self):
     """Test create_crawler method with 'app_services' name."""

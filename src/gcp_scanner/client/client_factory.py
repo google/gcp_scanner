@@ -20,6 +20,7 @@ from gcp_scanner.client.bigtable_client import BigTableClient
 from gcp_scanner.client.cloud_billing_client import CloudBillingClient
 from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
 from gcp_scanner.client.cloud_resource_manager_client import CloudResourceManagerClient
+from gcp_scanner.client.cloud_trace_client import CloudTraceClient
 from gcp_scanner.client.compute_client import ComputeClient
 from gcp_scanner.client.datastore_client import DatastoreClient
 from gcp_scanner.client.dns_client import DNSClient
@@ -48,6 +49,7 @@ class ClientFactory:
     "cloudfunctions": CloudFunctionsClient,
     "cloudkms": CloudKMSClient,
     "cloudresourcemanager": CloudResourceManagerClient,
+    "cloudtrace": CloudTraceClient,
     "compute": ComputeClient,
     "datastore": DatastoreClient,
     "domains": DomainsClient,
