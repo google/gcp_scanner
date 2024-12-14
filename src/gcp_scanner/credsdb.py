@@ -65,7 +65,7 @@ def get_creds_from_file(file_path: str) -> Tuple[str, Credentials]:
 
 
 def get_creds_from_json(parsed_keyfile: Mapping[str, str]) -> Credentials:
-  """Creates a Credentials instance from parsed service account info..
+  """Creates a Credentials instance from parsed service account info.
 
   Args:
     parsed_keyfile: The service account info in Google format.
