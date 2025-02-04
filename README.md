@@ -45,14 +45,14 @@ Please note that GCP offers [Policy Analyzer](https://cloud.google.com/policy-in
 
 To install the package, use `pip` (you must also have `git` installed):
 
-```
+```bash
 pip install gcp_scanner
 python3 -m gcp_scanner --help
 ```
 
 Alternatively:
 
-```
+```bash
 git clone https://github.com/google/gcp_scanner
 cd gcp_scanner
 pip install .
