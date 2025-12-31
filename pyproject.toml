@@ -21,7 +21,7 @@ dependencies = [
     "google-cloud-container==2.17.4",
     "google-cloud-iam==2.11.2",
     "httplib2==0.21.0",
-    "requests==2.32.0",
+    "requests==2.32.4",
 ]
 dynamic = ["version"]
 
