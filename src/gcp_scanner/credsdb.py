@@ -85,7 +85,7 @@ def get_creds_from_metadata() -> Tuple[Optional[str], Optional[Credentials]]:
     google.auth.service_account.Credentials: The constructed credentials.
   """
 
-  print("Retrieving access token from instance metadata")
+  logging.info("Retrieving access token from instance metadata")
 
   token_url = "http://metadata.google.internal/computeMetadata/v1/instance/\
 service-accounts/default/token"
@@ -121,7 +121,7 @@ service-accounts/default/email"
     logging.error(sys.exc_info()[1])
     return None, None
 
-  print("Successfully retrieved instance metadata")
+  logging.info("Successfully retrieved instance metadata")
   logging.info("Access token length: %d", len(token))
   logging.info("Instance email: %s", email)
   logging.info("Instance scopes: %s", instance_scopes)
@@ -192,9 +192,9 @@ def find_creds(explicit_path: Optional[str] = None) -> List[str]:
     logging.info("Scanning %s for credentials.db", dir_path)
     full_path = os.path.join(dir_path, "credentials.db")
     if os.path.exists(full_path) and os.access(full_path, os.R_OK):
-      print(f"Identified accessible gcloud config profile {full_path}")
+      logging.info("Identified accessible gcloud config profile %s", full_path)
       list_of_creds_files.append(full_path)
-  print(f"Identified {len(list_of_creds_files)} credential DBs")
+  logging.info("Identified %d credential DBs", len(list_of_creds_files))
   return list_of_creds_files
 
 
@@ -263,7 +263,7 @@ def extract_creds(path_to_creds_db: str) -> List[Tuple[str, str, str]]:
       logging.info("Found valid access token for %s", row[0])
       access_token = access_tokens[row[0]]
     res.append(SA(row[0], row[1], access_token))
-  print(f"Identified {len(res)} credential entries")
+  logging.info("Identified %d credential entries", len(res))
   return res
 
 
@@ -420,6 +420,5 @@ def get_scopes_from_refresh_token(context) -> Union[List[str], None]:
     logging.debug("Token refresh exception", exc_info=ex)
 
   return None
-
 
 

@@ -272,6 +272,55 @@ class TestGetSADetailsFromKeyFiles(unittest.TestCase):
       self.assertEqual(actual, expect)
 
 
+class TestLoggingOutput(unittest.TestCase):
+  """Test scanner progress output uses logging."""
+
+  def test_get_resources_logs_project_progress(self):
+    project_id = 'test-project'
+    sa_results = scanner.infinite_defaultdict()
+    sa_results['service_account_chain'] = []
+    sa_results['current_service_account'] = 'service-account@example.com'
+    sa_results['token_scopes'] = []
+    sa_results[project_id]['service_account_edges'] = []
+
+    with tempfile.TemporaryDirectory() as output_dir:
+      project = scanner.models.ProjectInfo(
+        {'projectId': project_id},
+        sa_results,
+        output_dir,
+        {},
+        False,
+        None,
+        'unit-test',
+        'service-account@example.com',
+        Mock(),
+        [],
+        1,
+      )
+
+      with patch('builtins.print') as mocked_print:
+        with patch('gcp_scanner.scanner.logging.info') as mocked_log:
+          scanner.get_resources(project)
+
+      mocked_print.assert_not_called()
+      mocked_log.assert_any_call('Inspecting project %s', project_id)
+
+  def test_find_creds_logs_discovered_profiles(self):
+    with tempfile.TemporaryDirectory() as profile_path:
+      creds_path = os.path.join(profile_path, 'credentials.db')
+      open(creds_path, 'w', encoding='utf-8').close()
+
+      with patch('builtins.print') as mocked_print:
+        with patch('gcp_scanner.credsdb.logging.info') as mocked_log:
+          actual = credsdb.find_creds(profile_path)
+
+      self.assertEqual(actual, [creds_path])
+      mocked_print.assert_not_called()
+      mocked_log.assert_any_call(
+        'Identified accessible gcloud config profile %s', creds_path)
+      mocked_log.assert_any_call('Identified %d credential DBs', 1)
+
+
 class TestScopes(unittest.TestCase):
   """Test fetching scopes from a refresh token."""
 

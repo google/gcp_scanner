@@ -207,7 +207,7 @@ def get_resources(project: models.ProjectInfo):
     return
 
   project_id = project.project['projectId']
-  print(f'Inspecting project {project_id}')
+  logging.info('Inspecting project %s', project_id)
   project_result = dict()
 
   project_result['project_info'] = project.project
