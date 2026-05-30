@@ -22,6 +22,7 @@ import filecmp
 import json
 import logging
 import os
+import queue
 import shutil
 import sqlite3
 import tempfile
@@ -270,6 +271,159 @@ class TestGetSADetailsFromKeyFiles(unittest.TestCase):
       actual = scanner.get_sa_details_from_key_files(key_path)
 
       self.assertEqual(actual, expect)
+
+
+class TestServiceAccountImpersonation(unittest.TestCase):
+  """Tests for service account impersonation."""
+
+  def test_get_sas_for_impersonation(self):
+    """Test extracting service accounts from IAM policy bindings."""
+    iam_policy = [
+      {
+        "role": "roles/iam.serviceAccountTokenCreator",
+        "members": [
+          "user:owner@example.com",
+          "serviceAccount:first@test-project.iam.gserviceaccount.com",
+          "group:admins@example.com",
+        ],
+      },
+      {
+        "role": "roles/viewer",
+        "members": [
+          "serviceAccount:second@test-project.iam.gserviceaccount.com",
+          "serviceAccount:first@test-project.iam.gserviceaccount.com",
+        ],
+      },
+      {
+        "role": "roles/editor",
+      },
+    ]
+
+    actual = scanner.get_sas_for_impersonation(iam_policy)
+
+    self.assertEqual(
+      actual,
+      [
+        "first@test-project.iam.gserviceaccount.com",
+        "second@test-project.iam.gserviceaccount.com",
+      ],
+    )
+
+  @patch("gcp_scanner.credsdb.credentials_from_token")
+  def test_impersonate_sa_requests_access_token(self, mocked_creds_from_token):
+    """Test impersonation asks IAM Credentials for a cloud-platform token."""
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+    target_account = "target@test-project.iam.gserviceaccount.com"
+    iam_client = Mock()
+    iam_client.generate_access_token.return_value = Mock(
+      access_token="generated-token"
+    )
+    mocked_creds_from_token.return_value = "impersonated-credentials"
+
+    actual = credsdb.impersonate_sa(iam_client, target_account)
+
+    self.assertEqual(actual, "impersonated-credentials")
+    iam_client.generate_access_token.assert_called_once_with(
+      name=target_account,
+      scope=scopes,
+      retry=None,
+    )
+    mocked_creds_from_token.assert_called_once_with(
+      "generated-token",
+      None,
+      None,
+      None,
+      None,
+      scopes,
+    )
+
+  @patch("gcp_scanner.scanner.ClientFactory.get_client")
+  @patch("gcp_scanner.scanner.CrawlerFactory.create_crawler")
+  @patch("gcp_scanner.scanner.credsdb.impersonate_sa")
+  @patch("gcp_scanner.scanner.iam_client_for_credentials")
+  def test_impersonate_service_accounts_queues_discovered_accounts(
+      self,
+      mocked_iam_client_for_credentials,
+      mocked_impersonate_sa,
+      mocked_create_crawler,
+      mocked_get_client,
+  ):
+    """Test scanner queues impersonated service accounts."""
+    project_id = "test-project"
+    source_credentials = Mock()
+    source_sa = "source@test-project.iam.gserviceaccount.com"
+    target_accounts = [
+      "first@test-project.iam.gserviceaccount.com",
+      "second@test-project.iam.gserviceaccount.com",
+    ]
+    iam_policy = [{
+      "members": [
+        f"serviceAccount:{target_accounts[0]}",
+        f"serviceAccount:{target_accounts[1]}",
+      ],
+    }]
+    context = Mock()
+    context.service_account_queue = queue.Queue()
+    sa_results = scanner.infinite_defaultdict()
+    crawler = Mock()
+    crawler.crawl.return_value = iam_policy
+    client = Mock()
+    client.get_service.return_value = "cloudresourcemanager-service"
+    mocked_create_crawler.return_value = crawler
+    mocked_get_client.return_value = client
+    mocked_iam_client_for_credentials.return_value = "iam-client"
+    mocked_impersonate_sa.side_effect = [
+      "first-credentials",
+      "second-credentials",
+    ]
+
+    scanner.impersonate_service_accounts(
+      context,
+      {"projectId": project_id},
+      {
+        "service_accounts": {
+          "impersonate": True,
+        },
+        "iam_policy": {
+          "fetch": True,
+        },
+      },
+      sa_results,
+      ["root@test-project.iam.gserviceaccount.com"],
+      source_sa,
+      source_credentials,
+    )
+
+    self.assertEqual(
+      sa_results[project_id]["service_account_edges"],
+      target_accounts,
+    )
+    self.assertEqual(
+      list(context.service_account_queue.queue),
+      [
+        (
+          target_accounts[0],
+          "first-credentials",
+          ["root@test-project.iam.gserviceaccount.com", source_sa],
+        ),
+        (
+          target_accounts[1],
+          "second-credentials",
+          ["root@test-project.iam.gserviceaccount.com", source_sa],
+        ),
+      ],
+    )
+    mocked_iam_client_for_credentials.assert_called_once_with(
+      source_credentials
+    )
+    mocked_create_crawler.assert_called_once_with("iam_policy")
+    mocked_get_client.assert_called_once_with("cloudresourcemanager")
+    client.get_service.assert_called_once_with(source_credentials)
+    crawler.crawl.assert_called_once_with(
+      project_id,
+      "cloudresourcemanager-service",
+    )
+    self.assertEqual(mocked_impersonate_sa.call_count, 2)
 
 
 class TestScopes(unittest.TestCase):

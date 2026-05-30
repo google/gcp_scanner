@@ -315,7 +315,7 @@ def impersonate_service_accounts(
 
   # Enumerate projects accessible by SA
   project_id = project['projectId']
-  project_result = sa_results['projects'][project_id]
+  project_result = sa_results[project_id]
   project_result['project_info'] = project
   # Iterate over discovered service accounts by attempting impersonation
   project_result['service_account_edges'] = []
@@ -330,7 +330,8 @@ def impersonate_service_accounts(
   if impers is not None and impers.get('impersonate', False) is True:
     logging.info('Looking for impersonation options in %s', project_id)
     iam_client = iam_client_for_credentials(credentials)
-    if is_set(scan_config, 'iam_policy') is False:
+    iam_policy = project_result.get('iam_policy')
+    if iam_policy is None:
       iam_policy = CrawlerFactory.create_crawler('iam_policy').crawl(
           project_id,
           ClientFactory.get_client('cloudresourcemanager').get_service(
