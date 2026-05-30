@@ -272,6 +272,40 @@ class TestGetSADetailsFromKeyFiles(unittest.TestCase):
       self.assertEqual(actual, expect)
 
 
+class TestCredentialProjectFallback(unittest.TestCase):
+  """Test service account key project fallback."""
+
+  def test_adds_service_account_project_when_project_list_is_empty(self):
+    project_list = []
+    creds = Mock(project_id='source-project')
+
+    scanner.add_credential_project(project_list, creds)
+
+    self.assertEqual(
+      project_list,
+      [{'projectId': 'source-project', 'projectNumber': 'N/A'}],
+    )
+
+  def test_does_not_add_duplicate_project(self):
+    project_list = [{'projectId': 'source-project', 'projectNumber': '123'}]
+    creds = Mock(project_id='source-project')
+
+    scanner.add_credential_project(project_list, creds)
+
+    self.assertEqual(
+      project_list,
+      [{'projectId': 'source-project', 'projectNumber': '123'}],
+    )
+
+  def test_does_not_guess_project_without_project_id(self):
+    project_list = []
+    creds = Mock(spec=[])
+
+    scanner.add_credential_project(project_list, creds)
+
+    self.assertEqual(project_list, [])
+
+
 class TestScopes(unittest.TestCase):
   """Test fetching scopes from a refresh token."""
 
