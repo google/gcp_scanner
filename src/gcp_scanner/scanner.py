@@ -131,6 +131,25 @@ def is_set(config: Optional[dict], config_setting: str) -> Union[dict, bool]:
   return obj.get('fetch', False)
 
 
+def add_credential_project(project_list: List[Dict[str, Any]],
+                           credentials: Credentials):
+  """Add the credential's project_id when project enumeration fails.
+
+  Service account key credentials carry the project that owns the key. Other
+  credential types may not, so only add an explicit project_id exposed by the
+  credentials object.
+  """
+  if project_list:
+    return
+
+  project_id = getattr(credentials, 'project_id', None)
+  if not project_id:
+    return
+
+  logging.info('Using project_id %s from credentials', project_id)
+  project_list.append({'projectId': project_id, 'projectNumber': 'N/A'})
+
+
 def save_results(res_data: Dict, res_path: str, is_light: bool):
   """The function to save scan results on disk in json format.
 
@@ -562,6 +581,7 @@ def main():
 
     if len(project_list) <= 0:
       logging.info('Unable to list projects accessible from service account')
+      scanner.add_credential_project(project_list, credentials)
 
     if force_projects_list:
       for force_project_id in force_projects_list:
