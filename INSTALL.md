@@ -2,7 +2,10 @@
 
 ## Install basic dependencies
 
-**Linux** is the preferred operating system to use while contributing to GCP Scanner. If you're using Windows, we recommend setting up [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+**Linux** is the supported operating system for GCP Scanner. If you're using
+Windows, run GCP Scanner from [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+or from the Docker image below; native Windows installs are not supported and
+may fail while building dependencies.
 
 - Have `python` installed on your system. Check out this [link](https://www.python.org/downloads/) to download.
 - have `git` installed on your system.
@@ -45,11 +48,8 @@ gcp-scanner --help
    python3 -m venv venv
    ```
 
-   - **on windows:**
-
-   ```bash
-   python -m venv venv
-   ```
+   Windows users should run the Linux/WSL commands from a WSL shell instead of
+   creating a native Windows virtual environment.
 
    - **on MacOS :**
 
@@ -65,11 +65,8 @@ gcp-scanner --help
    source venv/bin/activate
    ```
 
-   - **on windows:**
-
-   ```bash
-   .\venv\Scripts\activate
-   ```
+   Windows users should activate the virtual environment from the same WSL
+   shell.
 
    - **on MacOS:**
 
