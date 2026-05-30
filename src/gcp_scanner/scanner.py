@@ -370,9 +370,7 @@ def iam_client_for_credentials(
 def gke_client_for_credentials(
     credentials: Credentials,
 ) -> container_v1.services.cluster_manager.client.ClusterManagerClient:
-  return container_v1.services.cluster_manager.ClusterManagerClient(
-      credentials=credentials
-  )
+  return ClientFactory.get_client("container").get_service(credentials)
 
 
 def get_sa_details_from_key_files(key_path):

@@ -21,6 +21,7 @@ from gcp_scanner.client.cloud_billing_client import CloudBillingClient
 from gcp_scanner.client.cloud_functions_client import CloudFunctionsClient
 from gcp_scanner.client.cloud_resource_manager_client import CloudResourceManagerClient
 from gcp_scanner.client.compute_client import ComputeClient
+from gcp_scanner.client.container_client import ContainerClient
 from gcp_scanner.client.datastore_client import DatastoreClient
 from gcp_scanner.client.dns_client import DNSClient
 from gcp_scanner.client.domains_client import DomainsClient
@@ -49,6 +50,7 @@ class ClientFactory:
     "cloudkms": CloudKMSClient,
     "cloudresourcemanager": CloudResourceManagerClient,
     "compute": ComputeClient,
+    "container": ContainerClient,
     "datastore": DatastoreClient,
     "domains": DomainsClient,
     "dns": DNSClient,

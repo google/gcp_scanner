@@ -41,6 +41,7 @@ from .client.client_factory import CloudBillingClient
 from .client.cloud_functions_client import CloudFunctionsClient
 from .client.cloud_resource_manager_client import CloudResourceManagerClient
 from .client.compute_client import ComputeClient
+from .client.container_client import ContainerClient
 from .client.datastore_client import DatastoreClient
 from .client.dns_client import DNSClient
 from .client.domains_client import DomainsClient
@@ -886,6 +887,27 @@ class TestClientFactory(unittest.TestCase):
     """Test get_client method with 'compute' name."""
     client = ClientFactory.get_client("compute")
     self.assertIsInstance(client, ComputeClient)
+
+  def test_get_client_container(self):
+    """Test get_client method with 'container' name."""
+    client = ClientFactory.get_client("container")
+    self.assertIsInstance(client, ContainerClient)
+
+  @patch(
+      "gcp_scanner.client.container_client.container_v1.services."
+      "cluster_manager.ClusterManagerClient"
+  )
+  def test_container_client_get_service(self, mock_cluster_manager_client):
+    """Test ContainerClient creates the GKE cluster manager client."""
+    credentials_obj = Mock()
+    client = ContainerClient()
+
+    service = client.get_service(credentials_obj)
+
+    self.assertEqual(service, mock_cluster_manager_client.return_value)
+    mock_cluster_manager_client.assert_called_once_with(
+        credentials=credentials_obj,
+    )
 
   def test_get_client_appengine(self):
     """Test get_client method with 'appengine' name."""
