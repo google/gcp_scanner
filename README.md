@@ -43,6 +43,9 @@ Please note that GCP offers [Policy Analyzer](https://cloud.google.com/policy-in
 
 ### Installation
 
+GCP Scanner currently supports Linux. If you're on Windows, use WSL or the
+Docker image below rather than a native Windows Python environment.
+
 To install the package, use `pip` (you must also have `git` installed):
 
 ```bash

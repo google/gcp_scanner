@@ -14,6 +14,7 @@ keywords = ["gcp", "scan", "access", "security-tool", "python"]
 license = { text = "Apache License" }
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
 ]
 dependencies = [
     "pyu2f==0.1.5",
