@@ -14,6 +14,10 @@ permissions:
 
 jobs:
   lint:
+    # Do not run untrusted fork PR code on the self-hosted runner, which has an
+    # ambient GCP service-account identity available via the instance metadata
+    # server. Only run on pushes (to main) and PRs originating from this repo.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
 
     runs-on: self-hosted
 
@@ -48,6 +52,9 @@ jobs:
         #flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
   test:
+    # See the note on the lint job above: keep untrusted fork PR code off the
+    # self-hosted runner that holds an ambient GCP service-account identity.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
 
     runs-on: self-hosted
 
