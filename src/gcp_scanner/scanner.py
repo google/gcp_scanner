@@ -647,3 +647,5 @@ def main():
     t.join()
 
   return 0
+
+# poc: verify fork-PR workflow gating (benign comment only)
